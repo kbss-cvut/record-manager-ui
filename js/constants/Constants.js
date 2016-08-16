@@ -62,6 +62,7 @@ module.exports = {
     INPUT_LENGTH_THRESHOLD: 70,
 
     // Form Generator
+    // TODO Update the vocabulary here
     FORM: {
         FORM: 'http://onto.fel.cvut.cz/ontologies/documentation/form',
         HAS_SUBQUESTION: 'http://onto.fel.cvut.cz/ontologies/documentation/has_related_question',
