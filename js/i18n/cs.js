@@ -30,6 +30,14 @@ module.exports = {
         'unknown': 'Neznámé',
         'please-wait': 'Prosím čekejte...',
 
+        'login.title': Constants.APP_NAME + ' - Přihlášení',
+        'login.username': 'Uživatelské jméno',
+        'login.password': 'Heslo',
+        'login.submit': 'Přihlásit',
+        'login.register': 'Registrace',
+        'login.error': 'Přihlášení se nezdařilo.',
+        'login.progress-mask': 'Přihlašuji...',
+
         'dashboard.welcome': 'Dobrý den, {name}, vítejte v ' + Constants.APP_NAME + '.',
         'dashboard.create-tile': 'Vytvořit záznam'
     }

@@ -30,6 +30,14 @@ module.exports = {
         'unknown': 'Unknown',
         'please-wait': 'Please wait...',
 
+        'login.title': Constants.APP_NAME + ' - Login',
+        'login.username': 'Username',
+        'login.password': 'Password',
+        'login.submit': 'Login',
+        'login.register': 'Register',
+        'login.error': 'Authentication failed.',
+        'login.progress-mask': 'Logging in...',
+
         'dashboard.welcome': 'Hello {name}, Welcome to ' + Constants.APP_NAME + '.',
         'dashboard.create-tile': 'Create record'
     }

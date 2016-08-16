@@ -9,7 +9,7 @@ var currentUser = null;
 var loaded = false;
 
 function loadCurrentUser() {
-    Ajax.get('rest/persons/current').end(UserStore.userLoaded);
+    Ajax.get('rest/users/current').end(UserStore.userLoaded);
 }
 
 var UserStore = Reflux.createStore({
