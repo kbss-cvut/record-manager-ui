@@ -38,7 +38,14 @@ module.exports = {
         'login.error': 'Authentication failed.',
         'login.progress-mask': 'Logging in...',
 
+        'main.dashboard-nav': 'Dashboard',
+        'main.logout': 'Logout',
+
         'dashboard.welcome': 'Hello {name}, Welcome to ' + Constants.APP_NAME + '.',
-        'dashboard.create-tile': 'Create record'
+        'dashboard.create-tile': 'Create record',
+
+        'notfound.title': 'Not found',
+        'notfound.msg-with-id': '{resource} with id {identifier} not found.',
+        'notfound.msg': '{resource} not found.'
     }
 };

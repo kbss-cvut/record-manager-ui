@@ -38,7 +38,14 @@ module.exports = {
         'login.error': 'Přihlášení se nezdařilo.',
         'login.progress-mask': 'Přihlašuji...',
 
+        'main.dashboard-nav': 'Hlavní strana',
+        'main.logout': 'Odhlásit se',
+
         'dashboard.welcome': 'Dobrý den, {name}, vítejte v ' + Constants.APP_NAME + '.',
-        'dashboard.create-tile': 'Vytvořit záznam'
+        'dashboard.create-tile': 'Vytvořit záznam',
+
+        'notfound.title': 'Nenalezeno',
+        'notfound.msg-with-id': 'Záznam \'{resource}\' s identifikátorem {identifier} nenalezen.',
+        'notfound.msg': 'Záznam \'{resource}\' nenalezen.'
     }
 };
