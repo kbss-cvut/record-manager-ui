@@ -40,9 +40,10 @@ var Routes = require('./utils/Routes');
 var Actions = require('./actions/Actions');
 
 var Login = require('./components/login/Login');
-var Register = require('./components/register/Register').default;
 var MainView = require('./components/MainView');
 var DashboardController = require('./components/dashboard/DashboardController');
+var UsersController = require('./components/user/UsersController').default;
+var UserController = require('./components/user/UserController').default;
 var RoutingRules = require('./utils/RoutingRules');
 
 function onRouteEnter() {
@@ -57,15 +58,17 @@ var App = React.createClass({
                 <Route path='/' component={MainView}>
                     <IndexRoute component={DashboardController}/>
                     <Route path={Routes.login.path} onEnter={onRouteEnter} component={Login}/>
-                    <Route path={Routes.register.path} onEnter={onRouteEnter} component={Register}/>
                     <Route path={Routes.dashboard.path} onEnter={onRouteEnter} component={DashboardController}/>
+                    <Route path={Routes.users.path} onEnter={onRouteEnter} component={UsersController}/>
+                    <Route path={Routes.createUser.path} onEnter={onRouteEnter} component={UserController}/>
+                    <Route path={Routes.editUser.path} onEnter={onRouteEnter} component={UserController}/>
                 </Route>
             </Router>
         </IntlProvider>;
     }
 });
 
-Actions.loadUser();
+Actions.loadCurrentUser();
 
 // Pass intl data to the top-level component
 ReactDOM.render(<App/>, document.getElementById('content'));

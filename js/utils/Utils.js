@@ -15,6 +15,8 @@ var PREPOSITIONS = [
 
 var URL_CONTAINS_QUERY = /^.+\?.+=.+$/;
 
+var CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
 module.exports = {
     /**
      * Formats the specified date into DD-MM-YY HH:mm
@@ -282,5 +284,13 @@ module.exports = {
             });
         }
         return url;
+    },
+
+    generatePassword: function () {
+        var pass = '';
+        for (var i = 0; i < Constants.PASSWORD_LENGTH; i++) {
+            pass += CHARACTERS.charAt(Math.floor(Math.random() * CHARACTERS.length));
+        }
+        return pass;
     }
 };

@@ -5,6 +5,8 @@ var Ajax = require('./Ajax');
 var Routes = require('./Routes');
 var Routing = require('./Routing');
 var Logger = require('./Logger');
+var UserStore = require('../stores/UserStore');
+var Vocabulary = require('../constants/Vocabulary');
 
 var Authentication = {
 
@@ -21,7 +23,7 @@ var Authentication = {
                     errorCallback();
                     return;
                 }
-                Actions.loadUser();
+                Actions.loadCurrentUser();
                 Logger.log('User successfully authenticated.');
                 Routing.transitionToOriginalTarget();
             }.bind(this));
@@ -37,6 +39,14 @@ var Authentication = {
             Routing.transitionTo(Routes.login);
             window.location.reload();
         });
+    },
+
+    isAdmin: function () {
+        var currentUser = UserStore.getCurrentUser();
+        if (!currentUser) {
+            return false;
+        }
+        return currentUser.types.indexOf(Vocabulary.ADMIN_TYPE) !== -1;
     }
 };
 

@@ -3,7 +3,7 @@
 var Reflux = require('reflux');
 
 var Actions = Reflux.createActions([
-    'loadUser'
+    'loadAllUsers', 'loadCurrentUser', 'loadUser', 'createUser', 'updateUser', 'deleteUser'
 ]);
 
 module.exports = Actions;

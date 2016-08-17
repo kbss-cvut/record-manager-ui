@@ -61,6 +61,8 @@ module.exports = {
     // Maximum input value length, for which input of type text should be displayed
     INPUT_LENGTH_THRESHOLD: 70,
 
+    PASSWORD_LENGTH: 4,
+
     // Form Generator
     // TODO Update the vocabulary here
     FORM: {

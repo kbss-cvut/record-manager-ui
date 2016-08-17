@@ -1,10 +1,11 @@
 'use strict';
 
 var Routes = {
-
     login: {name: 'login', path: 'login'},
-    register: {name: 'register', path: 'register'},
-    dashboard: {name: 'dashboard', path: 'dashboard'}
+    dashboard: {name: 'dashboard', path: 'dashboard'},
+    users: {name: 'users', path: 'users'},
+    createUser: {name: 'createUser', path: 'users/create'},
+    editUser: {name: 'editUser', path: 'users/:username'}
 };
 
 module.exports = Routes;

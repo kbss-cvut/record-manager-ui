@@ -40,10 +40,17 @@ var DashboardController = React.createClass({
         });
     },
 
+    _showUsers: function () {
+        Routing.transitionTo(Routes.users);
+    },
+
 
     render: function () {
+        var handlers = {
+            showUsers: this._showUsers
+        };
         return <div>
-            <Dashboard userFirstName={this.state.firstName} dashboard={this._resolveDashboard()}/>
+            <Dashboard userFirstName={this.state.firstName} dashboard={this._resolveDashboard()} handlers={handlers}/>
         </div>;
     },
 

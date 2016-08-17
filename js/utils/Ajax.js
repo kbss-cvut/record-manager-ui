@@ -65,12 +65,11 @@ var Ajax = {
      *     parseable JSON object, it is passed to the handler
      */
     end: function (onSuccess, onError) {
-        this._extendPortalSession();
         this.req.set(csrfTokenHeader, this.getCsrfToken()).end(function (err, resp) {
             if (err) {
                 if (err.status === 401) {
                     var currentRoute = Utils.getPathFromLocation();
-                    if (currentRoute !== Routes.register.path && currentRoute !== Routes.login.path) {
+                    if (currentRoute !== Routes.login.path) {
                         Routing.saveOriginalTarget({path: currentRoute});
                         Routing.transitionTo(Routes.login);
                     }
@@ -92,17 +91,6 @@ var Ajax = {
                 onSuccess(resp.body, resp);
             }
         }.bind(this));
-    },
-
-    /**
-     * Extends portal session if the application is running on Liferay.
-     * @private
-     */
-    _extendPortalSession: function () {
-        if (!top.Liferay) {
-            return;
-        }
-        top.Liferay.Session.extend();
     },
 
     _handleError: function (err) {

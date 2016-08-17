@@ -100,7 +100,7 @@ class Register extends React.Component {
                     this.setState({alertVisible: true});
                     return;
                 }
-                Actions.loadUser();
+                Actions.loadCurrentUser();
                 Routing.transitionToHome();
             }.bind(this), function (err) {
                 Logger.error('Unable to perform synthetic login. Received response with status ' + err.status);

@@ -54,6 +54,7 @@ var MainView = React.createClass({
                             <LinkContainer
                                 to='dashboard'><NavItem>{this.i18n('main.dashboard-nav')}</NavItem></LinkContainer>
                         </Nav>
+                        {this._renderUsers()}
                         <Nav pullRight style={{margin: '0 -15px 0 0'}}>
                             <NavDropdown id='logout' title={name}>
                                 <MenuItem href='#' onClick={Authentication.logout}>{this.i18n('main.logout')}</MenuItem>
@@ -66,6 +67,13 @@ var MainView = React.createClass({
                 </section>
             </div>
         );
+    },
+
+    _renderUsers: function () {
+        return Authentication.isAdmin() ?
+            <Nav>
+                <LinkContainer to='users'><NavItem>{this.i18n('main.users-nav')}</NavItem></LinkContainer>
+            </Nav> : null;
     }
 });
 

@@ -13,6 +13,7 @@ var Row = require('react-bootstrap').Row;
 var injectIntl = require('../../utils/injectIntl');
 var FormattedMessage = require('react-intl').FormattedMessage;
 
+var Authentication = require('../../utils/Authentication');
 var Constants = require('../../constants/Constants');
 var Tile = require('./DashboardTile').default;
 var I18nMixin = require('../../i18n/I18nMixin');
@@ -22,7 +23,8 @@ var Dashboard = React.createClass({
 
     propTypes: {
         userFirstName: React.PropTypes.string,
-        dashboard: React.PropTypes.string
+        dashboard: React.PropTypes.string,
+        handlers: React.PropTypes.object.isRequired
     },
 
     getInitialState: function () {
@@ -60,23 +62,31 @@ var Dashboard = React.createClass({
     },
 
     renderTitle: function () {
-                return <h3><FormattedMessage id='dashboard.welcome'
-                                             values={{name: <span className='bold'>{this.props.userFirstName}</span>}}/>
-                </h3>;
+        return <h3><FormattedMessage id='dashboard.welcome'
+                                     values={{name: <span className='bold'>{this.props.userFirstName}</span>}}/>
+        </h3>;
     },
 
     renderDashboardContent: function () {
-                return this._renderMainDashboard();
+        return this._renderMainDashboard();
     },
 
     _renderMainDashboard: function () {
         return <Grid fluid={true}>
-                <Row>
-                    <Col xs={4} className='dashboard-sector'>
-                        <Tile onClick={this.createReport}>{this.i18n('dashboard.create-tile')}</Tile>
-                    </Col>
-                </Row>
-            </Grid>;
+            <Row>
+                <Col xs={4} className='dashboard-sector'>
+                    <Tile onClick={this.createReport}>{this.i18n('dashboard.create-tile')}</Tile>
+                </Col>
+                {this._renderUsersTile()}
+            </Row>
+        </Grid>;
+    },
+
+    _renderUsersTile: function () {
+        return Authentication.isAdmin() ?
+            <Col xs={4} className='dashboard-sector'>
+                <Tile onClick={this.props.handlers.showUsers}>{this.i18n('dashboard.users-tile')}</Tile>
+            </Col> : null;
     }
 });
 

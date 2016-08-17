@@ -29,6 +29,7 @@ module.exports = {
         'no': 'Ne',
         'unknown': 'Neznámé',
         'please-wait': 'Prosím čekejte...',
+        'actions': 'Akce',
 
         'login.title': Constants.APP_NAME + ' - Přihlášení',
         'login.username': 'Uživatelské jméno',
@@ -39,13 +40,31 @@ module.exports = {
         'login.progress-mask': 'Přihlašuji...',
 
         'main.dashboard-nav': 'Hlavní strana',
+        'main.users-nav': 'Uživatelé',
         'main.logout': 'Odhlásit se',
 
         'dashboard.welcome': 'Dobrý den, {name}, vítejte v ' + Constants.APP_NAME + '.',
         'dashboard.create-tile': 'Vytvořit záznam',
+        'dashboard.users-tile': 'Uživatelé',
 
         'notfound.title': 'Nenalezeno',
         'notfound.msg-with-id': 'Záznam \'{resource}\' s identifikátorem {identifier} nenalezen.',
-        'notfound.msg': 'Záznam \'{resource}\' nenalezen.'
+        'notfound.msg': 'Záznam \'{resource}\' nenalezen.',
+
+        'users.panel-title': 'Uživatelé',
+        'users.create-user': 'Přidat uživatele',
+        'users.email': 'Email',
+        'users.open-tooltip': 'Zobrazit či upravit detaily o tomto uživateli',
+        'users.delete-tooltip': 'Smazat tohoto uživatele',
+        'users.delete.dialog-title': 'Smazat uživatele?',
+        'users.delete.dialog-content': 'Určitě chcete odstranit uživatele {firstName} {lastName}.',
+
+        'user.panel-title': 'Uživatel',
+        'user.first-name': 'Jméno',
+        'user.last-name': 'Příjmení',
+        'user.username': 'Uživatelské jméno',
+        'user.password': 'Heslo',
+        'user.password-confirm': 'Potvrzení hesla',
+        'user.passwords-not-matching-tooltip': 'Hesla se neshodují'
     }
 };
