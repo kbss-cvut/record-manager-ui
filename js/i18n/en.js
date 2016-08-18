@@ -79,6 +79,7 @@ module.exports = {
         'clinic.panel-title': 'Clinic',
         'clinic.name': 'Clinic name',
         'clinic.email': 'Contact email',
-        'clinic.created': 'Clinic registered on {date}'
+        'clinic.created': 'Clinic registered on {date}',
+        'clinic.members.panel-title': 'Clinic members'
     }
 };

@@ -79,6 +79,7 @@ module.exports = {
         'clinic.panel-title': 'Klinika',
         'clinic.name': 'Název kliniky',
         'clinic.email': 'Kontaktní email',
-        'clinic.created': 'Klinika zaregistrována {date}'
+        'clinic.created': 'Klinika zaregistrována {date}',
+        'clinic.members.panel-title': 'Zaměstnanci kliniky'
     }
 };

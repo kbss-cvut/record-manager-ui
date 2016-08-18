@@ -10,12 +10,14 @@ import EntityFactory from '../../utils/EntityFactory';
 import RouterStore from '../../stores/RouterStore';
 import Routes from '../../utils/Routes';
 import Routing from '../../utils/Routing';
+import UserStore from '../../stores/UserStore';
 
 export default class ClinicController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             clinic: this._isNew() ? EntityFactory.initNewClinic() : null,
+            members: [],
             loading: false
         };
     }
@@ -29,7 +31,11 @@ export default class ClinicController extends React.Component {
             Actions.loadClinic(this.props.params.key);
             this.setState({loading: true});
         }
+        if (this.props.params.key) {
+            Actions.loadClinicMembers(this.props.params.key);
+        }
         this.unsubscribe = ClinicStore.listen(this._onClinicLoaded);
+        this.unsubscribeMembers = UserStore.listen(this._onMembersLoaded);
     }
 
     _onClinicLoaded = (data) => {
@@ -38,8 +44,15 @@ export default class ClinicController extends React.Component {
         }
     };
 
+    _onMembersLoaded = (data) => {
+        if (data.action === Actions.loadClinicMembers && this.props.params.key === data.clinicKey) {
+            this.setState({members: data.data});
+        }
+    };
+
     componentWillUnmount() {
         this.unsubscribe();
+        this.unsubscribeMembers();
     }
 
     _onSave = () => {
@@ -76,6 +89,6 @@ export default class ClinicController extends React.Component {
 
     render() {
         return <Clinic onSave={this._onSave} onCancel={this._onCancel} onChange={this._onChange}
-                       clinic={this.state.clinic} loading={this.state.loading}/>;
+                       clinic={this.state.clinic} members={this.state.members} loading={this.state.loading}/>;
     }
 }

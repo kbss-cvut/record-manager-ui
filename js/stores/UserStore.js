@@ -43,6 +43,12 @@ var UserStore = Reflux.createStore({
         });
     },
 
+    onLoadClinicMembers: function (clinicKey) {
+        Ajax.get('rest/users?clinic=' + clinicKey).end((data) => {
+            this.trigger({action: Actions.loadClinicMembers, clinicKey: clinicKey, data: data});
+        });
+    },
+
     onLoadUser: function (username) {
         Ajax.get('rest/users/' + username).end((data) => {
             this.trigger({action: Actions.loadUser, data: data});

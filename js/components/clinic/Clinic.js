@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import {Button, Panel} from "react-bootstrap";
+import {Button, Panel, Table} from "react-bootstrap";
 import {FormattedMessage} from "react-intl";
 
 import Authentication from "../../utils/Authentication";
@@ -39,7 +39,7 @@ class Clinic extends React.Component {
         }
         var clinic = this.props.clinic;
         return <Panel header={<h3>{this.i18n('clinic.panel-title')}</h3>} bsStyle='primary'>
-            <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
+            <form className='form-horizontal' style={{margin: '0.5em 0 1.5em 0'}}>
                 <div className='row'>
                     <div className='col-xs-6'>
                         <Input type='text' name='name' label={this.i18n('clinic.name')}
@@ -57,8 +57,8 @@ class Clinic extends React.Component {
                 {this._renderAddedDate()}
                 {this._renderButtons()}
             </form>
+            {this._renderMembers()}
         </Panel>;
-        // TODO Render panel with doctors of the clinic
         // TODO Render also a panel with patients of the clinic
     }
 
@@ -79,9 +79,11 @@ class Clinic extends React.Component {
 
     _renderButtons() {
         if (!Authentication.isAdmin()) {
-            return <div className='col-xs-1'>
-                <Button bsStyle='primary' bsSize='small' onClick={this.props.onCancel}>{this.i18n('back')}</Button>
-            </div>
+            return <div className='row'>
+                <div className='col-xs-1'>
+                    <Button bsStyle='primary' bsSize='small' onClick={this.props.onCancel}>{this.i18n('back')}</Button>
+                </div>
+            </div>;
         } else {
             return <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
                 <Button bsStyle='success' bsSize='small' ref='submit'
@@ -90,6 +92,45 @@ class Clinic extends React.Component {
                 <Button bsStyle='link' bsSize='small' onClick={this.props.onCancel}>{this.i18n('cancel')}</Button>
             </div>;
         }
+    }
+
+    _renderMembers() {
+        var members = this.props.clinic.members ? this.props.clinic.members : this.props.members;
+        if (members.length === 0) {
+            return null;
+        }
+        return <Panel header={<h3>{this.i18n('clinic.members.panel-title')}</h3>} bsStyle='info'>
+            <Table striped bordered condensed hover>
+                {this._renderHeader()}
+                <tbody>
+                {this._renderUsers(members)}
+                </tbody>
+            </Table>
+        </Panel>;
+    }
+
+    _renderHeader() {
+        return <thead>
+        <tr>
+            <th className='col-xs-4 content-center'>{this.i18n('name')}</th>
+            <th className='col-xs-4 content-center'>{this.i18n('login.username')}</th>
+            <th className='col-xs-4 content-center'>{this.i18n('users.email')}</th>
+        </tr>
+        </thead>;
+    }
+
+    _renderUsers(members) {
+        var rows = [],
+            member;
+        for (var i = 0, len = members.length; i < len; i++) {
+            member = members[i];
+            rows.push(<tr key={member.username}>
+                <td className='report-row'>{member.firstName + ' ' + member.lastName}</td>
+                <td className='report-row'>{member.username}</td>
+                <td className='report-row'>{member.emailAddress}</td>
+            </tr>);
+        }
+        return rows;
     }
 }
 

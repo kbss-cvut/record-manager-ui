@@ -57,9 +57,10 @@ class UserTable extends React.Component {
     _renderHeader() {
         return <thead>
         <tr>
-            <th className='col-xs-4 content-center'>{this.i18n('name')}</th>
+            <th className='col-xs-3 content-center'>{this.i18n('name')}</th>
             <th className='col-xs-2 content-center'>{this.i18n('login.username')}</th>
-            <th className='col-xs-4 content-center'>{this.i18n('users.email')}</th>
+            <th className='col-xs-3 content-center'>{this.i18n('clinic.name')}</th>
+            <th className='col-xs-2 content-center'>{this.i18n('users.email')}</th>
             <th className='col-xs-2 content-center'>{this.i18n('actions')}</th>
         </tr>
         </thead>;
@@ -84,6 +85,7 @@ var UserRow = (props) => {
                title={props.i18n('users.open-tooltip')}>{user.firstName + ' ' + user.lastName}</a>
         </td>
         <td className='report-row'>{user.username}</td>
+        <td className='report-row'>{user.clinic ? user.clinic.name : ''}</td>
         <td className='report-row'>{user.emailAddress}</td>
         <td className='report-row actions'>
             <Button bsStyle='primary' bsSize='small' title={props.i18n('users.open-tooltip')}
