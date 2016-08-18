@@ -43,11 +43,13 @@ module.exports = {
         'main.users-nav': 'Users',
         'main.clinics-nav': 'Clinics',
         'main.logout': 'Logout',
+        'main.my-profile': 'My profile',
 
         'dashboard.welcome': 'Hello {name}, Welcome to ' + Constants.APP_NAME + '.',
         'dashboard.create-tile': 'Create record',
         'dashboard.users-tile': 'View users',
         'dashboard.clinics-tile': 'View clinics',
+        'dashboard.records-tile': 'View patient records',
 
         'notfound.title': 'Not found',
         'notfound.msg-with-id': '{resource} with id {identifier} not found.',
@@ -80,6 +82,13 @@ module.exports = {
         'clinic.name': 'Clinic name',
         'clinic.email': 'Contact email',
         'clinic.created': 'Clinic registered on {date}',
-        'clinic.members.panel-title': 'Clinic members'
+        'clinic.members.panel-title': 'Clinic members',
+
+        'records.panel-title': 'Patient records',
+        'records.local-name': 'Patient identifier',
+        'records.completion-status': 'Completion status',
+        'records.last-modified': 'Last modified',
+        'records.open-tooltip': 'View and edit the record of this patient',
+        'records.delete-tooltip': 'Delete this record'
     }
 };

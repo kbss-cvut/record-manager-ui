@@ -48,11 +48,26 @@ var DashboardController = React.createClass({
         Routing.transitionTo(Routes.clinics);
     },
 
+    _showRecords: function () {
+        Routing.transitionTo(Routes.records);
+    },
+
+    _createRecord: function () {
+        Routing.transitionTo(Routes.createRecord, {
+            handlers: {
+                onSuccess: Routes.records,
+                onCancel: Routes.records
+            }
+        });
+    },
+
 
     render: function () {
         var handlers = {
             showUsers: this._showUsers,
-            showClinics: this._showClinics
+            showClinics: this._showClinics,
+            showRecords: this._showRecords,
+            createRecord: this._createRecord
         };
         return <div>
             <Dashboard userFirstName={this.state.firstName} dashboard={this._resolveDashboard()} handlers={handlers}/>

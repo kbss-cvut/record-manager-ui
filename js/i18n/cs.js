@@ -43,11 +43,13 @@ module.exports = {
         'main.users-nav': 'Uživatelé',
         'main.clinics-nav': 'Kliniky',
         'main.logout': 'Odhlásit se',
+        'main.my-profile': 'Můj profil',
 
         'dashboard.welcome': 'Dobrý den, {name}, vítejte v ' + Constants.APP_NAME + '.',
         'dashboard.create-tile': 'Vytvořit záznam',
         'dashboard.users-tile': 'Uživatelé',
         'dashboard.clinics-tile': 'Kliniky',
+        'dashboard.records-tile': 'Záznamy pacientů',
 
         'notfound.title': 'Nenalezeno',
         'notfound.msg-with-id': 'Záznam \'{resource}\' s identifikátorem {identifier} nenalezen.',
@@ -80,6 +82,13 @@ module.exports = {
         'clinic.name': 'Název kliniky',
         'clinic.email': 'Kontaktní email',
         'clinic.created': 'Klinika zaregistrována {date}',
-        'clinic.members.panel-title': 'Zaměstnanci kliniky'
+        'clinic.members.panel-title': 'Zaměstnanci kliniky',
+
+        'records.panel-title': 'Záznamy o pacientech',
+        'records.local-name': 'Identifikátor pacienta',
+        'records.completion-status': 'Stav vyplnění',
+        'records.last-modified': 'Naposledy upraveno',
+        'records.open-tooltip': 'Zobrazit či upravit záznam tohoto pacienta',
+        'records.delete-tooltip': 'Smazat tento záznam'
     }
 };

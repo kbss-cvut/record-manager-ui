@@ -44,6 +44,7 @@ var MainView = require('./components/MainView');
 var ClinicController = require('./components/clinic/ClinicController').default;
 var ClinicsController = require('./components/clinic/ClinicsController').default;
 var DashboardController = require('./components/dashboard/DashboardController');
+var RecordsController = require('./components/record/RecordsController').default;
 var UsersController = require('./components/user/UsersController').default;
 var UserController = require('./components/user/UserController').default;
 var RoutingRules = require('./utils/RoutingRules');
@@ -67,6 +68,7 @@ var App = React.createClass({
                     <Route path={Routes.clinics.path} onEnter={onRouteEnter} component={ClinicsController}/>
                     <Route path={Routes.createClinic.path} onEnter={onRouteEnter} component={ClinicController}/>
                     <Route path={Routes.editClinic.path} onEnter={onRouteEnter} component={ClinicController}/>
+                    <Route path={Routes.records.path} onEnter={onRouteEnter} component={RecordsController}/>
                 </Route>
             </Router>
         </IntlProvider>;

@@ -4,6 +4,7 @@ import React from 'react';
 import assign from 'object-assign';
 
 import Actions from '../../actions/Actions';
+import Authentication from '../../utils/Authentication';
 import User from './User';
 import UserFactory from '../../utils/EntityFactory';
 import UserStore from '../../stores/UserStore';
@@ -66,7 +67,7 @@ export default class UserController extends React.Component {
         if (handlers) {
             Routing.transitionTo(handlers.onCancel);
         } else {
-            Routing.transitionTo(Routes.users);
+            Routing.transitionTo(Authentication.isAdmin() ? Routes.users : Routes.dashboard);
         }
     };
 

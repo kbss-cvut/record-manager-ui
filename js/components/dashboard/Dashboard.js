@@ -50,7 +50,7 @@ var Dashboard = React.createClass({
     render: function () {
         return (
             <div style={{margin: '0 -15px 0 -15px'}}>
-                <div className='col-xs-8'>
+                <div className='col-xs-10'>
                     <Jumbotron>
                         {this.renderTitle()}
                         {this.renderDashboardContent()}
@@ -74,12 +74,15 @@ var Dashboard = React.createClass({
     _renderMainDashboard: function () {
         return <Grid fluid={true}>
             <Row>
-                <Col xs={4} className='dashboard-sector'>
-                    <Tile onClick={this.createReport}>{this.i18n('dashboard.create-tile')}</Tile>
+                <Col xs={3} className='dashboard-sector'>
+                    <Tile onClick={this.props.handlers.createRecord}>{this.i18n('dashboard.create-tile')}</Tile>
                 </Col>
                 {this._renderUsersTile()}
-                <Col xs={4} className='dashboard-sector'>
+                <Col xs={3} className='dashboard-sector'>
                     <Tile onClick={this.props.handlers.showClinics}>{this.i18n('dashboard.clinics-tile')}</Tile>
+                </Col>
+                <Col xs={3} className='dashboard-sector'>
+                    <Tile onClick={this.props.handlers.showRecords}>{this.i18n('dashboard.records-tile')}</Tile>
                 </Col>
             </Row>
         </Grid>;
@@ -87,7 +90,7 @@ var Dashboard = React.createClass({
 
     _renderUsersTile: function () {
         return Authentication.isAdmin() ?
-            <Col xs={4} className='dashboard-sector'>
+            <Col xs={3} className='dashboard-sector'>
                 <Tile onClick={this.props.handlers.showUsers}>{this.i18n('dashboard.users-tile')}</Tile>
             </Col> : null;
     }

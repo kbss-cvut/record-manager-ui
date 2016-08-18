@@ -4,9 +4,11 @@ var Reflux = require('reflux');
 
 var Actions = Reflux.createActions([
     'loadAllUsers', 'loadCurrentUser', 'loadUser', 'createUser', 'updateUser', 'deleteUser',
-    'loadClinicMembers', 'loadClinicPatients',
+    'loadClinicMembers',
 
-    'loadAllClinics', 'loadClinic', 'createClinic', 'updateClinic', 'deleteClinic',
+    'loadAllClinics', 'loadClinic', 'createClinic', 'updateClinic', 'deleteClinic', 'loadClinicPatients',
+
+    'loadAllRecords', 'createRecord', 'updateRecord', 'deleteRecord',
 
     'loadOptions'
 ]);

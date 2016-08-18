@@ -30,7 +30,7 @@ class Users extends React.Component {
                 <Button bsStyle='primary'
                         onClick={this.props.handlers.onCreate}>{this.i18n('users.create-user')}</Button>
             </div>
-        </Panel>
+        </Panel>;
     }
 }
 

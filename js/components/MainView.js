@@ -17,6 +17,7 @@ var I18nMixin = require('../i18n/I18nMixin');
 var I18nStore = require('../stores/I18nStore');
 
 var Authentication = require('../utils/Authentication');
+var Routes = require('../utils/Routes');
 var UserStore = require('../stores/UserStore');
 
 var MainView = React.createClass({
@@ -61,6 +62,8 @@ var MainView = React.createClass({
                         </Nav>
                         <Nav pullRight style={{margin: '0 -15px 0 0'}}>
                             <NavDropdown id='logout' title={name}>
+                                <MenuItem
+                                    href={'#/' + Routes.users.path + '/' + user.username}>{this.i18n('main.my-profile')}</MenuItem>
                                 <MenuItem href='#' onClick={Authentication.logout}>{this.i18n('main.logout')}</MenuItem>
                             </NavDropdown>
                         </Nav>
