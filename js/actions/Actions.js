@@ -8,7 +8,7 @@ var Actions = Reflux.createActions([
 
     'loadAllClinics', 'loadClinic', 'createClinic', 'updateClinic', 'deleteClinic', 'loadClinicPatients',
 
-    'loadAllRecords', 'createRecord', 'updateRecord', 'deleteRecord',
+    'loadAllRecords', 'loadRecord', 'createRecord', 'updateRecord', 'deleteRecord',
 
     'loadOptions'
 ]);

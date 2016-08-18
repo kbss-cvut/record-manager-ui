@@ -22,5 +22,13 @@ module.exports = {
             emailAddress: '',
             isNew: true
         }
+    },
+
+    initNewPatientRecord: function () {
+        return {
+            localName: '',
+            complete: false,
+            isNew: true
+        }
     }
 };
