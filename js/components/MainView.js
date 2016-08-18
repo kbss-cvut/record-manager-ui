@@ -55,6 +55,10 @@ var MainView = React.createClass({
                                 to='dashboard'><NavItem>{this.i18n('main.dashboard-nav')}</NavItem></LinkContainer>
                         </Nav>
                         {this._renderUsers()}
+                        <Nav>
+                            <LinkContainer
+                                to='clinics'><NavItem>{this.i18n('main.clinics-nav')}</NavItem></LinkContainer>
+                        </Nav>
                         <Nav pullRight style={{margin: '0 -15px 0 0'}}>
                             <NavDropdown id='logout' title={name}>
                                 <MenuItem href='#' onClick={Authentication.logout}>{this.i18n('main.logout')}</MenuItem>

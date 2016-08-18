@@ -14,5 +14,13 @@ module.exports = {
             isAdmin: false,
             isNew: true
         };
+    },
+
+    initNewClinic: function () {
+        return {
+            name: '',
+            emailAddress: '',
+            isNew: true
+        }
     }
 };

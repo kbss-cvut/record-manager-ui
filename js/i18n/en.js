@@ -41,11 +41,13 @@ module.exports = {
 
         'main.dashboard-nav': 'Dashboard',
         'main.users-nav': 'Users',
+        'main.clinics-nav': 'Clinics',
         'main.logout': 'Logout',
 
         'dashboard.welcome': 'Hello {name}, Welcome to ' + Constants.APP_NAME + '.',
         'dashboard.create-tile': 'Create record',
         'dashboard.users-tile': 'View users',
+        'dashboard.clinics-tile': 'View clinics',
 
         'notfound.title': 'Not found',
         'notfound.msg-with-id': '{resource} with id {identifier} not found.',
@@ -56,8 +58,9 @@ module.exports = {
         'users.email': 'Email',
         'users.open-tooltip': 'View and edit details of this user',
         'users.delete-tooltip': 'Delete this user',
-        'users.delete.dialog-title': 'Delete user?',
-        'users.delete.dialog-content': 'Are you sure you want do remove user {firstName} {lastName}.',
+
+        'delete.dialog-title': 'Delete item?',
+        'delete.dialog-content': 'Are you sure you want to remove {itemLabel}?',
 
         'user.panel-title': 'User',
         'user.first-name': 'First name',
@@ -65,6 +68,17 @@ module.exports = {
         'user.username': 'Username',
         'user.password': 'Password',
         'user.password-confirm': 'Confirm password',
-        'user.passwords-not-matching-tooltip': 'Passwords don\'t match'
+        'user.passwords-not-matching-tooltip': 'Passwords don\'t match',
+        'user.is-admin': 'Is administrator?',
+
+        'clinics.panel-title': 'Clinics',
+        'clinics.create-clinic': 'Create clinic',
+        'clinics.open-tooltip': 'View and edit details of this clinic',
+        'clinics.delete-tooltip': 'Delete this clinic',
+
+        'clinic.panel-title': 'Clinic',
+        'clinic.name': 'Clinic name',
+        'clinic.email': 'Contact email',
+        'clinic.created': 'Clinic registered on {date}'
     }
 };

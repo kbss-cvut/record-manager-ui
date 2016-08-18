@@ -41,11 +41,13 @@ module.exports = {
 
         'main.dashboard-nav': 'Hlavní strana',
         'main.users-nav': 'Uživatelé',
+        'main.clinics-nav': 'Kliniky',
         'main.logout': 'Odhlásit se',
 
         'dashboard.welcome': 'Dobrý den, {name}, vítejte v ' + Constants.APP_NAME + '.',
         'dashboard.create-tile': 'Vytvořit záznam',
         'dashboard.users-tile': 'Uživatelé',
+        'dashboard.clinics-tile': 'Kliniky',
 
         'notfound.title': 'Nenalezeno',
         'notfound.msg-with-id': 'Záznam \'{resource}\' s identifikátorem {identifier} nenalezen.',
@@ -56,8 +58,9 @@ module.exports = {
         'users.email': 'Email',
         'users.open-tooltip': 'Zobrazit či upravit detaily o tomto uživateli',
         'users.delete-tooltip': 'Smazat tohoto uživatele',
-        'users.delete.dialog-title': 'Smazat uživatele?',
-        'users.delete.dialog-content': 'Určitě chcete odstranit uživatele {firstName} {lastName}.',
+
+        'delete.dialog-title': 'Smazat položku?',
+        'delete.dialog-content': 'Určitě chcete odstranit {itemLabel}?',
 
         'user.panel-title': 'Uživatel',
         'user.first-name': 'Jméno',
@@ -65,6 +68,17 @@ module.exports = {
         'user.username': 'Uživatelské jméno',
         'user.password': 'Heslo',
         'user.password-confirm': 'Potvrzení hesla',
-        'user.passwords-not-matching-tooltip': 'Hesla se neshodují'
+        'user.passwords-not-matching-tooltip': 'Hesla se neshodují',
+        'user.is-admin': 'Administrátor?',
+
+        'clinics.panel-title': 'Kliniky',
+        'clinics.create-clinic': 'Vytvořit kliniku',
+        'clinics.open-tooltip': 'Zobrazit či upravit detaily o této klinice',
+        'clinics.delete-tooltip': 'Smazat tuto kliniku',
+
+        'clinic.panel-title': 'Klinika',
+        'clinic.name': 'Název kliniky',
+        'clinic.email': 'Kontaktní email',
+        'clinic.created': 'Klinika zaregistrována {date}'
     }
 };

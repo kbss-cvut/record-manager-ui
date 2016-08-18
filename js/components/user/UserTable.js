@@ -2,7 +2,7 @@
 
 import React from "react";
 import {Button, Table} from "react-bootstrap";
-import DeleteUserDialog from "./DeleteUserDialog";
+import DeleteItemDialog from "../DeleteItemDialog";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import Routes from "../../utils/Routes";
@@ -37,8 +37,9 @@ class UserTable extends React.Component {
 
     render() {
         return <div>
-            <DeleteUserDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
-                              show={this.state.showDialog} user={this.state.selectedUser}/>
+            <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
+                              show={this.state.showDialog} item={this.state.selectedUser}
+                              itemLabel={this._getDeleteLabel()}/>
             <Table striped bordered condensed hover>
                 {this._renderHeader()}
                 <tbody>
@@ -46,6 +47,11 @@ class UserTable extends React.Component {
                 </tbody>
             </Table>
         </div>;
+    }
+
+    _getDeleteLabel() {
+        var user = this.state.selectedUser;
+        return user ? user.firstName + ' ' + user.lastName : '';
     }
 
     _renderHeader() {

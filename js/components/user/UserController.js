@@ -5,7 +5,7 @@ import assign from 'object-assign';
 
 import Actions from '../../actions/Actions';
 import User from './User';
-import UserFactory from '../../utils/UserFactory';
+import UserFactory from '../../utils/EntityFactory';
 import UserStore from '../../stores/UserStore';
 import RouterStore from '../../stores/RouterStore';
 import Routes from '../../utils/Routes';

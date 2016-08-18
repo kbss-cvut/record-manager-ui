@@ -37,7 +37,7 @@ var Select = React.createClass({
         return options;
     },
 
-    getInputNode: function() {
+    getInputNode: function () {
         return this.refs.select.refs.input;
     },
 
@@ -50,7 +50,7 @@ var Select = React.createClass({
         }
         return (
             <Input ref='select' type='select' name={this.props.name} title={this.props.title} label={this.props.label}
-                   value={this.props.value ? this.props.value : ''} onChange={this.props.onChange}>
+                   value={this.props.value ? this.props.value : ''} onChange={this.props.onChange} {...this.props}>
                 {options}
             </Input>
         );

@@ -41,12 +41,17 @@ var Authentication = {
         });
     },
 
-    isAdmin: function () {
-        var currentUser = UserStore.getCurrentUser();
-        if (!currentUser) {
+    /**
+     * Checks whether user is administrator.
+     * @param user Optional parameter, if not specified, the currently logged in user is tested
+     * @return {boolean}
+     */
+    isAdmin: function (user) {
+        var userToTest = user ? user : UserStore.getCurrentUser();
+        if (!userToTest) {
             return false;
         }
-        return currentUser.types.indexOf(Vocabulary.ADMIN_TYPE) !== -1;
+        return userToTest.types.indexOf(Vocabulary.ADMIN_TYPE) !== -1;
     }
 };
 
