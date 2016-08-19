@@ -34,7 +34,6 @@ class RecordForm extends React.Component {
         if (!this.state.wizardProperties) {
             return null;
         }
-        var record = this.props.record;
         return <Panel header={<h5>{this.i18n('record.form-title')}</h5>} bsStyle='info'>
             <Wizard steps={this.state.wizardProperties} enableForwardSkip={true}/>
         </Panel>;

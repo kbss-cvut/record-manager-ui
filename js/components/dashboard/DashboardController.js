@@ -5,7 +5,6 @@ var Reflux = require('reflux');
 
 var injectIntl = require('../../utils/injectIntl');
 
-var Actions = require('../../actions/Actions');
 var Routing = require('../../utils/Routing');
 var Routes = require('../../utils/Routes');
 var UserStore = require('../../stores/UserStore');

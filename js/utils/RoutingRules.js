@@ -1,8 +1,5 @@
 'use strict';
 
-var Actions = require('../actions/Actions');
-var Routes = require('./Routes');
-
 var rules = {};
 
 /**
