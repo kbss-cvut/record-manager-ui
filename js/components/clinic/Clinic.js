@@ -41,14 +41,14 @@ class Clinic extends React.Component {
         return <Panel header={<h3>{this.i18n('clinic.panel-title')}</h3>} bsStyle='primary'>
             <form className='form-horizontal' style={{margin: '0.5em 0 1.5em 0'}}>
                 <div className='row'>
-                    <div className='col-xs-6'>
+                    <div className='col-xs-4'>
                         <Input type='text' name='name' label={this.i18n('clinic.name')}
                                value={clinic.name}
                                labelClassName='col-xs-4' wrapperClassName='col-xs-8' onChange={this._onChange}/>
                     </div>
                 </div>
                 <div className='row'>
-                    <div className='col-xs-6'>
+                    <div className='col-xs-4'>
                         <Input type='text' name='emailAddress' label={this.i18n('clinic.email')}
                                value={clinic.emailAddress}
                                labelClassName='col-xs-4' wrapperClassName='col-xs-8' onChange={this._onChange}/>

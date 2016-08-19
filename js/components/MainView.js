@@ -60,6 +60,10 @@ var MainView = React.createClass({
                             <LinkContainer
                                 to='clinics'><NavItem>{this.i18n('main.clinics-nav')}</NavItem></LinkContainer>
                         </Nav>
+                        <Nav>
+                            <LinkContainer
+                                to='records'><NavItem>{this.i18n('main.records-nav')}</NavItem></LinkContainer>
+                        </Nav>
                         <Nav pullRight style={{margin: '0 -15px 0 0'}}>
                             <NavDropdown id='logout' title={name}>
                                 <MenuItem

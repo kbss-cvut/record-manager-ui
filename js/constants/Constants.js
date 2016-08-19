@@ -63,6 +63,8 @@ module.exports = {
 
     PASSWORD_LENGTH: 4,
 
+    RECORD_REQUIRED_FIELDS: ['localName'],
+
     // Form Generator
     // TODO Update the vocabulary here
     FORM: {

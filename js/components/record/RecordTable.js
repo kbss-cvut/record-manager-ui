@@ -5,6 +5,7 @@ import {Button, Glyphicon, Table} from "react-bootstrap";
 import DeleteItemDialog from "../DeleteItemDialog";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
+import RecordValidator from "../../validation/RecordValidator";
 import Routes from "../../utils/Routes";
 import Utils from '../../utils/Utils';
 
@@ -77,12 +78,16 @@ class RecordTable extends React.Component {
 }
 
 var RecordRow = (props) => {
-    var record = props.record;
+    var record = props.record,
+        isComplete = RecordValidator.isComplete(record),
+        completionTooltip = props.i18n(isComplete ? 'records.completion-status-tooltip.complete' : 'records.completion-status-tooltip.incomplete');
     return <tr>
         <td className='report-row'><a href={'#/' + Routes.records.path + '/' + record.key}>{record.localName}</a></td>
-        <td className='report-row content-center'>{Utils.formatDate(record.lastModified ? record.lastModified : record.dateCreated)}</td>
         <td className='report-row content-center'>
-            <Glyphicon glyph={record.complete ? 'ok' : 'remove'}/>
+            {Utils.formatDate(new Date(record.lastModified ? record.lastModified : record.dateCreated))}
+        </td>
+        <td className='report-row content-center'>
+            <Glyphicon title={completionTooltip} glyph={isComplete ? 'ok' : 'remove'}/>
         </td>
         <td className='report-row actions'>
             <Button bsStyle='primary' bsSize='small' title={props.i18n('records.open-tooltip')}

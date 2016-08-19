@@ -6,6 +6,7 @@ var Actions = require('../actions/Actions');
 var Ajax = require('../utils/Ajax');
 var Authentication = require('../utils/Authentication');
 var UserStore = require('./UserStore');
+var Utils = require('../utils/Utils');
 
 var RecordStore = Reflux.createStore({
     listenables: [Actions],
@@ -32,6 +33,29 @@ var RecordStore = Reflux.createStore({
 
     getAllRecords: function () {
         return this._patients;
+    },
+
+    onLoadRecord: function (key) {
+        Ajax.get('rest/records/' + key).end((data) => {
+            this.trigger({action: Actions.loadRecord, data: data});
+        });
+    },
+
+    onCreateRecord: function (record, onSuccess, onError) {
+        Ajax.post('rest/records').send(record).end((data, resp) => {
+            if (onSuccess) {
+                var key = Utils.extractKeyFromLocationHeader(resp);
+                onSuccess(key);
+            }
+        }, onError);
+    },
+
+    onUpdateRecord: function (record, onSuccess, onError) {
+        Ajax.put('rest/records/' + record.key).send(record).end(onSuccess, onError);
+    },
+
+    onDeleteRecord: function (record, onSuccess, onError) {
+        Ajax.del('rest/records/' + record.key).end(onSuccess, onError);
     }
 });
 

@@ -42,6 +42,7 @@ module.exports = {
         'main.dashboard-nav': 'Dashboard',
         'main.users-nav': 'Users',
         'main.clinics-nav': 'Clinics',
+        'main.records-nav': 'Patient records',
         'main.logout': 'Logout',
         'main.my-profile': 'My profile',
 
@@ -87,8 +88,13 @@ module.exports = {
         'records.panel-title': 'Patient records',
         'records.local-name': 'Patient identifier',
         'records.completion-status': 'Completion status',
+        'records.completion-status-tooltip.complete': 'All required fields of the patient\'s record have been filled out',
+        'records.completion-status-tooltip.incomplete': 'Some of the required fields of the patient\'s record have not yet been filled out',
         'records.last-modified': 'Last modified',
         'records.open-tooltip': 'View and edit the record of this patient',
-        'records.delete-tooltip': 'Delete this record'
+        'records.delete-tooltip': 'Delete this record',
+
+        'record.panel-title': 'Record of patient {identifier}',
+        'record.form-title': 'Details'
     }
 };

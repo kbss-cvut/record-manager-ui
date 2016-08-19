@@ -88,38 +88,38 @@ class User extends React.Component {
         return <Panel header={<h3>{this.i18n('user.panel-title')}</h3>} bsStyle='primary'>
             <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
                 <div className='row'>
-                    <div className='col-xs-6'>
+                    <div className='col-xs-4'>
                         <Input type='text' name='firstName' label={this.i18n('user.first-name')}
                                value={user.firstName}
                                labelClassName='col-xs-4' wrapperClassName='col-xs-8' onChange={this._onChange}/>
                     </div>
-                    <div className='col-xs-6'>
+                    <div className='col-xs-4'>
                         <Input type='text' name='lastName' label={this.i18n('user.last-name')}
                                value={user.lastName}
                                labelClassName='col-xs-4' wrapperClassName='col-xs-8' onChange={this._onChange}/>
                     </div>
                 </div>
                 <div className='row'>
-                    <div className='col-xs-6'>
+                    <div className='col-xs-4'>
                         <Input type='text' name='username' label={this.i18n('user.username')}
                                value={user.username}
                                labelClassName='col-xs-4' wrapperClassName='col-xs-8' onChange={this._onChange}/>
                     </div>
-                    <div className='col-xs-6'>
+                    <div className='col-xs-4'>
                         <Input type='text' name='emailAddress' label={this.i18n('users.email')}
                                value={user.emailAddress}
                                labelClassName='col-xs-4' wrapperClassName='col-xs-8' onChange={this._onChange}/>
                     </div>
                 </div>
                 <div className='row'>
-                    <div className='col-xs-6'>
+                    <div className='col-xs-4'>
                         <Input type='text' name='password' label={this.i18n('user.password')}
                                labelClassName='col-xs-4' readOnly={true} value={user.password}
                                wrapperClassName='col-xs-8'/>
                     </div>
                 </div>
                 <div className='row'>
-                    <div className='col-xs-6'>
+                    <div className='col-xs-4'>
                         <Select options={this.state.clinics} name='clinic' label={this.i18n('clinic.panel-title')}
                                 onChange={this._onClinicSelected} labelClassName='col-xs-4'
                                 wrapperClassName='col-xs-8' addDefault={true}
@@ -127,7 +127,7 @@ class User extends React.Component {
                     </div>
                 </div>
                 <div className='row'>
-                    <div className='col-xs-6'>
+                    <div className='col-xs-4'>
                         <div className='col-xs-4'>&nbsp;</div>
                         <div className='col-xs-8' style={{padding: '0 0 0 25px'}}>
                             <Input type='checkbox' checked={Authentication.isAdmin(user)}

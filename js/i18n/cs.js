@@ -42,6 +42,7 @@ module.exports = {
         'main.dashboard-nav': 'Hlavní strana',
         'main.users-nav': 'Uživatelé',
         'main.clinics-nav': 'Kliniky',
+        'main.records-nav': 'Záznamy pacientů',
         'main.logout': 'Odhlásit se',
         'main.my-profile': 'Můj profil',
 
@@ -87,8 +88,13 @@ module.exports = {
         'records.panel-title': 'Záznamy o pacientech',
         'records.local-name': 'Identifikátor pacienta',
         'records.completion-status': 'Stav vyplnění',
+        'records.completion-status-tooltip.complete': 'Všechny povinné informace o pacientovi byly vyplněny',
+        'records.completion-status-tooltip.incomplete': 'Některé povinné informace o pacientovi ještě nebyly vyplněny',
         'records.last-modified': 'Naposledy upraveno',
         'records.open-tooltip': 'Zobrazit či upravit záznam tohoto pacienta',
-        'records.delete-tooltip': 'Smazat tento záznam'
+        'records.delete-tooltip': 'Smazat tento záznam',
+
+        'record.panel-title': 'Záznam o pacientovi {identifier}',
+        'record.form-title': 'Details'
     }
 };

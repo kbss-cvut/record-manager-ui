@@ -11,7 +11,7 @@ var Routes = {
     editClinic: {name: 'editClinic', path: 'clinics/:key'},
     records: {name: 'records', path: 'records'},
     createRecord: {name: 'createRecord', path: 'records/create'},
-    editRecord: {name: 'editRecord', path: 'record/:key'}
+    editRecord: {name: 'editRecord', path: 'records/:key'}
 };
 
 module.exports = Routes;

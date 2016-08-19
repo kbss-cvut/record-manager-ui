@@ -8,6 +8,8 @@ import EntityFactory from '../../utils/EntityFactory';
 import Record from './Record';
 import RecordStore from '../../stores/RecordStore';
 import RouterStore from '../../stores/RouterStore';
+import Routes from '../../utils/Routes';
+import Routing from '../../utils/Routing';
 
 export default class RecordController extends React.Component {
     constructor(props) {
@@ -73,7 +75,11 @@ export default class RecordController extends React.Component {
     };
 
     render() {
-        return <Record onSave={this._onSave} onCancel={this._onCancel} onChange={this._onChange}
-                       record={this.state.record} loading={this.state.loading}/>;
+        var handlers = {
+            onSave: this._onSave,
+            onCancel: this._onCancel,
+            onChange: this._onChange
+        };
+        return <Record handlers={handlers} record={this.state.record} loading={this.state.loading}/>;
     }
 }
