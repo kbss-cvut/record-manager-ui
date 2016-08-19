@@ -1,13 +1,14 @@
 'use strict';
 
 import React from "react";
-import {Button, Glyphicon, Table} from "react-bootstrap";
+import {Button, Table} from "react-bootstrap";
 import DeleteItemDialog from "../DeleteItemDialog";
+import HelpIcon from "../HelpIcon";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import RecordValidator from "../../validation/RecordValidator";
 import Routes from "../../utils/Routes";
-import Utils from '../../utils/Utils';
+import Utils from "../../utils/Utils";
 
 class RecordTable extends React.Component {
     static propTypes = {
@@ -87,7 +88,7 @@ var RecordRow = (props) => {
             {Utils.formatDate(new Date(record.lastModified ? record.lastModified : record.dateCreated))}
         </td>
         <td className='report-row content-center'>
-            <Glyphicon title={completionTooltip} glyph={isComplete ? 'ok' : 'remove'}/>
+            <HelpIcon text={completionTooltip} glyph={isComplete ? 'ok' : 'remove'}/>
         </td>
         <td className='report-row actions'>
             <Button bsStyle='primary' bsSize='small' title={props.i18n('records.open-tooltip')}

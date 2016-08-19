@@ -95,6 +95,11 @@ module.exports = {
         'records.delete-tooltip': 'Smazat tento záznam',
 
         'record.panel-title': 'Záznam o pacientovi {identifier}',
-        'record.form-title': 'Details'
+        'record.form-title': 'Details',
+        'record.clinic': 'Pacient léčen na klinice',
+        'record.created-by-msg': 'Vytvořil(a) {name} {date}.',
+        'record.last-edited-msg': 'Naposledy upravil(a) {name} {date}.',
+
+        'help.local-name': 'Účelem tohoto atributu je pomoci vám identifikovat anonymizované pacienty. Můžete použít např. číslování pacientů ("pacient_1", "pacient_2") či iniciály pacientů ("M.E.")'
     }
 };

@@ -95,6 +95,11 @@ module.exports = {
         'records.delete-tooltip': 'Delete this record',
 
         'record.panel-title': 'Record of patient {identifier}',
-        'record.form-title': 'Details'
+        'record.form-title': 'Details',
+        'record.clinic': 'Patient treated at',
+        'record.created-by-msg': 'Created {date} by {name}.',
+        'record.last-edited-msg': 'Last modified {date} by {name}.',
+
+        'help.local-name': 'Purpose of this entry is to help you reference anonymized patients. Use identifiers such as patient ordering number (e.g. "patient_1", "patient_2"), patient\'s initials (e.g. "M.E."), etc.'
     }
 };

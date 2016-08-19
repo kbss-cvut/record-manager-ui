@@ -395,6 +395,7 @@ ul.event-type {
 .notice-small {
     font-size: 86%;
     font-style: italic;
+    margin-bottom: 0.5em;
 }
 
 .report-type-icon {
@@ -515,28 +516,11 @@ button.reset-filters {
     margin-bottom: 1.2em;
 }
 
-/* ARMS */
-/* Set it to important so it does not get overridden by the readOnly background color*/
-.arms-index-green {
-    background-color: rgba(68, 157, 68, 0.3) !important;
-}
-
-.arms-index-yellow {
-    background-color: rgba(236, 151, 31, 0.3) !important;
-}
-
-.arms-index-red {
-    background-color: rgba(217, 83, 79, 0.3) !important;
-}
-
-.statistics-frame {
-    width: 100%;
-    min-height: 58em;
-    border: 1px solid #cecece;
-    border-radius: 3px;
-}
-
 .buttons-right {
     margin-top: 1em;
     margin-bottom: 0.5em;
+}
+
+.help-icon {
+    margin-top: 7px
 }

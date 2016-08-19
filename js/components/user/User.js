@@ -132,7 +132,8 @@ class User extends React.Component {
                         <div className='col-xs-8' style={{padding: '0 0 0 25px'}}>
                             <Input type='checkbox' checked={Authentication.isAdmin(user)}
                                    onChange={this._onAdminStatusChange}
-                                   label={this.i18n('user.is-admin')} inline={true}/>
+                                   label={this.i18n('user.is-admin')} inline={true}
+                                   disabled={!Authentication.isAdmin()}/>
                         </div>
                     </div>
                 </div>

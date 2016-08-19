@@ -56,7 +56,7 @@ var DashboardController = React.createClass({
         Routing.transitionTo(Routes.createRecord, {
             handlers: {
                 onSuccess: Routes.records,
-                onCancel: Routes.records
+                onCancel: Routes.dashboard
             }
         });
     },
