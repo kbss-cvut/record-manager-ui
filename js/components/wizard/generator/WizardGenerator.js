@@ -4,7 +4,6 @@ var jsonld = require('jsonld');
 
 var Ajax = require('../../../utils/Ajax');
 var Constants = require('../../../constants/Constants');
-var DefaultFormGenerator = require('../../../model/DefaultFormGenerator');
 var FormUtils = require('./FormUtils').default;
 var I18nStore = require('../../../stores/I18nStore');
 var JsonLdUtils = require('../../../utils/JsonLdUtils').default;
@@ -14,39 +13,20 @@ var Vocabulary = require('../../../constants/Vocabulary');
 var GeneratedStep = require('./GeneratedStep').default;
 var WizardStore = require('../../../stores/WizardStore');
 
-var EVENT_PARAM = 'event';
-var EVENT_TYPE_PARAM = 'eventType';
 var FORM_GEN_URL = 'rest/formGen';
 
 var WizardGenerator = {
 
-    generateWizard: function (report, event, wizardTitle, renderCallback) {
-        var url = this._initUrlWithParameters(event);
-        Ajax.post(url, report).end(function
+    generateWizard: function (record, renderCallback) {
+        Ajax.post(FORM_GEN_URL, record).end(function
             (data) {
-            this._createWizard(data, event, wizardTitle, renderCallback);
+            this._createWizard(data, renderCallback);
         }.bind(this), function () {
-            Logger.log('Received no valid wizard. Using the default one.');
-            this._createDefaultWizard(event, wizardTitle, renderCallback);
+            Logger.error('Received no valid wizard.');
         }.bind(this));
     },
 
-    _initUrlWithParameters: function (event) {
-        var params = {};
-        params[EVENT_TYPE_PARAM] = encodeURIComponent(event.eventType);
-        params[EVENT_PARAM] = event.referenceId;
-        return Utils.addParametersToUrl(FORM_GEN_URL, params);
-    },
-
-    _createDefaultWizard: function (event, title, renderCallback) {
-        var wizardProperties = {
-            steps: this._constructWizardSteps(DefaultFormGenerator.generateForm(event)),
-            title: title
-        };
-        renderCallback(wizardProperties);
-    },
-
-    _createWizard: function (structure, event, title, renderCallback) {
+    _createWizard: function (structure, renderCallback) {
         jsonld.frame(structure, {}, function (err, framed) {
             if (err) {
                 Logger.error(err);
@@ -54,10 +34,9 @@ var WizardGenerator = {
             try {
                 var wizardProperties = {
                     steps: this._constructWizardSteps(framed),
-                    title: title
                 };
             } catch (e) {
-                this._createDefaultWizard(event, title, renderCallback);
+                Logger.error('Unable to create wizard. Caught error: ' + e);
                 return;
             }
             renderCallback(wizardProperties);
