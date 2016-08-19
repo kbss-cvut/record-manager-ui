@@ -12,6 +12,7 @@ var MenuItem = require('react-bootstrap').MenuItem;
 var LinkContainer = require('react-router-bootstrap').LinkContainer;
 var injectIntl = require('../utils/injectIntl');
 
+var Actions = require('../actions/Actions');
 var Constants = require('../constants/Constants');
 var I18nMixin = require('../i18n/I18nMixin');
 var I18nStore = require('../stores/I18nStore');
@@ -36,8 +37,10 @@ var MainView = React.createClass({
         I18nStore.setIntl(this.props.intl);
     },
 
-    onUserLoaded: function () {
-        this.setState({loggedIn: true});
+    onUserLoaded: function (data) {
+        if (data.action === Actions.loadCurrentUser) {
+            this.setState({loggedIn: true});
+        }
     },
 
     render: function () {

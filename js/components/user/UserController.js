@@ -5,6 +5,9 @@ import assign from 'object-assign';
 
 import Actions from '../../actions/Actions';
 import Authentication from '../../utils/Authentication';
+import injectIntl from '../../utils/injectIntl';
+import I18nWrapper from '../../i18n/I18nWrapper';
+import Messager from '../wrapper/Messager';
 import User from './User';
 import UserFactory from '../../utils/EntityFactory';
 import UserStore from '../../stores/UserStore';
@@ -12,7 +15,7 @@ import RouterStore from '../../stores/RouterStore';
 import Routes from '../../utils/Routes';
 import Routing from '../../utils/Routing';
 
-export default class UserController extends React.Component {
+class UserController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -54,12 +57,13 @@ export default class UserController extends React.Component {
         }
     };
 
-    _onSaveSuccess = () => {
-
+    _onSaveSuccess = (username) => {
+        this.props.showSuccessMessage(this.props.i18n('user.save-success'));
+        Actions.loadUser(username ? username : this.props.params.username);
     };
 
-    _onSaveError = () => {
-
+    _onSaveError = (err) => {
+        this.props.showErrorMessage(this.props.formatMessage('user.save-error', {error: err.message}));
     };
 
     _onCancel = () => {
@@ -81,3 +85,5 @@ export default class UserController extends React.Component {
                      loading={this.state.loading}/>;
     }
 }
+
+export default injectIntl(I18nWrapper(Messager(UserController)));

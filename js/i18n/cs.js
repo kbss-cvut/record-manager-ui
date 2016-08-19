@@ -73,6 +73,8 @@ module.exports = {
         'user.password-confirm': 'Potvrzení hesla',
         'user.passwords-not-matching-tooltip': 'Hesla se neshodují',
         'user.is-admin': 'Administrátor?',
+        'user.save-success': 'Uživatel úspěšně uložen',
+        'user.save-error': 'Uživatele se nepodařilo uložit. Odpověď serveru: {error}',
 
         'clinics.panel-title': 'Kliniky',
         'clinics.create-clinic': 'Vytvořit kliniku',
@@ -84,12 +86,15 @@ module.exports = {
         'clinic.email': 'Kontaktní email',
         'clinic.created': 'Klinika zaregistrována {date}',
         'clinic.members.panel-title': 'Zaměstnanci kliniky',
+        'clinic.patients.panel-title': 'Pacienti kliniky',
+        'clinic.save-success': 'Klinika úspěšně uložena.',
+        'clinic.save-error': 'Kliniku se nepodařilo uložit. Odpověď serveru: {}.',
 
         'records.panel-title': 'Záznamy o pacientech',
         'records.local-name': 'Identifikátor pacienta',
         'records.completion-status': 'Stav vyplnění',
-        'records.completion-status-tooltip.complete': 'Všechny povinné informace o pacientovi byly vyplněny',
-        'records.completion-status-tooltip.incomplete': 'Některé povinné informace o pacientovi ještě nebyly vyplněny',
+        'records.completion-status-tooltip.complete': 'Všechny povinné informace o pacientovi byly vyplněny.',
+        'records.completion-status-tooltip.incomplete': 'Některé povinné informace o pacientovi ještě nebyly vyplněny.',
         'records.last-modified': 'Naposledy upraveno',
         'records.open-tooltip': 'Zobrazit či upravit záznam tohoto pacienta',
         'records.delete-tooltip': 'Smazat tento záznam',
@@ -99,6 +104,8 @@ module.exports = {
         'record.clinic': 'Pacient léčen na klinice',
         'record.created-by-msg': 'Vytvořil(a) {name} {date}.',
         'record.last-edited-msg': 'Naposledy upravil(a) {name} {date}.',
+        'record.save-success': 'Záznam o pacientovi úspěšně uložen.',
+        'record.save-error': 'Záznam se nepodařilo uložit. Odpověď serveru: {}.',
 
         'help.local-name': 'Účelem tohoto atributu je pomoci vám identifikovat anonymizované pacienty. Můžete použít např. číslování pacientů ("pacient_1", "pacient_2") či iniciály pacientů ("M.E.")'
     }

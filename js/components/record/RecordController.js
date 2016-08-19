@@ -5,13 +5,16 @@ import assign from 'object-assign';
 
 import Actions from '../../actions/Actions';
 import EntityFactory from '../../utils/EntityFactory';
+import injectIntl from '../../utils/injectIntl';
+import I18nWrapper from '../../i18n/I18nWrapper';
+import Messager from '../wrapper/Messager';
 import Record from './Record';
 import RecordStore from '../../stores/RecordStore';
 import RouterStore from '../../stores/RouterStore';
 import Routes from '../../utils/Routes';
 import Routing from '../../utils/Routing';
 
-export default class RecordController extends React.Component {
+class RecordController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -52,12 +55,13 @@ export default class RecordController extends React.Component {
         }
     };
 
-    _onSaveSuccess = () => {
-
+    _onSaveSuccess = (newKey) => {
+        this.props.showSuccessMessage(this.props.i18n('record.save-success'));
+        Actions.loadRecord(newKey ? newKey : this.props.params.key);
     };
 
-    _onSaveError = () => {
-
+    _onSaveError = (err) => {
+        this.props.showErrorMessage(this.props.formatMessage('record.save-error', {error: err.message}));
     };
 
     _onCancel = () => {
@@ -83,3 +87,5 @@ export default class RecordController extends React.Component {
         return <Record handlers={handlers} record={this.state.record} loading={this.state.loading}/>;
     }
 }
+
+export default injectIntl(I18nWrapper(Messager(RecordController)));

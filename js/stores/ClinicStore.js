@@ -34,6 +34,7 @@ var ClinicStore = Reflux.createStore({
                 var key = Utils.extractKeyFromLocationHeader(resp);
                 onSuccess(key);
             }
+            Actions.loadAllClinics();
         }, onError);
     },
 

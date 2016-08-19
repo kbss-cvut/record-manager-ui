@@ -1,14 +1,17 @@
 'use strict';
 
 import React from "react";
-import {Button, Panel, Table} from "react-bootstrap";
+import {Button, Panel} from "react-bootstrap";
 import {FormattedMessage} from "react-intl";
-
 import Authentication from "../../utils/Authentication";
+import ClinicMembers from "./ClinicMembers";
+import ClinicPatients from "./ClinicPatients";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import Input from "../Input";
 import Mask from "../Mask";
+import Routing from "../../utils/Routing";
+import Routes from "../../utils/Routes";
 import Utils from "../../utils/Utils";
 
 /**
@@ -18,6 +21,8 @@ class Clinic extends React.Component {
     static propTypes = {
         clinic: React.PropTypes.object,
         loading: React.PropTypes.bool,
+        members: React.PropTypes.array,
+        patients: React.PropTypes.array,
         onSave: React.PropTypes.func.isRequired,
         onChange: React.PropTypes.func.isRequired
     };
@@ -33,6 +38,10 @@ class Clinic extends React.Component {
         this.props.onChange(change);
     };
 
+    _onEditPatient = (patient) => {
+        Routing.transitionTo(Routes.editRecord, {params: {key: patient.key}});
+    };
+
     render() {
         if (this.props.loading) {
             return <Mask text={this.i18n('please-wait')}/>;
@@ -43,14 +52,14 @@ class Clinic extends React.Component {
                 <div className='row'>
                     <div className='col-xs-4'>
                         <Input type='text' name='name' label={this.i18n('clinic.name')}
-                               value={clinic.name}
+                               value={clinic.name} readOnly={!Authentication.isAdmin()}
                                labelClassName='col-xs-4' wrapperClassName='col-xs-8' onChange={this._onChange}/>
                     </div>
                 </div>
                 <div className='row'>
                     <div className='col-xs-4'>
                         <Input type='text' name='emailAddress' label={this.i18n('clinic.email')}
-                               value={clinic.emailAddress}
+                               value={clinic.emailAddress} readOnly={!Authentication.isAdmin()}
                                labelClassName='col-xs-4' wrapperClassName='col-xs-8' onChange={this._onChange}/>
                     </div>
                 </div>
@@ -58,8 +67,8 @@ class Clinic extends React.Component {
                 {this._renderButtons()}
             </form>
             {this._renderMembers()}
+            <ClinicPatients patients={this.props.patients} onEdit={this._onEditPatient}/>
         </Panel>;
-        // TODO Render also a panel with patients of the clinic
     }
 
     _renderAddedDate() {
@@ -96,41 +105,7 @@ class Clinic extends React.Component {
 
     _renderMembers() {
         var members = this.props.clinic.members ? this.props.clinic.members : this.props.members;
-        if (members.length === 0) {
-            return null;
-        }
-        return <Panel header={<h3>{this.i18n('clinic.members.panel-title')}</h3>} bsStyle='info'>
-            <Table striped bordered condensed hover>
-                {this._renderHeader()}
-                <tbody>
-                {this._renderUsers(members)}
-                </tbody>
-            </Table>
-        </Panel>;
-    }
-
-    _renderHeader() {
-        return <thead>
-        <tr>
-            <th className='col-xs-4 content-center'>{this.i18n('name')}</th>
-            <th className='col-xs-4 content-center'>{this.i18n('login.username')}</th>
-            <th className='col-xs-4 content-center'>{this.i18n('users.email')}</th>
-        </tr>
-        </thead>;
-    }
-
-    _renderUsers(members) {
-        var rows = [],
-            member;
-        for (var i = 0, len = members.length; i < len; i++) {
-            member = members[i];
-            rows.push(<tr key={member.username}>
-                <td className='report-row'>{member.firstName + ' ' + member.lastName}</td>
-                <td className='report-row'>{member.username}</td>
-                <td className='report-row'>{member.emailAddress}</td>
-            </tr>);
-        }
-        return rows;
+        return <ClinicMembers members={members}/>
     }
 }
 

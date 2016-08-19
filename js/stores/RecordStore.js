@@ -35,6 +35,12 @@ var RecordStore = Reflux.createStore({
         return this._patients;
     },
 
+    onLoadClinicPatients: function (clinicKey) {
+        Ajax.get('rest/records?clinic=' + clinicKey).end((data) => {
+            this.trigger({action: Actions.loadClinicPatients, clinicKey: clinicKey, data: data});
+        });
+    },
+
     onLoadRecord: function (key) {
         Ajax.get('rest/records/' + key).end((data) => {
             this.trigger({action: Actions.loadRecord, data: data});
@@ -47,6 +53,7 @@ var RecordStore = Reflux.createStore({
                 var key = Utils.extractKeyFromLocationHeader(resp);
                 onSuccess(key);
             }
+            Actions.loadAllRecords();
         }, onError);
     },
 

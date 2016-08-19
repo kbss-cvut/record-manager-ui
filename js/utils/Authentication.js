@@ -52,6 +52,18 @@ var Authentication = {
             return false;
         }
         return userToTest.types.indexOf(Vocabulary.ADMIN_TYPE) !== -1;
+    },
+
+    /**
+     * Checks whether the currently logged in user can view patient records of the specified clinics.
+     *
+     * To be able to view the records, the user has to be an admin or a member of the clinic.
+     * @param clinicKey Key of the clinic to test
+     * @return {*|boolean}
+     */
+    canLoadClinicsPatients(clinicKey) {
+        var currentUser = UserStore.getCurrentUser();
+        return currentUser != null && (this.isAdmin(currentUser) || (currentUser.clinic != null && currentUser.clinic.key === clinicKey));
     }
 };
 

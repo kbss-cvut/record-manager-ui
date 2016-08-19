@@ -13,7 +13,12 @@ import Utils from "../../utils/Utils";
 class RecordTable extends React.Component {
     static propTypes = {
         records: React.PropTypes.array.isRequired,
-        handlers: React.PropTypes.object.isRequired
+        handlers: React.PropTypes.object.isRequired,
+        disableDelete: React.PropTypes.bool
+    };
+
+    static defaultProps = {
+        disableDelete: false
     };
 
     constructor(props) {
@@ -72,7 +77,8 @@ class RecordTable extends React.Component {
             rows = [],
             onEdit = this.props.handlers.onEdit;
         for (var i = 0, len = records.length; i < len; i++) {
-            rows.push(<RecordRow key={records[i].key} record={records[i]} onEdit={onEdit} onDelete={this._onDelete}/>);
+            rows.push(<RecordRow key={records[i].key} record={records[i]} onEdit={onEdit} onDelete={this._onDelete}
+                                 disableDelete={this.props.disableDelete}/>);
         }
         return rows;
     }
@@ -81,7 +87,10 @@ class RecordTable extends React.Component {
 var RecordRow = (props) => {
     var record = props.record,
         isComplete = RecordValidator.isComplete(record),
-        completionTooltip = props.i18n(isComplete ? 'records.completion-status-tooltip.complete' : 'records.completion-status-tooltip.incomplete');
+        completionTooltip = props.i18n(isComplete ? 'records.completion-status-tooltip.complete' : 'records.completion-status-tooltip.incomplete'),
+        deleteButton = props.disableDelete ? null :
+            <Button bsStyle='warning' bsSize='small' title={props.i18n('records.delete-tooltip')}
+                    onClick={() => props.onDelete(record)}>{props.i18n('delete')}</Button>;
     return <tr>
         <td className='report-row'><a href={'#/' + Routes.records.path + '/' + record.key}>{record.localName}</a></td>
         <td className='report-row content-center'>
@@ -93,8 +102,7 @@ var RecordRow = (props) => {
         <td className='report-row actions'>
             <Button bsStyle='primary' bsSize='small' title={props.i18n('records.open-tooltip')}
                     onClick={() => props.onEdit(record)}>{props.i18n('open')}</Button>
-            <Button bsStyle='warning' bsSize='small' title={props.i18n('records.delete-tooltip')}
-                    onClick={() => props.onDelete(record)}>{props.i18n('delete')}</Button>
+            {deleteButton}
         </td>
     </tr>
 };
@@ -102,7 +110,8 @@ var RecordRow = (props) => {
 RecordRow.propTypes = {
     record: React.PropTypes.object.isRequired,
     onEdit: React.PropTypes.func.isRequired,
-    onDelete: React.PropTypes.func.isRequired
+    onDelete: React.PropTypes.func.isRequired,
+    disableDelete: React.PropTypes.bool.isRequired
 };
 
 RecordRow = injectIntl(I18nWrapper(RecordRow));

@@ -61,6 +61,7 @@ var UserStore = Reflux.createStore({
                 var username = Utils.extractKeyFromLocationHeader(resp);
                 onSuccess(username);
             }
+            Actions.loadAllUsers();
         }, onError);
     },
 
