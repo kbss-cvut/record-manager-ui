@@ -23,7 +23,9 @@
     "js-cookie": "~2.1.0",
     "halogen": "~0.2.0",
     "react-intl": "~2.0.1",
-    "jsonld": "~0.4.6"
+    "jsonld": "~0.4.6",
+    "jsonld-utils": "https://kbss.felk.cvut.cz/dist/jsonld-utils-0.0.2.tgz",
+    "semforms": "https://kbss.felk.cvut.cz/dist/semforms-0.0.2.tgz"
   },
   "devDependencies": {
     "babel-core": "^6.7.5",

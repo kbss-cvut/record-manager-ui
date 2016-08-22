@@ -2,12 +2,12 @@
 
 import React from 'react';
 import {Panel} from 'react-bootstrap';
+import {QuestionAnswerProcessor} from 'semforms';
 
 import I18nWrapper from '../../i18n/I18nWrapper';
 import injectIntl from '../../utils/injectIntl';
-import QuestionAnswerProcessor from '../../model/QuestionAnswerProcessor';
 import Wizard from '../wizard/Wizard';
-import WizardGenerator from '../wizard/generator/WizardGenerator';
+import WizardBuilder from '../wizard/generator/WizardBuilder';
 import WizardStore from '../../stores/WizardStore';
 
 class RecordForm extends React.Component {
@@ -24,7 +24,7 @@ class RecordForm extends React.Component {
     }
 
     componentDidMount() {
-        WizardGenerator.generateWizard(this.props.record, this.onWizardReady);
+        WizardBuilder.generateWizard(this.props.record, this.onWizardReady);
     }
 
     onWizardReady = (wizardProperties) => {

@@ -1,7 +1,6 @@
 'use strict';
 
 var Constants = require('../constants/Constants');
-var Vocabulary = require('../constants/Vocabulary');
 
 /**
  * Common propositions that should not be capitalized
@@ -127,92 +126,6 @@ module.exports = {
         var min = 0,
             max = 1073741824;   // Max Java Integer / 2
         return Math.floor(Math.random() * (max - min)) + min;
-    },
-
-    /**
-     * Transforms JSON-LD (framed) based options list into a list of options suitable for the Typeahead component.
-     * @param options The options to process
-     */
-    processTypeaheadOptions: function (options) {
-        if (!options) {
-            return [];
-        }
-        return options.map(function (item) {
-            return this.jsonLdToTypeaheadOption(item);
-        }.bind(this));
-    },
-
-    /**
-     * Gets the specified JSON-LD object as a simple, more programmatic-friendly object suitable e.g. for typeahead
-     * components.
-     *
-     * The transformation is as follows:
-     * <ul>
-     *     <li>'@id' -> id</li>
-     *     <li>'@type' -> type</li>
-     *     <li>rdfs:label -> name</li>
-     *     <li>rdfs:comment -> description</li>
-     * </ul>
-     * @param jsonLd
-     */
-    jsonLdToTypeaheadOption: function (jsonLd) {
-        if (!jsonLd) {
-            return null;
-        }
-        var res = {
-            id: jsonLd['@id'],
-            type: jsonLd['@type'],
-            name: this.getJsonAttValue(jsonLd, Vocabulary.RDFS_LABEL)
-        };
-        if (jsonLd[Vocabulary.RDFS_COMMENT]) {
-            res.description = this.getJsonAttValue(jsonLd, Vocabulary.RDFS_COMMENT);
-        }
-        return res;
-    },
-
-    /**
-     * Gets value of the specified attribute.
-     *
-     * If the attribute value is a string, it is returned, otherwise a '@value' attribute is retrieved from the nested
-     * object.
-     * @param obj Object from which the attribute value will be extracted
-     * @param att Attribute name
-     * @param by (optional) JSON attribute to use instead of '@value' in case the att value is an object
-     * @return {*} Attribute value (possibly null)
-     */
-    getJsonAttValue: function (obj, att, by) {
-        return obj[att] != null ? (typeof(obj[att]) !== 'object' ? obj[att] : obj[att][by ? by : '@value']) : null;
-    },
-
-    /**
-     * Transforms the specified JSON-LD input to a list of objects suitable as options for a Select component.
-     *
-     * This means, that the resulting list consists of objects with value, label and title attributes.
-     * @param jsonLd The JSON-LD to process
-     * @return {*} List of options
-     */
-    processSelectOptions: function (jsonLd) {
-        return jsonLd.map(function (item) {
-            return {
-                value: item['@id'],
-                label: this.getJsonAttValue(item, Vocabulary.RDFS_LABEL),
-                title: this.getJsonAttValue(item, Vocabulary.RDFS_COMMENT)
-            }
-        }.bind(this));
-    },
-
-    /**
-     * Checks whether the specified JSON-LD object has the specified property value.
-     *
-     * The property can either have single value, or it can be an array (in which case the value is searched for in the
-     * array).
-     * @param object The object to test
-     * @param property The property to test
-     * @param value The value to look for
-     * @return {*|boolean}
-     */
-    hasValue: function (object, property, value) {
-        return object[property] && (object[property] === value || object[property].indexOf(value) !== -1);
     },
 
     /**
