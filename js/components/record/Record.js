@@ -30,6 +30,10 @@ class Record extends React.Component {
         this.props.handlers.onChange(change);
     };
 
+    getFormData = () => {
+        return this.form.refs.wrappedInstance.getWrappedComponent().getFormData();
+    };
+
     render() {
         if (this.props.loading || !this.props.record) {
             return <Mask text={this.i18n('please-wait')}/>;
@@ -68,7 +72,7 @@ class Record extends React.Component {
     }
 
     _renderForm(completed) {
-        return completed ? <RecordForm record={this.props.record} onChange={this._onChange}/> : null;
+        return completed ? <RecordForm ref={(c) => this.form = c} record={this.props.record}/> : null;
     }
 
     _renderButtons() {

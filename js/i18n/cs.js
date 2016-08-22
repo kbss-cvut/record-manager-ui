@@ -107,6 +107,10 @@ module.exports = {
         'record.save-success': 'Záznam o pacientovi úspěšně uložen.',
         'record.save-error': 'Záznam se nepodařilo uložit. Odpověď serveru: {}.',
 
-        'help.local-name': 'Účelem tohoto atributu je pomoci vám identifikovat anonymizované pacienty. Můžete použít např. číslování pacientů ("pacient_1", "pacient_2") či iniciály pacientů ("M.E.")'
+        'help.local-name': 'Účelem tohoto atributu je pomoci vám identifikovat anonymizované pacienty. Můžete použít např. číslování pacientů ("pacient_1", "pacient_2") či iniciály pacientů ("M.E.")',
+
+        'wizard.previous': 'Zpět',
+        'wizard.next': 'Další',
+        'wizard.finish': 'Dokončit'
     }
 };

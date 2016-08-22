@@ -47,6 +47,7 @@ class RecordController extends React.Component {
 
     _onSave = () => {
         var record = this.state.record;
+        record.question = this.recordComponent.refs.wrappedInstance.getWrappedComponent().getFormData();
         if (record.isNew) {
             delete record.isNew;
             Actions.createRecord(record, this._onSaveSuccess, this._onSaveError);
@@ -84,7 +85,8 @@ class RecordController extends React.Component {
             onCancel: this._onCancel,
             onChange: this._onChange
         };
-        return <Record handlers={handlers} record={this.state.record} loading={this.state.loading}/>;
+        return <Record ref={(c) => this.recordComponent = c} handlers={handlers} record={this.state.record}
+                       loading={this.state.loading}/>;
     }
 }
 

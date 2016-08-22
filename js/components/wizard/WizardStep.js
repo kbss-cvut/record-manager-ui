@@ -93,8 +93,6 @@ var WizardStep = React.createClass({
                                       bsSize='small'>{this.i18n('wizard.previous')}</Button>);
         }
         var advanceButton = this.renderAdvanceButton();
-        var cancelButton = (
-            <Button onClick={this.props.onClose} bsStyle='primary' bsSize='small'>{this.i18n('cancel')}</Button>);
         var error = null;
         if (this.state.currentError) {
             error = (<Alert bsStyle='danger'><p>{this.state.currentError.message}</p></Alert>);
@@ -108,7 +106,6 @@ var WizardStep = React.createClass({
                 <ButtonToolbar style={{float: 'right'}}>
                     {previousButton}
                     {advanceButton}
-                    {cancelButton}
                 </ButtonToolbar>
                 {error}
             </div>
@@ -117,15 +114,11 @@ var WizardStep = React.createClass({
 
     renderAdvanceButton: function () {
         var disabledTitle = this.state.advanceDisabled ? this.i18n('wizard.advance-disabled-tooltip') : null;
-        var button;
+        var button = null;
         if (!this.props.isLastStep) {
-            button = (
+            button =
                 <Button onClick={this.onNext} disabled={this.state.advanceDisabled} bsStyle='primary' bsSize='small'
-                        title={disabledTitle}>{this.i18n('wizard.next')}</Button>);
-        } else {
-            button = (
-                <Button onClick={this.onFinish} disabled={this.state.advanceDisabled} bsStyle='primary' bsSize='small'
-                        title={disabledTitle}>{this.i18n('wizard.finish')}</Button>);
+                        title={disabledTitle}>{this.i18n('wizard.next')}</Button>;
         }
         return button;
     },
