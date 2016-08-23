@@ -28,7 +28,7 @@ module.exports = {
         'yes': 'Ano',
         'no': 'Ne',
         'unknown': 'Neznámé',
-        'please-wait': 'Prosím čekejte...',
+        'please-wait': 'Prosím, čekejte...',
         'actions': 'Akce',
 
         'login.title': Constants.APP_NAME + ' - Přihlášení',
@@ -106,6 +106,7 @@ module.exports = {
         'record.last-edited-msg': 'Naposledy upravil(a) {name} {date}.',
         'record.save-success': 'Záznam o pacientovi úspěšně uložen.',
         'record.save-error': 'Záznam se nepodařilo uložit. Odpověď serveru: {}.',
+        'record.form.please-wait': 'Nahrávám formulář, prosím, čekejte...',
 
         'help.local-name': 'Účelem tohoto atributu je pomoci vám identifikovat anonymizované pacienty. Můžete použít např. číslování pacientů ("pacient_1", "pacient_2") či iniciály pacientů ("M.E.")',
 

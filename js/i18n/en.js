@@ -106,6 +106,7 @@ module.exports = {
         'record.last-edited-msg': 'Last modified {date} by {name}.',
         'record.save-success': 'Patient record successfully saved.',
         'record.save-error': 'Unable to save record. Server responded with {}.',
+        'record.form.please-wait': 'Loading form, please wait...',
 
         'help.local-name': 'Purpose of this entry is to help you reference anonymized patients. Use identifiers such as patient ordering number (e.g. "patient_1", "patient_2"), patient\'s initials (e.g. "M.E."), etc.',
 
