@@ -51,7 +51,7 @@ var Authentication = {
         if (!userToTest) {
             return false;
         }
-        return userToTest.types.indexOf(Vocabulary.ADMIN_TYPE) !== -1;
+        return userToTest.types && userToTest.types.indexOf(Vocabulary.ADMIN_TYPE) !== -1;
     },
 
     /**
