@@ -1,11 +1,15 @@
 'use strict';
 
 var React = require('react');
-var ListGroup = require('react-bootstrap').ListGroup;
-var ListGroupItem = require('react-bootstrap').ListGroupItem;
+var classNames = require('classnames');
 
 var WizardStep = require('./WizardStep');
 var WizardStore = require('../../stores/WizardStore');
+
+var HorizontalWizardNav = require('./HorizontalWizardNav').default;
+var VerticalWizardNav = require('./VerticalWizardNav').default;
+
+const IS_HORIZONTAL = true;
 
 var Wizard = React.createClass({
 
@@ -97,42 +101,38 @@ var Wizard = React.createClass({
 
 
     render: function () {
-        var navMenu = this.initNavMenu();
         var component = this.initComponent();
-        return (
-            <div className="wizard">
-                <div className="wizard-nav col-xs-2">
-                    <ListGroup>
-                        {navMenu}
-                    </ListGroup>
-                </div>
-                <div className="wizard-content col-xs-10">
-                    {component}
-                </div>
+
+        var navMenu,
+            componentClass = classNames('wizard-content', {'col-xs-10': !IS_HORIZONTAL});
+
+        if (IS_HORIZONTAL) {
+            navMenu = <HorizontalWizardNav currentStep={this.state.currentStep} steps={this.props.steps}
+                                           onNavigate={this.navigate}/>;
+        } else {
+            navMenu = <VerticalWizardNav currentStep={this.state.currentStep} steps={this.props.steps}
+                                         onNavigate={this.navigate}/>
+        }
+
+        return <div className="wizard">
+            {navMenu}
+            <div className={componentClass}>
+                {component}
             </div>
-        );
+        </div>;
     },
 
-    initNavMenu: function () {
-        return this.props.steps.map(function (step, index) {
-            return <ListGroupItem key={'nav' + index} onClick={this.navigate} id={'wizard-nav-' + index}
-                                  active={index === this.state.currentStep ? 'active' : ''}>{step.name}</ListGroupItem>;
-        }.bind(this));
-    },
+    navigate: function (stepIndex) {
 
-    navigate: function (e) {
-        var item = e.target;
-        var index = Number(item.id.substring('wizard-nav-'.length));
-
-        if (index === this.state.currentStep || index >= this.props.steps.length) {
+        if (stepIndex === this.state.currentStep || stepIndex >= this.props.steps.length) {
             return;
         }
         // Can we jump forward?
-        if (index > this.state.currentStep && !this.props.steps[index].visited && !this.props.enableForwardSkip) {
+        if (stepIndex > this.state.currentStep && !this.props.steps[stepIndex].visited && !this.props.enableForwardSkip) {
             return;
         }
         this.setState({
-            currentStep: index
+            currentStep: stepIndex
         });
     },
 
