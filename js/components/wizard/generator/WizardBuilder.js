@@ -21,7 +21,6 @@ export default class WizardBuilder {
             Configuration.optionsStore = FormGenStore;
             Configuration.intl = I18nStore.getIntl();
             Configuration.typeaheadResultList = TypeaheadResultList;
-            Configuration.inputComponent = Input;
             WizardGenerator.createWizard(data, record.question, null, renderCallback);
         }, () => {
             Logger.error('Received no valid wizard.');
