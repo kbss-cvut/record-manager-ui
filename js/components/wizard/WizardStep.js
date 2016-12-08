@@ -5,6 +5,9 @@ var Alert = require('react-bootstrap').Alert;
 var Button = require('react-bootstrap').Button;
 var ButtonToolbar = require('react-bootstrap').ButtonToolbar;
 var Panel = require('react-bootstrap').Panel;
+var Constants = require('semforms').Constants;
+var HelpIcon = require('semforms').HelpIcon;
+var JsonLdUtils = require('jsonld-utils').default;
 
 var injectIntl = require('../../utils/injectIntl');
 var I18nMixin = require('../../i18n/I18nMixin');
@@ -97,7 +100,7 @@ var WizardStep = React.createClass({
         if (this.state.currentError) {
             error = (<Alert bsStyle='danger'><p>{this.state.currentError.message}</p></Alert>);
         }
-        var title = (<h4>{this.props.title}</h4>);
+        var title = (<h4>{this.props.title}{this._renderHelpIcon()}</h4>);
         return (
             <div className='wizard-step'>
                 <Panel header={title} bsStyle='primary' className='wizard-step-content'>
@@ -110,6 +113,13 @@ var WizardStep = React.createClass({
                 {error}
             </div>
         );
+    },
+
+    _renderHelpIcon: function() {
+        const question = WizardStore.getStepData([this.props.stepIndex]);
+        return question[Constants.HELP_DESCRIPTION] ?
+            <HelpIcon text={JsonLdUtils.getLocalized(question[Constants.HELP_DESCRIPTION], this.props.intl)}
+                      iconClass='help-icon-section'/> : null;
     },
 
     renderAdvanceButton: function () {
