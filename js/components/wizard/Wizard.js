@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react');
+const Reflux = require('reflux');
 var classNames = require('classnames');
 
 var WizardStep = require('./WizardStep');
@@ -12,6 +13,7 @@ var VerticalWizardNav = require('./VerticalWizardNav').default;
 const IS_HORIZONTAL = true;
 
 var Wizard = React.createClass({
+    mixins: [Reflux.listenTo(WizardStore, '_onWizardDataChange')],
 
     propTypes: {
         start: React.PropTypes.number,
@@ -37,6 +39,10 @@ var Wizard = React.createClass({
         return {
             steps: []
         };
+    },
+
+    _onWizardDataChange: function() {
+        this.forceUpdate();
     },
 
     onAdvance: function () {

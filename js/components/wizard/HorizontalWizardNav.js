@@ -2,18 +2,19 @@
 
 import React from "react";
 import {Nav, NavItem} from "react-bootstrap";
+import {FormUtils} from "semforms";
 
 
 const HorizontalWizardNav = (props) => {
-
     var navMenu = props.steps.map((step, index) => {
-        return <NavItem key={'nav' + index} eventKey={'nav' + index} onClick={() => props.onNavigate(index)}
+        return <NavItem key={'nav' + index} eventKey={index}
                         id={'wizard-nav-' + index}
-                        active={index === props.currentStep}>{step.name}</NavItem>;
-    });
+                        active={index === props.currentStep}
+                        disabled={! FormUtils.isRelevant(step.data)}>{step.name}</NavItem>;
+    }); //TODO add "disabled" to VerticalWizardNav
 
     return <div className="wizard-nav">
-        <Nav bsStyle="tabs">
+        <Nav bsStyle="tabs" onSelect={(key) => props.onNavigate(key)}>
             {navMenu}
         </Nav>
     </div>;

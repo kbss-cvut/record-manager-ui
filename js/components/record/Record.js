@@ -11,6 +11,8 @@ import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
 import RecordValidator from "../../validation/RecordValidator";
 import RequiredAttributes from "./RequiredAttributes";
+import WizardStore from "../../stores/WizardStore";
+import {FormUtils} from "semforms";
 
 class Record extends React.Component {
     static propTypes = {
@@ -77,10 +79,14 @@ class Record extends React.Component {
 
     _renderButtons() {
         return <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
-            <Button bsStyle='success' bsSize='small' disabled={this.props.loading}
+            <Button bsStyle='success' bsSize='small' disabled={this.props.loading || this._isFormInvalid()}
                     onClick={this.props.handlers.onSave}>{this.i18n('save')}</Button>
             <Button bsStyle='link' bsSize='small' onClick={this.props.handlers.onCancel}>{this.i18n('cancel')}</Button>
         </div>
+    }
+
+    _isFormInvalid() {
+        return WizardStore.data ? FormUtils.isValid(WizardStore.data) : false;
     }
 }
 
