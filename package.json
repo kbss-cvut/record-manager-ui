@@ -16,16 +16,16 @@
     "body-parser": "~1.15.0",
     "express": "~4.13.4",
     "reflux": "~0.4.1",
-    "kbss-react-bootstrap-datetimepicker": "https://dev.inbas.cz/dist/kbss-react-bootstrap-datetimepicker-0.0.4.tgz",
+    "react-bootstrap-datetimepicker": "https://kbss.felk.cvut.cz/dist/react-bootstrap-datetimepicker-0.0.5.tgz",
     "classnames": "~2.2.3",
-    "react-bootstrap-typeahead": "https://dev.inbas.cz/dist/react-bootstrap-typeahead-0.0.7.tgz",
+    "react-bootstrap-typeahead": "https://kbss.felk.cvut.cz/dist/react-bootstrap-typeahead-0.0.11.tgz",
     "remarkable": "~1.6.2",
     "js-cookie": "~2.1.0",
     "halogen": "~0.2.0",
     "react-intl": "~2.0.1",
     "jsonld": "~0.4.6",
     "jsonld-utils": "https://kbss.felk.cvut.cz/dist/jsonld-utils-0.0.2.tgz",
-    "semforms": "https://kbss.felk.cvut.cz/dist/semforms-0.1.0.tgz"
+    "semforms": "https://kbss.felk.cvut.cz/dist/semforms-0.1.1.tgz"
   },
   "devDependencies": {
     "babel-core": "^6.7.5",
