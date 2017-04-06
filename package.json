@@ -60,7 +60,7 @@
     "build-css": "cleancss --skip-rebase -d -o ../../../profiles/production/resources/css/study-manager.min.css resources/css/study-manager.css",
     "build": "npm run build-css & npm run build-js",
     "prebuild": "npm install",
-    "test": "jasmine JASMINE_CONFIG_PATH=tests/jasmine.json",
+    "test": "",
     "lint": "eslint js"
   },
   "browserify": {
