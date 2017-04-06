@@ -25,7 +25,7 @@
     "react-intl": "~2.0.1",
     "jsonld": "~0.4.6",
     "jsonld-utils": "https://kbss.felk.cvut.cz/dist/jsonld-utils-0.0.2.tgz",
-    "semforms": "https://kbss.felk.cvut.cz/dist/semforms-0.1.1.tgz"
+    "semforms": "https://kbss.felk.cvut.cz/dist/semforms-0.1.2.tgz"
   },
   "devDependencies": {
     "babel-core": "^6.7.5",
@@ -60,7 +60,7 @@
     "build-css": "cleancss --skip-rebase -d -o ../../../profiles/production/resources/css/study-manager.min.css resources/css/study-manager.css",
     "build": "npm run build-css & npm run build-js",
     "prebuild": "npm install",
-    "test": "",
+    "test": "jasmine JASMINE_CONFIG_PATH=tests/jasmine.json",
     "lint": "eslint js"
   },
   "browserify": {
