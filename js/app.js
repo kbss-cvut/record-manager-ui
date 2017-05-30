@@ -17,11 +17,12 @@ function selectLocalization() {
         });
     }
     var lang = navigator.language;
-    if (lang && lang === 'cs' || lang === 'cs-CZ' || lang === 'sk' || lang === 'sk-SK') {
-        intlData = require('./i18n/cs');
-    } else {
-        intlData = require('./i18n/en');
-    }
+    // if (lang && lang === 'cs' || lang === 'cs-CZ' || lang === 'sk' || lang === 'sk-SK') {
+    //     intlData = require('./i18n/cs');
+    // } else {
+    //     intlData = require('./i18n/en');
+    // }
+    intlData = require('./i18n/en');
 }
 
 selectLocalization();
