@@ -15,6 +15,7 @@ module.exports = {
         'close': 'Zavřít',
         'cancel-tooltip': 'Zrušit a zahodit změny',
         'save': 'Uložit',
+        'saving': 'Ukládám...',
         'delete': 'Smazat',
         'headline': 'Název',
         'name': 'Název',

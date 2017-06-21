@@ -15,6 +15,7 @@ module.exports = {
         'close': 'Close',
         'cancel-tooltip': 'Discard changes',
         'save': 'Save',
+        'saving': 'Saving...',
         'delete': 'Delete',
         'headline': 'Headline',
         'name': 'Name',

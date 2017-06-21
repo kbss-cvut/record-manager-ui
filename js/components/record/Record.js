@@ -82,8 +82,8 @@ class Record extends React.Component {
         const record = this.props.record;
         return <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
             <Button bsStyle='success' bsSize='small'
-                    disabled={this.props.loading || this._isFormInvalid() || !record.state.isComplete()}
-                    onClick={this.props.handlers.onSave}>{this.i18n('save')}</Button>
+                    disabled={this.props.loading || this.props.saving || this._isFormInvalid() || !record.state.isComplete()}
+                    onClick={this.props.handlers.onSave}>{this.i18n(this.props.saving ? 'saving' : 'save')}</Button>
             <Button bsStyle='link' bsSize='small'
                     onClick={this.props.handlers.onCancel}>{this.i18n('cancel')}</Button>
         </div>

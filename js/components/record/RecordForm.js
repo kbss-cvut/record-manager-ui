@@ -30,6 +30,7 @@ class RecordForm extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.record.question !== nextProps.record.question) {
+            this.setState({wizardProperties: null});
             WizardBuilder.generateWizard(nextProps.record, this.onWizardReady);
         }
     }

@@ -21,7 +21,8 @@ class RecordController extends React.Component {
         super(props);
         this.state = {
             record: this._isNew() ? EntityFactory.initNewPatientRecord() : null,
-            loading: false
+            loading: false,
+            saving: false
         };
     }
 
@@ -56,6 +57,7 @@ class RecordController extends React.Component {
     }
 
     _onSave = () => {
+        this.setState({saving: true});
         const record = this.state.record;
         record.question = this.recordComponent.refs.wrappedInstance.getWrappedComponent().getFormData();
         if (record.isNew) {
@@ -67,6 +69,7 @@ class RecordController extends React.Component {
     };
 
     _onSaveSuccess = (newKey) => {
+        this.setState({saving: false});
         this.props.showSuccessMessage(this.props.i18n('record.save-success'));
         if (newKey) {
             Routing.transitionTo(Routes.editRecord, {
@@ -81,6 +84,7 @@ class RecordController extends React.Component {
     };
 
     _onSaveError = (err) => {
+        this.setState({saving: false});
         this.props.showErrorMessage(this.props.formatMessage('record.save-error', {error: err.message}));
     };
 
@@ -110,7 +114,7 @@ class RecordController extends React.Component {
             onChange: this._onChange
         };
         return <Record ref={(c) => this.recordComponent = c} handlers={handlers} record={this.state.record}
-                       loading={this.state.loading}/>;
+                       loading={this.state.loading} saving={this.state.saving}/>;
     }
 }
 
