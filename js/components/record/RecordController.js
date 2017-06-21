@@ -39,7 +39,7 @@ class RecordController extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.params.key && this.state.record.key !== nextProps.params.key) {
+        if (nextProps.params.key && this.state.record && this.state.record.key !== nextProps.params.key) {
             Actions.loadRecord(nextProps.params.key);
         }
     }
