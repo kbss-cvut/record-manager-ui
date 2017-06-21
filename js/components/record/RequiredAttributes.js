@@ -20,7 +20,7 @@ class RequiredAttributes extends React.Component {
     }
 
     render() {
-        var record = this.props.record;
+        const record = this.props.record;
         // If the 'completed' prop is true, the attributes (except for the name) should be read only
         return <div>
             <div className='row'>

@@ -1,6 +1,7 @@
 'use strict';
 
-var Utils = require('./Utils');
+const Utils = require('./Utils');
+const RecordState = require('../model/RecordState');
 
 module.exports = {
 
@@ -28,7 +29,8 @@ module.exports = {
         return {
             localName: '',
             complete: false,
-            isNew: true
+            isNew: true,
+            state: RecordState.createInitialState()
         }
     }
 };

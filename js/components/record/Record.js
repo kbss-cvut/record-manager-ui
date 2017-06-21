@@ -27,7 +27,7 @@ class Record extends React.Component {
     }
 
     _onChange = (e) => {
-        var change = {};
+        const change = {};
         change[e.target.name] = e.target.value;
         this.props.handlers.onChange(change);
     };
@@ -40,28 +40,27 @@ class Record extends React.Component {
         if (this.props.loading || !this.props.record) {
             return <Mask text={this.i18n('please-wait')}/>;
         }
-        var record = this.props.record,
-            complete = RecordValidator.isComplete(record);
+        const record = this.props.record;
         return <Panel header={this._renderHeader()} bsStyle='primary'>
             <form className='form-horizontal'>
-                <RequiredAttributes record={record} onChange={this._onChange} completed={complete}/>
+                <RequiredAttributes record={record} onChange={this._onChange} completed={record.state.isComplete()}/>
                 {this._renderClinic()}
                 <RecordProvenance record={record}/>
             </form>
-            {this._renderForm(complete)}
+            {this._renderForm()}
             {this._renderButtons()}
         </Panel>;
     }
 
     _renderHeader() {
-        var name = this.props.record.localName ? this.props.record.localName : '';
+        const name = this.props.record.localName ? this.props.record.localName : '';
         return <h3>
             <FormattedMessage id='record.panel-title' values={{identifier: name}}/>
         </h3>;
     }
 
     _renderClinic() {
-        var record = this.props.record;
+        const record = this.props.record;
         if (!record.clinic) {
             return null;
         }
@@ -73,15 +72,20 @@ class Record extends React.Component {
         </div>;
     }
 
-    _renderForm(completed) {
-        return completed ? <RecordForm ref={(c) => this.form = c} record={this.props.record}/> : null;
+    _renderForm() {
+        const record = this.props.record;
+        return !record.state.isInitial() ?
+            <RecordForm ref={(c) => this.form = c} record={this.props.record}/> : null;
     }
 
     _renderButtons() {
+        const record = this.props.record;
         return <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
-            <Button bsStyle='success' bsSize='small' disabled={this.props.loading || this._isFormInvalid()}
+            <Button bsStyle='success' bsSize='small'
+                    disabled={this.props.loading || this._isFormInvalid() || !record.state.isComplete()}
                     onClick={this.props.handlers.onSave}>{this.i18n('save')}</Button>
-            <Button bsStyle='link' bsSize='small' onClick={this.props.handlers.onCancel}>{this.i18n('cancel')}</Button>
+            <Button bsStyle='link' bsSize='small'
+                    onClick={this.props.handlers.onCancel}>{this.i18n('cancel')}</Button>
         </div>
     }
 

@@ -10,6 +10,8 @@ import I18nWrapper from '../../i18n/I18nWrapper';
 import Messager from '../wrapper/Messager';
 import Record from './Record';
 import RecordStore from '../../stores/RecordStore';
+import RecordState from "../../model/RecordState";
+import RecordValidator from "../../validation/RecordValidator";
 import RouterStore from '../../stores/RouterStore';
 import Routes from '../../utils/Routes';
 import Routing from '../../utils/Routing';
@@ -35,8 +37,16 @@ class RecordController extends React.Component {
         this.unsubscribe = RecordStore.listen(this._onRecordLoaded);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.params.key && this.state.record.key !== nextProps.params.key) {
+            Actions.loadRecord(nextProps.params.key);
+        }
+    }
+
     _onRecordLoaded = (data) => {
         if (data.action === Actions.loadRecord) {
+            const record = data.data;
+            record.state = RecordState.createRecordState();
             this.setState({record: data.data, loading: false});
         }
     };
@@ -46,7 +56,7 @@ class RecordController extends React.Component {
     }
 
     _onSave = () => {
-        var record = this.state.record;
+        const record = this.state.record;
         record.question = this.recordComponent.refs.wrappedInstance.getWrappedComponent().getFormData();
         if (record.isNew) {
             delete record.isNew;
@@ -58,7 +68,16 @@ class RecordController extends React.Component {
 
     _onSaveSuccess = (newKey) => {
         this.props.showSuccessMessage(this.props.i18n('record.save-success'));
-        Actions.loadRecord(newKey ? newKey : this.props.params.key);
+        if (newKey) {
+            Routing.transitionTo(Routes.editRecord, {
+                params: {key: newKey},
+                handlers: {
+                    onCancel: Routes.records
+                }
+            });
+        } else {
+            Actions.loadRecord(this.props.params.key);
+        }
     };
 
     _onSaveError = (err) => {
@@ -66,7 +85,7 @@ class RecordController extends React.Component {
     };
 
     _onCancel = () => {
-        var handlers = RouterStore.getViewHandlers(Routes.editRecord.name);
+        const handlers = RouterStore.getViewHandlers(Routes.editRecord.name);
         if (handlers) {
             Routing.transitionTo(handlers.onCancel);
         } else {
@@ -75,12 +94,17 @@ class RecordController extends React.Component {
     };
 
     _onChange = (change) => {
-        var update = assign({}, this.state.record, change);
+        const update = assign({}, this.state.record, change);
+        if (RecordValidator.isComplete(update)) {
+            update.state.recordComplete();
+        } else {
+            update.state.recordIncomplete();
+        }
         this.setState({record: update});
     };
 
     render() {
-        var handlers = {
+        const handlers = {
             onSave: this._onSave,
             onCancel: this._onCancel,
             onChange: this._onChange
