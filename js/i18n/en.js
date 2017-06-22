@@ -92,6 +92,7 @@ module.exports = {
         'clinic.save-error': 'Unable to save clinic. Server responded with {}.',
 
         'records.panel-title': 'Patient records',
+        'records.id': 'Id',
         'records.local-name': 'Patient identifier',
         'records.completion-status': 'Completion status',
         'records.completion-status-tooltip.complete': 'All required fields of the patient\'s record have been filled out.',

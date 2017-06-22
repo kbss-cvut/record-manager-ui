@@ -64,7 +64,8 @@ class RecordTable extends React.Component {
     _renderHeader() {
         return <thead>
         <tr>
-            <th className='col-xs-6 content-center'>{this.i18n('records.local-name')}</th>
+            <th className='col-xs-3 content-center'>{this.i18n('records.id')}</th>
+            <th className='col-xs-3 content-center'>{this.i18n('records.local-name')}</th>
             <th className='col-xs-3 content-center'>{this.i18n('records.last-modified')}</th>
             <th className='col-xs-1 content-center'>{this.i18n('records.completion-status')}</th>
             <th className='col-xs-2 content-center'>{this.i18n('actions')}</th>
@@ -92,6 +93,7 @@ var RecordRow = (props) => {
             <Button bsStyle='warning' bsSize='small' title={props.i18n('records.delete-tooltip')}
                     onClick={() => props.onDelete(record)}>{props.i18n('delete')}</Button>;
     return <tr>
+        <td className='report-row'><a href={'#/' + Routes.records.path + '/' + record.key}>{record.key}</a></td>
         <td className='report-row'><a href={'#/' + Routes.records.path + '/' + record.key}>{record.localName}</a></td>
         <td className='report-row content-center'>
             {Utils.formatDate(new Date(record.lastModified ? record.lastModified : record.dateCreated))}
