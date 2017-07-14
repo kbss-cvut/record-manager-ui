@@ -72,7 +72,7 @@
   "contributors": ["Martin Ledvinka"],
   "repository": {
     "type": "git",
-    "url": "https://kbss.felk.cvut.cz/git/fertility-saving-study.git"
+    "url": "https://kbss.felk.cvut.cz/git/saving-study.git"
   },
   "private": true
 }
