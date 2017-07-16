@@ -8,7 +8,7 @@ import React from "react";
 import {Alert, Button, Panel} from "react-bootstrap";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
-import Input from "../Input";
+import HorizontalInput from "../HorizontalInput";
 import Logger from "../../utils/Logger";
 import Mask from "../Mask";
 import Routing from "../../utils/Routing";
@@ -121,29 +121,29 @@ class Register extends React.Component {
                     {this.renderAlert()}
                     <div className='row'>
                         <div className='col-xs-6'>
-                            <Input type='text' name='firstName' label={this.props.i18n('register.first-name')}
-                                   value={this.state.firstName}
-                                   labelClassName='col-xs-4' wrapperClassName='col-xs-8' onChange={this.onChange}/>
+                            <HorizontalInput type='text' name='firstName' label={this.props.i18n('register.first-name')}
+                                             value={this.state.firstName}
+                                             labelWidth={4} inputWidth={8} onChange={this.onChange}/>
                         </div>
                         <div className='col-xs-6'>
-                            <Input type='text' name='lastName' label={this.props.i18n('register.last-name')}
-                                   value={this.state.lastName}
-                                   labelClassName='col-xs-4' wrapperClassName='col-xs-8' onChange={this.onChange}/>
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col-xs-6'>
-                            <Input type='text' name='username' label={this.props.i18n('register.username')}
-                                   value={this.state.username}
-                                   labelClassName='col-xs-4' wrapperClassName='col-xs-8' onChange={this.onChange}/>
+                            <HorizontalInput type='text' name='lastName' label={this.props.i18n('register.last-name')}
+                                             value={this.state.lastName}
+                                             labelWidth={4} inputWidth={8} onChange={this.onChange}/>
                         </div>
                     </div>
                     <div className='row'>
                         <div className='col-xs-6'>
-                            <Input type='password' name='password' label={this.props.i18n('register.password')}
-                                   labelClassName='col-xs-4'
-                                   onChange={this.onPasswordChange} value={this.state.password}
-                                   wrapperClassName='col-xs-8'/>
+                            <HorizontalInput type='text' name='username' label={this.props.i18n('register.username')}
+                                             value={this.state.username}
+                                             labelWidth={4} inputWidth={8} onChange={this.onChange}/>
+                        </div>
+                    </div>
+                    <div className='row'>
+                        <div className='col-xs-6'>
+                            <HorizontalInput type='password' name='password'
+                                             label={this.props.i18n('register.password')}
+                                             labelWidth={4} inputWidth={8} onChange={this.onPasswordChange}
+                                             value={this.state.password}/>
                         </div>
                         <div className='col-xs-6'>
                             {this.renderPasswordConfirm()}
@@ -161,30 +161,25 @@ class Register extends React.Component {
         );
     }
 
-    // Here we're using ES6 syntax which does not bind 'this' in handlers. But this not a handler, it is explicitly
-    // called, so 'this' is bound correctly
     renderAlert() {
-        return this.state.alertVisible ? (
+        return this.state.alertVisible ?
             <Alert bsStyle='danger' bsSize='small' dismissAfter={3000} onDismiss={this.dismissAlert}>
                 <div>{this.state.errorMessage}</div>
-            </Alert>
-        ) : null;
+            </Alert> : null;
     }
 
     renderPasswordConfirm() {
         if (this.state.passwordMatch) {
-            return (
-                <Input type='password' name='passwordConfirm' label={this.props.i18n('register.password-confirm')}
-                       labelClassName='col-xs-4'
-                       wrapperClassName='col-xs-8' onChange={this.onPasswordChange} onKeyDown={this.onKeyDown}
-                       value={this.state.passwordConfirm}/>);
+            return <HorizontalInput type='password' name='passwordConfirm'
+                                    label={this.props.i18n('register.password-confirm')}
+                                    labelWidth={4} inputWidth={8} onChange={this.onPasswordChange}
+                                    onKeyDown={this.onKeyDown} value={this.state.passwordConfirm}/>;
         } else {
-            return (
-                <Input type='password' name='passwordConfirm' label={this.props.i18n('register.password-confirm')}
-                       labelClassName='col-xs-4'
-                       wrapperClassName='col-xs-8' onChange={this.onPasswordChange} onKeyDown={this.onKeyDown}
-                       value={this.state.passwordConfirm} bsStyle='error'
-                       title={this.props.i18n('register.passwords-not-matching-tooltip')} hasFeedback/>);
+            return <HorizontalInput type='password' name='passwordConfirm'
+                                    label={this.props.i18n('register.password-confirm')}
+                                    labelWidth={4} inputWidth={8} onChange={this.onPasswordChange}
+                                    onKeyDown={this.onKeyDown} value={this.state.passwordConfirm} validation='error'
+                                    title={this.props.i18n('register.passwords-not-matching-tooltip')}/>;
         }
     }
 }

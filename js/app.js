@@ -29,27 +29,26 @@ selectLocalization();
 I18nStore.setMessages(intlData.messages);
 
 // Have the imports here, so that the I18nStore is initialized before any of the components which might need it
-var React = require('react');
-var ReactDOM = require('react-dom');
-var Router = require('react-router').Router;
-var Route = require('react-router').Route;
-var IndexRoute = require('react-router').IndexRoute;
-var IntlProvider = require('react-intl').IntlProvider;
+import React from "react";
+import ReactDOM from "react-dom";
+import {Router, Route, IndexRoute} from "react-router";
+import {IntlProvider} from "react-intl";
 
-var history = require('./utils/Routing').history;
-var Routes = require('./utils/Routes');
-var Actions = require('./actions/Actions');
+import {history} from "./utils/Routing";
+import Routes from "./utils/Routes";
+import Actions from "./actions/Actions";
 
-var Login = require('./components/login/Login');
-var MainView = require('./components/MainView');
-var ClinicController = require('./components/clinic/ClinicController').default;
-var ClinicsController = require('./components/clinic/ClinicsController').default;
-var DashboardController = require('./components/dashboard/DashboardController');
-var RecordController = require('./components/record/RecordController').default;
-var RecordsController = require('./components/record/RecordsController').default;
-var UsersController = require('./components/user/UsersController').default;
-var UserController = require('./components/user/UserController').default;
-var RoutingRules = require('./utils/RoutingRules');
+import Login from "./components/login/Login";
+import MainView from "./components/MainView";
+import ClinicController from "./components/clinic/ClinicController";
+import ClinicsController from "./components/clinic/ClinicsController";
+import DashboardController from "./components/dashboard/DashboardController";
+import RecordController from "./components/record/RecordController";
+import RecordsController from "./components/record/RecordsController";
+import UsersController from "./components/user/UsersController";
+import UserController from "./components/user/UserController";
+import RoutingRules from "./utils/RoutingRules";
+
 
 function onRouteEnter() {
     RoutingRules.execute(this.path);

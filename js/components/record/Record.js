@@ -5,7 +5,7 @@ import {Button, Panel} from "react-bootstrap";
 import {FormattedMessage} from "react-intl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
-import Input from "../Input";
+import HorizontalInput from "../HorizontalInput";
 import Mask from "../Mask";
 import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
@@ -65,8 +65,8 @@ class Record extends React.Component {
         }
         return <div className='row'>
             <div className='col-xs-4'>
-                <Input type='text' value={record.clinic.name} label={this.i18n('record.clinic')}
-                       labelClassName='col-xs-4' wrapperClassName='col-xs-8' readOnly/>
+                <HorizontalInput type='text' value={record.clinic.name} label={this.i18n('record.clinic')}
+                       labelWidth={4} inputWidth={8} readOnly/>
             </div>
         </div>;
     }

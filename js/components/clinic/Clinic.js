@@ -8,7 +8,7 @@ import ClinicMembers from "./ClinicMembers";
 import ClinicPatients from "./ClinicPatients";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
-import Input from "../Input";
+import HorizontalInput from "../HorizontalInput";
 import Mask from "../Mask";
 import Routing from "../../utils/Routing";
 import Routes from "../../utils/Routes";
@@ -51,16 +51,16 @@ class Clinic extends React.Component {
             <form className='form-horizontal' style={{margin: '0.5em 0 1.5em 0'}}>
                 <div className='row'>
                     <div className='col-xs-4'>
-                        <Input type='text' name='name' label={this.i18n('clinic.name')}
+                        <HorizontalInput type='text' name='name' label={this.i18n('clinic.name')}
                                value={clinic.name} readOnly={!Authentication.isAdmin()}
-                               labelClassName='col-xs-4' wrapperClassName='col-xs-8' onChange={this._onChange}/>
+                               labelWidth={4} inputWidth={8} onChange={this._onChange}/>
                     </div>
                 </div>
                 <div className='row'>
                     <div className='col-xs-4'>
-                        <Input type='text' name='emailAddress' label={this.i18n('clinic.email')}
+                        <HorizontalInput type='text' name='emailAddress' label={this.i18n('clinic.email')}
                                value={clinic.emailAddress} readOnly={!Authentication.isAdmin()}
-                               labelClassName='col-xs-4' wrapperClassName='col-xs-8' onChange={this._onChange}/>
+                               labelWidth={4} inputWidth={8} onChange={this._onChange}/>
                     </div>
                 </div>
                 {this._renderAddedDate()}
