@@ -7,7 +7,7 @@ import Actions from '../../actions/Actions';
 import Authentication from '../../utils/Authentication';
 import injectIntl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
-import Messager from '../wrapper/Messager';
+import MessageWrapper from "../misc/hoc/MessageWrapper";
 import User from './User';
 import UserFactory from '../../utils/EntityFactory';
 import UserStore from '../../stores/UserStore';
@@ -86,4 +86,4 @@ class UserController extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(Messager(UserController)));
+export default injectIntl(I18nWrapper(MessageWrapper(UserController)));

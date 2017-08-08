@@ -7,7 +7,7 @@ import Actions from '../../actions/Actions';
 import EntityFactory from '../../utils/EntityFactory';
 import injectIntl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
-import Messager from '../wrapper/Messager';
+import MessageWrapper from "../misc/hoc/MessageWrapper";
 import Record from './Record';
 import RecordStore from '../../stores/RecordStore';
 import RecordState from "../../model/RecordState";
@@ -118,4 +118,4 @@ class RecordController extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(Messager(RecordController)));
+export default injectIntl(I18nWrapper(MessageWrapper(RecordController)));

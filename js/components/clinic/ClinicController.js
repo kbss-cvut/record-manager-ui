@@ -9,7 +9,7 @@ import ClinicStore from "../../stores/ClinicStore";
 import EntityFactory from "../../utils/EntityFactory";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
-import Messager from "../wrapper/Messager";
+import MessageWrapper from "../misc/hoc/MessageWrapper";
 import RecordStore from "../../stores/RecordStore";
 import RouterStore from "../../stores/RouterStore";
 import Routes from "../../utils/Routes";
@@ -112,4 +112,4 @@ class ClinicController extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(Messager(ClinicController)));
+export default injectIntl(I18nWrapper(MessageWrapper(ClinicController)));
