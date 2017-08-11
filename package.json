@@ -70,7 +70,9 @@
     ]
   },
   "author": "Miroslav Blaško",
-  "contributors": ["Martin Ledvinka"],
+  "contributors": [
+    "Martin Ledvinka"
+  ],
   "repository": {
     "type": "git",
     "url": "https://kbss.felk.cvut.cz/git/saving-study.git"
