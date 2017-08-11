@@ -1,7 +1,7 @@
 {
-  "name": "fertility-study-manager",
+  "name": "study-manager",
   "version": "0.0.1",
-  "description": "Fertility Study Manager UI",
+  "description": "Study Manager UI",
   "main": "js/app.js",
   "dependencies": {
     "body-parser": "~1.15.0",
