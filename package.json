@@ -4,6 +4,7 @@
   "description": "Study Manager UI",
   "main": "js/app.js",
   "dependencies": {
+    "babel-runtime": "^6.7.5",
     "body-parser": "~1.15.0",
     "classnames": "~2.2.3",
     "express": "~4.13.4",
