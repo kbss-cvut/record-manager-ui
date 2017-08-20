@@ -53,4 +53,4 @@ class RecordForm extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(RecordForm));
+export default injectIntl(I18nWrapper(RecordForm), {withRef: true});
