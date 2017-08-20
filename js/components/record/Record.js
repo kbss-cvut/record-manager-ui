@@ -93,4 +93,4 @@ class Record extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(Record));
+export default injectIntl(I18nWrapper(Record), {withRef: true});

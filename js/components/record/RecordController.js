@@ -118,4 +118,4 @@ class RecordController extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(MessageWrapper(RecordController)));
+export default injectIntl(I18nWrapper(MessageWrapper(RecordController)), {withRef: true});
