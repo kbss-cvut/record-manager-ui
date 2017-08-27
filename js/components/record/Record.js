@@ -43,7 +43,7 @@ class Record extends React.Component {
         return <Panel header={this._renderHeader()} bsStyle='primary'>
             <form className='form-horizontal'>
                 <RequiredAttributes record={record} onChange={this._onChange} completed={record.state.isComplete()}/>
-                {this._renderClinic()}
+                {this._renderInstitution()}
                 <RecordProvenance record={record}/>
             </form>
             {this._renderForm()}
@@ -58,14 +58,14 @@ class Record extends React.Component {
         </h3>;
     }
 
-    _renderClinic() {
+    _renderInstitution() {
         const record = this.props.record;
-        if (!record.clinic) {
+        if (!record.institution) {
             return null;
         }
         return <div className='row'>
             <div className='col-xs-4'>
-                <HorizontalInput type='text' value={record.clinic.name} label={this.i18n('record.clinic')}
+                <HorizontalInput type='text' value={record.institution.name} label={this.i18n('record.institution')}
                        labelWidth={4} inputWidth={8} readOnly/>
             </div>
         </div>;

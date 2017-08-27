@@ -61,7 +61,7 @@ var MainView = React.createClass({
                         {this._renderUsers()}
                         <Nav>
                             <LinkContainer
-                                to='clinics'><NavItem>{this.i18n('main.clinics-nav')}</NavItem></LinkContainer>
+                                to='institutions'><NavItem>{this.i18n('main.institutions-nav')}</NavItem></LinkContainer>
                         </Nav>
                         <Nav>
                             <LinkContainer

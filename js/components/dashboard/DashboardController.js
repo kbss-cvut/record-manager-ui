@@ -43,8 +43,8 @@ var DashboardController = React.createClass({
         Routing.transitionTo(Routes.users);
     },
 
-    _showClinics: function () {
-        Routing.transitionTo(Routes.clinics);
+    _showInstitutions: function () {
+        Routing.transitionTo(Routes.institutions);
     },
 
     _showRecords: function () {
@@ -64,7 +64,7 @@ var DashboardController = React.createClass({
     render: function () {
         var handlers = {
             showUsers: this._showUsers,
-            showClinics: this._showClinics,
+            showInstitutions: this._showInstitutions,
             showRecords: this._showRecords,
             createRecord: this._createRecord
         };

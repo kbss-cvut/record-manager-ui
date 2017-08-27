@@ -40,8 +40,8 @@ import Actions from "./actions/Actions";
 
 import Login from "./components/login/Login";
 import MainView from "./components/MainView";
-import ClinicController from "./components/clinic/ClinicController";
-import ClinicsController from "./components/clinic/ClinicsController";
+import InstitutionController from "./components/institution/InstitutionController";
+import InstitutionsController from "./components/institution/InstitutionsController";
 import DashboardController from "./components/dashboard/DashboardController";
 import RecordController from "./components/record/RecordController";
 import RecordsController from "./components/record/RecordsController";
@@ -66,9 +66,9 @@ var App = React.createClass({
                     <Route path={Routes.users.path} onEnter={onRouteEnter} component={UsersController}/>
                     <Route path={Routes.createUser.path} onEnter={onRouteEnter} component={UserController}/>
                     <Route path={Routes.editUser.path} onEnter={onRouteEnter} component={UserController}/>
-                    <Route path={Routes.clinics.path} onEnter={onRouteEnter} component={ClinicsController}/>
-                    <Route path={Routes.createClinic.path} onEnter={onRouteEnter} component={ClinicController}/>
-                    <Route path={Routes.editClinic.path} onEnter={onRouteEnter} component={ClinicController}/>
+                    <Route path={Routes.institutions.path} onEnter={onRouteEnter} component={InstitutionsController}/>
+                    <Route path={Routes.createInstitution.path} onEnter={onRouteEnter} component={InstitutionController}/>
+                    <Route path={Routes.editInstitution.path} onEnter={onRouteEnter} component={InstitutionController}/>
                     <Route path={Routes.records.path} onEnter={onRouteEnter} component={RecordsController}/>
                     <Route path={Routes.createRecord.path} onEnter={onRouteEnter} component={RecordController}/>
                     <Route path={Routes.editRecord.path} onEnter={onRouteEnter} component={RecordController}/>

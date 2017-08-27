@@ -6,11 +6,11 @@ import {Button, Panel} from 'react-bootstrap';
 import injectIntl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
 import Mask from '../Mask';
-import ClinicTable from './ClinicTable';
+import InstitutionTable from './InstitutionTable';
 
-class Clinics extends React.Component {
+class Institutions extends React.Component {
     static propTypes = {
-        clinics: React.PropTypes.array,
+        institutions: React.PropTypes.array,
         handlers: React.PropTypes.object.isRequired
     };
 
@@ -20,18 +20,18 @@ class Clinics extends React.Component {
     }
 
     render() {
-        var clinics = this.props.clinics;
-        if (clinics === null) {
+        var institutions = this.props.institutions;
+        if (institutions === null) {
             return <Mask text={this.i18n('please-wait')}/>;
         }
-        return <Panel header={this.i18n('clinics.panel-title')} bsStyle='primary'>
-            <ClinicTable {...this.props}/>
+        return <Panel header={this.i18n('institutions.panel-title')} bsStyle='primary'>
+            <InstitutionTable {...this.props}/>
             <div>
                 <Button bsStyle='primary'
-                        onClick={this.props.handlers.onCreate}>{this.i18n('clinics.create-clinic')}</Button>
+                        onClick={this.props.handlers.onCreate}>{this.i18n('institutions.create-institution')}</Button>
             </div>
         </Panel>
     }
 }
 
-export default injectIntl(I18nWrapper(Clinics));
+export default injectIntl(I18nWrapper(Institutions));

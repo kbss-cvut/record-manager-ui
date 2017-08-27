@@ -19,8 +19,8 @@ var RecordStore = Reflux.createStore({
         if (!user) {
             return;
         }
-        if (!Authentication.isAdmin() && user.clinic) {
-            urlSuffix = '?clinic=' + user.clinic.key;
+        if (!Authentication.isAdmin() && user.institution) {
+            urlSuffix = '?institution=' + user.institution.key;
         }
         Ajax.get('rest/records' + urlSuffix).end((data) => {
             this._patients = data;
@@ -35,9 +35,9 @@ var RecordStore = Reflux.createStore({
         return this._patients;
     },
 
-    onLoadClinicPatients: function (clinicKey) {
-        Ajax.get('rest/records?clinic=' + clinicKey).end((data) => {
-            this.trigger({action: Actions.loadClinicPatients, clinicKey: clinicKey, data: data});
+    onLoadInstitutionPatients: function (institutionKey) {
+        Ajax.get('rest/records?institution=' + institutionKey).end((data) => {
+            this.trigger({action: Actions.loadInstitutionPatients, institutionKey: institutionKey, data: data});
         });
     },
 

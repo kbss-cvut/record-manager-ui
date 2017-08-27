@@ -6,7 +6,7 @@ import {Panel, Table} from 'react-bootstrap';
 import injectInl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
 
-const ClinicMembers = (props) => {
+const InstitutionMembers = (props) => {
     var members = props.members;
     if (members.length === 0) {
         return null;
@@ -23,7 +23,7 @@ const ClinicMembers = (props) => {
         </tr>);
     }
 
-    return <Panel header={<h3>{props.i18n('clinic.members.panel-title')}</h3>} bsStyle='info'>
+    return <Panel header={<h3>{props.i18n('institution.members.panel-title')}</h3>} bsStyle='info'>
         <Table striped bordered condensed hover>
             <thead>
             <tr>
@@ -39,8 +39,8 @@ const ClinicMembers = (props) => {
     </Panel>;
 };
 
-ClinicMembers.propTypes = {
+InstitutionMembers.propTypes = {
     members: React.PropTypes.array.isRequired
 };
 
-export default injectInl(I18nWrapper(ClinicMembers));
+export default injectInl(I18nWrapper(InstitutionMembers));

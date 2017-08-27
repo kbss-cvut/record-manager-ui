@@ -4,8 +4,8 @@ import React from "react";
 import {Button, Panel} from "react-bootstrap";
 import {FormattedMessage} from "react-intl";
 import Authentication from "../../utils/Authentication";
-import ClinicMembers from "./ClinicMembers";
-import ClinicPatients from "./ClinicPatients";
+import InstitutionMembers from "./InstitutionMembers";
+import InstitutionPatients from "./InstitutionPatients";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import HorizontalInput from "../HorizontalInput";
@@ -15,11 +15,11 @@ import Routes from "../../utils/Routes";
 import Utils from "../../utils/Utils";
 
 /**
- * Clinic detail. Editable only for admins.
+ * Institution detail. Editable only for admins.
  */
-class Clinic extends React.Component {
+class Institution extends React.Component {
     static propTypes = {
-        clinic: React.PropTypes.object,
+        institution: React.PropTypes.object,
         loading: React.PropTypes.bool,
         members: React.PropTypes.array,
         patients: React.PropTypes.array,
@@ -46,20 +46,20 @@ class Clinic extends React.Component {
         if (this.props.loading) {
             return <Mask text={this.i18n('please-wait')}/>;
         }
-        var clinic = this.props.clinic;
-        return <Panel header={<h3>{this.i18n('clinic.panel-title')}</h3>} bsStyle='primary'>
+        var institution = this.props.institution;
+        return <Panel header={<h3>{this.i18n('institution.panel-title')}</h3>} bsStyle='primary'>
             <form className='form-horizontal' style={{margin: '0.5em 0 1.5em 0'}}>
                 <div className='row'>
                     <div className='col-xs-4'>
-                        <HorizontalInput type='text' name='name' label={this.i18n('clinic.name')}
-                               value={clinic.name} readOnly={!Authentication.isAdmin()}
+                        <HorizontalInput type='text' name='name' label={this.i18n('institution.name')}
+                               value={institution.name} readOnly={!Authentication.isAdmin()}
                                labelWidth={4} inputWidth={8} onChange={this._onChange}/>
                     </div>
                 </div>
                 <div className='row'>
                     <div className='col-xs-4'>
-                        <HorizontalInput type='text' name='emailAddress' label={this.i18n('clinic.email')}
-                               value={clinic.emailAddress} readOnly={!Authentication.isAdmin()}
+                        <HorizontalInput type='text' name='emailAddress' label={this.i18n('institution.email')}
+                               value={institution.emailAddress} readOnly={!Authentication.isAdmin()}
                                labelWidth={4} inputWidth={8} onChange={this._onChange}/>
                     </div>
                 </div>
@@ -67,20 +67,20 @@ class Clinic extends React.Component {
                 {this._renderButtons()}
             </form>
             {this._renderMembers()}
-            <ClinicPatients patients={this.props.patients} onEdit={this._onEditPatient}/>
+            <InstitutionPatients patients={this.props.patients} onEdit={this._onEditPatient}/>
         </Panel>;
     }
 
     _renderAddedDate() {
-        var clinic = this.props.clinic;
-        if (clinic.isNew || !clinic.dateCreated) {
+        var institution = this.props.institution;
+        if (institution.isNew || !institution.dateCreated) {
             return null;
         }
-        var created = Utils.formatDate(clinic.dateCreated);
+        var created = Utils.formatDate(institution.dateCreated);
         return <div className='row'>
             <div className='col-xs-6'>
                 <div className='notice-small'>
-                    <FormattedMessage id='clinic.created' values={{date: created}}/>
+                    <FormattedMessage id='institution.created' values={{date: created}}/>
                 </div>
             </div>
         </div>
@@ -104,9 +104,9 @@ class Clinic extends React.Component {
     }
 
     _renderMembers() {
-        var members = this.props.clinic.members ? this.props.clinic.members : this.props.members;
-        return <ClinicMembers members={members}/>
+        var members = this.props.institution.members ? this.props.institution.members : this.props.members;
+        return <InstitutionMembers members={members}/>
     }
 }
 
-export default injectIntl(I18nWrapper(Clinic));
+export default injectIntl(I18nWrapper(Institution));

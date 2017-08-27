@@ -9,9 +9,9 @@ import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import Routes from "../../utils/Routes";
 
-class ClinicTable extends React.Component {
+class InstitutionTable extends React.Component {
     static propTypes = {
-        clinics: React.PropTypes.array.isRequired,
+        institutions: React.PropTypes.array.isRequired,
         handlers: React.PropTypes.object.isRequired
     };
 
@@ -52,57 +52,57 @@ class ClinicTable extends React.Component {
     }
 
     _getDeleteLabel() {
-        var clinic = this.state.selectedItem;
-        return clinic ? clinic.name : '';
+        var institution = this.state.selectedItem;
+        return institution ? institution.name : '';
     }
 
     _renderHeader() {
         return <thead>
         <tr>
             <th className='col-xs-5 content-center'>{this.i18n('name')}</th>
-            <th className='col-xs-5 content-center'>{this.i18n('clinic.email')}</th>
+            <th className='col-xs-5 content-center'>{this.i18n('institution.email')}</th>
             <th className='col-xs-2 content-center'>{this.i18n('actions')}</th>
         </tr>
         </thead>;
     }
 
     _renderRows() {
-        var items = this.props.clinics,
+        var items = this.props.institutions,
             rows = [],
             onEdit = this.props.handlers.onEdit;
         for (var i = 0, len = items.length; i < len; i++) {
-            rows.push(<ClinicRow key={items[i].name} clinic={items[i]} onEdit={onEdit} onDelete={this._onDelete}/>);
+            rows.push(<InstitutionRow key={items[i].name} institution={items[i]} onEdit={onEdit} onDelete={this._onDelete}/>);
         }
         return rows;
     }
 }
 
-var ClinicRow = (props) => {
-    var clinic = props.clinic,
+var InstitutionRow = (props) => {
+    var institution = props.institution,
         deleteButton = Authentication.isAdmin() ?
-            <Button bsStyle='warning' bsSize='small' title={props.i18n('clinics.delete-tooltip')}
-                    onClick={() => props.onDelete(props.clinic)}>{props.i18n('delete')}</Button> : null;
+            <Button bsStyle='warning' bsSize='small' title={props.i18n('institutions.delete-tooltip')}
+                    onClick={() => props.onDelete(props.institution)}>{props.i18n('delete')}</Button> : null;
 
     return <tr>
         <td className='report-row'>
-            <a href={'#/' + Routes.clinics.path + '/' + clinic.key}
-               title={props.i18n('clinics.open-tooltip')}>{clinic.name}</a>
+            <a href={'#/' + Routes.institutions.path + '/' + institution.key}
+               title={props.i18n('institutions.open-tooltip')}>{institution.name}</a>
         </td>
-        <td className='report-row'>{clinic.emailAddress}</td>
+        <td className='report-row'>{institution.emailAddress}</td>
         <td className='report-row actions'>
-            <Button bsStyle='primary' bsSize='small' title={props.i18n('clinics.open-tooltip')}
-                    onClick={() => props.onEdit(props.clinic)}>{props.i18n('open')}</Button>
+            <Button bsStyle='primary' bsSize='small' title={props.i18n('institutions.open-tooltip')}
+                    onClick={() => props.onEdit(props.institution)}>{props.i18n('open')}</Button>
             {deleteButton}
         </td>
     </tr>;
 };
 
-ClinicRow.propTypes = {
-    clinic: React.PropTypes.object.isRequired,
+InstitutionRow.propTypes = {
+    institution: React.PropTypes.object.isRequired,
     onEdit: React.PropTypes.func.isRequired,
     onDelete: React.PropTypes.func.isRequired
 };
 
-ClinicRow = injectIntl(I18nWrapper(ClinicRow));
+InstitutionRow = injectIntl(I18nWrapper(InstitutionRow));
 
-export default injectIntl(I18nWrapper(ClinicTable));
+export default injectIntl(I18nWrapper(InstitutionTable));

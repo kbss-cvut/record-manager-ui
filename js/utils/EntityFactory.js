@@ -17,7 +17,7 @@ module.exports = {
         };
     },
 
-    initNewClinic: function () {
+    initNewInstitution: function () {
         return {
             name: '',
             emailAddress: '',

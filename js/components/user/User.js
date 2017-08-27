@@ -4,7 +4,7 @@ import React from "react";
 import {Button, Panel} from "react-bootstrap";
 import Actions from "../../actions/Actions";
 import Authentication from "../../utils/Authentication";
-import ClinicStore from "../../stores/ClinicStore";
+import InstitutionStore from "../../stores/InstitutionStore";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import Input from "../Input";
@@ -26,27 +26,27 @@ class User extends React.Component {
         super(props);
         this.i18n = this.props.i18n;
         this.state = {
-            clinics: ClinicStore.getClinics() ? User._processClinics(ClinicStore.getClinics()) : []
+            institutions: InstitutionStore.getInstitutions() ? User._processInstitutions(InstitutionStore.getInstitutions()) : []
         };
     }
 
     componentDidMount() {
-        if (this.state.clinics.length === 0) {
-            Actions.loadAllClinics();
+        if (this.state.institutions.length === 0) {
+            Actions.loadAllInstitutions();
         }
-        this.unsubscribe = ClinicStore.listen(this._onClinicsLoaded);
+        this.unsubscribe = InstitutionStore.listen(this._onInstitutionsLoaded);
     }
 
-    _onClinicsLoaded = (data) => {
-        if (data.action === Actions.loadAllClinics) {
+    _onInstitutionsLoaded = (data) => {
+        if (data.action === Actions.loadAllInstitutions) {
             this.setState({
-                clinics: User._processClinics(data.data)
+                institutions: User._processInstitutions(data.data)
             });
         }
     };
 
-    static _processClinics(clinics) {
-        return clinics.map((item) => {
+    static _processInstitutions(institutions) {
+        return institutions.map((item) => {
             return {label: item.name, value: item.uri}
         });
     };
@@ -61,11 +61,11 @@ class User extends React.Component {
         this.props.onChange(change);
     };
 
-    _onClinicSelected = (e) => {
+    _onInstitutionSelected = (e) => {
         var value = e.target.value,
-            clinic = ClinicStore.getClinics().find((item) => item.uri === value),
+            institution = InstitutionStore.getInstitutions().find((item) => item.uri === value),
             change = {
-                clinic: clinic
+                institution: institution
             };
         this.props.onChange(change);
     };
@@ -81,11 +81,11 @@ class User extends React.Component {
         this.props.onChange({types: types});
     };
 
-    _generateClinicsOptions = () => {
+    _generateInstitutionsOptions = () => {
         let options = [];
-        const len = this.state.clinics.length;
+        const len = this.state.institutions.length;
         for (let i = 0; i < len; i++) {
-            let option = this.state.clinics[i];
+            let option = this.state.institutions[i];
             options.push(<option key={'opt_' + option.value} value={option.value}>{option.label}</option>);
         }
         options.unshift(<option key='opt_default' value='' disabled style={{display: 'none'}}>
@@ -134,10 +134,10 @@ class User extends React.Component {
                 </div>
                 <div className='row'>
                     <div className='col-xs-4'>
-                        <HorizontalInput type='select' name='clinic' label={this.i18n('clinic.panel-title')}
-                                         onChange={this._onClinicSelected} value={user.clinic ? user.clinic.uri : ''}
+                        <HorizontalInput type='select' name='institution' label={this.i18n('institution.panel-title')}
+                                         onChange={this._onInstitutionSelected} value={user.institution ? user.institution.uri : ''}
                                          labelWidth={4} inputWidth={8}>
-                            {this._generateClinicsOptions()}
+                            {this._generateInstitutionsOptions()}
                         </HorizontalInput>
                     </div>
                 </div>

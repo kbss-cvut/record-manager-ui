@@ -55,15 +55,15 @@ var Authentication = {
     },
 
     /**
-     * Checks whether the currently logged in user can view patient records of the specified clinics.
+     * Checks whether the currently logged in user can view patient records of the specified institutions.
      *
-     * To be able to view the records, the user has to be an admin or a member of the clinic.
-     * @param clinicKey Key of the clinic to test
+     * To be able to view the records, the user has to be an admin or a member of the institution.
+     * @param institutionKey Key of the institution to test
      * @return {*|boolean}
      */
-    canLoadClinicsPatients(clinicKey) {
+    canLoadInstitutionsPatients(institutionKey) {
         var currentUser = UserStore.getCurrentUser();
-        return currentUser != null && (this.isAdmin(currentUser) || (currentUser.clinic != null && currentUser.clinic.key === clinicKey));
+        return currentUser != null && (this.isAdmin(currentUser) || (currentUser.institution != null && currentUser.institution.key === institutionKey));
     }
 };
 
