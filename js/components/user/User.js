@@ -81,6 +81,19 @@ class User extends React.Component {
         this.props.onChange({types: types});
     };
 
+    _generateClinicsOptions = () => {
+        let options = [];
+        const len = this.state.clinics.length;
+        for (let i = 0; i < len; i++) {
+            let option = this.state.clinics[i];
+            options.push(<option key={'opt_' + option.value} value={option.value}>{option.label}</option>);
+        }
+        options.unshift(<option key='opt_default' value='' disabled style={{display: 'none'}}>
+            {this.i18n('select.default')}
+        </option>);
+        return options;
+    };
+
     render() {
         if (this.props.loading) {
             return <Mask text={this.i18n('please-wait')}/>;
@@ -121,10 +134,11 @@ class User extends React.Component {
                 </div>
                 <div className='row'>
                     <div className='col-xs-4'>
-                        <Select options={this.state.clinics} name='clinic' label={this.i18n('clinic.panel-title')}
-                                onChange={this._onClinicSelected} labelClassName='col-xs-4'
-                                wrapperClassName='col-xs-8' addDefault={true}
-                                value={user.clinic ? user.clinic.uri : ''}/>
+                        <HorizontalInput type='select' name='clinic' label={this.i18n('clinic.panel-title')}
+                                         onChange={this._onClinicSelected} value={user.clinic ? user.clinic.uri : ''}
+                                         labelWidth={4} inputWidth={8}>
+                            {this._generateClinicsOptions()}
+                        </HorizontalInput>
                     </div>
                 </div>
                 <div className='row'>
