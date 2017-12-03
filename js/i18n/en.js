@@ -62,6 +62,9 @@ module.exports = {
         'users.email': 'Email',
         'users.open-tooltip': 'View and edit details of this user',
         'users.delete-tooltip': 'Delete this user',
+        'users.add-new-user': 'Add new user',
+        'users.add-existing-user': 'Add existing user',
+        'users.back-to-institution': 'Back to institution',
 
         'delete.dialog-title': 'Delete item?',
         'delete.dialog-content': 'Are you sure you want to remove {itemLabel}?',

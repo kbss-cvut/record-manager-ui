@@ -19,7 +19,8 @@ class User extends React.Component {
         user: React.PropTypes.object,
         loading: React.PropTypes.bool,
         onSave: React.PropTypes.func.isRequired,
-        onChange: React.PropTypes.func.isRequired
+        onChange: React.PropTypes.func.isRequired,
+        backToInstitution: React.PropTypes.bool
     };
 
     constructor(props) {
@@ -135,7 +136,8 @@ class User extends React.Component {
                 <div className='row'>
                     <div className='col-xs-4'>
                         <HorizontalInput type='select' name='institution' label={this.i18n('institution.panel-title')}
-                                         onChange={this._onInstitutionSelected} value={user.institution ? user.institution.uri : ''}
+                                         onChange={this._onInstitutionSelected}
+                                         value={user.institution ? user.institution.uri : ''}
                                          labelWidth={4} inputWidth={8}>
                             {this._generateInstitutionsOptions()}
                         </HorizontalInput>
@@ -156,7 +158,9 @@ class User extends React.Component {
                     <Button bsStyle='success' bsSize='small' ref='submit'
                             disabled={!UserValidator.isValid(user) || this.props.loading}
                             onClick={this.props.onSave}>{this.i18n('save')}</Button>
-                    <Button bsStyle='link' bsSize='small' onClick={this.props.onCancel}>{this.i18n('cancel')}</Button>
+                    <Button bsStyle='link' bsSize='small' onClick={this.props.onCancel}>
+                        {this.i18n(this.props.backToInstitution ? 'users.back-to-institution' : 'cancel')}
+                    </Button>
                 </div>
             </form>
         </Panel>;

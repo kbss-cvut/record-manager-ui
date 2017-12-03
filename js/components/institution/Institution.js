@@ -24,7 +24,10 @@ class Institution extends React.Component {
         members: React.PropTypes.array,
         patients: React.PropTypes.array,
         onSave: React.PropTypes.func.isRequired,
-        onChange: React.PropTypes.func.isRequired
+        onChange: React.PropTypes.func.isRequired,
+        onEditUser: React.PropTypes.func.isRequired,
+        onAddNewUser: React.PropTypes.func.isRequired,
+        onAddExistingUser: React.PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -33,7 +36,7 @@ class Institution extends React.Component {
     }
 
     _onChange = (e) => {
-        var change = {};
+        let change = {};
         change[e.target.name] = e.target.value;
         this.props.onChange(change);
     };
@@ -46,7 +49,7 @@ class Institution extends React.Component {
         if (this.props.loading) {
             return <Mask text={this.i18n('please-wait')}/>;
         }
-        var institution = this.props.institution;
+        const institution = this.props.institution;
         return <Panel header={<h3>{this.i18n('institution.panel-title')}</h3>} bsStyle='primary'>
             <form className='form-horizontal' style={{margin: '0.5em 0 1.5em 0'}}>
                 <div className='row'>
@@ -66,17 +69,17 @@ class Institution extends React.Component {
                 {this._renderAddedDate()}
                 {this._renderButtons()}
             </form>
-            {this._renderMembers()}
+            {!this.props.institution.isNew && this._renderMembers()}
             <InstitutionPatients patients={this.props.patients} onEdit={this._onEditPatient}/>
         </Panel>;
     }
 
     _renderAddedDate() {
-        var institution = this.props.institution;
+        let institution = this.props.institution;
         if (institution.isNew || !institution.dateCreated) {
             return null;
         }
-        var created = Utils.formatDate(institution.dateCreated);
+        let created = Utils.formatDate(institution.dateCreated);
         return <div className='row'>
             <div className='col-xs-6'>
                 <div className='notice-small'>
@@ -104,8 +107,9 @@ class Institution extends React.Component {
     }
 
     _renderMembers() {
-        var members = this.props.institution.members ? this.props.institution.members : this.props.members;
-        return <InstitutionMembers members={members}/>
+        const members = this.props.institution.members ? this.props.institution.members : this.props.members;
+        return <InstitutionMembers institution={this.props.institution} members={members} onEditUser={this.props.onEditUser} onAddNewUser={this.props.onAddNewUser}
+                                   onAddExistingUser={this.props.onAddExistingUser}  />
     }
 }
 

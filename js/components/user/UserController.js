@@ -22,6 +22,8 @@ class UserController extends React.Component {
             user: this._isNew() ? UserFactory.initNewUser() : null,
             loading: false
         };
+        this.institution = this._getPayload()
+
     }
 
     _isNew() {
@@ -32,6 +34,9 @@ class UserController extends React.Component {
         if (!this.state.user) {
             Actions.loadUser(this.props.params.username);
             this.setState({loading: true});
+        }
+        if(this.institution) {
+            this._onChange({institution: this.institution});
         }
         this.unsubscribe = UserStore.listen(this._onUserLoaded);
     }
@@ -67,9 +72,11 @@ class UserController extends React.Component {
     };
 
     _onCancel = () => {
-        var handlers = RouterStore.getViewHandlers(Routes.editUser.name);
-        if (handlers) {
+        const handlers = RouterStore.getViewHandlers(Routes.editUser.name);
+        if (handlers && !this.institution) {
             Routing.transitionTo(handlers.onCancel);
+        } else if (this.institution) {
+            Routing.transitionTo(Routes.editInstitution, {params: {key: this.institution.key}});
         } else {
             Routing.transitionTo(Authentication.isAdmin() ? Routes.users : Routes.dashboard);
         }
@@ -80,9 +87,17 @@ class UserController extends React.Component {
         this.setState({user: update});
     };
 
+    _getPayload() {
+        let payload = this._isNew() ? RouterStore.getTransitionPayload(Routes.createUser.name) :
+                                      RouterStore.getTransitionPayload(Routes.editUser.name);
+        this._isNew() ? RouterStore.setTransitionPayload(Routes.createUser.name, null) :
+                        RouterStore.setTransitionPayload(Routes.editUser.name, null);
+        return payload ? payload.institution : null;
+    }
+
     render() {
         return <User onSave={this._onSave} onCancel={this._onCancel} onChange={this._onChange} user={this.state.user}
-                     loading={this.state.loading}/>;
+                     backToInstitution={this.institution !== null} loading={this.state.loading}/>;
     }
 }
 

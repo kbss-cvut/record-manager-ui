@@ -7,14 +7,15 @@ import Routes from "../../utils/Routes";
 import Routing from "../../utils/Routing";
 import Users from "./Users";
 import UserStore from "../../stores/UserStore";
+import * as RouterStore from "../../stores/RouterStore";
 
 export default class UsersController extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
             users: UserStore.getAllUsers()
         };
+        this.institution = this._getPayload();
     }
 
     componentDidMount() {
@@ -55,6 +56,16 @@ export default class UsersController extends React.Component {
         Actions.deleteUser(user, Actions.loadAllUsers);
     };
 
+    _getPayload() {
+        let payload = RouterStore.getTransitionPayload(Routes.users.name);
+        RouterStore.setTransitionPayload(Routes.users.name, null);
+        return payload ? payload.institution : null;
+    }
+
+    _onBackToInstitution = () => {
+        Routing.transitionTo(Routes.editInstitution, {params: {key: this.institution.key}});
+    }
+
     render() {
         if (!Authentication.isAdmin()) {
             return null;
@@ -62,7 +73,8 @@ export default class UsersController extends React.Component {
         var handlers = {
             onEdit: this._onEditUser,
             onCreate: this._onAddUser,
-            onDelete: this._onDeleteUser
+            onDelete: this._onDeleteUser,
+            onBackToInstitution: this.institution ? this._onBackToInstitution : null
         };
         return <Users users={this.state.users} handlers={handlers}/>;
     }

@@ -62,6 +62,9 @@ module.exports = {
         'users.email': 'Email',
         'users.open-tooltip': 'Zobrazit či upravit detaily o tomto uživateli',
         'users.delete-tooltip': 'Smazat tohoto uživatele',
+        'users.add-new-user': 'Přidat nového uživatele',
+        'users.add-existing-user': 'Přidat existujícího uživatele',
+        'users.back-to-institution': 'Zpět do instituce',
 
         'delete.dialog-title': 'Smazat položku?',
         'delete.dialog-content': 'Určitě chcete odstranit {itemLabel}?',

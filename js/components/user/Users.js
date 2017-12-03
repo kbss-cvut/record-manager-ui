@@ -29,6 +29,10 @@ class Users extends React.Component {
             <div>
                 <Button bsStyle='primary'
                         onClick={this.props.handlers.onCreate}>{this.i18n('users.create-user')}</Button>
+                {this.props.handlers.onBackToInstitution &&
+                    <Button bsStyle='link' bsSize='small' onClick={this.props.handlers.onBackToInstitution}>
+                    {this.i18n('users.back-to-institution')}</Button>
+                }
             </div>
         </Panel>;
     }
