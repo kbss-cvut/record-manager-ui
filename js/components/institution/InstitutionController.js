@@ -118,15 +118,9 @@ class InstitutionController extends React.Component {
         });
     };
 
-    _onAddExistingUser = (institution) => {
-        Routing.transitionTo(Routes.users, {
-            payload: {institution: institution}
-        });
-    };
-
     render() {
         return <Institution onSave={this._onSave} onCancel={this._onCancel} onChange={this._onChange} onEditUser={this._onEditUser}
-                            onAddNewUser={this._onAddNewUser} onAddExistingUser={this._onAddExistingUser}
+                            onAddNewUser={this._onAddNewUser}
                             institution={this.state.institution} members={this.state.members} patients={this.state.patients}
                             loading={this.state.loading}/>;
     }

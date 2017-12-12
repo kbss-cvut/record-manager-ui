@@ -75,11 +75,11 @@ class Institution extends React.Component {
     }
 
     _renderAddedDate() {
-        let institution = this.props.institution;
+        const institution = this.props.institution;
         if (institution.isNew || !institution.dateCreated) {
             return null;
         }
-        let created = Utils.formatDate(institution.dateCreated);
+        const created = Utils.formatDate(institution.dateCreated);
         return <div className='row'>
             <div className='col-xs-6'>
                 <div className='notice-small'>

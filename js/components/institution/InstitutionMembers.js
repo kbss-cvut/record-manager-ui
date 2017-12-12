@@ -18,8 +18,8 @@ const InstitutionMembers = (props) => {
             <td className='report-row'>{member.username}</td>
             <td className='report-row'>{member.emailAddress}</td>
             <td className='content-center'>
-                <Button bsStyle='warning' bsSize='small' onClick={() => props.onEditUser(member, props.institution)}>
-                    {props.i18n('table-edit')}
+                <Button bsStyle='primary' bsSize='small' onClick={() => props.onEditUser(member, props.institution)}>
+                    {props.i18n('open')}
                 </Button>
             </td>
         </tr>);
@@ -45,9 +45,6 @@ const InstitutionMembers = (props) => {
             <Button bsStyle='primary' className="btn-sm" onClick={() => props.onAddNewUser(props.institution)}>
                 {props.i18n('users.add-new-user')}
             </Button>
-            <Button bsStyle='primary' className="btn-sm" onClick={() => props.onAddExistingUser(props.institution)}>
-                {props.i18n('users.add-existing-user')}
-            </Button>
         </div>
     </Panel>;
 };
@@ -57,7 +54,6 @@ InstitutionMembers.propTypes = {
     institution: React.PropTypes.object.isRequired,
     onEditUser: React.PropTypes.func.isRequired,
     onAddNewUser: React.PropTypes.func.isRequired,
-    onAddExistingUser: React.PropTypes.func.isRequired
 };
 
 export default injectInl(I18nWrapper(InstitutionMembers));
