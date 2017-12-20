@@ -37,10 +37,9 @@ class InstitutionMembers extends React.Component {
 
     render(){
         const members = this.props.members;
-        let rows = [],
-            member;
+        let rows = [];
         for (let i = 0, len = members.length; i < len; i++) {
-            member = members[i];
+            const member = members[i];
             rows.push(<tr key={member.username}>
                 <td className='report-row'>{member.firstName + ' ' + member.lastName}</td>
                 <td className='report-row'>{member.username}</td>
@@ -91,6 +90,7 @@ InstitutionMembers.propTypes = {
     institution: React.PropTypes.object.isRequired,
     onEditUser: React.PropTypes.func.isRequired,
     onAddNewUser: React.PropTypes.func.isRequired,
+    onDelete: React.PropTypes.func.isRequired
 };
 
 export default injectInl(I18nWrapper(InstitutionMembers));

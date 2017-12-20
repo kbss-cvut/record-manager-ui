@@ -106,7 +106,7 @@ class InstitutionController extends React.Component {
     };
 
     _onDeleteUser = (user, institutionKey) => {
-        Actions.deleteUser(user, Actions.loadInstitutionMembers(institutionKey));
+        Actions.deleteUser(user, () => Actions.loadInstitutionMembers(institutionKey));
     };
 
     _onEditUser = (user, institution) => {
