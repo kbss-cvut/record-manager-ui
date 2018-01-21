@@ -43,6 +43,7 @@ module.exports = {
         'main.dashboard-nav': 'Dashboard',
         'main.users-nav': 'Users',
         'main.institutions-nav': 'Institutions',
+        'main.institution-nav': 'My institution',
         'main.records-nav': 'Patient records',
         'main.logout': 'Logout',
         'main.my-profile': 'My profile',

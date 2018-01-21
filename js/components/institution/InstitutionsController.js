@@ -6,6 +6,7 @@ import Routes from "../../utils/Routes";
 import Routing from "../../utils/Routing";
 import Institutions from "./Institutions";
 import InstitutionStore from "../../stores/InstitutionStore";
+import * as Authentication from "../../utils/Authentication";
 
 export default class InstitutionsController extends React.Component {
     constructor(props) {
@@ -54,6 +55,9 @@ export default class InstitutionsController extends React.Component {
     };
 
     render() {
+        if (!Authentication.isAdmin()) {
+            return null;
+        }
         var handlers = {
             onEdit: this._onEditInstitution,
             onCreate: this._onAddInstitution,

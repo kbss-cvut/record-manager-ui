@@ -1,4 +1,5 @@
 'use strict';
+import * as Routing from "../utils/Routing";
 
 var React = require('react');
 var Reflux = require('reflux');
@@ -60,8 +61,14 @@ var MainView = React.createClass({
                         </Nav>
                         {this._renderUsers()}
                         <Nav>
-                            <LinkContainer
-                                to='institutions'><NavItem>{this.i18n('main.institutions-nav')}</NavItem></LinkContainer>
+                        {Authentication.isAdmin() ?
+                            <LinkContainer to='institutions'>
+                                <NavItem>{this.i18n('main.institutions-nav')}</NavItem>
+                            </LinkContainer>
+                         : <LinkContainer to={{ pathname: '/institutions/'+user.institution.key}}>
+                                <NavItem>{this.i18n('main.institution-nav')}</NavItem>
+                            </LinkContainer>
+                        }
                         </Nav>
                         <Nav>
                             <LinkContainer

@@ -43,6 +43,7 @@ module.exports = {
         'main.dashboard-nav': 'Hlavní strana',
         'main.users-nav': 'Uživatelé',
         'main.institutions-nav': 'Kliniky',
+        'main.institution-nav': 'Moje klinika',
         'main.records-nav': 'Záznamy pacientů',
         'main.logout': 'Odhlásit se',
         'main.my-profile': 'Můj profil',

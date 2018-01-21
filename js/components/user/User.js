@@ -32,7 +32,7 @@ class User extends React.Component {
     }
 
     componentDidMount() {
-        if (this.state.institutions.length === 0) {
+        if (this.state.institutions.length === 0 && Authentication.isAdmin()) {
             Actions.loadAllInstitutions();
         }
         this.unsubscribe = InstitutionStore.listen(this._onInstitutionsLoaded);

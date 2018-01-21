@@ -105,6 +105,10 @@ class InstitutionController extends React.Component {
         this.setState({institution: update});
     };
 
+    _onDeleteUser = (user, institutionKey) => {
+        Actions.deleteUser(user, () => Actions.loadInstitutionMembers(institutionKey));
+    };
+
     _onEditUser = (user, institution) => {
         Routing.transitionTo(Routes.editUser, {
             params: {username: user.username},
@@ -120,7 +124,7 @@ class InstitutionController extends React.Component {
 
     render() {
         return <Institution onSave={this._onSave} onCancel={this._onCancel} onChange={this._onChange} onEditUser={this._onEditUser}
-                            onAddNewUser={this._onAddNewUser}
+                            onAddNewUser={this._onAddNewUser} onDelete={this._onDeleteUser}
                             institution={this.state.institution} members={this.state.members} patients={this.state.patients}
                             loading={this.state.loading}/>;
     }
