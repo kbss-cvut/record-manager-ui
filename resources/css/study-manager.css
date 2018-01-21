@@ -160,17 +160,6 @@ td.actions button {
     .container-fluid .text-muted {
         margin: 20px 0 0 0;
     }
-
-    .login-forgot-password {
-        position: absolute;
-        margin-left: -8px;
-        margin-top: -3px;
-    }
-
-    .login-buttons {
-        display: table;
-        margin: 20px auto 0 auto;
-    }
 }
 
 .register-panel {
