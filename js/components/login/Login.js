@@ -60,9 +60,8 @@ var Login = React.createClass({
 
 
     render: function () {
-        var panelCls = this.state.alertVisible ? 'login-panel expanded' : 'login-panel',
-            mask = this.state.mask ? (<Mask text={this.i18n('login.progress-mask')}/>) : null;
-        return <Panel header={<h3>{this.i18n('login.title')}</h3>} bsStyle='info' className={panelCls}>
+        var mask = this.state.mask ? (<Mask text={this.i18n('login.progress-mask')}/>) : null;
+        return <Panel header={<h3>{this.i18n('login.title')}</h3>} bsStyle='info' className="login-panel">
             {mask}
             <Form horizontal>
                 {this.renderAlert()}
@@ -74,11 +73,12 @@ var Login = React.createClass({
                        value={this.state.password}
                        onChange={this.onChange} labelWidth={3} onKeyPress={this.onKeyPress}
                        inputWidth={9}/>
-
-                <div className='col-xs-3'>&nbsp;</div>
-                <div className='col-xs-9' style={{padding: '0 0 0 7px'}}>
-                    <Button bsStyle='success' bsSize='small' onClick={this.login}
+                <Button bsStyle='link login-forgot-password' bsSize='small'
+                        disabled={this.state.mask}>Forgot password</Button>
+                <div className="login-buttons">
+                    <Button bsStyle='success' bsSize='large' class='login-button-login' onClick={this.login}
                             disabled={this.state.mask}>{this.i18n('login.submit')}</Button>
+                    {/*TODO i18n forgot password, click*/}
                 </div>
             </Form>
         </Panel>;

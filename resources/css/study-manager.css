@@ -130,8 +130,8 @@ td.actions button {
 }
 
 .login-panel {
+    display: table;
     width: 400px;
-    height: 200px;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -140,8 +140,37 @@ td.actions button {
     margin: auto;
 }
 
-.login-panel.expanded {
-    height: 260px;
+.login-buttons {
+    display: table;
+    margin: 0 auto;
+}
+
+.login-forgot-password {
+    text-align: right;
+    width: 100%;
+    margin-top: -25px;
+    position: relative;
+}
+
+@media screen and (max-width: 480px) {
+    .login-panel {
+        width: 300px;
+    }
+
+    .container-fluid .text-muted {
+        margin: 20px 0 0 0;
+    }
+
+    .login-forgot-password {
+        position: absolute;
+        margin-left: -8px;
+        margin-top: -3px;
+    }
+
+    .login-buttons {
+        display: table;
+        margin: 20px auto 0 auto;
+    }
 }
 
 .register-panel {

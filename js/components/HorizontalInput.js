@@ -80,7 +80,7 @@ export default class HorizontalInput extends React.Component {
     }
 
     _renderSelect() {
-        return <FormGroup bsSize='small' validationState={this.props.validation}>
+        return <FormGroup validationState={this.props.validation}>
             {this._renderLabel()}
             <Col sm={this.props.inputWidth}>
                 <FormControl componentClass='select' ref={c => this.input = c} {...this._getInputProps()}>
@@ -98,7 +98,7 @@ export default class HorizontalInput extends React.Component {
     }
 
     _renderTextArea() {
-        return <FormGroup bsSize='small' validationState={this.props.validation}>
+        return <FormGroup validationState={this.props.validation}>
             {this._renderLabel()}
             <Col sm={this.props.inputWidth}>
                 <FormControl componentClass='textarea' style={{height: 'auto'}}
@@ -114,7 +114,7 @@ export default class HorizontalInput extends React.Component {
     }
 
     _renderInput() {
-        return <FormGroup bsSize='small' validationState={this.props.validation}>
+        return <FormGroup validationState={this.props.validation}>
             {this._renderLabel()}
             <Col sm={this.props.inputWidth}>
                 <FormControl ref={c => this.input = c} componentClass='input' {...this._getInputProps()}/>
