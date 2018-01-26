@@ -226,7 +226,7 @@ td.actions button {
 .dashboard-sector {
     text-align: center;
     vertical-align: middle;
-    padding: 3em 0.5em;
+    padding: 0.5em;
 }
 
 .dashboard-sector-search {
@@ -246,6 +246,24 @@ td.actions button {
     line-height: 1.3;
     border-radius: 6px;
     white-space: normal;
+}
+
+@media screen and (max-width: 768px) {
+    .dashboard-tile {
+        min-height: 5em;
+    }
+    .formatted-message-size {
+        font-size: 150%;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .dashboard-tile {
+        min-height: 3em;
+    }
+    .formatted-message-size {
+        font-size: 130%;
+    }
 }
 
 .dashboard-report-search {

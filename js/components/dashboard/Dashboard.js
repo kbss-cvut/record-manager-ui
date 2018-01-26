@@ -19,7 +19,7 @@ class Dashboard extends React.Component {
     }
 
     renderTitle() {
-        return <h3>
+        return <h3 className='formatted-message-size'>
             <FormattedMessage id='dashboard.welcome' values={{name: <span className='bold'>{this.props.userFirstName}</span>}}/>
         </h3>;
     }
@@ -27,14 +27,14 @@ class Dashboard extends React.Component {
     _renderMainDashboard() {
         return <Grid fluid={true}>
             <div>
-                <Col xs={3}  className='dashboard-sector'>
+                <Col xs={12} sm={3} className='dashboard-sector'>
                     <DashboardTile onClick={this.props.handlers.createRecord}>{this.i18n('dashboard.create-tile')}</DashboardTile>
                 </Col>
                 {this._renderUsersTile()}
-                <Col xs={3} className='dashboard-sector'>
+                <Col xs={12} sm={3} className='dashboard-sector'>
                     <DashboardTile onClick={this.props.handlers.showInstitutions}>{this.i18n('dashboard.institutions-tile')}</DashboardTile>
                 </Col>
-                <Col xs={3} className='dashboard-sector'>
+                <Col xs={12} sm={3} className='dashboard-sector'>
                     <DashboardTile onClick={this.props.handlers.showRecords}>{this.i18n('dashboard.records-tile')}</DashboardTile>
                 </Col>
             </div>
@@ -43,22 +43,19 @@ class Dashboard extends React.Component {
 
     _renderUsersTile() {
         return Authentication.isAdmin() ?
-            <Col xs={3} className='dashboard-sector'>
+            <Col xs={12} sm={3} className='dashboard-sector'>
                 <DashboardTile onClick={this.props.handlers.showUsers}>{this.i18n('dashboard.users-tile')}</DashboardTile>
             </Col> : null;
     }
 
     render() {
         return (
-            <div style={{margin: '0 -15px 0 -15px'}}>
-                <div className='col-xs-10'>
-                    <Jumbotron>
-                        {this.renderTitle()}
-                        {this._renderMainDashboard()}
-                    </Jumbotron>
-                </div>
+            <div className='col-lg-10'>
+                <Jumbotron>
+                    {this.renderTitle()}
+                    {this._renderMainDashboard()}
+                </Jumbotron>
             </div>
-
         );
     }
 }
