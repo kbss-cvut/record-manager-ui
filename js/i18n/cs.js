@@ -39,6 +39,12 @@ module.exports = {
         'login.register': 'Registrace',
         'login.error': 'Přihlášení se nezdařilo.',
         'login.progress-mask': 'Přihlašuji...',
+        'login.forgot-password': 'Zapomenuté heslo',
+        'login.email': 'Email',
+        'login.reset-password': 'Resetovat heslo',
+        'login.forgot-your-password': 'Zapomněl jsi své heslo?',
+        'login.back-to-login': 'Zpět na přihlášení',
+        'login.reset-password-alert': 'Email s instrukcemi na resetování hesla byl odeslán.',
 
         'main.dashboard-nav': 'Hlavní strana',
         'main.users-nav': 'Uživatelé',

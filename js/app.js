@@ -48,6 +48,7 @@ import RecordsController from "./components/record/RecordsController";
 import UsersController from "./components/user/UsersController";
 import UserController from "./components/user/UserController";
 import RoutingRules from "./utils/RoutingRules";
+import PasswordReset from "./components/login/PasswordReset";
 
 
 function onRouteEnter() {
@@ -62,6 +63,7 @@ var App = React.createClass({
                 <Route path='/' component={MainView}>
                     <IndexRoute component={DashboardController}/>
                     <Route path={Routes.login.path} onEnter={onRouteEnter} component={Login}/>
+                    <Route path={Routes.passwordReset.path} onEnter={onRouteEnter} component={PasswordReset}/>
                     <Route path={Routes.dashboard.path} onEnter={onRouteEnter} component={DashboardController}/>
                     <Route path={Routes.users.path} onEnter={onRouteEnter} component={UsersController}/>
                     <Route path={Routes.createUser.path} onEnter={onRouteEnter} component={UserController}/>

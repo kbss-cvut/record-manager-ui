@@ -7,7 +7,8 @@ import Authentication from "../../utils/Authentication";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import Mask from "../Mask";
-import Input from "../Input";
+import * as Routing from "../../utils/Routing";
+import * as Routes from "../../utils/Routes";
 
 class Login extends React.Component {
     constructor(props) {
@@ -45,7 +46,11 @@ class Login extends React.Component {
     login = () => {
         Authentication.login(this.state.username, this.state.password, this.onLoginError);
         this.setState({mask: true});
-    }
+    };
+
+    onForgotPassword = () => {
+        Routing.transitionTo(Routes.passwordReset)
+    };
 
     /*
     register() {
@@ -75,10 +80,10 @@ class Login extends React.Component {
                        inputWidth={9}/>
                 <div className="login-forgot-password-block">
                     <Button bsStyle='link' className='login-forgot-password' bsSize='small'
-                            disabled={this.state.mask}>Forgot password</Button>
+                            onClick={this.onForgotPassword}>{this.i18n('login.forgot-password')}</Button>
                 </div>
-                <div className="login-button">
-                    <Button bsStyle='success' bsSize='large' className='login-button-login' onClick={this.login}
+                <div className="login-buttons">
+                    <Button bsStyle='success' bsSize='large' onClick={this.login}
                             disabled={this.state.mask}>{this.i18n('login.submit')}</Button>
                     {/*TODO i18n forgot password, click*/}
                 </div>
