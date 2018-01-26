@@ -140,16 +140,20 @@ td.actions button {
     margin: auto;
 }
 
-.login-buttons {
+.login-button {
     display: table;
     margin: 0 auto;
 }
 
-.login-forgot-password {
+.login-forgot-password-block {
     text-align: right;
     width: 100%;
+}
+
+.login-forgot-password {
     margin-top: -25px;
     position: relative;
+    border: none;
 }
 
 @media screen and (max-width: 480px) {
