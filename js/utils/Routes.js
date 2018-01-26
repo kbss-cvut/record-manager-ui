@@ -2,6 +2,7 @@
 
 var Routes = {
     login: {name: 'login', path: 'login'},
+    passwordReset: {name: 'passwordReset', path: 'login/password-reset'},
     dashboard: {name: 'dashboard', path: 'dashboard'},
     users: {name: 'users', path: 'users'},
     createUser: {name: 'createUser', path: 'users/create'},
