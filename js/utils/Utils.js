@@ -205,5 +205,13 @@ module.exports = {
             pass += CHARACTERS.charAt(Math.floor(Math.random() * CHARACTERS.length));
         }
         return pass;
+    },
+
+    deviceIsMobile: function() {
+        const winWidth = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth);
+        return (winWidth > 0 && winWidth < 321)
+            ? true
+            : (/Android|webOS|iPhone|iPad|iPod|BlackBerry|Opera Mini|Mobile|MeeGo/i.test(
+                navigator.userAgent || navigator.vendor || window.opera));
     }
 };

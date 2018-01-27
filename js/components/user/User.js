@@ -10,7 +10,6 @@ import injectIntl from "../../utils/injectIntl";
 import Input from "../Input";
 import HorizontalInput from "../HorizontalInput";
 import Mask from "../Mask";
-import Select from "../Select";
 import UserValidator from "../../validation/UserValidator";
 import Vocabulary from "../../constants/Vocabulary";
 

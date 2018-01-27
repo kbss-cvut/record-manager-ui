@@ -39,7 +39,6 @@ import Routes from "./utils/Routes";
 import Actions from "./actions/Actions";
 
 import Login from "./components/login/Login";
-import MainView from "./components/MainView";
 import InstitutionController from "./components/institution/InstitutionController";
 import InstitutionsController from "./components/institution/InstitutionsController";
 import DashboardController from "./components/dashboard/DashboardController";
@@ -49,6 +48,7 @@ import UsersController from "./components/user/UsersController";
 import UserController from "./components/user/UserController";
 import RoutingRules from "./utils/RoutingRules";
 import PasswordReset from "./components/login/PasswordReset";
+import MainView from "./components/MainView";
 
 
 function onRouteEnter() {
