@@ -1,83 +1,62 @@
 'use strict';
 
-var React = require('react');
-var Reflux = require('reflux');
+import Dashboard from "./Dashboard";
+import React from 'react';
+import injectIntl from '../../utils/injectIntl';
+import UserStore from '../../stores/UserStore';
+import Routes from '../../utils/Routes';
+import Routing from '../../utils/Routing';
+import I18nWrapper from "../../i18n/I18nWrapper";
+import MessageWrapper from "../misc/hoc/MessageWrapper";
 
-var injectIntl = require('../../utils/injectIntl');
-
-var Routing = require('../../utils/Routing');
-var Routes = require('../../utils/Routes');
-var UserStore = require('../../stores/UserStore');
-var RouterStore = require('../../stores/RouterStore');
-var Dashboard = require('./Dashboard');
-var I18nMixin = require('../../i18n/I18nMixin');
-
-var DashboardController = React.createClass({
-    mixins: [
-        Reflux.listenTo(UserStore, 'onUserLoaded'),
-        I18nMixin
-    ],
-    getInitialState: function () {
-        return {
+class DashboardController extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             firstName: UserStore.getCurrentUser() ? UserStore.getCurrentUser().firstName : ''
-        }
-    },
+        };
+    }
 
-    onUserLoaded: function (user) {
+    onUserLoaded(user) {
         this.setState({firstName: user.firstName});
-    },
+    }
 
-    createEmptyReport: function (reportType) {
-        Routing.transitionTo(Routes.createReport, {
-            handlers: {
-                onSuccess: Routes.reports,
-                onCancel: Routes.dashboard
-            },
-            payload: {
-                reportType: reportType
-            }
-        });
-    },
-
-    _showUsers: function () {
+    _showUsers = () => {
         Routing.transitionTo(Routes.users);
-    },
+    };
 
-    _showInstitutions: function () {
+    _showInstitutions = () => {
         Routing.transitionTo(Routes.institutions);
-    },
+    };
 
-    _showRecords: function () {
+    _showRecords = () => {
         Routing.transitionTo(Routes.records);
-    },
+    };
 
-    _createRecord: function () {
+    _createRecord = () => {
+        {/*TODO bug on cancel it doesnt return to dashboard but to patient records */}
         Routing.transitionTo(Routes.createRecord, {
             handlers: {
                 onSuccess: Routes.records,
                 onCancel: Routes.dashboard
             }
         });
-    },
+    };
 
-
-    render: function () {
-        var handlers = {
+    render() {
+        const handlers = {
             showUsers: this._showUsers,
             showInstitutions: this._showInstitutions,
             showRecords: this._showRecords,
             createRecord: this._createRecord
         };
-        return <div>
-            <Dashboard userFirstName={this.state.firstName} dashboard={this._resolveDashboard()} handlers={handlers}/>
-        </div>;
-    },
-
-    _resolveDashboard: function () {
-        var payload = RouterStore.getTransitionPayload(Routes.dashboard.name);
-        RouterStore.setTransitionPayload(Routes.dashboard.name, null);
-        return payload ? payload.dashboard : null;
+        return (
+        <div>
+            <Dashboard userFirstName={this.state.firstName} handlers={handlers}/>
+        </div>
+        );
     }
-});
+}
 
-module.exports = injectIntl(DashboardController);
+
+export default injectIntl(I18nWrapper(MessageWrapper(DashboardController)));

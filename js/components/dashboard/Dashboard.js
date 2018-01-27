@@ -1,99 +1,68 @@
-/**
- * @jsx
- */
-
 'use strict';
 
-var React = require('react');
-var Jumbotron = require('react-bootstrap').Jumbotron;
-var Grid = require('react-bootstrap').Grid;
-var Col = require('react-bootstrap').Col;
-var Row = require('react-bootstrap').Row;
+import React from "react";
+import Authentication from "../../utils/Authentication";
+import I18nWrapper from "../../i18n/I18nWrapper";
+import injectIntl from "../../utils/injectIntl";
+import {Col, Jumbotron, Grid} from "react-bootstrap";
+import {FormattedMessage} from "react-intl";
+import DashboardTile from "./DashboardTile";
 
-var injectIntl = require('../../utils/injectIntl');
-var FormattedMessage = require('react-intl').FormattedMessage;
+class Dashboard extends React.Component {
+    constructor(props) {
+        super(props);
+        this.i18n = this.props.i18n;
+    }
 
-var Authentication = require('../../utils/Authentication');
-var Constants = require('../../constants/Constants');
-var Tile = require('./DashboardTile').default;
-var I18nMixin = require('../../i18n/I18nMixin');
-
-var Dashboard = React.createClass({
-    mixins: [I18nMixin],
-
-    propTypes: {
-        userFirstName: React.PropTypes.string,
-        dashboard: React.PropTypes.string,
-        handlers: React.PropTypes.object.isRequired
-    },
-
-    getInitialState: function () {
-        return {
-            dashboard: this.props.dashboard ? this.props.dashboard : Constants.DASHBOARDS.MAIN.id,
-            search: false
-        }
-    },
-
-    onUserLoaded: function (user) {
+    onUserLoaded(user) {
         this.setState({firstName: user.firstName});
-    },
+    }
 
-    goBack: function () {
-        this.setState({dashboard: Constants.DASHBOARD_GO_BACK[this.state.dashboard]});
-    },
-
-    toggleSearch: function () {
-        this.setState({search: !this.state.search});
-    },
-
-
-    render: function () {
-        return (
-            <div style={{margin: '0 -15px 0 -15px'}}>
-                <div className='col-xs-10'>
-                    <Jumbotron>
-                        {this.renderTitle()}
-                        {this.renderDashboardContent()}
-                    </Jumbotron>
-                </div>
-            </div>
-
-        );
-    },
-
-    renderTitle: function () {
-        return <h3><FormattedMessage id='dashboard.welcome'
-                                     values={{name: <span className='bold'>{this.props.userFirstName}</span>}}/>
+    renderTitle() {
+        return <h3 className='formatted-message-size'>
+            <FormattedMessage id='dashboard.welcome' values={{name: <span className='bold'>{this.props.userFirstName}</span>}}/>
         </h3>;
-    },
+    }
 
-    renderDashboardContent: function () {
-        return this._renderMainDashboard();
-    },
-
-    _renderMainDashboard: function () {
+    _renderMainDashboard() {
         return <Grid fluid={true}>
-            <Row>
-                <Col xs={3} className='dashboard-sector'>
-                    <Tile onClick={this.props.handlers.createRecord}>{this.i18n('dashboard.create-tile')}</Tile>
+            <div>
+                <Col xs={12} sm={3} className='dashboard-sector'>
+                    <DashboardTile onClick={this.props.handlers.createRecord}>{this.i18n('dashboard.create-tile')}</DashboardTile>
                 </Col>
                 {this._renderUsersTile()}
-                <Col xs={3} className='dashboard-sector'>
-                    <Tile onClick={this.props.handlers.showInstitutions}>{this.i18n('dashboard.institutions-tile')}</Tile>
+                <Col xs={12} sm={3} className='dashboard-sector'>
+                    <DashboardTile onClick={this.props.handlers.showInstitutions}>{this.i18n('dashboard.institutions-tile')}</DashboardTile>
                 </Col>
-                <Col xs={3} className='dashboard-sector'>
-                    <Tile onClick={this.props.handlers.showRecords}>{this.i18n('dashboard.records-tile')}</Tile>
+                <Col xs={12} sm={3} className='dashboard-sector'>
+                    <DashboardTile onClick={this.props.handlers.showRecords}>{this.i18n('dashboard.records-tile')}</DashboardTile>
                 </Col>
-            </Row>
+            </div>
         </Grid>;
-    },
+    }
 
-    _renderUsersTile: function () {
+    _renderUsersTile() {
         return Authentication.isAdmin() ?
-            <Col xs={3} className='dashboard-sector'>
-                <Tile onClick={this.props.handlers.showUsers}>{this.i18n('dashboard.users-tile')}</Tile>
+            <Col xs={12} sm={3} className='dashboard-sector'>
+                <DashboardTile onClick={this.props.handlers.showUsers}>{this.i18n('dashboard.users-tile')}</DashboardTile>
             </Col> : null;
     }
-});
 
-module.exports = injectIntl(Dashboard);
+    render() {
+        return (
+            <div className='col-lg-10'>
+                <Jumbotron>
+                    {this.renderTitle()}
+                    {this._renderMainDashboard()}
+                </Jumbotron>
+            </div>
+        );
+    }
+}
+
+Dashboard.propTypes = {
+    userFirstName: React.PropTypes.string,
+    handlers: React.PropTypes.object
+};
+
+export default injectIntl(I18nWrapper(Dashboard));
