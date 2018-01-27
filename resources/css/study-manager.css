@@ -266,6 +266,32 @@ td.actions button {
     }
 }
 
+@media screen and (max-width: 400px)  {
+    .navbar-brand {
+        font-size: 14px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 900px) {
+    .navbar-brand {
+        padding-right: 10px;
+        padding-left: 10px;
+        font-size: 15px;
+    }
+    #logout {
+        padding-right: 12px;
+        padding-left: 12px;
+        width: 120px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+}
+
+.navbar .container {
+    width: auto !important;
+}
+
 .dashboard-report-search {
     width: 350px;
     margin: 0 auto;

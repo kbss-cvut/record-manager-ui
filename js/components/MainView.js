@@ -1,86 +1,84 @@
 'use strict';
-import * as Routing from "../utils/Routing";
 
-var React = require('react');
-var Reflux = require('reflux');
+import React from "react";
+import UserStore from '../stores/UserStore';
+import * as I18nStore from "../stores/I18nStore";
+import {MenuItem, Nav, Navbar, NavbarBrand, NavDropdown, NavItem} from "react-bootstrap";
+import {LinkContainer} from "react-router-bootstrap";
+import * as Constants from "../constants/Constants";
+import * as Routes from "../utils/Routes";
+import * as Authentication from "../utils/Authentication";
+import {injectIntl} from "react-intl";
+import I18nWrapper from "../i18n/I18nWrapper";
+import Actions from "../actions/Actions";
 
-var Nav = require('react-bootstrap').Nav;
-var Navbar = require('react-bootstrap').Navbar;
-var NavBrand = require('react-bootstrap').NavbarBrand;
-var NavItem = require('react-bootstrap').NavItem;
-var NavDropdown = require('react-bootstrap').NavDropdown;
-var MenuItem = require('react-bootstrap').MenuItem;
-var LinkContainer = require('react-router-bootstrap').LinkContainer;
-var injectIntl = require('../utils/injectIntl');
-
-var Actions = require('../actions/Actions');
-var Constants = require('../constants/Constants');
-var I18nMixin = require('../i18n/I18nMixin');
-var I18nStore = require('../stores/I18nStore');
-
-var Authentication = require('../utils/Authentication');
-var Routes = require('../utils/Routes');
-var UserStore = require('../stores/UserStore');
-
-var MainView = React.createClass({
-    mixins: [
-        Reflux.listenTo(UserStore, 'onUserLoaded'),
-        I18nMixin
-    ],
-
-    getInitialState: function () {
-        return {
+class MainView extends React.Component {
+    constructor(props) {
+        super(props);
+        this.i18n = this.props.i18n;
+        this.state = {
             loggedIn: UserStore.isLoaded()
-        }
-    },
+        };
+    }
 
-    componentWillMount: function () {
+    componentWillMount() {
         I18nStore.setIntl(this.props.intl);
-    },
+        this.unsubscribe = UserStore.listen(this.onUserLoaded);
+    }
 
-    onUserLoaded: function (data) {
+    onUserLoaded = (data) => {
         if (data.action === Actions.loadCurrentUser) {
             this.setState({loggedIn: true});
         }
-    },
+    };
 
-    render: function () {
+    _renderUsers() {
+        return Authentication.isAdmin() ?
+                <LinkContainer to='users'><NavItem>{this.i18n('main.users-nav')}</NavItem></LinkContainer>
+            : null;
+    }
+
+    render() {
         if (!this.state.loggedIn) {
             return (<div>{this.props.children}</div>);
         }
-        var user = UserStore.getCurrentUser();
-        var name = user.firstName.substr(0, 1) + '. ' + user.lastName;
+        const user = UserStore.getCurrentUser();
+        const name = user.firstName.substr(0, 1) + '. ' + user.lastName;
         return (
             <div>
                 <header>
-                    <Navbar fluid={true}>
-                        <NavBrand>{Constants.APP_NAME}</NavBrand>
-                        <Nav>
+                    <Navbar>
+                        <Navbar.Header>
+                        <Navbar.Brand>{Constants.APP_NAME}</Navbar.Brand>
+                        <Navbar.Toggle />
+                        </Navbar.Header>
+
+                        <Navbar.Collapse>
+                        <Nav pullLeft>
                             <LinkContainer
                                 to='dashboard'><NavItem>{this.i18n('main.dashboard-nav')}</NavItem></LinkContainer>
-                        </Nav>
                         {this._renderUsers()}
-                        <Nav>
-                        {Authentication.isAdmin() ?
-                            <LinkContainer to='institutions'>
-                                <NavItem>{this.i18n('main.institutions-nav')}</NavItem>
-                            </LinkContainer>
-                         : <LinkContainer to={{ pathname: '/institutions/'+user.institution.key}}>
-                                <NavItem>{this.i18n('main.institution-nav')}</NavItem>
-                            </LinkContainer>
-                        }
-                        </Nav>
-                        <Nav>
+                            {Authentication.isAdmin() ?
+                                <LinkContainer to='institutions'>
+                                    <NavItem>{this.i18n('main.institutions-nav')}</NavItem>
+                                </LinkContainer>
+                                : <LinkContainer to={{ pathname: '/institutions/'+user.institution.key}}>
+                                    <NavItem>{this.i18n('main.institution-nav')}</NavItem>
+                                </LinkContainer>
+                            }
                             <LinkContainer
                                 to='records'><NavItem>{this.i18n('main.records-nav')}</NavItem></LinkContainer>
                         </Nav>
-                        <Nav pullRight style={{margin: '0 -15px 0 0'}}>
+
+                            <Nav pullRight>
                             <NavDropdown id='logout' title={name}>
                                 <MenuItem
                                     href={'#/' + Routes.users.path + '/' + user.username}>{this.i18n('main.my-profile')}</MenuItem>
                                 <MenuItem href='#' onClick={Authentication.logout}>{this.i18n('main.logout')}</MenuItem>
                             </NavDropdown>
+
                         </Nav>
+                        </Navbar.Collapse>
                     </Navbar>
                 </header>
                 <section style={{height: '100%'}}>
@@ -88,14 +86,7 @@ var MainView = React.createClass({
                 </section>
             </div>
         );
-    },
-
-    _renderUsers: function () {
-        return Authentication.isAdmin() ?
-            <Nav>
-                <LinkContainer to='users'><NavItem>{this.i18n('main.users-nav')}</NavItem></LinkContainer>
-            </Nav> : null;
     }
-});
+}
 
-module.exports = injectIntl(MainView);
+export default injectIntl(I18nWrapper(MainView));

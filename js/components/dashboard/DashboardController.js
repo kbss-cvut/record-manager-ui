@@ -17,10 +17,6 @@ class DashboardController extends React.Component {
         };
     }
 
-    onUserLoaded(user) {
-        this.setState({firstName: user.firstName});
-    }
-
     _showUsers = () => {
         Routing.transitionTo(Routes.users);
     };
