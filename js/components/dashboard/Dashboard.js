@@ -50,7 +50,7 @@ class Dashboard extends React.Component {
 
     render() {
         return (
-            <div className='col-lg-10'>
+            <div className='container'>
                 <Jumbotron>
                     {this.renderTitle()}
                     {this._renderMainDashboard()}

@@ -81,7 +81,7 @@ class MainView extends React.Component {
                         </Navbar.Collapse>
                     </Navbar>
                 </header>
-                <section style={{height: '100%'}}>
+                <section className="container" style={{height: '100%'}}>
                     {this.props.children}
                 </section>
             </div>

@@ -248,6 +248,12 @@ td.actions button {
     white-space: normal;
 }
 
+@media screen and (min-width: 768px) and (max-width: 992px){
+    .container {
+        width: auto;
+    }
+}
+
 @media screen and (max-width: 768px) {
     .dashboard-tile {
         min-height: 5em;
@@ -272,7 +278,7 @@ td.actions button {
     }
 }
 
-@media screen and (min-width: 768px) and (max-width: 900px) {
+@media screen and (min-width: 768px) and (max-width: 850px) {
     .navbar-brand {
         padding-right: 10px;
         padding-left: 10px;
@@ -286,10 +292,6 @@ td.actions button {
         white-space: nowrap;
         overflow: hidden;
     }
-}
-
-.navbar .container {
-    width: auto !important;
 }
 
 .dashboard-report-search {
