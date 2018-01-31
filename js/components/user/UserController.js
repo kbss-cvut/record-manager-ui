@@ -14,6 +14,9 @@ import UserStore from '../../stores/UserStore';
 import RouterStore from '../../stores/RouterStore';
 import Routes from '../../utils/Routes';
 import Routing from '../../utils/Routing';
+import {updateUser} from "../../actions";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
 
 class UserController extends React.Component {
     constructor(props) {
@@ -53,6 +56,10 @@ class UserController extends React.Component {
     }
 
     _onSave = () => {
+
+        // TODO flag loading
+        this.props.onReduxSave(this.state.user);
+
         var user = this.state.user;
         if (user.isNew) {
             delete user.isNew;
@@ -101,4 +108,11 @@ class UserController extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(MessageWrapper(UserController)));
+export default connect(null, mapDispatchToProps)(injectIntl(I18nWrapper(MessageWrapper(UserController))));
+
+
+function mapDispatchToProps(dispatch) {
+    return {
+        onReduxSave: bindActionCreators(updateUser, dispatch)
+    }
+}

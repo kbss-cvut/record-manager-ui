@@ -49,16 +49,22 @@ import UserController from "./components/user/UserController";
 import RoutingRules from "./utils/RoutingRules";
 import PasswordReset from "./components/login/PasswordReset";
 import MainView from "./components/MainView";
+import {createStore} from "redux";
+import rootReducer from "./reducers";
+import {Provider} from "react-redux";
 
 
 function onRouteEnter() {
     RoutingRules.execute(this.path);
 }
 
+const store = createStore(rootReducer);
+
 // Wrapping router in a React component to allow Intl to initialize
 var App = React.createClass({
     render: function () {
-        return <IntlProvider {...intlData}>
+        return <Provider store={store}>
+            <IntlProvider {...intlData}>
             <Router history={history}>
                 <Route path='/' component={MainView}>
                     <IndexRoute component={DashboardController}/>
@@ -76,7 +82,8 @@ var App = React.createClass({
                     <Route path={Routes.editRecord.path} onEnter={onRouteEnter} component={RecordController}/>
                 </Route>
             </Router>
-        </IntlProvider>;
+            </IntlProvider>
+        </Provider>
     }
 });
 
