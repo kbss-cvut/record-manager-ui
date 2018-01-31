@@ -1,6 +1,6 @@
 import * as ActionConstants from "../constants/ActionConstants";
 
-export default function (state = null, action) {
+export default function (state = {done: false}, action) {
     switch (action.type) {
         case ActionConstants.UPDATE_USER:
             console.log("Reducer update user called.")

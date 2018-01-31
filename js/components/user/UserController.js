@@ -103,13 +103,19 @@ class UserController extends React.Component {
     }
 
     render() {
+        console.log("Saving property set to : " + this.props.saving);
         return <User onSave={this._onSave} onCancel={this._onCancel} onChange={this._onChange} user={this.state.user}
                      backToInstitution={this.institution !== null} loading={this.state.loading}/>;
     }
 }
 
-export default connect(null, mapDispatchToProps)(injectIntl(I18nWrapper(MessageWrapper(UserController))));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(MessageWrapper(UserController))));
 
+function mapStateToProps(state) {
+    return {
+        saving: state.user.done
+    };
+}
 
 function mapDispatchToProps(dispatch) {
     return {
