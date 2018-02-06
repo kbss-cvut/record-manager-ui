@@ -1,6 +1,9 @@
 
 
-export const CREATE_USER = "CREATE_USER";
+export const CREATE_USER_FETCHING = "CREATE_USER_FETCHING";
+export const CREATE_USER_COMPLETE = "CREATE_USER_COMPLETE";
+export const CREATE_USER_ERROR = "CREATE_USER_ERROR";
+
 export const UPDATE_USER = "UPDATE_USER";
 export const DELETE_USER= "DELETE_USER";
 export const LOAD_USERS = "LOAD_USERS";
