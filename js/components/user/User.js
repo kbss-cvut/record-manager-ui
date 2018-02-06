@@ -19,7 +19,8 @@ class User extends React.Component {
         loading: React.PropTypes.bool,
         onSave: React.PropTypes.func.isRequired,
         onChange: React.PropTypes.func.isRequired,
-        backToInstitution: React.PropTypes.bool
+        backToInstitution: React.PropTypes.bool,
+        userCreation: React.PropTypes.object
     };
 
     constructor(props) {
@@ -156,7 +157,9 @@ class User extends React.Component {
                 <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
                     <Button bsStyle='success' bsSize='small' ref='submit'
                             disabled={!UserValidator.isValid(user) || this.props.loading}
-                            onClick={this.props.onSave}>{this.i18n('save')}</Button>
+                            onClick={this.props.onSave}>
+                        {this.props.userCreation.fetching ? "Loading" : this.i18n('save')}
+                        </Button>
                     <Button bsStyle='link' bsSize='small' onClick={this.props.onCancel}>
                         {this.i18n(this.props.backToInstitution ? 'users.back-to-institution' : 'cancel')}
                     </Button>

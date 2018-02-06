@@ -102,7 +102,8 @@ class UserController extends React.Component {
     render() {
         console.log("Saving property set to : ", this.props.userCreation);
         return <User onSave={this._onSave} onCancel={this._onCancel} onChange={this._onChange} user={this.state.user}
-                     backToInstitution={this.institution !== null} loading={this.state.loading}/>;
+                     backToInstitution={this.institution !== null} loading={this.state.loading}
+                     userCreation={this.props.userCreation}/>;
     }
 }
 
