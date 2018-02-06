@@ -1,15 +1,47 @@
 import * as ActionConstants from "../constants/ActionConstants";
-import Actions from "./Actions";
+import * as Ajax from "../utils/Ajax";
+import * as Utils from "../utils/Utils";
+import Actions from "../actions/Actions";
 
-
-export const createUser = (user) => {
+export function createUser(user, onSuccess, onError) {
     console.log("Creating new user: ", user);
-    return {
-        type: ActionConstants.CREATE_USER,
-        payload: user
+    return function (dispatch) {
+        dispatch(createUserFetching());
+        Ajax.post('rest/users').send(user).end((data, resp) => {
+            const username = Utils.extractKeyFromLocationHeader(resp);
+            if (onSuccess) {
+                onSuccess(username);
+            }
+            dispatch(createUserComplete(username));
+            Actions.loadAllUsers();
+        }, (error) => {
+            onError(error);
+            dispatch(createUserError(error));
+        });
     }
-};
+}
 
+export function createUserFetching() {
+    return {
+        type: ActionConstants.CREATE_USER_FETCHING
+    }
+}
+
+export function createUserComplete(username) {
+    return {
+        type: ActionConstants.CREATE_USER_COMPLETE,
+        username
+    }
+}
+
+export function createUserError(error) {
+    return {
+        type: ActionConstants.CREATE_USER_ERROR,
+        error
+    }
+}
+
+/*
 export const updateUser = (user) => {
     console.log("Updating new user: ", user);
     return { type: ActionConstants.UPDATE_USER};
@@ -51,3 +83,4 @@ export const updateUser = (user) => {
     //     }, onError);
     // },
 };
+*/

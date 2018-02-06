@@ -8,7 +8,7 @@ export default function (state = initialState, action) {
     switch (action.type) {
         case ActionConstants.UPDATE_USER:
             console.log("Reducer update user called.")
-            return {...state, done: true}
+            return {...state, done: true};
         case ActionConstants.CREATE_USER_FETCHING:
             console.log("Creating new user.");
             return {
@@ -23,7 +23,8 @@ export default function (state = initialState, action) {
                 ...state,
                 userCreation: {
                     fetching: false,
-                    error: false
+                    complete: true,
+                    username: action.username
                 }
             };
         case ActionConstants.CREATE_USER_ERROR:
@@ -32,7 +33,7 @@ export default function (state = initialState, action) {
                 ...state,
                 userCreation: {
                     fetching: false,
-                    error: true
+                    error: action.error
                 }
             }
     }

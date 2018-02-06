@@ -14,7 +14,7 @@ import UserStore from '../../stores/UserStore';
 import RouterStore from '../../stores/RouterStore';
 import Routes from '../../utils/Routes';
 import Routing from '../../utils/Routing';
-import {updateUser} from "../../actions";
+import {createUser, updateUser} from "../../actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 
@@ -56,14 +56,11 @@ class UserController extends React.Component {
     }
 
     _onSave = () => {
-
-        // TODO flag loading
-        this.props.onReduxSave(this.state.user);
-
         var user = this.state.user;
         if (user.isNew) {
             delete user.isNew;
-            Actions.createUser(user, this._onSaveSuccess, this._onSaveError);
+            this.props.createUser(user, this._onSaveSuccess, this._onSaveError);
+            //Actions.createUser(user, this._onSaveSuccess, this._onSaveError);
         } else {
             Actions.updateUser(user, this._onSaveSuccess, this._onSaveError);
         }
@@ -103,7 +100,7 @@ class UserController extends React.Component {
     }
 
     render() {
-        console.log("Saving property set to : " + this.props.saving);
+        console.log("Saving property set to : ", this.props.userCreation);
         return <User onSave={this._onSave} onCancel={this._onCancel} onChange={this._onChange} user={this.state.user}
                      backToInstitution={this.institution !== null} loading={this.state.loading}/>;
     }
@@ -113,12 +110,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapp
 
 function mapStateToProps(state) {
     return {
-        saving: state.user.done
+        userCreation: state.user.userCreation
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        onReduxSave: bindActionCreators(updateUser, dispatch)
+        createUser: bindActionCreators(createUser, dispatch)
     }
 }
