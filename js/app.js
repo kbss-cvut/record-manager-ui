@@ -33,6 +33,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import {Router, Route, IndexRoute} from "react-router";
 import {IntlProvider} from "react-intl";
+import {applyMiddleware, createStore} from "redux";
+import rootReducer from "./reducers";
+import {Provider} from "react-redux";
+import thunk from "redux-thunk";
 
 import {history} from "./utils/Routing";
 import Routes from "./utils/Routes";
@@ -49,16 +53,15 @@ import UserController from "./components/user/UserController";
 import RoutingRules from "./utils/RoutingRules";
 import PasswordReset from "./components/login/PasswordReset";
 import MainView from "./components/MainView";
-import {createStore} from "redux";
-import rootReducer from "./reducers";
-import {Provider} from "react-redux";
-
 
 function onRouteEnter() {
     RoutingRules.execute(this.path);
 }
 
-const store = createStore(rootReducer);
+const store = createStore(
+    rootReducer,
+    applyMiddleware(thunk)
+);
 
 // Wrapping router in a React component to allow Intl to initialize
 var App = React.createClass({
