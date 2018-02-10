@@ -1,38 +1,38 @@
 import * as ActionConstants from "../constants/ActionConstants";
 
 const initialState = {
-    userCreation: {}
+    userSaved: {}
 };
 
 export default function (state = initialState, action) {
     switch (action.type) {
-        case ActionConstants.UPDATE_USER:
-            console.log("Reducer update user called.")
-            return {...state, done: true};
-        case ActionConstants.CREATE_USER_FETCHING:
-            console.log("Creating new user.");
+        case ActionConstants.SAVE_USER_BEGIN:
             return {
                 ...state,
-                userCreation: {
+                userSaved: {
+                    actionType: action.actionType,
                     fetching: true
                 }
             };
-        case ActionConstants.CREATE_USER_COMPLETE:
-            console.log("New user created.");
+        case ActionConstants.SAVE_USER_COMPLETE:
             return {
                 ...state,
-                userCreation: {
+                userSaved: {
+                    actionType: action.actionType,
                     fetching: false,
-                    complete: true,
-                    username: action.username
+                    success: true,
+                    user: action.user,
+                    error: ''
                 }
             };
-        case ActionConstants.CREATE_USER_ERROR:
-            console.log("Creating new user failed.");
+        case ActionConstants.SAVE_USER_ERROR:
             return {
                 ...state,
-                userCreation: {
+                userSaved: {
+                    actionType: action.actionType,
                     fetching: false,
+                    success: false,
+                    user: action.user,
                     error: action.error
                 }
             }

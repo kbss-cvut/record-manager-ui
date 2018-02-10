@@ -2,85 +2,58 @@ import * as ActionConstants from "../constants/ActionConstants";
 import * as Ajax from "../utils/Ajax";
 import * as Utils from "../utils/Utils";
 import Actions from "../actions/Actions";
+import {ACTION_TYPE} from "../constants/DefaultConstants";
+import Routing from "../utils/Routing";
+import Routes from "../utils/Routes";
 
-export function createUser(user, onSuccess, onError) {
-    console.log("Creating new user: ", user);
+export function createUser(user) {
+    console.log("Creating user: ", user);
     return function (dispatch) {
-        dispatch(createUserFetching());
+        dispatch(saveUserBegin(ACTION_TYPE.CREATE_USER));
         Ajax.post('rest/users').send(user).end((data, resp) => {
             const username = Utils.extractKeyFromLocationHeader(resp);
-            if (onSuccess) {
-                onSuccess(username);
-            }
-            dispatch(createUserComplete(username));
+            dispatch(saveUserComplete(user, ACTION_TYPE.CREATE_USER));
             Actions.loadAllUsers();
         }, (error) => {
-            onError(error);
-            dispatch(createUserError(error));
+            dispatch(saveUserError(error, user, ACTION_TYPE.CREATE_USER));
         });
     }
 }
 
-export function createUserFetching() {
-    return {
-        type: ActionConstants.CREATE_USER_FETCHING
+export function updateUser(user) {
+    console.log("Updating user: ", user);
+    return function (dispatch) {
+        dispatch(saveUserBegin(ACTION_TYPE.UPDATE_USER));
+        Ajax.put(`rest/users/${user.username}`).send(user).end((data, resp) => {
+            const username = Utils.extractKeyFromLocationHeader(resp);
+            dispatch(saveUserComplete(user, ACTION_TYPE.UPDATE_USER));
+            Actions.loadAllUsers();
+        }, (error) => {
+            dispatch(saveUserError(error, user, ACTION_TYPE.UPDATE_USER));
+        });
     }
 }
 
-export function createUserComplete(username) {
+export function saveUserBegin(actionType) {
     return {
-        type: ActionConstants.CREATE_USER_COMPLETE,
-        username
+        type: ActionConstants.SAVE_USER_BEGIN,
+        actionType
     }
 }
 
-export function createUserError(error) {
+export function saveUserComplete(user, actionType) {
     return {
-        type: ActionConstants.CREATE_USER_ERROR,
-        error
+        type: ActionConstants.SAVE_USER_COMPLETE,
+        user,
+        actionType
     }
 }
 
-/*
-export const updateUser = (user) => {
-    console.log("Updating new user: ", user);
-    return { type: ActionConstants.UPDATE_USER};
-    // set loading tag
-    // ? set error message ?
-
-    // Ajax.put('rest/users/' + user.username).send(user).end(onSuccess, onError);
-    //
-    //
-    // return {
-    //     type: ActionConstants.UPDATE_USER,
-    //     payload: user
-    // }
-    //
-    //
-    //
-    //
-    // var user = this.state.user;
-    // if (user.isNew) {
-    //     delete user.isNew;
-    //     Actions.createUser(user, this._onSaveSuccess, this._onSaveError);
-    // } else {
-    //     Actions.updateUser(user, this._onSaveSuccess, this._onSaveError);
-    // }
-    //
-    //
-    // onUpdateUser: function (user, onSuccess, onError) {
-    //
-    // },
-    //
-    //
-    // onCreateUser: function (user, onSuccess, onError) {
-    //     Ajax.post('rest/users').send(user).end((data, resp) => {
-    //         if (onSuccess) {
-    //             var username = Utils.extractKeyFromLocationHeader(resp);
-    //             onSuccess(username);
-    //         }
-    //         Actions.loadAllUsers();
-    //     }, onError);
-    // },
-};
-*/
+export function saveUserError(error, user, actionType) {
+    return {
+        type: ActionConstants.SAVE_USER_ERROR,
+        error,
+        user,
+        actionType
+    }
+}

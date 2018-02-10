@@ -12,6 +12,8 @@ import HorizontalInput from "../HorizontalInput";
 import Mask from "../Mask";
 import UserValidator from "../../validation/UserValidator";
 import Vocabulary from "../../constants/Vocabulary";
+import AlertMessage from "../AlertMessage";
+import {ALERT_TYPES} from "../../constants/DefaultConstants";
 
 class User extends React.Component {
     static propTypes = {
@@ -20,12 +22,15 @@ class User extends React.Component {
         onSave: React.PropTypes.func.isRequired,
         onChange: React.PropTypes.func.isRequired,
         backToInstitution: React.PropTypes.bool,
-        userCreation: React.PropTypes.object
+        userSaved: React.PropTypes.object,
+        showAlert: React.PropTypes.bool,
+        usernameDisabled: React.PropTypes.bool
     };
 
     constructor(props) {
         super(props);
         this.i18n = this.props.i18n;
+        this.formatMessage = this.props.formatMessage;
         this.state = {
             institutions: InstitutionStore.getInstitutions() ? User._processInstitutions(InstitutionStore.getInstitutions()) : []
         };
@@ -96,6 +101,7 @@ class User extends React.Component {
     };
 
     render() {
+        const {userSaved, showAlert} = this.props;
         if (this.props.loading) {
             return <Mask text={this.i18n('please-wait')}/>;
         }
@@ -117,7 +123,7 @@ class User extends React.Component {
                 <div className='row'>
                     <div className='col-xs-4'>
                         <HorizontalInput type='text' name='username' label={this.i18n('user.username')}
-                               value={user.username}
+                               value={user.username} disabled={!this.props.user.isNew && this.props.usernameDisabled}
                                labelWidth={4} inputWidth={8} onChange={this._onChange}/>
                     </div>
                     <div className='col-xs-4'>
@@ -158,12 +164,17 @@ class User extends React.Component {
                     <Button bsStyle='success' bsSize='small' ref='submit'
                             disabled={!UserValidator.isValid(user) || this.props.loading}
                             onClick={this.props.onSave}>
-                        {this.props.userCreation.fetching ? "Loading" : this.i18n('save')}
+                        {this.i18n('save')}{userSaved.fetching && <div className="loader"></div>}
                         </Button>
                     <Button bsStyle='link' bsSize='small' onClick={this.props.onCancel}>
                         {this.i18n(this.props.backToInstitution ? 'users.back-to-institution' : 'cancel')}
                     </Button>
                 </div>
+                {showAlert && userSaved.error &&
+                    <AlertMessage type={ALERT_TYPES.DANGER}
+                                  message={this.props.formatMessage('user.save-error', {error: this.props.userSaved.error.message})}/>}
+                {showAlert && userSaved.success &&
+                    <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('user.save-success')}/>}
             </form>
         </Panel>;
     }

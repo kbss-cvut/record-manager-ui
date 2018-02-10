@@ -17,16 +17,18 @@ import Routing from '../../utils/Routing';
 import {createUser, updateUser} from "../../actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
+import {ACTION_TYPE} from "../../constants/DefaultConstants";
 
 class UserController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             user: this._isNew() ? UserFactory.initNewUser() : null,
-            loading: false
+            loading: false,
+            saved: false,
+            showAlert: false
         };
         this.institution = this._getPayload()
-
     }
 
     _isNew() {
@@ -55,24 +57,22 @@ class UserController extends React.Component {
         this.unsubscribe();
     }
 
-    _onSave = () => {
-        var user = this.state.user;
-        if (user.isNew) {
-            delete user.isNew;
-            this.props.createUser(user, this._onSaveSuccess, this._onSaveError);
-            //Actions.createUser(user, this._onSaveSuccess, this._onSaveError);
-        } else {
-            Actions.updateUser(user, this._onSaveSuccess, this._onSaveError);
+    componentWillUpdate(nextProps) {
+        if (this.state.saved && nextProps.userSaved.actionType === ACTION_TYPE.CREATE_USER && nextProps.userSaved.success) {
+            this.setState({saved: false});
+            Actions.loadUser(nextProps.userSaved.user.username);
         }
-    };
+    }
 
-    _onSaveSuccess = (username) => {
-        this.props.showSuccessMessage(this.props.i18n('user.save-success'));
-        Actions.loadUser(username ? username : this.props.params.username);
-    };
-
-    _onSaveError = (err) => {
-        this.props.showErrorMessage(this.props.formatMessage('user.save-error', {error: err.message}));
+    _onSave = () => {
+        let user = this.state.user;
+        this.setState({saved: true, showAlert: true});
+        if (user.isNew || (this._isNew() && this.props.userSaved.error)) {
+            delete user.isNew;
+            this.props.createUser(user, ACTION_TYPE.CREATE_USER);
+        } else {
+            this.props.updateUser(user, ACTION_TYPE.UPDATE_USER);
+        }
     };
 
     _onCancel = () => {
@@ -84,6 +84,17 @@ class UserController extends React.Component {
         } else {
             Routing.transitionTo(Authentication.isAdmin() ? Routes.users : Routes.dashboard);
         }
+    };
+
+    _goToUsersProfile = () => {
+        this.setState({saved: false});
+
+        Routing.transitionTo(Routes.editUser, {
+            params: {username: this.props.userSaved.user.username},
+            handlers: {
+                onCancel: Routes.users
+            }
+        });
     };
 
     _onChange = (change) => {
@@ -100,10 +111,10 @@ class UserController extends React.Component {
     }
 
     render() {
-        console.log("Saving property set to : ", this.props.userCreation);
         return <User onSave={this._onSave} onCancel={this._onCancel} onChange={this._onChange} user={this.state.user}
                      backToInstitution={this.institution !== null} loading={this.state.loading}
-                     userCreation={this.props.userCreation}/>;
+                     userSaved={this.props.userSaved} showAlert={this.state.showAlert}
+                     usernameDisabled={!(this.state.showAlert && this.props.userSaved.actionType === ACTION_TYPE.CREATE_USER && !this.props.userSaved.success)}/>;
     }
 }
 
@@ -111,12 +122,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapp
 
 function mapStateToProps(state) {
     return {
-        userCreation: state.user.userCreation
+        userSaved: state.user.userSaved
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        createUser: bindActionCreators(createUser, dispatch)
+        createUser: bindActionCreators(createUser, dispatch),
+        updateUser: bindActionCreators(updateUser, dispatch)
     }
 }
