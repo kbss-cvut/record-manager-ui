@@ -54,7 +54,7 @@ export function saveUserError(error, user, actionType) {
         user,
         actionType
     }
-}export function loadUser(username) {
+}
 export function loadUser(username) {
     console.log("Loading user with username: ", username);
     return function (dispatch) {
@@ -92,3 +92,36 @@ export function unloadUser() {
         type: ActionConstants.UNLOAD_USER
     }
 }
+
+export function loadUsers() {
+    console.log("Loading all users");
+    return function (dispatch) {
+        dispatch(loadUsersBegin());
+        Ajax.get('rest/users').end((data) => {
+            dispatch(loadUsersComplete(data));
+        }, (error) => {
+            dispatch(loadUsersError(error));
+        });
+    }
+}
+
+export function loadUsersBegin() {
+    return {
+        type: ActionConstants.LOAD_USERS_BEGIN
+    }
+}
+
+export function loadUsersComplete(users) {
+    return {
+        type: ActionConstants.LOAD_USERS_COMPLETE,
+        users
+    }
+}
+
+export function loadUsersError(error) {
+    return {
+        type: ActionConstants.LOAD_USERS_ERROR,
+        error
+    }
+}
+

@@ -7,11 +7,15 @@ import injectIntl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
 import Mask from '../Mask';
 import UserTable from './UserTable';
+import {ALERT_TYPES} from "../../constants/DefaultConstants";
+import AlertMessage from "../AlertMessage";
 
 class Users extends React.Component {
     static propTypes = {
         users: React.PropTypes.array,
         handlers: React.PropTypes.object.isRequired
+        handlers: React.PropTypes.object.isRequired,
+        showAlert: React.PropTypes.bool.isRequired
     };
 
     constructor(props) {
@@ -20,8 +24,8 @@ class Users extends React.Component {
     }
 
     render() {
-        var users = this.props.users;
-        if (users === null) {
+        const {users, showAlert} = this.props;
+        if (!users.length) {
             return <Mask text={this.i18n('please-wait')}/>;
         }
         return <Panel header={this.i18n('users.panel-title')} bsStyle='primary'>

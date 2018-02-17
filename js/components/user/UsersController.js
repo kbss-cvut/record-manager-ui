@@ -1,37 +1,29 @@
 'use strict';
 
 import React from "react";
-import Actions from "../../actions/Actions";
 import Authentication from "../../utils/Authentication";
 import Routes from "../../utils/Routes";
 import Routing from "../../utils/Routing";
 import Users from "./Users";
-import UserStore from "../../stores/UserStore";
 import * as RouterStore from "../../stores/RouterStore";
+import MessageWrapper from "../misc/hoc/MessageWrapper";
+import {connect} from "react-redux";
+import I18nWrapper from "../../i18n/I18nWrapper";
+import injectIntl from "../../utils/injectIntl";
+import {bindActionCreators} from "redux";
+import {loadUsers} from "../../actions";
 
-export default class UsersController extends React.Component {
+class UsersController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: UserStore.getAllUsers()
+            users: this.props.usersLoaded.users || [],
         };
         this.institution = this._getPayload();
     }
 
     componentDidMount() {
-        Actions.loadAllUsers();
-        this.unsubscribe = UserStore.listen(this._onUsersLoaded);
-    }
-
-    _onUsersLoaded = (data) => {
-        if (data.action !== Actions.loadAllUsers) {
-            return;
-        }
-        this.setState({users: data.data});
-    };
-
-    componentWillUnmount() {
-        this.unsubscribe();
+        this.props.loadUsers();
     }
 
     _onEditUser = (user) => {
@@ -60,22 +52,37 @@ export default class UsersController extends React.Component {
         let payload = RouterStore.getTransitionPayload(Routes.users.name);
         RouterStore.setTransitionPayload(Routes.users.name, null);
         return payload ? payload.institution : null;
-    }
+    };
 
     _onBackToInstitution = () => {
         Routing.transitionTo(Routes.editInstitution, {params: {key: this.institution.key}});
-    }
+    };
 
     render() {
+        const {usersLoaded} = this.props;
         if (!Authentication.isAdmin()) {
             return null;
         }
-        var handlers = {
+        const handlers = {
             onEdit: this._onEditUser,
             onCreate: this._onAddUser,
             onDelete: this._onDeleteUser,
             onBackToInstitution: this.institution ? this._onBackToInstitution : null
         };
-        return <Users users={this.state.users} handlers={handlers}/>;
+        return <Users users={usersLoaded.users || []} showAlert={this.state.showAlert} handlers={handlers}/>;
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(MessageWrapper(UsersController))));
+
+function mapStateToProps(state) {
+    return {
+        usersLoaded: state.user.usersLoaded
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        loadUsers: bindActionCreators(loadUsers, dispatch)
     }
 }

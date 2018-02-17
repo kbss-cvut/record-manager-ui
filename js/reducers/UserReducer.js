@@ -1,9 +1,9 @@
 import * as ActionConstants from "../constants/ActionConstants";
 
 const initialState = {
-    userSaved: {}
     userSaved: {},
     userLoaded: {},
+    usersLoaded: {}
 };
 
 export default function (state = initialState, action) {
@@ -36,13 +36,13 @@ export default function (state = initialState, action) {
                     user: action.user,
                     error: action.error
                 }
-            }
+            };
         case ActionConstants.LOAD_USER_BEGIN:
             return {
                 ...state,
                 userLoaded: {
                     ...state.userLoaded,
-                    fetching: true,
+                    fetching: true
                 }
             };
         case ActionConstants.LOAD_USER_COMPLETE:
@@ -69,17 +69,35 @@ export default function (state = initialState, action) {
                 ...state,
                 userLoaded: {}
             };
+        case ActionConstants.LOAD_USERS_BEGIN:
+            return {
+                ...state,
+                usersLoaded: {
+                    ...state.usersLoaded,
+                    fetching: true,
+                }
+            };
+        case ActionConstants.LOAD_USERS_COMPLETE:
+            return {
+                ...state,
+                usersLoaded: {
+                    fetching: false,
+                    success: true,
+                    users: action.users,
+                    error: ''
+                }
+            };
+        case ActionConstants.LOAD_USERS_ERROR:
+            return {
+                ...state,
+                usersLoaded: {
+                    fetching: false,
+                    success: false,
+                    error: action.error
+                }
+            };
+
+        default:
+            return state;
     }
-    return state;
 }
-// export default function () {
-//     return {
-//         firstName: '',
-//         lastName: '',
-//         username: '',
-//         emailAddress: '',
-//         password: Utils.generatePassword(),
-//         isAdmin: false,
-//         isNew: true
-//     };
-// }
