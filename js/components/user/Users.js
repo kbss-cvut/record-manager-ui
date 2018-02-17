@@ -13,8 +13,8 @@ import AlertMessage from "../AlertMessage";
 class Users extends React.Component {
     static propTypes = {
         users: React.PropTypes.array,
-        handlers: React.PropTypes.object.isRequired
         handlers: React.PropTypes.object.isRequired,
+        userDeleted: React.PropTypes.object,
         showAlert: React.PropTypes.bool.isRequired
     };
 
@@ -24,7 +24,7 @@ class Users extends React.Component {
     }
 
     render() {
-        const {users, showAlert} = this.props;
+        const {users, showAlert, userDeleted} = this.props;
         if (!users.length) {
             return <Mask text={this.i18n('please-wait')}/>;
         }
@@ -38,6 +38,11 @@ class Users extends React.Component {
                     {this.i18n('users.back-to-institution')}</Button>
                 }
             </div>
+            {showAlert && userDeleted.error &&
+            <AlertMessage type={ALERT_TYPES.DANGER}
+                          message={this.props.formatMessage('user.delete-error', {error: this.props.userDeleted.error.message})}/>}
+            {showAlert && userDeleted.success &&
+            <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('user.delete-success')}/>}
         </Panel>;
     }
 }

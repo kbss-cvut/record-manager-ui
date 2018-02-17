@@ -55,6 +55,42 @@ export function saveUserError(error, user, actionType) {
         actionType
     }
 }
+
+export function deleteUser(user) {
+    console.log("Deleting user: ", user);
+    return function (dispatch) {
+        dispatch(deleteUserBegin(user.username));
+        Ajax.del('rest/users/' + user.username).end(() => {
+            dispatch(loadUsers());
+            dispatch(deleteUserComplete(user));
+        }, (error) => {
+            dispatch(deleteUserError(error, user));
+        });
+    }
+}
+
+export function deleteUserBegin(username) {
+    return {
+        type: ActionConstants.DELETE_USER_BEGIN,
+        username
+    }
+}
+
+export function deleteUserComplete(user) {
+    return {
+        type: ActionConstants.DELETE_USER_COMPLETE,
+        user
+    }
+}
+
+export function deleteUserError(error, user) {
+    return {
+        type: ActionConstants.DELETE_USER_ERROR,
+        error,
+        user,
+    }
+}
+
 export function loadUser(username) {
     console.log("Loading user with username: ", username);
     return function (dispatch) {

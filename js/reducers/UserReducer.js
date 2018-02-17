@@ -2,6 +2,7 @@ import * as ActionConstants from "../constants/ActionConstants";
 
 const initialState = {
     userSaved: {},
+    userDeleted: {},
     userLoaded: {},
     usersLoaded: {}
 };
@@ -31,6 +32,34 @@ export default function (state = initialState, action) {
                 ...state,
                 userSaved: {
                     actionType: action.actionType,
+                    fetching: false,
+                    success: false,
+                    user: action.user,
+                    error: action.error
+                }
+            };
+        case ActionConstants.DELETE_USER_BEGIN:
+            return {
+                ...state,
+                userDeleted: {
+                    fetching: true,
+                    username: action.username
+                }
+            };
+        case ActionConstants.DELETE_USER_COMPLETE:
+            return {
+                ...state,
+                userDeleted: {
+                    fetching: false,
+                    success: true,
+                    user: action.user,
+                    error: ''
+                }
+            };
+        case ActionConstants.DELETE_USER_ERROR:
+            return {
+                ...state,
+                userDeleted: {
                     fetching: false,
                     success: false,
                     user: action.user,

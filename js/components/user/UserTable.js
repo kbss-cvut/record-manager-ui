@@ -10,7 +10,8 @@ import Routes from "../../utils/Routes";
 class UserTable extends React.Component {
     static propTypes = {
         users: React.PropTypes.array.isRequired,
-        handlers: React.PropTypes.object.isRequired
+        handlers: React.PropTypes.object.isRequired,
+        userDeleted: React.PropTypes.object
     };
 
     constructor(props) {
@@ -50,7 +51,7 @@ class UserTable extends React.Component {
     }
 
     _getDeleteLabel() {
-        var user = this.state.selectedUser;
+        const user = this.state.selectedUser;
         return user ? user.firstName + ' ' + user.lastName : '';
     }
 
@@ -67,18 +68,19 @@ class UserTable extends React.Component {
     }
 
     _renderUsers() {
-        var users = this.props.users,
-            rows = [],
-            onEdit = this.props.handlers.onEdit;
-        for (var i = 0, len = users.length; i < len; i++) {
-            rows.push(<UserRow key={users[i].username} user={users[i]} onEdit={onEdit} onDelete={this._onDelete}/>);
+        const users = this.props.users,
+            onEdit = this.props.handlers.onEdit,
+            userDeleted = this.props.userDeleted;
+        let rows = [];
+        for (let i = 0, len = users.length; i < len; i++) {
+            rows.push(<UserRow key={users[i].username} user={users[i]} onEdit={onEdit} onDelete={this._onDelete} userDeleted={userDeleted}/>);
         }
         return rows;
     }
 }
 
-var UserRow = (props) => {
-    var user = props.user;
+let UserRow = (props) => {
+    const user = props.user;
     return <tr>
         <td className='report-row'>
             <a href={'#/' + Routes.users.path + '/' + user.username}
@@ -91,7 +93,8 @@ var UserRow = (props) => {
             <Button bsStyle='primary' bsSize='small' title={props.i18n('users.open-tooltip')}
                     onClick={() => props.onEdit(props.user)}>{props.i18n('open')}</Button>
             <Button bsStyle='warning' bsSize='small' title={props.i18n('users.delete-tooltip')}
-                    onClick={() => props.onDelete(props.user)}>{props.i18n('delete')}</Button>
+                    onClick={() => props.onDelete(props.user)}>{props.i18n('delete')}{props.userDeleted.fetching && props.userDeleted.username === user.username &&
+                <div className="loader"></div>}</Button>
         </td>
     </tr>;
 };
@@ -99,7 +102,8 @@ var UserRow = (props) => {
 UserRow.propTypes = {
     user: React.PropTypes.object.isRequired,
     onEdit: React.PropTypes.func.isRequired,
-    onDelete: React.PropTypes.func.isRequired
+    onDelete: React.PropTypes.func.isRequired,
+    userDeleted: React.PropTypes.object
 };
 
 UserRow = injectIntl(I18nWrapper(UserRow));

@@ -11,13 +11,14 @@ import {connect} from "react-redux";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import {bindActionCreators} from "redux";
-import {loadUsers} from "../../actions";
+import {deleteUser, loadUsers} from "../../actions";
 
 class UsersController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             users: this.props.usersLoaded.users || [],
+            showAlert: false
         };
         this.institution = this._getPayload();
     }
@@ -45,7 +46,8 @@ class UsersController extends React.Component {
     };
 
     _onDeleteUser = (user) => {
-        Actions.deleteUser(user, Actions.loadAllUsers);
+        this.props.deleteUser(user);
+        this.setState({showAlert: true});
     };
 
     _getPayload() {
@@ -69,7 +71,8 @@ class UsersController extends React.Component {
             onDelete: this._onDeleteUser,
             onBackToInstitution: this.institution ? this._onBackToInstitution : null
         };
-        return <Users users={usersLoaded.users || []} showAlert={this.state.showAlert} handlers={handlers}/>;
+        return <Users users={usersLoaded.users || []} showAlert={this.state.showAlert} userDeleted={this.props.userDeleted} handlers={handlers}/>;
+
     }
 }
 
@@ -77,12 +80,14 @@ export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapp
 
 function mapStateToProps(state) {
     return {
+        userDeleted: state.user.userDeleted,
         usersLoaded: state.user.usersLoaded
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
+        deleteUser: bindActionCreators(deleteUser, dispatch),
         loadUsers: bindActionCreators(loadUsers, dispatch)
     }
 }

@@ -85,6 +85,8 @@ module.exports = {
         'user.is-admin': 'Administrátor?',
         'user.save-success': 'Uživatel úspěšně uložen',
         'user.save-error': 'Uživatele se nepodařilo uložit. Odpověď serveru: {error}',
+        'user.delete-success': 'Uživatel úspěšně odstraněn',
+        'user.delete-error': 'Uživatele se nepodařilo smazat. Odpověď serveru: {error}.',
         'user.load-error': 'Uživatele se nepodažilo načíst. Odpověď serveru: {error}.',
 
         'institutions.panel-title': 'Kliniky',
