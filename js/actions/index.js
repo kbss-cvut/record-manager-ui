@@ -12,7 +12,7 @@ export function createUser(user) {
         dispatch(saveUserBegin());
         Ajax.post('rest/users').send(user).end(() => {
             dispatch(saveUserComplete(user, ACTION_TYPE.CREATE_USER));
-            Actions.loadAllUsers();
+            dispatch(loadUsers());
         }, (error) => {
             dispatch(saveUserError(error, user, ACTION_TYPE.CREATE_USER));
         });
@@ -25,7 +25,7 @@ export function updateUser(user) {
         dispatch(saveUserBegin(ACTION_TYPE.UPDATE_USER));
         Ajax.put(`rest/users/${user.username}`).send(user).end(() => {
             dispatch(saveUserComplete(user, ACTION_TYPE.UPDATE_USER));
-            Actions.loadAllUsers();
+            dispatch(loadUsers());
         }, (error) => {
             dispatch(saveUserError(error, user, ACTION_TYPE.UPDATE_USER));
         });
