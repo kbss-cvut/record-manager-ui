@@ -85,6 +85,7 @@ module.exports = {
         'user.is-admin': 'Is administrator?',
         'user.save-success': 'User saved successfully',
         'user.save-error': 'Unable to save user. Server responded with {error}.',
+        'user.load-error': 'Unable to load user. Server responded with {error}.',
 
         'institutions.panel-title': 'Institutions',
         'institutions.create-institution': 'Create institution',

@@ -18,11 +18,10 @@ import {ALERT_TYPES} from "../../constants/DefaultConstants";
 class User extends React.Component {
     static propTypes = {
         user: React.PropTypes.object,
-        loading: React.PropTypes.bool,
-        onSave: React.PropTypes.func.isRequired,
-        onChange: React.PropTypes.func.isRequired,
+        handlers: React.PropTypes.object.isRequired,
         backToInstitution: React.PropTypes.bool,
         userSaved: React.PropTypes.object,
+        userLoaded: React.PropTypes.object,
         showAlert: React.PropTypes.bool,
         usernameDisabled: React.PropTypes.bool
     };
@@ -62,13 +61,13 @@ class User extends React.Component {
     }
 
     _onChange = (e) => {
-        var change = {};
+        let change = {};
         change[e.target.name] = e.target.value;
-        this.props.onChange(change);
+        this.props.handlers.onChange(change);
     };
 
     _onInstitutionSelected = (e) => {
-        var value = e.target.value,
+        const value = e.target.value,
             institution = InstitutionStore.getInstitutions().find((item) => item.uri === value),
             change = {
                 institution: institution
@@ -77,8 +76,8 @@ class User extends React.Component {
     };
 
     _onAdminStatusChange = (e) => {
-        var isAdmin = e.target.checked,
-            types = this.props.user.types.slice();
+        const isAdmin = e.target.checked;
+        let types = this.props.user.types.slice();
         if (isAdmin) {
             types.push(Vocabulary.ADMIN_TYPE);
         } else {
@@ -101,11 +100,14 @@ class User extends React.Component {
     };
 
     render() {
-        const {userSaved, showAlert} = this.props;
+        const {userSaved, userLoaded, showAlert, user, handlers} = this.props;
         if (this.props.loading) {
             return <Mask text={this.i18n('please-wait')}/>;
         }
-        var user = this.props.user;
+        if (userLoaded.error) {
+            return <AlertMessage type={ALERT_TYPES.DANGER}
+                 message={this.props.formatMessage('user.load-error', {error: this.props.userLoaded.error.message})}/>;
+        }
         return <Panel header={<h3>{this.i18n('user.panel-title')}</h3>} bsStyle='primary'>
             <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
                 <div className='row'>
@@ -123,8 +125,8 @@ class User extends React.Component {
                 <div className='row'>
                     <div className='col-xs-4'>
                         <HorizontalInput type='text' name='username' label={this.i18n('user.username')}
-                               value={user.username} disabled={!this.props.user.isNew && this.props.usernameDisabled}
-                               labelWidth={4} inputWidth={8} onChange={this._onChange}/>
+                               disabled={userLoaded.success}
+                               value={user.username} labelWidth={4} inputWidth={8} onChange={this._onChange}/>
                     </div>
                     <div className='col-xs-4'>
                         <HorizontalInput type='text' name='emailAddress' label={this.i18n('users.email')}
@@ -162,11 +164,11 @@ class User extends React.Component {
                 </div>
                 <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
                     <Button bsStyle='success' bsSize='small' ref='submit'
-                            disabled={!UserValidator.isValid(user) || this.props.loading}
-                            onClick={this.props.onSave}>
+                            disabled={!UserValidator.isValid(user)}
+                            onClick={handlers.onSave}>
                         {this.i18n('save')}{userSaved.fetching && <div className="loader"></div>}
                         </Button>
-                    <Button bsStyle='link' bsSize='small' onClick={this.props.onCancel}>
+                    <Button bsStyle='link' bsSize='small' onClick={handlers.onCancel}>
                         {this.i18n(this.props.backToInstitution ? 'users.back-to-institution' : 'cancel')}
                     </Button>
                 </div>

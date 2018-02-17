@@ -3,18 +3,15 @@
 import React from 'react';
 import assign from 'object-assign';
 
-import Actions from '../../actions/Actions';
 import Authentication from '../../utils/Authentication';
 import injectIntl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
-import MessageWrapper from "../misc/hoc/MessageWrapper";
 import User from './User';
 import UserFactory from '../../utils/EntityFactory';
-import UserStore from '../../stores/UserStore';
 import RouterStore from '../../stores/RouterStore';
 import Routes from '../../utils/Routes';
 import Routing from '../../utils/Routing';
-import {createUser, updateUser} from "../../actions";
+import {createUser, loadUser, unloadUser, updateUser} from "../../actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {ACTION_TYPE} from "../../constants/DefaultConstants";
@@ -37,30 +34,25 @@ class UserController extends React.Component {
 
     componentWillMount() {
         if (!this.state.user) {
-            Actions.loadUser(this.props.params.username);
             this.setState({loading: true});
+            this.props.loadUser(this.props.params.username);
         }
         if(this.institution) {
             this._onChange({institution: this.institution});
         }
-        this.unsubscribe = UserStore.listen(this._onUserLoaded);
     }
-
-    _onUserLoaded = (data) => {
-        if (data.action !== Actions.loadUser) {
-            return;
-        }
-        this.setState({user: data.data, loading: false});
-    };
 
     componentWillUnmount() {
-        this.unsubscribe();
+        this.props.unloadUser();
     }
 
-    componentWillUpdate(nextProps) {
-        if (this.state.saved && nextProps.userSaved.actionType === ACTION_TYPE.CREATE_USER && nextProps.userSaved.success) {
+    componentWillReceiveProps(nextProps) {
+        if (this.state.saved && !nextProps.userLoaded.fetching && nextProps.userSaved.success) {
             this.setState({saved: false});
-            Actions.loadUser(nextProps.userSaved.user.username);
+            this.props.loadUser(nextProps.userSaved.user.username);
+        }
+        if (this.props.userLoaded.fetching && !nextProps.userLoaded.fetching && nextProps.userLoaded.success) {
+            this.setState({user: nextProps.userLoaded.user, loading: false});
         }
     }
 
@@ -86,19 +78,8 @@ class UserController extends React.Component {
         }
     };
 
-    _goToUsersProfile = () => {
-        this.setState({saved: false});
-
-        Routing.transitionTo(Routes.editUser, {
-            params: {username: this.props.userSaved.user.username},
-            handlers: {
-                onCancel: Routes.users
-            }
-        });
-    };
-
     _onChange = (change) => {
-        var update = assign({}, this.state.user, change);
+        const update = assign({}, this.state.user, change);
         this.setState({user: update});
     };
 
@@ -111,24 +92,31 @@ class UserController extends React.Component {
     }
 
     render() {
-        return <User onSave={this._onSave} onCancel={this._onCancel} onChange={this._onChange} user={this.state.user}
-                     backToInstitution={this.institution !== null} loading={this.state.loading}
-                     userSaved={this.props.userSaved} showAlert={this.state.showAlert}
-                     usernameDisabled={!(this.state.showAlert && this.props.userSaved.actionType === ACTION_TYPE.CREATE_USER && !this.props.userSaved.success)}/>;
+        const handlers = {
+            onSave: this._onSave,
+            onCancel: this._onCancel,
+            onChange: this._onChange,
+        };
+        return <User user={this.state.user} handlers={handlers} backToInstitution={this.institution !== null}
+                     loading={this.state.loading} userSaved={this.props.userSaved} showAlert={this.state.showAlert}
+                     userLoaded={this.props.userLoaded}/>;
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(MessageWrapper(UserController))));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(UserController)));
 
 function mapStateToProps(state) {
     return {
-        userSaved: state.user.userSaved
+        userSaved: state.user.userSaved,
+        userLoaded: state.user.userLoaded
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         createUser: bindActionCreators(createUser, dispatch),
-        updateUser: bindActionCreators(updateUser, dispatch)
+        updateUser: bindActionCreators(updateUser, dispatch),
+        loadUser: bindActionCreators(loadUser, dispatch),
+        unloadUser: bindActionCreators(unloadUser, dispatch),
     }
 }
