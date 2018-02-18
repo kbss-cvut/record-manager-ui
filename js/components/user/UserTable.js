@@ -40,7 +40,7 @@ class UserTable extends React.Component {
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
                               show={this.state.showDialog} item={this.state.selectedUser}
                               itemLabel={this._getDeleteLabel()}/>
-            <Table striped bordered condensed hover>
+            <Table responsive striped bordered condensed hover>
                 {this._renderHeader()}
                 <tbody>
                 {this._renderUsers()}
@@ -57,11 +57,11 @@ class UserTable extends React.Component {
     _renderHeader() {
         return <thead>
         <tr>
-            <th className='col-xs-3 content-center'>{this.i18n('name')}</th>
-            <th className='col-xs-2 content-center'>{this.i18n('login.username')}</th>
-            <th className='col-xs-3 content-center'>{this.i18n('institution.name')}</th>
-            <th className='col-xs-2 content-center'>{this.i18n('users.email')}</th>
-            <th className='col-xs-2 content-center'>{this.i18n('actions')}</th>
+            <th className='col-xs-3 col-sm-3 col-md-3 content-center'>{this.i18n('name')}</th>
+            <th className='col-xs-2 col-sm-2 col-md-2 content-center'>{this.i18n('login.username')}</th>
+            <th className='col-xs-3 col-sm-2 col-md-3 content-center'>{this.i18n('institution.name')}</th>
+            <th className='col-xs-2 col-sm-2 col-md-2 content-center'>{this.i18n('users.email')}</th>
+            <th className='col-xs-2 col-sm-3 col-md-2 content-center'>{this.i18n('actions')}</th>
         </tr>
         </thead>;
     }
