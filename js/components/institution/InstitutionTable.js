@@ -42,7 +42,7 @@ class InstitutionTable extends React.Component {
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
                               show={this.state.showDialog} item={this.state.selectedItem}
                               itemLabel={this._getDeleteLabel()}/>
-            <Table striped bordered condensed hover>
+            <Table responsive striped bordered condensed hover>
                 {this._renderHeader()}
                 <tbody>
                 {this._renderRows()}
@@ -59,9 +59,9 @@ class InstitutionTable extends React.Component {
     _renderHeader() {
         return <thead>
         <tr>
-            <th className='col-xs-5 content-center'>{this.i18n('name')}</th>
-            <th className='col-xs-5 content-center'>{this.i18n('institution.email')}</th>
-            <th className='col-xs-2 content-center'>{this.i18n('actions')}</th>
+            <th className='col-xs-5 col-sm-5 col-md-5 content-center'>{this.i18n('name')}</th>
+            <th className='col-xs-5 col-sm-4 col-md-5 content-center'>{this.i18n('institution.email')}</th>
+            <th className='col-xs-2 col-sm-3 col-md-2 content-center'>{this.i18n('actions')}</th>
         </tr>
         </thead>;
     }
