@@ -48,7 +48,7 @@ class RecordTable extends React.Component {
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
                               show={this.state.showDialog} item={this.state.selectedRecord}
                               itemLabel={this._getDeleteLabel()}/>
-            <Table striped bordered condensed hover>
+            <Table responsive striped bordered condensed hover>
                 {this._renderHeader()}
                 <tbody>
                 {this._renderRows()}
@@ -64,11 +64,11 @@ class RecordTable extends React.Component {
     _renderHeader() {
         return <thead>
         <tr>
-            <th className='col-xs-3 content-center'>{this.i18n('records.id')}</th>
-            <th className='col-xs-3 content-center'>{this.i18n('records.local-name')}</th>
-            <th className='col-xs-3 content-center'>{this.i18n('records.last-modified')}</th>
-            <th className='col-xs-1 content-center'>{this.i18n('records.completion-status')}</th>
-            <th className='col-xs-2 content-center'>{this.i18n('actions')}</th>
+            <th className='col-xs-3 col-sm-2 col-md-3 content-center'>{this.i18n('records.id')}</th>
+            <th className='col-xs-3 col-sm-3 col-md-3 content-center'>{this.i18n('records.local-name')}</th>
+            <th className='col-xs-3 col-sm-3 col-md-3 content-center'>{this.i18n('records.last-modified')}</th>
+            <th className='col-xs-1 col-sm-1 col-md-1 content-center'>{this.i18n('records.completion-status')}</th>
+            <th className='col-xs-2 col-sm-3 col-md-2 content-center'>{this.i18n('actions')}</th>
         </tr>
         </thead>
     }

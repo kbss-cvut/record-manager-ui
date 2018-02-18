@@ -49,10 +49,11 @@ class MainView extends React.Component {
                 <header>
                     <Navbar>
                         <Navbar.Header>
-                        <Navbar.Brand>{Constants.APP_NAME}</Navbar.Brand>
+                        <Navbar.Brand>
+                            <a href="/">{Constants.APP_NAME}</a>
+                        </Navbar.Brand>
                         <Navbar.Toggle />
                         </Navbar.Header>
-
                         <Navbar.Collapse>
                         <Nav pullLeft>
                             <LinkContainer

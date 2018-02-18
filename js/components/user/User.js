@@ -111,42 +111,42 @@ class User extends React.Component {
         return <Panel header={<h3>{this.i18n('user.panel-title')}</h3>} bsStyle='primary'>
             <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
                 <div className='row'>
-                    <div className='col-xs-4'>
+                    <div className='col-xs-6'>
                         <HorizontalInput type='text' name='firstName' label={this.i18n('user.first-name')}
                                value={user.firstName}
-                               labelWidth={4} inputWidth={8} onChange={this._onChange}/>
+                               labelWidth={3} inputWidth={8} onChange={this._onChange}/>
                     </div>
-                    <div className='col-xs-4'>
+                    <div className='col-xs-6'>
                         <HorizontalInput type='text' name='lastName' label={this.i18n('user.last-name')}
                                value={user.lastName}
-                               labelWidth={4} inputWidth={8} onChange={this._onChange}/>
+                               labelWidth={3} inputWidth={8} onChange={this._onChange}/>
                     </div>
                 </div>
                 <div className='row'>
-                    <div className='col-xs-4'>
+                    <div className='col-xs-6'>
                         <HorizontalInput type='text' name='username' label={this.i18n('user.username')}
                                disabled={userLoaded.success}
-                               value={user.username} labelWidth={4} inputWidth={8} onChange={this._onChange}/>
+                               value={user.username} labelWidth={3} inputWidth={8} onChange={this._onChange}/>
                     </div>
-                    <div className='col-xs-4'>
+                    <div className='col-xs-6'>
                         <HorizontalInput type='text' name='emailAddress' label={this.i18n('users.email')}
                                value={user.emailAddress}
-                               labelWidth={4} inputWidth={8} onChange={this._onChange}/>
+                               labelWidth={3} inputWidth={8} onChange={this._onChange}/>
                     </div>
                 </div>
                 <div className='row'>
-                    <div className='col-xs-4'>
+                    <div className='col-xs-6'>
                         <HorizontalInput type='text' name='password' label={this.i18n('user.password')}
                                readOnly={true} value={user.password}
-                               labelWidth={4} inputWidth={8}/>
+                               labelWidth={3} inputWidth={8}/>
                     </div>
                 </div>
                 <div className='row'>
-                    <div className='col-xs-4'>
+                    <div className='col-xs-6'>
                         <HorizontalInput type='select' name='institution' label={this.i18n('institution.panel-title')}
                                          onChange={this._onInstitutionSelected}
                                          value={user.institution ? user.institution.uri : ''}
-                                         labelWidth={4} inputWidth={8}>
+                                         labelWidth={3} inputWidth={8}>
                             {this._generateInstitutionsOptions()}
                         </HorizontalInput>
                     </div>
