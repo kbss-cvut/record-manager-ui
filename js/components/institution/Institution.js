@@ -53,17 +53,15 @@ class Institution extends React.Component {
         return <Panel header={<h3>{this.i18n('institution.panel-title')}</h3>} bsStyle='primary'>
             <form className='form-horizontal' style={{margin: '0.5em 0 1.5em 0'}}>
                 <div className='row'>
-                    <div className='col-xs-4'>
+                    <div className='col-xs-6'>
                         <HorizontalInput type='text' name='name' label={this.i18n('institution.name')}
-                               value={institution.name} readOnly={!Authentication.isAdmin()}
-                               labelWidth={4} inputWidth={8} onChange={this._onChange}/>
+                                         value={institution.name} readOnly={!Authentication.isAdmin()}
+                                         labelWidth={3} inputWidth={8} onChange={this._onChange}/>
                     </div>
-                </div>
-                <div className='row'>
-                    <div className='col-xs-4'>
+                    <div className='col-xs-6'>
                         <HorizontalInput type='text' name='emailAddress' label={this.i18n('institution.email')}
                                value={institution.emailAddress} readOnly={!Authentication.isAdmin()}
-                               labelWidth={4} inputWidth={8} onChange={this._onChange}/>
+                               labelWidth={3} inputWidth={8} onChange={this._onChange}/>
                     </div>
                 </div>
                 {this._renderAddedDate()}
