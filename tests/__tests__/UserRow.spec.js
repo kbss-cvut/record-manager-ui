@@ -6,6 +6,7 @@ import TestUtils from 'react-addons-test-utils';
 import UserRow from "../../js/components/user/UserRow";
 
 describe('Testing UserRow component', function () {
+    const intlData = require('../../js/i18n/en');
     let user,
         deletionLoading = false,
         onEdit = jasmine.createSpy('onEdit'),
@@ -31,7 +32,7 @@ describe('Testing UserRow component', function () {
 
     it('is correctly rendered ', function () {
         const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en">
+            <IntlProvider locale="en" {...intlData}>
                 <table>
                     <tbody>
                         <UserRow user={user} onEdit={onEdit} onDelete={onDelete}
@@ -47,7 +48,7 @@ describe('Testing UserRow component', function () {
 
     it('should go to user profile by button click', function () {
         const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en">
+            <IntlProvider locale="en" {...intlData}>
                 <table>
                     <tbody>
                     <UserRow user={user} onEdit={onEdit} onDelete={onDelete}
@@ -64,7 +65,7 @@ describe('Testing UserRow component', function () {
 
     it('should go to user profile by name click', function () {
         const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en">
+            <IntlProvider locale="en" {...intlData}>
                 <table>
                     <tbody>
                     <UserRow user={user} onEdit={onEdit} onDelete={onDelete}
@@ -82,7 +83,7 @@ describe('Testing UserRow component', function () {
 
     it('should click on user delete', function () {
         const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en">
+            <IntlProvider locale="en" {...intlData}>
                 <table>
                     <tbody>
                     <UserRow user={user} onEdit={onEdit} onDelete={onDelete}

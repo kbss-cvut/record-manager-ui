@@ -129,7 +129,7 @@ class User extends React.Component {
                                value={user.username} labelWidth={3} inputWidth={8} onChange={this._onChange}/>
                     </div>
                     <div className='col-xs-6'>
-                        <HorizontalInput type='text' name='emailAddress' label={this.i18n('users.email')}
+                        <HorizontalInput type='email' name='emailAddress' label={this.i18n('users.email')}
                                value={user.emailAddress}
                                labelWidth={3} inputWidth={8} onChange={this._onChange}/>
                     </div>

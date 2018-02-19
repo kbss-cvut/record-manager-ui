@@ -6,6 +6,7 @@ import TestUtils from 'react-addons-test-utils';
 import UserTable from "../../js/components/user/UserTable";
 
 describe('Testing UserTable component', function () {
+    const intlData = require('../../js/i18n/en');
     let users,
         userDeleted = {
             fetching: false
@@ -29,7 +30,7 @@ describe('Testing UserTable component', function () {
 
     it('is correctly rendered ', function () {
         const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en">
+            <IntlProvider locale="en" {...intlData}>
                 <UserTable users={users} userDeleted={userDeleted} handlers={handlers}/>
             </IntlProvider>);
         const table = TestUtils.scryRenderedDOMComponentsWithTag(tree,'table');
@@ -40,7 +41,7 @@ describe('Testing UserTable component', function () {
 
     it('should render modal on delete button click', function () {
         const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en">
+            <IntlProvider locale="en" {...intlData}>
                 <UserTable users={users} userDeleted={userDeleted} handlers={handlers}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");

@@ -6,17 +6,24 @@ import TestUtils from 'react-addons-test-utils';
 import Users from "../../js/components/user/Users";
 
 describe('Testing Users component', function () {
+    const intlData = require('../../js/i18n/en');
     let users,
+        userDeleted,
+        showAlert,
+        handlers;
+
+    beforeEach(() => {
+        showAlert = false;
         userDeleted = {
             fetching: false
-        },
-        showAlert = false,
+        };
         handlers = {
             onEdit: jasmine.createSpy('onEdit'),
             onCreate: jasmine.createSpy('onCreate'),
             onDelete: jasmine.createSpy('onDelete'),
             onBackToInstitution: null
         };
+    });
 
     users = [{
         "uri":"http://vfn.cz/ontologies/study-manager/Admin-Administratorowitch",
@@ -46,7 +53,7 @@ describe('Testing Users component', function () {
 
     it('is loading', function () {
         const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en">
+            <IntlProvider locale="en" {...intlData}>
                 <Users users={[]} showAlert={showAlert}
                        userDeleted={userDeleted} handlers={handlers}/>
             </IntlProvider>);
@@ -56,7 +63,7 @@ describe('Testing Users component', function () {
 
     it('is correctly rendered ', function () {
         const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en">
+            <IntlProvider locale="en" {...intlData}>
                 <Users users={users} showAlert={showAlert}
                        userDeleted={userDeleted} handlers={handlers}/>
             </IntlProvider>);
@@ -72,7 +79,7 @@ describe('Testing Users component', function () {
 
    it('should go to user creation', function () {
        const tree = TestUtils.renderIntoDocument(
-           <IntlProvider locale="en">
+           <IntlProvider locale="en" {...intlData}>
                <Users users={users} showAlert={showAlert}
                       userDeleted={userDeleted} handlers={handlers}/>
            </IntlProvider>);
@@ -89,7 +96,7 @@ describe('Testing Users component', function () {
             onBackToInstitution: jasmine.createSpy('onBackToInstitution')
         };
         const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en">
+            <IntlProvider locale="en" {...intlData}>
                 <Users users={users} showAlert={showAlert}
                        userDeleted={userDeleted} handlers={handlers}/>
             </IntlProvider>);
@@ -101,12 +108,13 @@ describe('Testing Users component', function () {
     });
 
     it('should show success alert about user deletion', function () {
+        showAlert = true;
         userDeleted = {
             ...userDeleted,
             success: true
         };
         const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en">
+            <IntlProvider locale="en" {...intlData}>
                 <Users users={users} showAlert={showAlert}
                        userDeleted={userDeleted} handlers={handlers}/>
             </IntlProvider>);
@@ -115,6 +123,7 @@ describe('Testing Users component', function () {
     });
 
     it('should show error alert about user deletion', function () {
+        showAlert = true;
         userDeleted = {
             ...userDeleted,
             success: false,
@@ -123,7 +132,7 @@ describe('Testing Users component', function () {
             }
         };
         const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en">
+            <IntlProvider locale="en" {...intlData}>
                 <Users users={users} showAlert={showAlert}
                        userDeleted={userDeleted} handlers={handlers}/>
             </IntlProvider>);
