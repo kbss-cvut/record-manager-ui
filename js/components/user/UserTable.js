@@ -75,7 +75,7 @@ class UserTable extends React.Component {
         let rows = [];
         for (let i = 0, len = users.length; i < len; i++) {
             rows.push(<UserRow key={users[i].username} user={users[i]} onEdit={onEdit} onDelete={this._onDelete}
-                               deletionLoading={userDeleted.fetching && userDeleted.username === users[i].username}/>);
+                               deletionLoading={!!(userDeleted.fetching && userDeleted.username === users[i].username)}/>);
         }
         return rows;
     }

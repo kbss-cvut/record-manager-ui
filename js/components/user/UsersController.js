@@ -17,7 +17,6 @@ class UsersController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: this.props.usersLoaded.users || [],
             showAlert: false
         };
         this.institution = this._getPayload();
@@ -56,10 +55,6 @@ class UsersController extends React.Component {
         return payload ? payload.institution : null;
     };
 
-    _onBackToInstitution = () => {
-        Routing.transitionTo(Routes.editInstitution, {params: {key: this.institution.key}});
-    };
-
     render() {
         const {usersLoaded} = this.props;
         if (!Authentication.isAdmin()) {
@@ -69,7 +64,6 @@ class UsersController extends React.Component {
             onEdit: this._onEditUser,
             onCreate: this._onAddUser,
             onDelete: this._onDeleteUser,
-            onBackToInstitution: this.institution ? this._onBackToInstitution : null
         };
         return <Users users={usersLoaded.users || []} showAlert={this.state.showAlert} userDeleted={this.props.userDeleted} handlers={handlers}/>;
 

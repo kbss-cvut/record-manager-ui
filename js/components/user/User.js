@@ -72,7 +72,7 @@ class User extends React.Component {
             change = {
                 institution: institution
             };
-        this.props.onChange(change);
+        this.props.handlers.onChange(change);
     };
 
     _onAdminStatusChange = (e) => {
@@ -83,7 +83,7 @@ class User extends React.Component {
         } else {
             types.splice(types.indexOf(Vocabulary.ADMIN_TYPE), 1);
         }
-        this.props.onChange({types: types});
+        this.props.handlers.onChange({types: types});
     };
 
     _generateInstitutionsOptions = () => {
