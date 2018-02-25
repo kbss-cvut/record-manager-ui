@@ -90,23 +90,6 @@ describe('Testing Users component', function () {
        expect(handlers.onCreate).toHaveBeenCalled();
    });
 
-    it('should go back to institution ', function () {
-        handlers = {
-            ...handlers,
-            onBackToInstitution: jasmine.createSpy('onBackToInstitution')
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <Users users={users} showAlert={showAlert}
-                       userDeleted={userDeleted} handlers={handlers}/>
-            </IntlProvider>);
-        const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-        expect(buttons.length).toEqual(6);
-
-        TestUtils.Simulate.click(buttons[5]);
-        expect(handlers.onBackToInstitution).toHaveBeenCalled();
-    });
-
     it('should show success alert about user deletion', function () {
         showAlert = true;
         userDeleted = {
