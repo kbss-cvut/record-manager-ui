@@ -1,10 +1,9 @@
 import * as ActionConstants from "../constants/ActionConstants";
-import * as Ajax from "../utils/Ajax";
 import {ACTION_TYPE} from "../constants/DefaultConstants";
 import axios from 'axios';
 
 export function createUser(user) {
-    console.log("Creating user: ", user);
+    //console.log("Creating user: ", user);
     return function (dispatch) {
         dispatch(saveUserBegin(ACTION_TYPE.CREATE_USER));
         axios.post('rest/users', {
@@ -13,20 +12,22 @@ export function createUser(user) {
             dispatch(saveUserComplete(user, ACTION_TYPE.CREATE_USER));
             dispatch(loadUsers());
         }).catch ((error) => {
-            dispatch(saveUserError(error, user, ACTION_TYPE.CREATE_USER));
+            dispatch(saveUserError(error.response.data, user, ACTION_TYPE.CREATE_USER));
         });
     }
 }
 
 export function updateUser(user) {
-    console.log("Updating user: ", user);
+    //console.log("Updating user: ", user);
     return function (dispatch) {
         dispatch(saveUserBegin(ACTION_TYPE.UPDATE_USER));
-        Ajax.put(`rest/users/${user.username}`).send(user).end(() => {
+        axios.put(`rest/users/${user.username}`, {
+            ...user
+        }).then(() => {
             dispatch(saveUserComplete(user, ACTION_TYPE.UPDATE_USER));
             dispatch(loadUsers());
-        }, (error) => {
-            dispatch(saveUserError(error, user, ACTION_TYPE.UPDATE_USER));
+        }).catch ((error) => {
+            dispatch(saveUserError(error.response.data, user, ACTION_TYPE.UPDATE_USER));
         });
     }
 }
@@ -56,14 +57,16 @@ export function saveUserError(error, user, actionType) {
 }
 
 export function deleteUser(user) {
-    console.log("Deleting user: ", user);
+    //console.log("Deleting user: ", user);
     return function (dispatch) {
         dispatch(deleteUserBegin(user.username));
-        Ajax.del('rest/users/' + user.username).end(() => {
+        axios.delete(`rest/users/${user.username}`, {
+            ...user
+        }).then(() => {
             dispatch(loadUsers());
             dispatch(deleteUserComplete(user));
-        }, (error) => {
-            dispatch(deleteUserError(error, user));
+        }).catch ((error) => {
+            dispatch(deleteUserError(error.response.data, user));
         });
     }
 }
@@ -91,13 +94,13 @@ export function deleteUserError(error, user) {
 }
 
 export function loadUser(username) {
-    console.log("Loading user with username: ", username);
+    //console.log("Loading user with username: ", username);
     return function (dispatch) {
         dispatch(loadUserBegin());
-        Ajax.get(`rest/users/${username}`).end((data) => {
-            dispatch(loadUserComplete(data));
-        }, (error) => {
-            dispatch(loadUserError(error));
+        axios.get(`rest/users/${username}`).then((response) => {
+            dispatch(loadUserComplete(response.data));
+        }).catch ((error) => {
+            dispatch(loadUserError(error.response.data));
         });
     }
 }
@@ -129,13 +132,13 @@ export function unloadUser() {
 }
 
 export function loadUsers() {
-    console.log("Loading all users");
+    //console.log("Loading all users");
     return function (dispatch) {
         dispatch(loadUsersBegin());
         axios.get('rest/users').then((response) => {
             dispatch(loadUsersComplete(response.data));
         }).catch ((error) => {
-            dispatch(loadUsersError(error));
+            dispatch(loadUsersError(error.response.data));
         });
     }
 }
