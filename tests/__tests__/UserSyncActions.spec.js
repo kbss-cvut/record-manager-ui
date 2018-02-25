@@ -1,10 +1,11 @@
 import React from 'react';
 import * as ActionConstants from "../../js/constants/ActionConstants";
 import * as actions from "../../js/actions";
+import {ACTION_TYPE} from "../../js/constants/DefaultConstants";
 
 describe('Testing User asynchronize actions', function () {
     it('should create an action to save user', () => {
-        const actionType = 'CREATE';
+        const actionType = ACTION_TYPE.CREATE_USER;
         const expectedAction = {
             type: ActionConstants.SAVE_USER_BEGIN,
             actionType
@@ -13,7 +14,7 @@ describe('Testing User asynchronize actions', function () {
     });
 
     it('should create an action to announce successful save of user', () => {
-        const actionType = 'CREATE';
+        const actionType = ACTION_TYPE.CREATE_USER ;
         const user = {username: 'test'};
         const expectedAction = {
             type: ActionConstants.SAVE_USER_COMPLETE,
@@ -24,7 +25,7 @@ describe('Testing User asynchronize actions', function () {
     });
 
     it('should create an action to announce unsuccessful save of user', () => {
-        const actionType = 'UPDATE';
+        const actionType = ACTION_TYPE.UPDATE_USER ;
         const error = {message: 'error'};
         const user = {username: 'test'};
         const expectedAction = {
