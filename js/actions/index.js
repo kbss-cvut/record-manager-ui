@@ -1,19 +1,18 @@
 import * as ActionConstants from "../constants/ActionConstants";
 import * as Ajax from "../utils/Ajax";
-import * as Utils from "../utils/Utils";
-import Actions from "../actions/Actions";
 import {ACTION_TYPE} from "../constants/DefaultConstants";
-import Routing from "../utils/Routing";
-import Routes from "../utils/Routes";
+import axios from 'axios';
 
 export function createUser(user) {
     console.log("Creating user: ", user);
     return function (dispatch) {
-        dispatch(saveUserBegin());
-        Ajax.post('rest/users').send(user).end(() => {
+        dispatch(saveUserBegin(ACTION_TYPE.CREATE_USER));
+        axios.post('rest/users', {
+            ...user
+        }).then(() => {
             dispatch(saveUserComplete(user, ACTION_TYPE.CREATE_USER));
             dispatch(loadUsers());
-        }, (error) => {
+        }).catch ((error) => {
             dispatch(saveUserError(error, user, ACTION_TYPE.CREATE_USER));
         });
     }
@@ -133,9 +132,9 @@ export function loadUsers() {
     console.log("Loading all users");
     return function (dispatch) {
         dispatch(loadUsersBegin());
-        Ajax.get('rest/users').end((data) => {
-            dispatch(loadUsersComplete(data));
-        }, (error) => {
+        axios.get('rest/users').then((response) => {
+            dispatch(loadUsersComplete(response.data));
+        }).catch ((error) => {
             dispatch(loadUsersError(error));
         });
     }
