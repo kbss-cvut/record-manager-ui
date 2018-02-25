@@ -1,9 +1,8 @@
 import React from 'react';
 import * as ActionConstants from "../../js/constants/ActionConstants";
 import * as actions from "../../js/actions";
-import expect from 'expect'
 
-describe('Testing User actions', function () {
+describe('Testing User asynchronize actions', function () {
     it('should create an action to save user', () => {
         const actionType = 'CREATE';
         const expectedAction = {
