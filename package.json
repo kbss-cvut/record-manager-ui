@@ -4,6 +4,7 @@
   "description": "Study Manager UI",
   "main": "js/app.js",
   "dependencies": {
+    "axios": "^0.18.0",
     "babel-runtime": "^6.7.5",
     "body-parser": "~1.15.0",
     "classnames": "~2.2.3",
@@ -33,6 +34,7 @@
     "superagent": "~1.8.3"
   },
   "devDependencies": {
+    "axios-mock-adapter": "^1.14.0",
     "babel-core": "^6.7.5",
     "babel-eslint": "^6.0.4",
     "babel-loader": "^6.2.4",
@@ -53,6 +55,7 @@
     "jsdom": "^8.3.1",
     "null-loader": "^0.1.1",
     "react-addons-test-utils": "~15.3.2",
+    "redux-mock-store": "^1.5.1",
     "rewire": "^2.5.1",
     "uglify-js": "^2.6.2",
     "watchify": "^3.7.0",
