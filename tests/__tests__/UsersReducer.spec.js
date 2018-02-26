@@ -5,7 +5,7 @@ import * as ActionConstants from "../../js/constants/ActionConstants";
 import UsersReducer from "../../js/reducers/UsersReducer";
 import {ACTION_STATUS} from "../../js/constants/DefaultConstants";
 
-describe('Testing UsersReducer', function () {
+describe('UsersReducer', function () {
     const users = [{username: 'test1'}, {username: 'test2'}],
           error = {
               message: 'An error has occurred.'

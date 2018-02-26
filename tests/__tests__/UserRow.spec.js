@@ -5,7 +5,7 @@ import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
 import UserRow from "../../js/components/user/UserRow";
 
-describe('Testing UserRow component', function () {
+describe('UserRow', function () {
     const intlData = require('../../js/i18n/en');
     let user,
         deletionLoading = false,
@@ -30,7 +30,7 @@ describe('Testing UserRow component', function () {
         ]
     };
 
-    it('is correctly rendered ', function () {
+    it('should render one row of table with 5 columns and 2 buttons', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <table>
@@ -46,7 +46,7 @@ describe('Testing UserRow component', function () {
         expect(buttons.length).toEqual(2);
     });
 
-    it('should go to user profile by button click', function () {
+    it('should render "Open" button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <table>
@@ -63,7 +63,7 @@ describe('Testing UserRow component', function () {
         expect(onEdit).toHaveBeenCalled();
     });
 
-    it('should go to user profile by name click', function () {
+    it('should render name with link and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <table>
@@ -81,7 +81,7 @@ describe('Testing UserRow component', function () {
         expect(onEdit).toHaveBeenCalled();
     });
 
-    it('should click on user delete', function () {
+    it('should render "Delete" button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <table>

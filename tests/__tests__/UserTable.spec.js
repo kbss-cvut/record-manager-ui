@@ -6,7 +6,7 @@ import TestUtils from 'react-addons-test-utils';
 import UserTable from "../../js/components/user/UserTable";
 import {ACTION_STATUS} from "../../js/constants/DefaultConstants";
 
-describe('Testing UserTable component', function () {
+describe('UserTable', function () {
     const intlData = require('../../js/i18n/en');
     let users,
         userDeleted = {
@@ -29,7 +29,7 @@ describe('Testing UserTable component', function () {
         ]
     }];
 
-    it('is correctly rendered ', function () {
+    it('should render table with 5 headers columns', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <UserTable users={users} userDeleted={userDeleted} handlers={handlers}/>
@@ -40,7 +40,7 @@ describe('Testing UserTable component', function () {
         expect(th.length).toEqual(5);
     });
 
-    it('should render modal on delete button click', function () {
+    it('should render modal window by "Delete" button click', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <UserTable users={users} userDeleted={userDeleted} handlers={handlers}/>

@@ -5,7 +5,7 @@ import UserReducer from "../../js/reducers/UserReducer";
 import * as ActionConstants from "../../js/constants/ActionConstants";
 import {ACTION_FLAG, ACTION_STATUS} from "../../js/constants/DefaultConstants";
 
-describe('Testing UserReducer', function () {
+describe('UserReducer', function () {
     const user = {username: 'test'},
           error = {
               message: 'An error has occurred.'

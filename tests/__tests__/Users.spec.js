@@ -6,7 +6,7 @@ import TestUtils from 'react-addons-test-utils';
 import Users from "../../js/components/user/Users";
 import {ACTION_STATUS} from "../../js/constants/DefaultConstants";
 
-describe('Testing Users component', function () {
+describe('Users', function () {
     const intlData = require('../../js/i18n/en');
     let users,
         userDeleted,
@@ -52,7 +52,7 @@ describe('Testing Users component', function () {
         ]
     }];
 
-    it('is loading', function () {
+    it('is showing loader', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Users users={[]} showAlert={showAlert}
@@ -62,7 +62,7 @@ describe('Testing Users component', function () {
         expect(result).not.toBeNull();
     });
 
-    it('is correctly rendered ', function () {
+    it('should render panel with table and users', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Users users={users} showAlert={showAlert}
@@ -78,7 +78,7 @@ describe('Testing Users component', function () {
         expect(th.length).toEqual(5);
     });
 
-   it('should go to user creation', function () {
+   it('should render "Create user" button and click on it', function () {
        const tree = TestUtils.renderIntoDocument(
            <IntlProvider locale="en" {...intlData}>
                <Users users={users} showAlert={showAlert}
@@ -91,7 +91,7 @@ describe('Testing Users component', function () {
        expect(handlers.onCreate).toHaveBeenCalled();
    });
 
-    it('should show success alert about user deletion', function () {
+    it('should show successful alert that user was successfully deleted', function () {
         showAlert = true;
         userDeleted = {
             ...userDeleted,
@@ -106,7 +106,7 @@ describe('Testing Users component', function () {
         expect(alert).not.toBeNull();
     });
 
-    it('should show error alert about user deletion', function () {
+    it('should show unsuccessful alert that user was not deleted', function () {
         showAlert = true;
         userDeleted = {
             ...userDeleted,

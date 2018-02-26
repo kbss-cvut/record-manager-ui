@@ -6,11 +6,102 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import {ACTION_FLAG} from "../../js/constants/DefaultConstants";
 
+describe('User synchronize actions', function () {
+    const user = {username: 'test'},
+          error = {message: 'error'};
+
+    it('should create an action to save user', () => {
+        const actionFlag = ACTION_FLAG.CREATE_USER;
+        const expectedAction = {
+            type: ActionConstants.SAVE_USER_PENDING,
+            actionFlag
+        };
+        expect(actions.saveUserPending(actionFlag)).toEqual(expectedAction)
+    });
+
+    it('should create an action to announce successful save of user', () => {
+        const actionFlag = ACTION_FLAG.CREATE_USER ;
+        const expectedAction = {
+            type: ActionConstants.SAVE_USER_SUCCESS,
+            user,
+            actionFlag
+        };
+        expect(actions.saveUserSuccess(user, actionFlag)).toEqual(expectedAction)
+    });
+
+    it('should create an action to announce unsuccessful save of user', () => {
+        const actionFlag = ACTION_FLAG.UPDATE_USER ;
+        const expectedAction = {
+            type: ActionConstants.SAVE_USER_ERROR,
+            error,
+            user,
+            actionFlag,
+        };
+        expect(actions.saveUserError(error, user, actionFlag)).toEqual(expectedAction)
+    });
+
+    it('should create an action to delete user', () => {
+        const username = user.username;
+        const expectedAction = {
+            type: ActionConstants.DELETE_USER_PENDING,
+            username
+        };
+        expect(actions.deleteUserPending(username)).toEqual(expectedAction)
+    });
+
+    it('should create an action to announce successful delete of user', () => {
+        const expectedAction = {
+            type: ActionConstants.DELETE_USER_SUCCESS,
+            user
+        };
+        expect(actions.deleteUserSuccess(user)).toEqual(expectedAction)
+    });
+
+    it('should create an action to announce unsuccessful delete of user', () => {
+        const expectedAction = {
+            type: ActionConstants.DELETE_USER_ERROR,
+            error,
+            user
+        };
+        expect(actions.deleteUserError(error, user)).toEqual(expectedAction)
+    });
+
+    it('should create an action to fetch user', () => {
+        const expectedAction = {
+            type: ActionConstants.LOAD_USER_PENDING,
+        };
+        expect(actions.loadUserPending()).toEqual(expectedAction)
+    });
+
+    it('should create an action to save fetched user', () => {
+        const expectedAction = {
+            type: ActionConstants.LOAD_USER_SUCCESS,
+            user
+        };
+        expect(actions.loadUserSuccess(user)).toEqual(expectedAction)
+    });
+
+    it('should create an action about error during fetching user', () => {
+        const expectedAction = {
+            type: ActionConstants.LOAD_USER_ERROR,
+            error
+        };
+        expect(actions.loadUserError(error)).toEqual(expectedAction)
+    });
+
+    it('should create an action to unload loaded user', () => {
+        const expectedAction = {
+            type: ActionConstants.UNLOAD_USER,
+        };
+        expect(actions.unloadUser()).toEqual(expectedAction)
+    });
+});
+
 const TEST_TIMEOUT = 300;
 const middlewares = [thunk.withExtraArgument(axios)];
 const mockStore = configureMockStore(middlewares);
 
-describe('Testing User asynchronize actions', function () {
+describe('User asynchronize actions', function () {
     let store,
         MockApi;
     const user = {username: 'test'},
@@ -96,7 +187,6 @@ describe('Testing User asynchronize actions', function () {
         }, TEST_TIMEOUT);
     });
 
-
     it('creates DELETE_USER_SUCCESS action when deleting user successfully is done', function (done) {
         const expectedActions = [
             { type: ActionConstants.DELETE_USER_PENDING, username},
@@ -157,38 +247,6 @@ describe('Testing User asynchronize actions', function () {
         MockApi.onGet(`rest/users/${user.username}`).reply(400, error);
 
         store.dispatch(actions.loadUser(user.username));
-
-        setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
-            done();
-        }, TEST_TIMEOUT);
-    });
-
-    it('creates LOAD_USERS_SUCCESS action when loading users successfully is done', function (done) {
-        const expectedActions = [
-            { type: ActionConstants.LOAD_USERS_PENDING},
-            { type: ActionConstants.LOAD_USERS_SUCCESS, users}
-        ];
-
-        MockApi.onGet('rest/users').reply(200, users);
-
-        store.dispatch(actions.loadUsers());
-
-        setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
-            done();
-        }, TEST_TIMEOUT);
-    });
-
-    it('creates LOAD_USERS_ERROR action if an error occurred during loading users', function (done) {
-        const expectedActions = [
-            { type: ActionConstants.LOAD_USERS_PENDING},
-            { type: ActionConstants.LOAD_USERS_ERROR, error}
-        ];
-
-        MockApi.onGet('rest/users').reply(400, error);
-
-        store.dispatch(actions.loadUsers());
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);

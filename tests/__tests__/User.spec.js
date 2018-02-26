@@ -6,7 +6,7 @@ import TestUtils from 'react-addons-test-utils';
 import User from "../../js/components/user/User";
 import {ACTION_STATUS} from "../../js/constants/DefaultConstants";
 
-describe('Testing User component', function () {
+describe('User', function () {
     const intlData = require('../../js/i18n/en');
     let user,
         admin,
@@ -75,7 +75,7 @@ describe('Testing User component', function () {
         ]
     };
 
-    it('is loading', function () {
+    it('is showing loader', function () {
         loading = true;
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
@@ -105,7 +105,7 @@ describe('Testing User component', function () {
     expect(alert).not.toBeNull();
     });
 
-    it('Create user should be correctly rendered ', function () {
+    it("should render user's form empty", function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
@@ -146,21 +146,7 @@ describe('Testing User component', function () {
         expect(select).not.toBeNull();
     });
 
-    it('should go to users', function () {
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
-                      loading={loading} userSaved={userSaved} showAlert={showAlert}
-                      userLoaded={userLoaded}/>
-            </IntlProvider>);
-        let buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-        expect(buttons.length).toEqual(2);
-
-        TestUtils.Simulate.click(buttons[1]); // cancel
-        expect(handlers.onCancel).toHaveBeenCalled();
-    });
-
-    it('should be able to click on save button', function () {
+    it('should render clickable "Save" button and click on it', function () {
         newUser = {
             ...newUser,
             username: 'test',
@@ -182,7 +168,7 @@ describe('Testing User component', function () {
     });
 
 
-    it('should show success alert about user save', function () {
+    it('should show successful alert that user was successfully saved', function () {
         showAlert = true;
         userSaved = {
             ...userSaved,
@@ -198,7 +184,7 @@ describe('Testing User component', function () {
         expect(alert).not.toBeNull();
     });
 
-    it('should show error alert about user was not saved', function () {
+    it('should show unsuccessful alert that user was not saved', function () {
         showAlert = true;
         userSaved = {
             ...userSaved,
@@ -217,7 +203,7 @@ describe('Testing User component', function () {
         expect(alert).not.toBeNull();
     });
 
-    it('User profile should be correctly rendered ', function () {
+    it('should render filled user\'s form without checked administrator checkbox', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={user} handlers={handlers} backToInstitution={backToInstitution}
@@ -259,7 +245,7 @@ describe('Testing User component', function () {
         expect(select).not.toBeNull();
     });
 
-    it('Admin profile should be correctly rendered ', function () {
+    it('should render filled user\'s form with checked administrator checkbox', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={admin} handlers={handlers} backToInstitution={backToInstitution}
@@ -301,7 +287,7 @@ describe('Testing User component', function () {
         expect(select).not.toBeNull();
     });
 
-    it('should go back to users', function () {
+    it('should render "Cancel" button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
@@ -315,7 +301,7 @@ describe('Testing User component', function () {
         expect(handlers.onCancel).toHaveBeenCalled();
     });
 
-    it('should go back to institution ', function () {
+    it('should render "Back to institution" button and click on it', function () {
         backToInstitution = true;
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
