@@ -13,7 +13,8 @@ import Mask from "../Mask";
 import UserValidator from "../../validation/UserValidator";
 import Vocabulary from "../../constants/Vocabulary";
 import AlertMessage from "../AlertMessage";
-import {ALERT_TYPES} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
+import * as ActionConstants from "../../constants/ActionConstants";
 
 class User extends React.Component {
     static propTypes = {
@@ -104,7 +105,7 @@ class User extends React.Component {
         if (this.props.loading) {
             return <Mask text={this.i18n('please-wait')}/>;
         }
-        if (userLoaded.error) {
+        if (userLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                  message={this.props.formatMessage('user.load-error', {error: this.props.userLoaded.error.message})}/>;
         }
@@ -125,7 +126,7 @@ class User extends React.Component {
                 <div className='row'>
                     <div className='col-xs-6'>
                         <HorizontalInput type='text' name='username' label={this.i18n('user.username')}
-                               disabled={userLoaded.success}
+                               disabled={userLoaded.status === ACTION_STATUS.SUCCESS}
                                value={user.username} labelWidth={3} inputWidth={8} onChange={this._onChange}/>
                     </div>
                     <div className='col-xs-6'>
@@ -166,16 +167,16 @@ class User extends React.Component {
                     <Button bsStyle='success' bsSize='small' ref='submit'
                             disabled={!UserValidator.isValid(user)}
                             onClick={handlers.onSave}>
-                        {this.i18n('save')}{userSaved.fetching && <div className="loader"></div>}
+                        {this.i18n('save')}{userSaved.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
                         </Button>
                     <Button bsStyle='link' bsSize='small' onClick={handlers.onCancel}>
                         {this.i18n(this.props.backToInstitution ? 'users.back-to-institution' : 'cancel')}
                     </Button>
                 </div>
-                {showAlert && userSaved.error &&
+                {showAlert && userSaved.status === ACTION_STATUS.ERROR &&
                     <AlertMessage type={ALERT_TYPES.DANGER}
                                   message={this.props.formatMessage('user.save-error', {error: this.props.userSaved.error.message})}/>}
-                {showAlert && userSaved.success &&
+                {showAlert && userSaved.status === ACTION_STATUS.SUCCESS &&
                     <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('user.save-success')}/>}
             </form>
         </Panel>;

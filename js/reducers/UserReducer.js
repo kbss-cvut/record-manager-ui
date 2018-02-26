@@ -1,4 +1,5 @@
 import * as ActionConstants from "../constants/ActionConstants";
+import {ACTION_STATUS} from "../constants/DefaultConstants";
 
 const initialState = {
     userSaved: {},
@@ -12,7 +13,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 userSaved: {
-                    fetching: true,
+                    status: ACTION_STATUS.PENDING
                 }
             };
         case ActionConstants.SAVE_USER_SUCCESS:
@@ -20,8 +21,7 @@ export default function (state = initialState, action) {
                 ...state,
                 userSaved: {
                     actionFlag: action.actionFlag,
-                    fetching: false,
-                    success: true,
+                    status: ACTION_STATUS.SUCCESS,
                     user: action.user,
                     error: ''
                 }
@@ -31,8 +31,7 @@ export default function (state = initialState, action) {
                 ...state,
                 userSaved: {
                     actionFlag: action.actionFlag,
-                    fetching: false,
-                    success: false,
+                    status: ACTION_STATUS.ERROR,
                     user: action.user,
                     error: action.error
                 }
@@ -41,7 +40,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 userDeleted: {
-                    fetching: true,
+                    status: ACTION_STATUS.PENDING,
                     username: action.username
                 }
             };
@@ -49,8 +48,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 userDeleted: {
-                    fetching: false,
-                    success: true,
+                    status: ACTION_STATUS.SUCCESS,
                     user: action.user,
                     error: ''
                 }
@@ -59,8 +57,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 userDeleted: {
-                    fetching: false,
-                    success: false,
+                    status: ACTION_STATUS.ERROR,
                     user: action.user,
                     error: action.error
                 }
@@ -70,15 +67,14 @@ export default function (state = initialState, action) {
                 ...state,
                 userLoaded: {
                     ...state.userLoaded,
-                    fetching: true
+                    status: ACTION_STATUS.PENDING
                 }
             };
         case ActionConstants.LOAD_USER_SUCCESS:
             return {
                 ...state,
                 userLoaded: {
-                    fetching: false,
-                    success: true,
+                    status: ACTION_STATUS.SUCCESS,
                     user: action.user,
                     error: ''
                 }
@@ -87,8 +83,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 userLoaded: {
-                    fetching: false,
-                    success: false,
+                    status: ACTION_STATUS.ERROR,
                     error: action.error
                 }
             };

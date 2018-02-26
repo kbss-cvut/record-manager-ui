@@ -75,7 +75,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapp
 function mapStateToProps(state) {
     return {
         userDeleted: state.user.userDeleted,
-        usersLoaded: state.user.usersLoaded
+        usersLoaded: state.users.usersLoaded
     };
 }
 

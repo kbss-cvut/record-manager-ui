@@ -4,12 +4,13 @@ import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
 import UserTable from "../../js/components/user/UserTable";
+import {ACTION_STATUS} from "../../js/constants/DefaultConstants";
 
 describe('Testing UserTable component', function () {
     const intlData = require('../../js/i18n/en');
     let users,
         userDeleted = {
-            fetching: false
+            status: ACTION_STATUS.SUCCESS
         },
         handlers = {
             onEdit: jasmine.createSpy('onEdit'),

@@ -10,7 +10,7 @@ export const ACTION_FLAG = {
     UPDATE_USER: 'UPDATE_USER'
 };
 
-export const ACTION_STATE = {
+export const ACTION_STATUS = {
     PENDING: 'PENDING',
     SUCCESS: 'SUCCESS',
     ERROR: 'ERROR'

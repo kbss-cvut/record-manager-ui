@@ -7,6 +7,7 @@ import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import Routes from "../../utils/Routes";
 import UserRow from "./UserRow";
+import {ACTION_STATUS} from "../../constants/DefaultConstants";
 
 class UserTable extends React.Component {
     static propTypes = {
@@ -75,7 +76,8 @@ class UserTable extends React.Component {
         let rows = [];
         for (let i = 0, len = users.length; i < len; i++) {
             rows.push(<UserRow key={users[i].username} user={users[i]} onEdit={onEdit} onDelete={this._onDelete}
-                               deletionLoading={!!(userDeleted.fetching && userDeleted.username === users[i].username)}/>);
+                               deletionLoading={!!(userDeleted.status === ACTION_STATUS.PENDING
+                                                && userDeleted.username === users[i].username)}/>);
         }
         return rows;
     }

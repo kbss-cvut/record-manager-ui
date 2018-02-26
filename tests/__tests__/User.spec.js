@@ -4,6 +4,7 @@ import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
 import User from "../../js/components/user/User";
+import {ACTION_STATUS} from "../../js/constants/DefaultConstants";
 
 describe('Testing User component', function () {
     const intlData = require('../../js/i18n/en');
@@ -25,14 +26,12 @@ describe('Testing User component', function () {
         loading = false;
         showAlert = false;
         userLoaded = {
-            fetching: false,
-            error: '',
-            success: true
+            status: ACTION_STATUS.SUCCESS,
+            error: ''
         };
         userSaved = {
-            fetching: false,
-            error: '',
-            success: true
+            status: ACTION_STATUS.SUCCESS,
+            error: ''
         };
         newUser = {
             firstName: '',
@@ -91,11 +90,10 @@ describe('Testing User component', function () {
     it('should show error about user was not loaded', function () {
         userLoaded = {
             ...userLoaded,
-            fetching: false,
+            status: ACTION_STATUS.ERROR,
             error: {
                 message: "Error"
-            },
-            success: false
+            }
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
@@ -188,7 +186,7 @@ describe('Testing User component', function () {
         showAlert = true;
         userSaved = {
             ...userSaved,
-            success: true
+            status: ACTION_STATUS.SUCCESS
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
@@ -204,7 +202,7 @@ describe('Testing User component', function () {
         showAlert = true;
         userSaved = {
             ...userSaved,
-            success: false,
+            status: ACTION_STATUS.ERROR,
             error: {
                 message: "Error"
             }

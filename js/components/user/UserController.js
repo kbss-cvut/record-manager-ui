@@ -14,7 +14,7 @@ import Routing from '../../utils/Routing';
 import {createUser, loadUser, unloadUser, updateUser} from "../../actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {ACTION_FLAG} from "../../constants/DefaultConstants";
+import {ACTION_FLAG, ACTION_STATUS} from "../../constants/DefaultConstants";
 
 class UserController extends React.Component {
     constructor(props) {
@@ -47,11 +47,12 @@ class UserController extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.state.saved && !nextProps.userLoaded.fetching && nextProps.userSaved.success) {
+        if (this.state.saved && nextProps.userLoaded.status !== ACTION_STATUS.PENDING
+            && nextProps.userSaved.status === ACTION_STATUS.SUCCESS) {
             this.setState({saved: false});
             this.props.loadUser(nextProps.userSaved.user.username);
         }
-        if (this.props.userLoaded.fetching && !nextProps.userLoaded.fetching && nextProps.userLoaded.success) {
+        if (this.props.userLoaded.status === ACTION_STATUS.PENDING && nextProps.userLoaded.status === ACTION_STATUS.SUCCESS) {
             this.setState({user: nextProps.userLoaded.user, loading: false});
         }
     }
@@ -59,7 +60,7 @@ class UserController extends React.Component {
     _onSave = () => {
         let user = this.state.user;
         this.setState({saved: true, showAlert: true});
-        if (user.isNew || (this._isNew() && this.props.userSaved.error)) {
+        if (user.isNew || (this._isNew() && this.props.userSaved.status === ACTION_STATUS.ERROR)) {
             delete user.isNew;
             this.props.createUser(user, ACTION_FLAG.CREATE_USER);
         } else {

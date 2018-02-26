@@ -3,6 +3,7 @@
 import React from 'react';
 import * as ActionConstants from "../../js/constants/ActionConstants";
 import UsersReducer from "../../js/reducers/UsersReducer";
+import {ACTION_STATUS} from "../../js/constants/DefaultConstants";
 
 describe('Testing UsersReducer', function () {
     const users = [{username: 'test1'}, {username: 'test2'}],
@@ -26,7 +27,7 @@ describe('Testing UsersReducer', function () {
         const expectedState = {
             usersLoaded: {
                 testEntry: initialState.usersLoaded.testEntry,
-                fetching: true,
+                status: ACTION_STATUS.PENDING
             },
             testEntry2: initialState.testEntry2
         };
@@ -36,7 +37,7 @@ describe('Testing UsersReducer', function () {
     it('should handle LOAD_USERS_SUCCESS', () => {
         const initialState = {
             usersLoaded: {
-                fetching: true
+                status: ACTION_STATUS.PENDING
             },
             testEntry: "should not touch"
         };
@@ -49,8 +50,7 @@ describe('Testing UsersReducer', function () {
 
         const expectedState = {
             usersLoaded: {
-                fetching: false,
-                success: true,
+                status: ACTION_STATUS.SUCCESS,
                 users,
                 error: ''
             },
@@ -62,7 +62,7 @@ describe('Testing UsersReducer', function () {
     it('should handle LOAD_USERS_ERROR', () => {
         const initialState = {
             usersLoaded: {
-                fetching: true
+                status: ACTION_STATUS.PENDING
             },
             testEntry: "should not touch"
         };
@@ -75,8 +75,7 @@ describe('Testing UsersReducer', function () {
 
         const expectedState = {
             usersLoaded: {
-                fetching: false,
-                success: false,
+                status: ACTION_STATUS.ERROR,
                 error
             },
             testEntry: initialState.testEntry

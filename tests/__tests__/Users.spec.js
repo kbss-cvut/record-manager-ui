@@ -4,6 +4,7 @@ import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
 import Users from "../../js/components/user/Users";
+import {ACTION_STATUS} from "../../js/constants/DefaultConstants";
 
 describe('Testing Users component', function () {
     const intlData = require('../../js/i18n/en');
@@ -15,7 +16,7 @@ describe('Testing Users component', function () {
     beforeEach(() => {
         showAlert = false;
         userDeleted = {
-            fetching: false
+            status: ACTION_STATUS.SUCCESS
         };
         handlers = {
             onEdit: jasmine.createSpy('onEdit'),
@@ -94,7 +95,7 @@ describe('Testing Users component', function () {
         showAlert = true;
         userDeleted = {
             ...userDeleted,
-            success: true
+            status: ACTION_STATUS.SUCCESS
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
@@ -109,7 +110,7 @@ describe('Testing Users component', function () {
         showAlert = true;
         userDeleted = {
             ...userDeleted,
-            success: false,
+            status: ACTION_STATUS.ERROR,
             error: {
                 message: "Error"
             }

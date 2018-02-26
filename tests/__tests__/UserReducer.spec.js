@@ -3,7 +3,7 @@
 import React from 'react';
 import UserReducer from "../../js/reducers/UserReducer";
 import * as ActionConstants from "../../js/constants/ActionConstants";
-import {ACTION_FLAG} from "../../js/constants/DefaultConstants";
+import {ACTION_FLAG, ACTION_STATUS} from "../../js/constants/DefaultConstants";
 
 describe('Testing UserReducer', function () {
     const user = {username: 'test'},
@@ -38,7 +38,7 @@ describe('Testing UserReducer', function () {
 
         const expectedState = {
             userSaved: {
-                fetching: true
+                status: ACTION_STATUS.PENDING
             },
             testEntry: initialState.testEntry
         };
@@ -48,7 +48,7 @@ describe('Testing UserReducer', function () {
     it('should handle SAVE_USER_SUCCESS', () => {
         const initialState = {
             userSaved: {
-                fetching: true
+                status: ACTION_STATUS.PENDING
             },
             testEntry: "should not touch"
         };
@@ -63,8 +63,7 @@ describe('Testing UserReducer', function () {
         const expectedState = {
             userSaved: {
                 actionFlag: ACTION_FLAG.CREATE_USER,
-                fetching: false,
-                success: true,
+                status: ACTION_STATUS.SUCCESS,
                 user,
                 error: ''
             },
@@ -76,7 +75,7 @@ describe('Testing UserReducer', function () {
     it('should handle SAVE_USER_ERROR', () => {
         const initialState = {
             userSaved: {
-                fetching: true
+                status: ACTION_STATUS.PENDING
             },
             testEntry: "should not touch"
         };
@@ -92,8 +91,7 @@ describe('Testing UserReducer', function () {
         const expectedState = {
             userSaved: {
                 actionFlag: ACTION_FLAG.CREATE_USER,
-                fetching: false,
-                success: false,
+                status: ACTION_STATUS.ERROR,
                 user,
                 error
             },
@@ -116,7 +114,7 @@ describe('Testing UserReducer', function () {
 
         const expectedState = {
             userDeleted: {
-                fetching: true,
+                status: ACTION_STATUS.PENDING,
                 username: user.username
             },
             testEntry: initialState.testEntry
@@ -127,7 +125,7 @@ describe('Testing UserReducer', function () {
     it('should handle DELETE_USER_SUCCESS', () => {
         const initialState = {
             userDeleted: {
-                fetching: true
+                status: ACTION_STATUS.PENDING
             },
             testEntry: "should not touch"
         };
@@ -140,8 +138,7 @@ describe('Testing UserReducer', function () {
 
         const expectedState = {
             userDeleted: {
-                fetching: false,
-                success: true,
+                status: ACTION_STATUS.SUCCESS,
                 user,
                 error: ''
             },
@@ -153,7 +150,7 @@ describe('Testing UserReducer', function () {
     it('should handle DELETE_USER_ERROR', () => {
         const initialState = {
             userDeleted: {
-                fetching: true
+                status: ACTION_STATUS.PENDING
             },
             testEntry: "should not touch"
         };
@@ -167,8 +164,7 @@ describe('Testing UserReducer', function () {
 
         const expectedState = {
             userDeleted: {
-                fetching: false,
-                success: false,
+                status: ACTION_STATUS.ERROR,
                 user,
                 error
             },
@@ -194,7 +190,7 @@ describe('Testing UserReducer', function () {
         const expectedState = {
             userLoaded: {
                 testEntry: initialState.userLoaded.testEntry,
-                fetching: true,
+                status: ACTION_STATUS.PENDING,
             },
             testEntry2: initialState.testEntry2
         };
@@ -204,7 +200,7 @@ describe('Testing UserReducer', function () {
     it('should handle LOAD_USER_SUCCESS', () => {
         const initialState = {
             userLoaded: {
-                fetching: true
+                status: ACTION_STATUS.PENDING
             },
             testEntry: "should not touch"
         };
@@ -217,8 +213,7 @@ describe('Testing UserReducer', function () {
 
         const expectedState = {
             userLoaded: {
-                fetching: false,
-                success: true,
+                status: ACTION_STATUS.SUCCESS,
                 user,
                 error: ''
             },
@@ -230,7 +225,7 @@ describe('Testing UserReducer', function () {
     it('should handle LOAD_USER_ERROR', () => {
         const initialState = {
             userLoaded: {
-                fetching: true
+                status: ACTION_STATUS.PENDING
             },
             testEntry: "should not touch"
         };
@@ -243,8 +238,7 @@ describe('Testing UserReducer', function () {
 
         const expectedState = {
             userLoaded: {
-                fetching: false,
-                success: false,
+                status: ACTION_STATUS.ERROR,
                 error
             },
             testEntry: initialState.testEntry
@@ -255,8 +249,7 @@ describe('Testing UserReducer', function () {
     it('should handle UNLOAD_USER', () => {
         const initialState = {
             userLoaded: {
-                fetching: false,
-                success: true,
+                status: ACTION_STATUS.SUCCESS,
                 user
             },
             testEntry: "should not touch"
