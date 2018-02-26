@@ -4,23 +4,22 @@ const initialState = {
     userSaved: {},
     userDeleted: {},
     userLoaded: {},
-    usersLoaded: {}
 };
 
 export default function (state = initialState, action) {
     switch (action.type) {
-        case ActionConstants.SAVE_USER_BEGIN:
+        case ActionConstants.SAVE_USER_PENDING:
             return {
                 ...state,
                 userSaved: {
                     fetching: true,
                 }
             };
-        case ActionConstants.SAVE_USER_COMPLETE:
+        case ActionConstants.SAVE_USER_SUCCESS:
             return {
                 ...state,
                 userSaved: {
-                    actionType: action.actionType,
+                    actionFlag: action.actionFlag,
                     fetching: false,
                     success: true,
                     user: action.user,
@@ -31,14 +30,14 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 userSaved: {
-                    actionType: action.actionType,
+                    actionFlag: action.actionFlag,
                     fetching: false,
                     success: false,
                     user: action.user,
                     error: action.error
                 }
             };
-        case ActionConstants.DELETE_USER_BEGIN:
+        case ActionConstants.DELETE_USER_PENDING:
             return {
                 ...state,
                 userDeleted: {
@@ -46,7 +45,7 @@ export default function (state = initialState, action) {
                     username: action.username
                 }
             };
-        case ActionConstants.DELETE_USER_COMPLETE:
+        case ActionConstants.DELETE_USER_SUCCESS:
             return {
                 ...state,
                 userDeleted: {
@@ -66,7 +65,7 @@ export default function (state = initialState, action) {
                     error: action.error
                 }
             };
-        case ActionConstants.LOAD_USER_BEGIN:
+        case ActionConstants.LOAD_USER_PENDING:
             return {
                 ...state,
                 userLoaded: {
@@ -74,7 +73,7 @@ export default function (state = initialState, action) {
                     fetching: true
                 }
             };
-        case ActionConstants.LOAD_USER_COMPLETE:
+        case ActionConstants.LOAD_USER_SUCCESS:
             return {
                 ...state,
                 userLoaded: {
@@ -98,34 +97,6 @@ export default function (state = initialState, action) {
                 ...state,
                 userLoaded: {}
             };
-        case ActionConstants.LOAD_USERS_BEGIN:
-            return {
-                ...state,
-                usersLoaded: {
-                    ...state.usersLoaded,
-                    fetching: true,
-                }
-            };
-        case ActionConstants.LOAD_USERS_COMPLETE:
-            return {
-                ...state,
-                usersLoaded: {
-                    fetching: false,
-                    success: true,
-                    users: action.users,
-                    error: ''
-                }
-            };
-        case ActionConstants.LOAD_USERS_ERROR:
-            return {
-                ...state,
-                usersLoaded: {
-                    fetching: false,
-                    success: false,
-                    error: action.error
-                }
-            };
-
         default:
             return state;
     }

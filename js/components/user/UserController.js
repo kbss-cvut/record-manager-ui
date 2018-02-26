@@ -14,7 +14,7 @@ import Routing from '../../utils/Routing';
 import {createUser, loadUser, unloadUser, updateUser} from "../../actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {ACTION_TYPE} from "../../constants/DefaultConstants";
+import {ACTION_FLAG} from "../../constants/DefaultConstants";
 
 class UserController extends React.Component {
     constructor(props) {
@@ -61,9 +61,9 @@ class UserController extends React.Component {
         this.setState({saved: true, showAlert: true});
         if (user.isNew || (this._isNew() && this.props.userSaved.error)) {
             delete user.isNew;
-            this.props.createUser(user, ACTION_TYPE.CREATE_USER);
+            this.props.createUser(user, ACTION_FLAG.CREATE_USER);
         } else {
-            this.props.updateUser(user, ACTION_TYPE.UPDATE_USER);
+            this.props.updateUser(user, ACTION_FLAG.UPDATE_USER);
         }
     };
 
@@ -117,6 +117,6 @@ function mapDispatchToProps(dispatch) {
         createUser: bindActionCreators(createUser, dispatch),
         updateUser: bindActionCreators(updateUser, dispatch),
         loadUser: bindActionCreators(loadUser, dispatch),
-        unloadUser: bindActionCreators(unloadUser, dispatch),
+        unloadUser: bindActionCreators(unloadUser, dispatch)
     }
 }

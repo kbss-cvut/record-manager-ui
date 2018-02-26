@@ -4,8 +4,9 @@ import * as actions from "../../js/actions";
 import * as ActionConstants from "../../js/constants/ActionConstants";
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import {ACTION_TYPE, TEST_TIMEOUT} from "../../js/constants/DefaultConstants";
+import {ACTION_FLAG} from "../../js/constants/DefaultConstants";
 
+const TEST_TIMEOUT = 300;
 const middlewares = [thunk.withExtraArgument(axios)];
 const mockStore = configureMockStore(middlewares);
 
@@ -25,12 +26,12 @@ describe('Testing User asynchronize actions', function () {
         store = mockStore();
     });
 
-    it('creates SAVE_USER_COMPLETE action when saving user successfully is done', function (done) {
+    it('creates SAVE_USER_SUCCESS action when saving user successfully is done', function (done) {
         const expectedActions = [
-            { type: ActionConstants.SAVE_USER_BEGIN, actionType: ACTION_TYPE.CREATE_USER },
-            { type: ActionConstants.SAVE_USER_COMPLETE, actionType: ACTION_TYPE.CREATE_USER, user},
-            { type: ActionConstants.LOAD_USERS_BEGIN},
-            { type: ActionConstants.LOAD_USERS_COMPLETE, users},
+            { type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.CREATE_USER },
+            { type: ActionConstants.SAVE_USER_SUCCESS, actionFlag: ACTION_FLAG.CREATE_USER, user},
+            { type: ActionConstants.LOAD_USERS_PENDING},
+            { type: ActionConstants.LOAD_USERS_SUCCESS, users},
         ];
 
         MockApi.onPost('rest/users').reply(200);
@@ -46,8 +47,8 @@ describe('Testing User asynchronize actions', function () {
 
     it('creates SAVE_USER_ERROR action if an error occurred during creating user', function (done) {
         const expectedActions = [
-            { type: ActionConstants.SAVE_USER_BEGIN, actionType: ACTION_TYPE.CREATE_USER },
-            { type: ActionConstants.SAVE_USER_ERROR, actionType: ACTION_TYPE.CREATE_USER, error, user}
+            { type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.CREATE_USER },
+            { type: ActionConstants.SAVE_USER_ERROR, actionFlag: ACTION_FLAG.CREATE_USER, error, user}
         ];
 
         MockApi.onPost('rest/users').reply(400, error);
@@ -62,10 +63,10 @@ describe('Testing User asynchronize actions', function () {
 
     it('creates UPDATE_USER_COMPLETE action when saving user successfully is done', function (done) {
         const expectedActions = [
-            { type: ActionConstants.SAVE_USER_BEGIN, actionType: ACTION_TYPE.UPDATE_USER },
-            { type: ActionConstants.SAVE_USER_COMPLETE, actionType: ACTION_TYPE.UPDATE_USER, user},
-            { type: ActionConstants.LOAD_USERS_BEGIN},
-            { type: ActionConstants.LOAD_USERS_COMPLETE, users},
+            { type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.UPDATE_USER },
+            { type: ActionConstants.SAVE_USER_SUCCESS, actionFlag: ACTION_FLAG.UPDATE_USER, user},
+            { type: ActionConstants.LOAD_USERS_PENDING},
+            { type: ActionConstants.LOAD_USERS_SUCCESS, users},
         ];
 
         MockApi.onPut(`rest/users/${user.username}`).reply(200);
@@ -81,8 +82,8 @@ describe('Testing User asynchronize actions', function () {
 
     it('creates SAVE_USER_ERROR action if an error occurred during updating user', function (done) {
         const expectedActions = [
-            { type: ActionConstants.SAVE_USER_BEGIN, actionType: ACTION_TYPE.UPDATE_USER },
-            { type: ActionConstants.SAVE_USER_ERROR, actionType: ACTION_TYPE.UPDATE_USER, error, user}
+            { type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.UPDATE_USER },
+            { type: ActionConstants.SAVE_USER_ERROR, actionFlag: ACTION_FLAG.UPDATE_USER, error, user}
         ];
 
         MockApi.onPut(`rest/users/${user.username}`).reply(400, error);
@@ -96,12 +97,12 @@ describe('Testing User asynchronize actions', function () {
     });
 
 
-    it('creates DELETE_USER_COMPLETE action when deleting user successfully is done', function (done) {
+    it('creates DELETE_USER_SUCCESS action when deleting user successfully is done', function (done) {
         const expectedActions = [
-            { type: ActionConstants.DELETE_USER_BEGIN, username},
-            { type: ActionConstants.LOAD_USERS_BEGIN},
-            { type: ActionConstants.DELETE_USER_COMPLETE, user},
-            { type: ActionConstants.LOAD_USERS_COMPLETE, users},
+            { type: ActionConstants.DELETE_USER_PENDING, username},
+            { type: ActionConstants.LOAD_USERS_PENDING},
+            { type: ActionConstants.DELETE_USER_SUCCESS, user},
+            { type: ActionConstants.LOAD_USERS_SUCCESS, users},
         ];
 
         MockApi.onDelete(`rest/users/${user.username}`).reply(200);
@@ -117,7 +118,7 @@ describe('Testing User asynchronize actions', function () {
 
     it('creates SAVE_USER_ERROR action if an error occurred during updating user', function (done) {
         const expectedActions = [
-            { type: ActionConstants.DELETE_USER_BEGIN, username},
+            { type: ActionConstants.DELETE_USER_PENDING, username},
             { type: ActionConstants.DELETE_USER_ERROR, error, user}
         ];
 
@@ -131,10 +132,10 @@ describe('Testing User asynchronize actions', function () {
         }, TEST_TIMEOUT);
     });
 
-    it('creates LOAD_USER_COMPLETE action when loading user successfully is done', function (done) {
+    it('creates LOAD_USER_SUCCESS action when loading user successfully is done', function (done) {
         const expectedActions = [
-            { type: ActionConstants.LOAD_USER_BEGIN},
-            { type: ActionConstants.LOAD_USER_COMPLETE, user}
+            { type: ActionConstants.LOAD_USER_PENDING},
+            { type: ActionConstants.LOAD_USER_SUCCESS, user}
         ];
 
         MockApi.onGet(`rest/users/${user.username}`).reply(200, {username});
@@ -149,7 +150,7 @@ describe('Testing User asynchronize actions', function () {
 
     it('creates LOAD_USER_ERROR action if an error occurred during loading user', function (done) {
         const expectedActions = [
-            { type: ActionConstants.LOAD_USER_BEGIN},
+            { type: ActionConstants.LOAD_USER_PENDING},
             { type: ActionConstants.LOAD_USER_ERROR, error}
         ];
 
@@ -163,10 +164,10 @@ describe('Testing User asynchronize actions', function () {
         }, TEST_TIMEOUT);
     });
 
-    it('creates LOAD_USERS_COMPLETE action when loading users successfully is done', function (done) {
+    it('creates LOAD_USERS_SUCCESS action when loading users successfully is done', function (done) {
         const expectedActions = [
-            { type: ActionConstants.LOAD_USERS_BEGIN},
-            { type: ActionConstants.LOAD_USERS_COMPLETE, users}
+            { type: ActionConstants.LOAD_USERS_PENDING},
+            { type: ActionConstants.LOAD_USERS_SUCCESS, users}
         ];
 
         MockApi.onGet('rest/users').reply(200, users);
@@ -181,7 +182,7 @@ describe('Testing User asynchronize actions', function () {
 
     it('creates LOAD_USERS_ERROR action if an error occurred during loading users', function (done) {
         const expectedActions = [
-            { type: ActionConstants.LOAD_USERS_BEGIN},
+            { type: ActionConstants.LOAD_USERS_PENDING},
             { type: ActionConstants.LOAD_USERS_ERROR, error}
         ];
 

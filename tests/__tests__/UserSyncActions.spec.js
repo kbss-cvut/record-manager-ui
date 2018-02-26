@@ -1,58 +1,58 @@
 import React from 'react';
 import * as ActionConstants from "../../js/constants/ActionConstants";
 import * as actions from "../../js/actions";
-import {ACTION_TYPE} from "../../js/constants/DefaultConstants";
+import {ACTION_FLAG} from "../../js/constants/DefaultConstants";
 
 describe('Testing User asynchronize actions', function () {
     it('should create an action to save user', () => {
-        const actionType = ACTION_TYPE.CREATE_USER;
+        const actionFlag = ACTION_FLAG.CREATE_USER;
         const expectedAction = {
-            type: ActionConstants.SAVE_USER_BEGIN,
-            actionType
+            type: ActionConstants.SAVE_USER_PENDING,
+            actionFlag
         };
-        expect(actions.saveUserBegin(actionType)).toEqual(expectedAction)
+        expect(actions.saveUserPending(actionFlag)).toEqual(expectedAction)
     });
 
     it('should create an action to announce successful save of user', () => {
-        const actionType = ACTION_TYPE.CREATE_USER ;
+        const actionFlag = ACTION_FLAG.CREATE_USER ;
         const user = {username: 'test'};
         const expectedAction = {
-            type: ActionConstants.SAVE_USER_COMPLETE,
+            type: ActionConstants.SAVE_USER_SUCCESS,
             user,
-            actionType
+            actionFlag
         };
-        expect(actions.saveUserComplete(user, actionType)).toEqual(expectedAction)
+        expect(actions.saveUserSuccess(user, actionFlag)).toEqual(expectedAction)
     });
 
     it('should create an action to announce unsuccessful save of user', () => {
-        const actionType = ACTION_TYPE.UPDATE_USER ;
+        const actionFlag = ACTION_FLAG.UPDATE_USER ;
         const error = {message: 'error'};
         const user = {username: 'test'};
         const expectedAction = {
             type: ActionConstants.SAVE_USER_ERROR,
             error,
             user,
-            actionType,
+            actionFlag,
         };
-        expect(actions.saveUserError(error, user, actionType)).toEqual(expectedAction)
+        expect(actions.saveUserError(error, user, actionFlag)).toEqual(expectedAction)
     });
 
     it('should create an action to delete user', () => {
         const username = 'test';
         const expectedAction = {
-            type: ActionConstants.DELETE_USER_BEGIN,
+            type: ActionConstants.DELETE_USER_PENDING,
             username
         };
-        expect(actions.deleteUserBegin(username)).toEqual(expectedAction)
+        expect(actions.deleteUserPending(username)).toEqual(expectedAction)
     });
 
     it('should create an action to announce successful delete of user', () => {
         const user = {username: 'test'};
         const expectedAction = {
-            type: ActionConstants.DELETE_USER_COMPLETE,
+            type: ActionConstants.DELETE_USER_SUCCESS,
             user
         };
-        expect(actions.deleteUserComplete(user)).toEqual(expectedAction)
+        expect(actions.deleteUserSuccess(user)).toEqual(expectedAction)
     });
 
     it('should create an action to announce unsuccessful delete of user', () => {
@@ -68,18 +68,18 @@ describe('Testing User asynchronize actions', function () {
 
     it('should create an action to fetch user', () => {
         const expectedAction = {
-            type: ActionConstants.LOAD_USER_BEGIN,
+            type: ActionConstants.LOAD_USER_PENDING,
         };
-        expect(actions.loadUserBegin()).toEqual(expectedAction)
+        expect(actions.loadUserPending()).toEqual(expectedAction)
     });
 
     it('should create an action to save fetched user', () => {
         const user = {username: 'test'};
         const expectedAction = {
-            type: ActionConstants.LOAD_USER_COMPLETE,
+            type: ActionConstants.LOAD_USER_SUCCESS,
             user
         };
-        expect(actions.loadUserComplete(user)).toEqual(expectedAction)
+        expect(actions.loadUserSuccess(user)).toEqual(expectedAction)
     });
 
     it('should create an action about error during fetching user', () => {
@@ -100,18 +100,18 @@ describe('Testing User asynchronize actions', function () {
 
     it('should create an action to fetch all users', () => {
         const expectedAction = {
-            type: ActionConstants.LOAD_USERS_BEGIN,
+            type: ActionConstants.LOAD_USERS_PENDING,
         };
-        expect(actions.loadUsersBegin()).toEqual(expectedAction)
+        expect(actions.loadUsersPending()).toEqual(expectedAction)
     });
 
     it('should create an action to save fetched users', () => {
         const users = [{username: 'test1'},{username: 'test2'}];
         const expectedAction = {
-            type: ActionConstants.LOAD_USERS_COMPLETE,
+            type: ActionConstants.LOAD_USERS_SUCCESS,
             users
         };
-        expect(actions.loadUsersComplete(users)).toEqual(expectedAction)
+        expect(actions.loadUsersSuccess(users)).toEqual(expectedAction)
     });
 
     it('should create an action about error during fetching users', () => {

@@ -5,9 +5,14 @@ export const ALERT_TYPES = {
     DANGER: 'danger'
 };
 
-export const ACTION_TYPE = {
+export const ACTION_FLAG = {
     CREATE_USER: 'CREATE_USER',
     UPDATE_USER: 'UPDATE_USER'
 };
 
-export const TEST_TIMEOUT = 300; //ms
+export const ACTION_STATE = {
+    PENDING: 'PENDING',
+    SUCCESS: 'SUCCESS',
+    ERROR: 'ERROR'
+};
+

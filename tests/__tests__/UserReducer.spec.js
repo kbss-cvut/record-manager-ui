@@ -3,8 +3,14 @@
 import React from 'react';
 import UserReducer from "../../js/reducers/UserReducer";
 import * as ActionConstants from "../../js/constants/ActionConstants";
+import {ACTION_FLAG} from "../../js/constants/DefaultConstants";
 
 describe('Testing UserReducer', function () {
+    const user = {username: 'test'},
+          error = {
+              message: 'An error has occurred.'
+          };
+
     it('should leave state unchanged if action not recognized', () => {
         const initialState = {
             testEntry: 'should not touch'
@@ -19,13 +25,13 @@ describe('Testing UserReducer', function () {
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle SAVE_USER_BEGIN', () => {
+    it('should handle SAVE_USER_PENDING', () => {
         const initialState = {
             userSaved: {},
             testEntry: "should not touch"
         };
         const action = {
-            type: ActionConstants.SAVE_USER_BEGIN,
+            type: ActionConstants.SAVE_USER_PENDING,
         };
 
         const newState = UserReducer(initialState, action);
@@ -39,7 +45,7 @@ describe('Testing UserReducer', function () {
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle SAVE_USER_COMPLETE', () => {
+    it('should handle SAVE_USER_SUCCESS', () => {
         const initialState = {
             userSaved: {
                 fetching: true
@@ -47,23 +53,19 @@ describe('Testing UserReducer', function () {
             testEntry: "should not touch"
         };
         const action = {
-            type: ActionConstants.SAVE_USER_COMPLETE,
-            actionType: 'CREATE',
-            user: {
-                username: 'test'
-            }
+            type: ActionConstants.SAVE_USER_SUCCESS,
+            actionFlag: ACTION_FLAG.CREATE_USER,
+            user,
         };
 
         const newState = UserReducer(initialState, action);
 
         const expectedState = {
             userSaved: {
-                actionType: 'CREATE',
+                actionFlag: ACTION_FLAG.CREATE_USER,
                 fetching: false,
                 success: true,
-                user: {
-                    username: 'test'
-                },
+                user,
                 error: ''
             },
             testEntry: initialState.testEntry
@@ -80,42 +82,34 @@ describe('Testing UserReducer', function () {
         };
         const action = {
             type: ActionConstants.SAVE_USER_ERROR,
-            actionType: 'CREATE',
-            user: {
-                username: 'test'
-            },
-            error: {
-                message: 'big error'
-            }
+            actionFlag: ACTION_FLAG.CREATE_USER,
+            user,
+            error
         };
 
         const newState = UserReducer(initialState, action);
 
         const expectedState = {
             userSaved: {
-                actionType: 'CREATE',
+                actionFlag: ACTION_FLAG.CREATE_USER,
                 fetching: false,
                 success: false,
-                user: {
-                    username: 'test'
-                },
-                error: {
-                    message: 'big error'
-                }
+                user,
+                error
             },
             testEntry: initialState.testEntry
         };
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle DELETE_USER_BEGIN', () => {
+    it('should handle DELETE_USER_PENDING', () => {
         const initialState = {
             userDeleted: {},
             testEntry: "should not touch"
         };
         const action = {
-            type: ActionConstants.DELETE_USER_BEGIN,
-            username: 'test'
+            type: ActionConstants.DELETE_USER_PENDING,
+            username: user.username
         };
 
         const newState = UserReducer(initialState, action);
@@ -123,14 +117,14 @@ describe('Testing UserReducer', function () {
         const expectedState = {
             userDeleted: {
                 fetching: true,
-                username: 'test'
+                username: user.username
             },
             testEntry: initialState.testEntry
         };
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle DELETE_USER_COMPLETE', () => {
+    it('should handle DELETE_USER_SUCCESS', () => {
         const initialState = {
             userDeleted: {
                 fetching: true
@@ -138,10 +132,8 @@ describe('Testing UserReducer', function () {
             testEntry: "should not touch"
         };
         const action = {
-            type: ActionConstants.DELETE_USER_COMPLETE,
-            user: {
-                username: 'test'
-            }
+            type: ActionConstants.DELETE_USER_SUCCESS,
+            user
         };
 
         const newState = UserReducer(initialState, action);
@@ -150,9 +142,7 @@ describe('Testing UserReducer', function () {
             userDeleted: {
                 fetching: false,
                 success: true,
-                user: {
-                    username: 'test'
-                },
+                user,
                 error: ''
             },
             testEntry: initialState.testEntry
@@ -169,12 +159,8 @@ describe('Testing UserReducer', function () {
         };
         const action = {
             type: ActionConstants.DELETE_USER_ERROR,
-            user: {
-                username: 'test'
-            },
-            error: {
-                message: 'big error'
-            }
+            user,
+            error
         };
 
         const newState = UserReducer(initialState, action);
@@ -183,19 +169,15 @@ describe('Testing UserReducer', function () {
             userDeleted: {
                 fetching: false,
                 success: false,
-                user: {
-                    username: 'test'
-                },
-                error: {
-                    message: 'big error'
-                }
+                user,
+                error
             },
             testEntry: initialState.testEntry
         };
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle LOAD_USER_BEGIN', () => {
+    it('should handle LOAD_USER_PENDING', () => {
         const initialState = {
             userLoaded: {
                 testEntry: "should not touch"
@@ -203,8 +185,8 @@ describe('Testing UserReducer', function () {
             testEntry2: "should not touch"
         };
         const action = {
-            type: ActionConstants.LOAD_USER_BEGIN,
-            username: 'test'
+            type: ActionConstants.LOAD_USER_PENDING,
+            username: user.username
         };
 
         const newState = UserReducer(initialState, action);
@@ -219,7 +201,7 @@ describe('Testing UserReducer', function () {
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle LOAD_USER_COMPLETE', () => {
+    it('should handle LOAD_USER_SUCCESS', () => {
         const initialState = {
             userLoaded: {
                 fetching: true
@@ -227,10 +209,8 @@ describe('Testing UserReducer', function () {
             testEntry: "should not touch"
         };
         const action = {
-            type: ActionConstants.LOAD_USER_COMPLETE,
-            user: {
-                username: 'test'
-            }
+            type: ActionConstants.LOAD_USER_SUCCESS,
+            user
         };
 
         const newState = UserReducer(initialState, action);
@@ -239,9 +219,7 @@ describe('Testing UserReducer', function () {
             userLoaded: {
                 fetching: false,
                 success: true,
-                user: {
-                    username: 'test'
-                },
+                user,
                 error: ''
             },
             testEntry: initialState.testEntry
@@ -258,9 +236,7 @@ describe('Testing UserReducer', function () {
         };
         const action = {
             type: ActionConstants.LOAD_USER_ERROR,
-            error: {
-                message: 'big error'
-            }
+            error
         };
 
         const newState = UserReducer(initialState, action);
@@ -269,9 +245,7 @@ describe('Testing UserReducer', function () {
             userLoaded: {
                 fetching: false,
                 success: false,
-                error: {
-                    message: 'big error'
-                }
+                error
             },
             testEntry: initialState.testEntry
         };
@@ -283,9 +257,7 @@ describe('Testing UserReducer', function () {
             userLoaded: {
                 fetching: false,
                 success: true,
-                user: {
-                    username: 'test'
-                }
+                user
             },
             testEntry: "should not touch"
         };
@@ -297,84 +269,6 @@ describe('Testing UserReducer', function () {
 
         const expectedState = {
             userLoaded: {},
-            testEntry: initialState.testEntry
-        };
-        expect(newState).toEqual(expectedState);
-    });
-
-    it('should handle LOAD_USERS_BEGIN', () => {
-        const initialState = {
-            usersLoaded: {
-                testEntry: "should not touch"
-            },
-            testEntry2: "should not touch"
-        };
-        const action = {
-            type: ActionConstants.LOAD_USERS_BEGIN,
-        };
-
-        const newState = UserReducer(initialState, action);
-
-        const expectedState = {
-            usersLoaded: {
-                testEntry: initialState.usersLoaded.testEntry,
-                fetching: true,
-            },
-            testEntry2: initialState.testEntry2
-        };
-        expect(newState).toEqual(expectedState);
-    });
-
-    it('should handle LOAD_USERS_COMPLETE', () => {
-        const initialState = {
-            usersLoaded: {
-                fetching: true
-            },
-            testEntry: "should not touch"
-        };
-        const action = {
-            type: ActionConstants.LOAD_USERS_COMPLETE,
-            users: [{username: 'test1'}, {username: 'test2'}]
-        };
-
-        const newState = UserReducer(initialState, action);
-
-        const expectedState = {
-            usersLoaded: {
-                fetching: false,
-                success: true,
-                users: [{username: 'test1'}, {username: 'test2'}],
-                error: ''
-            },
-            testEntry: initialState.testEntry
-        };
-        expect(newState).toEqual(expectedState);
-    });
-
-    it('should handle LOAD_USERS_ERROR', () => {
-        const initialState = {
-            usersLoaded: {
-                fetching: true
-            },
-            testEntry: "should not touch"
-        };
-        const action = {
-            type: ActionConstants.LOAD_USERS_ERROR,
-            error: {
-                message: 'big error'
-            }
-        };
-
-        const newState = UserReducer(initialState, action);
-
-        const expectedState = {
-            usersLoaded: {
-                fetching: false,
-                success: false,
-                error: {
-                    message: 'big error'
-                }
-            },
             testEntry: initialState.testEntry
         };
         expect(newState).toEqual(expectedState);
