@@ -4,7 +4,7 @@ import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
 import User from "../../js/components/user/User";
-import {ACTION_STATUS} from "../../js/constants/DefaultConstants";
+import {ACTION_STATUS, ROLE} from "../../js/constants/DefaultConstants";
 
 describe('User', function () {
     const intlData = require('../../js/i18n/en');
@@ -16,6 +16,7 @@ describe('User', function () {
         userSaved,
         showAlert,
         userLoaded,
+        currentUser,
         handlers = {
             onSave: jasmine.createSpy('onSave'),
             onCancel: jasmine.createSpy('onCancel'),
@@ -32,6 +33,10 @@ describe('User', function () {
         userSaved = {
             status: ACTION_STATUS.SUCCESS,
             error: ''
+        };
+        currentUser = {
+            username: 'test',
+            role: ROLE.DOCTOR
         };
         newUser = {
             firstName: '',
@@ -81,7 +86,7 @@ describe('User', function () {
             <IntlProvider locale="en" {...intlData}>
                 <User user={user} handlers={handlers} backToInstitution={backToInstitution}
                       loading={loading} userSaved={userSaved} showAlert={showAlert}
-                      userLoaded={userLoaded}/>
+                      userLoaded={userLoaded} currentUser={currentUser}/>
             </IntlProvider>);
         const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'mask');
         expect(result).not.toBeNull();
@@ -99,7 +104,7 @@ describe('User', function () {
             <IntlProvider locale="en" {...intlData}>
                 <User user={user} handlers={handlers} backToInstitution={backToInstitution}
                       loading={loading} userSaved={userSaved} showAlert={showAlert}
-                      userLoaded={userLoaded}/>
+                      userLoaded={userLoaded} currentUser={currentUser}/>
             </IntlProvider>);
     const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
     expect(alert).not.toBeNull();
@@ -110,7 +115,7 @@ describe('User', function () {
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
                       loading={loading} userSaved={userSaved} showAlert={showAlert}
-                      userLoaded={userLoaded}/>
+                      userLoaded={userLoaded} currentUser={currentUser}/>
             </IntlProvider>);
         const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'input');
         expect(result.length).toEqual(6);
@@ -157,7 +162,7 @@ describe('User', function () {
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
                       loading={loading} userSaved={userSaved} showAlert={showAlert}
-                      userLoaded={userLoaded}/>
+                      userLoaded={userLoaded} currentUser={currentUser}/>
             </IntlProvider>);
         let buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
         expect(buttons.length).toEqual(2);
@@ -178,7 +183,7 @@ describe('User', function () {
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
                       loading={loading} userSaved={userSaved} showAlert={showAlert}
-                      userLoaded={userLoaded}/>
+                      userLoaded={userLoaded} currentUser={currentUser}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-success");
         expect(alert).not.toBeNull();
@@ -197,7 +202,7 @@ describe('User', function () {
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
                       loading={loading} userSaved={userSaved} showAlert={showAlert}
-                      userLoaded={userLoaded}/>
+                      userLoaded={userLoaded} currentUser={currentUser}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
         expect(alert).not.toBeNull();
@@ -208,7 +213,7 @@ describe('User', function () {
             <IntlProvider locale="en" {...intlData}>
                 <User user={user} handlers={handlers} backToInstitution={backToInstitution}
                       loading={loading} userSaved={userSaved} showAlert={showAlert}
-                      userLoaded={userLoaded}/>
+                      userLoaded={userLoaded} currentUser={currentUser}/>
             </IntlProvider>);
         const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'input');
         expect(result.length).toEqual(6);
@@ -250,7 +255,7 @@ describe('User', function () {
             <IntlProvider locale="en" {...intlData}>
                 <User user={admin} handlers={handlers} backToInstitution={backToInstitution}
                       loading={loading} userSaved={userSaved} showAlert={showAlert}
-                      userLoaded={userLoaded}/>
+                      userLoaded={userLoaded} currentUser={currentUser}/>
             </IntlProvider>);
         const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'input');
         expect(result.length).toEqual(6);
@@ -292,7 +297,7 @@ describe('User', function () {
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
                       loading={loading} userSaved={userSaved} showAlert={showAlert}
-                      userLoaded={userLoaded}/>
+                      userLoaded={userLoaded} currentUser={currentUser}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
         expect(buttons.length).toEqual(2);
@@ -307,7 +312,7 @@ describe('User', function () {
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
                       loading={loading} userSaved={userSaved} showAlert={showAlert}
-                      userLoaded={userLoaded}/>
+                      userLoaded={userLoaded} currentUser={currentUser}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
         expect(buttons.length).toEqual(2);

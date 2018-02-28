@@ -101,7 +101,7 @@ class User extends React.Component {
     };
 
     render() {
-        const {userSaved, userLoaded, showAlert, user, handlers} = this.props;
+        const {userSaved, userLoaded, currentUser, showAlert, user, handlers} = this.props;
         if (this.props.loading) {
             return <Mask text={this.i18n('please-wait')}/>;
         }
@@ -159,7 +159,7 @@ class User extends React.Component {
                             <Input type='checkbox' checked={getRole(user) === ROLE.ADMIN}
                                    onChange={this._onAdminStatusChange}
                                    label={this.i18n('user.is-admin')} inline={true}
-                                   disabled={this.props.currentUser.role !== ROLE.ADMIN}/>
+                                   disabled={currentUser.role !== ROLE.ADMIN}/>
                         </div>
                     </div>
                 </div>

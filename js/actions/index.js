@@ -26,13 +26,13 @@ export function login(username, password, errorCallback) {
     }
 }
 
-function userAuthSuccess() {
+export function userAuthSuccess() {
     return {
         type: ActionConstants.AUTH_USER
     }
 }
 
-function userAuthError(error) {
+export function userAuthError(error) {
     return {
         type: ActionConstants.AUTH_USER_ERROR,
         error
@@ -53,7 +53,7 @@ export function logout() {
     }
 }
 
-function unauthUser() {
+export function unauthUser() {
     return {
         type: ActionConstants.UNAUTH_USER
     }
@@ -71,20 +71,20 @@ export function loadUserProfile() {
     }
 }
 
-function loadUserProfilePending() {
+export function loadUserProfilePending() {
     return {
         type: ActionConstants.LOAD_USER_PROFILE_PENDING
     }
 }
 
-function loadUserProfileComplete(user) {
+export function loadUserProfileComplete(user) {
     return {
         type: ActionConstants.LOAD_USER_PROFILE_COMPLETE,
         user
     }
 }
 
-function loadUserProfileError(error) {
+export function loadUserProfileError(error) {
     return {
         type: ActionConstants.LOAD_USER_PROFILE_ERROR,
         error
@@ -121,14 +121,14 @@ export function updateUser(user) {
     }
 }
 
-function saveUserPending(actionFlag) {
+export function saveUserPending(actionFlag) {
     return {
         type: ActionConstants.SAVE_USER_PENDING,
         actionFlag
     }
 }
 
-function saveUserSuccess(user, actionFlag) {
+export function saveUserSuccess(user, actionFlag) {
     return {
         type: ActionConstants.SAVE_USER_SUCCESS,
         user,
@@ -136,7 +136,7 @@ function saveUserSuccess(user, actionFlag) {
     }
 }
 
-function saveUserError(error, user, actionFlag) {
+export function saveUserError(error, user, actionFlag) {
     return {
         type: ActionConstants.SAVE_USER_ERROR,
         error,
@@ -160,21 +160,21 @@ export function deleteUser(user) {
     }
 }
 
-function deleteUserPending(username) {
+export function deleteUserPending(username) {
     return {
         type: ActionConstants.DELETE_USER_PENDING,
         username
     }
 }
 
-function deleteUserSuccess(user) {
+export function deleteUserSuccess(user) {
     return {
         type: ActionConstants.DELETE_USER_SUCCESS,
         user
     }
 }
 
-function deleteUserError(error, user) {
+export function deleteUserError(error, user) {
     return {
         type: ActionConstants.DELETE_USER_ERROR,
         error,
@@ -194,20 +194,20 @@ export function loadUser(username) {
     }
 }
 
-function loadUserPending() {
+export function loadUserPending() {
     return {
         type: ActionConstants.LOAD_USER_PENDING
     }
 }
 
-function loadUserSuccess(user) {
+export function loadUserSuccess(user) {
     return {
         type: ActionConstants.LOAD_USER_SUCCESS,
         user
     }
 }
 
-function loadUserError(error) {
+export function loadUserError(error) {
     return {
         type: ActionConstants.LOAD_USER_ERROR,
         error
@@ -232,20 +232,20 @@ export function loadUsers() {
     }
 }
 
-function loadUsersPending() {
+export function loadUsersPending() {
     return {
         type: ActionConstants.LOAD_USERS_PENDING
     }
 }
 
-function loadUsersSuccess(users) {
+export function loadUsersSuccess(users) {
     return {
         type: ActionConstants.LOAD_USERS_SUCCESS,
         users
     }
 }
 
-function loadUsersError(error) {
+export function loadUsersError(error) {
     return {
         type: ActionConstants.LOAD_USERS_ERROR,
         error
