@@ -32,14 +32,14 @@ export function updateUser(user) {
     }
 }
 
-export function saveUserPending(actionFlag) {
+function saveUserPending(actionFlag) {
     return {
         type: ActionConstants.SAVE_USER_PENDING,
         actionFlag
     }
 }
 
-export function saveUserSuccess(user, actionFlag) {
+function saveUserSuccess(user, actionFlag) {
     return {
         type: ActionConstants.SAVE_USER_SUCCESS,
         user,
@@ -47,7 +47,7 @@ export function saveUserSuccess(user, actionFlag) {
     }
 }
 
-export function saveUserError(error, user, actionFlag) {
+function saveUserError(error, user, actionFlag) {
     return {
         type: ActionConstants.SAVE_USER_ERROR,
         error,
@@ -71,21 +71,21 @@ export function deleteUser(user) {
     }
 }
 
-export function deleteUserPending(username) {
+function deleteUserPending(username) {
     return {
         type: ActionConstants.DELETE_USER_PENDING,
         username
     }
 }
 
-export function deleteUserSuccess(user) {
+function deleteUserSuccess(user) {
     return {
         type: ActionConstants.DELETE_USER_SUCCESS,
         user
     }
 }
 
-export function deleteUserError(error, user) {
+function deleteUserError(error, user) {
     return {
         type: ActionConstants.DELETE_USER_ERROR,
         error,
@@ -105,20 +105,20 @@ export function loadUser(username) {
     }
 }
 
-export function loadUserPending() {
+function loadUserPending() {
     return {
         type: ActionConstants.LOAD_USER_PENDING
     }
 }
 
-export function loadUserSuccess(user) {
+function loadUserSuccess(user) {
     return {
         type: ActionConstants.LOAD_USER_SUCCESS,
         user
     }
 }
 
-export function loadUserError(error) {
+function loadUserError(error) {
     return {
         type: ActionConstants.LOAD_USER_ERROR,
         error
@@ -143,23 +143,22 @@ export function loadUsers() {
     }
 }
 
-export function loadUsersPending() {
+function loadUsersPending() {
     return {
         type: ActionConstants.LOAD_USERS_PENDING
     }
 }
 
-export function loadUsersSuccess(users) {
+function loadUsersSuccess(users) {
     return {
         type: ActionConstants.LOAD_USERS_SUCCESS,
         users
     }
 }
 
-export function loadUsersError(error) {
+function loadUsersError(error) {
     return {
         type: ActionConstants.LOAD_USERS_ERROR,
         error
     }
 }
-
