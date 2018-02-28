@@ -6,18 +6,20 @@ import * as Routes from "../utils/Routes";
 import * as Logger from "../utils/Logger";
 
 export function login(username, password, errorCallback) {
+    /* TODO delete errorCallback */
     return function (dispatch) {
-        axios.post('j_spring_security_check', 'username=admin&password=5y5t3mAdm1n.',
+        axios.post('j_spring_security_check', `username=${username}&password=${password}`,
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).then((response) => {
             const data = response.data;
             if (!data.success || !data.loggedIn) {
+                /*TODO maybe action*/
                 errorCallback();
                 return;
             }
             dispatch(userAuthSuccess());
             dispatch(loadUserProfile());
-            Logger.log('User successfully authenticated.');
+            //Logger.log('User successfully authenticated.');
             Routing.transitionToOriginalTarget();
         }).catch((error) => {
             dispatch(userAuthError(error.response.data));
@@ -40,15 +42,16 @@ export function userAuthError(error) {
 }
 
 export function logout() {
-    console.log("Logouting user");
+    //console.log("Logouting user");
     return function (dispatch) {
         axios.post('j_spring_security_logout').then(() => {
             dispatch(unauthUser());
-            Logger.log('User successfully logged out.');
+            //Logger.log('User successfully logged out.');
             Routing.transitionTo(Routes.login);
             window.location.reload();
         }).catch((error) => {
-            Logger.error('Logout failed. Status: ' + error.status);
+            /* TODO maybe action error */
+            //Logger.error('Logout failed. Status: ' + error.status);
         });
     }
 }
@@ -60,11 +63,11 @@ export function unauthUser() {
 }
 
 export function loadUserProfile() {
-    console.log("Loading user profile");
+    //console.log("Loading user profile");
     return function (dispatch) {
         dispatch(loadUserProfilePending());
         axios.get('rest/users/current').then((response) => {
-            dispatch(loadUserProfileComplete(response.data));
+            dispatch(loadUserProfileSuccess(response.data));
         }).catch ((error) => {
             dispatch(loadUserProfileError(error.response.data));
         });
@@ -77,9 +80,9 @@ export function loadUserProfilePending() {
     }
 }
 
-export function loadUserProfileComplete(user) {
+export function loadUserProfileSuccess(user) {
     return {
-        type: ActionConstants.LOAD_USER_PROFILE_COMPLETE,
+        type: ActionConstants.LOAD_USER_PROFILE_SUCCESS,
         user
     }
 }

@@ -152,7 +152,7 @@ describe('User asynchronize actions', function () {
         }, TEST_TIMEOUT);
     });
 
-    it('creates UPDATE_USER_COMPLETE action when saving user successfully is done', function (done) {
+    it('creates UPDATE_USER_SUCCESS action when saving user successfully is done', function (done) {
         const expectedActions = [
             { type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.UPDATE_USER },
             { type: ActionConstants.SAVE_USER_SUCCESS, actionFlag: ACTION_FLAG.UPDATE_USER, user},

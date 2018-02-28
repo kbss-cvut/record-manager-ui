@@ -32,7 +32,7 @@ export default function (state = initialState, action) {
                 authenticated: false,
                 status: ACTION_STATUS.PENDING
             };
-        case ActionConstants.LOAD_USER_PROFILE_COMPLETE:
+        case ActionConstants.LOAD_USER_PROFILE_SUCCESS:
             return {
                 ...state,
                 isLoaded: true,
