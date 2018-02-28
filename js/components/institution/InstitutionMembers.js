@@ -5,8 +5,8 @@ import {Button, Panel, Table} from 'react-bootstrap';
 
 import injectInl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
-import * as Authentication from "../../utils/Authentication";
 import DeleteItemDialog from "../DeleteItemDialog";
+import {ROLE} from "../../constants/DefaultConstants";
 
 class InstitutionMembers extends React.Component {
     constructor(props){
@@ -49,7 +49,7 @@ class InstitutionMembers extends React.Component {
                             onClick={() => this.props.onEditUser(member, this.props.institution)}>
                         {this.props.i18n('open')}
                     </Button>
-                    {Authentication.isAdmin() && <Button bsStyle='warning' bsSize='small' title={this.props.i18n('users.delete-tooltip')}
+                    {this.props.currentUser.role === ROLE.ADMIN && <Button bsStyle='warning' bsSize='small' title={this.props.i18n('users.delete-tooltip')}
                                 onClick={() => this._onDelete(member)}>{this.props.i18n('delete')}</Button>}
                 </td>
             </tr>);
@@ -74,7 +74,7 @@ class InstitutionMembers extends React.Component {
                     </tbody>
                 </Table>
             }
-            {Authentication.isAdmin() &&
+            {this.props.currentUser.role === ROLE.ADMIN &&
                 <div className="btn-toolbar">
                     <Button bsStyle='primary' className="btn-sm" onClick={() => this.props.onAddNewUser(this.props.institution)}>
                         {this.props.i18n('users.add-new-user')}
@@ -90,7 +90,8 @@ InstitutionMembers.propTypes = {
     institution: React.PropTypes.object.isRequired,
     onEditUser: React.PropTypes.func.isRequired,
     onAddNewUser: React.PropTypes.func.isRequired,
-    onDelete: React.PropTypes.func.isRequired
+    onDelete: React.PropTypes.func.isRequired,
+    currentUser: React.PropTypes.object.isRequired
 };
 
 export default injectInl(I18nWrapper(InstitutionMembers));

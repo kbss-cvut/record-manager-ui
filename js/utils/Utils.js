@@ -242,5 +242,17 @@ export function deviceIsMobile() {
             navigator.userAgent || navigator.vendor || window.opera));
 }
 
+export function getRole(user) {
+    const userToTest = user;
+    if (!userToTest) {
+        return undefined;
+    }
+    if (userToTest.types) {
+        if(userToTest.types.indexOf(Vocabulary.ADMIN_TYPE) !== -1) {
+            return ROLE.ADMIN;
+        } else {
+            return ROLE.DOCTOR;
         }
     }
+    return undefined;
+}

@@ -1,10 +1,14 @@
 import * as ActionConstants from "../constants/ActionConstants";
 import {ACTION_STATUS} from "../constants/DefaultConstants";
+import {getRole, isAdmin} from "../utils/Utils";
 
 const initialState = {
     userSaved: {},
     userDeleted: {},
     userLoaded: {},
+    currentUser: {
+        isLoaded: false
+    }
 };
 
 export default function (state = initialState, action) {

@@ -3,16 +3,17 @@
 import React from "react";
 import {Button, Table} from "react-bootstrap";
 
-import Authentication from "../../utils/Authentication";
 import DeleteItemDialog from "../DeleteItemDialog";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import Routes from "../../utils/Routes";
+import {ROLE} from "../../constants/DefaultConstants";
 
 class InstitutionTable extends React.Component {
     static propTypes = {
         institutions: React.PropTypes.array.isRequired,
-        handlers: React.PropTypes.object.isRequired
+        handlers: React.PropTypes.object.isRequired,
+        currentUser: React.PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -71,7 +72,8 @@ class InstitutionTable extends React.Component {
             rows = [],
             onEdit = this.props.handlers.onEdit;
         for (var i = 0, len = items.length; i < len; i++) {
-            rows.push(<InstitutionRow key={items[i].name} institution={items[i]} onEdit={onEdit} onDelete={this._onDelete}/>);
+            rows.push(<InstitutionRow key={items[i].name} institution={items[i]} onEdit={onEdit} onDelete={this._onDelete}
+                                      currentUser={this.props.currentUser}/>);
         }
         return rows;
     }
@@ -79,7 +81,7 @@ class InstitutionTable extends React.Component {
 
 var InstitutionRow = (props) => {
     var institution = props.institution,
-        deleteButton = Authentication.isAdmin() ?
+        deleteButton = props.currentUser.role === ROLE.ADMIN ?
             <Button bsStyle='warning' bsSize='small' title={props.i18n('institutions.delete-tooltip')}
                     onClick={() => props.onDelete(props.institution)}>{props.i18n('delete')}</Button> : null;
 
@@ -100,7 +102,8 @@ var InstitutionRow = (props) => {
 InstitutionRow.propTypes = {
     institution: React.PropTypes.object.isRequired,
     onEdit: React.PropTypes.func.isRequired,
-    onDelete: React.PropTypes.func.isRequired
+    onDelete: React.PropTypes.func.isRequired,
+    currentUser: React.PropTypes.object.isRequired
 };
 
 InstitutionRow = injectIntl(I18nWrapper(InstitutionRow));

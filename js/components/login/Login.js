@@ -3,12 +3,14 @@
 import React from "react";
 import {Alert, Button, Form, Panel} from "react-bootstrap";
 import HorizontalInput from "../HorizontalInput";
-import Authentication from "../../utils/Authentication";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import Mask from "../Mask";
 import * as Routing from "../../utils/Routing";
 import * as Routes from "../../utils/Routes";
+import {login} from "../../actions";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
 
 class Login extends React.Component {
     constructor(props) {
@@ -44,7 +46,7 @@ class Login extends React.Component {
     };
 
     login = () => {
-        Authentication.login(this.state.username, this.state.password, this.onLoginError);
+        this.props.login(this.state.username, this.state.password, this.onLoginError);
         this.setState({mask: true});
     };
 
@@ -93,4 +95,10 @@ class Login extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(Login));
+export default connect(null, mapDispatchToProps)(injectIntl(I18nWrapper(Login)));
+
+function mapDispatchToProps(dispatch) {
+    return {
+        login: bindActionCreators(login, dispatch)
+    }
+}

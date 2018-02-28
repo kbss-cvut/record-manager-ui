@@ -3,7 +3,6 @@
 import React from "react";
 import {Button, Panel} from "react-bootstrap";
 import Actions from "../../actions/Actions";
-import Authentication from "../../utils/Authentication";
 import InstitutionStore from "../../stores/InstitutionStore";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
@@ -13,8 +12,8 @@ import Mask from "../Mask";
 import UserValidator from "../../validation/UserValidator";
 import Vocabulary from "../../constants/Vocabulary";
 import AlertMessage from "../AlertMessage";
-import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
-import * as ActionConstants from "../../constants/ActionConstants";
+import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
+import {getRole} from "../../utils/Utils";
 
 class User extends React.Component {
     static propTypes = {
@@ -23,6 +22,7 @@ class User extends React.Component {
         backToInstitution: React.PropTypes.bool,
         userSaved: React.PropTypes.object,
         userLoaded: React.PropTypes.object,
+        currentUser: React.PropTypes.object,
         showAlert: React.PropTypes.bool,
         usernameDisabled: React.PropTypes.bool
     };
@@ -37,7 +37,7 @@ class User extends React.Component {
     }
 
     componentDidMount() {
-        if (this.state.institutions.length === 0 && Authentication.isAdmin()) {
+        if (this.state.institutions.length === 0 && this.props.currentUser.role === ROLE.ADMIN) {
             Actions.loadAllInstitutions();
         }
         this.unsubscribe = InstitutionStore.listen(this._onInstitutionsLoaded);
@@ -156,10 +156,10 @@ class User extends React.Component {
                     <div className='col-xs-4'>
                         <div className='col-xs-4'>&nbsp;</div>
                         <div className='col-xs-8' style={{padding: '0 0 0 25px'}}>
-                            <Input type='checkbox' checked={Authentication.isAdmin(user)}
+                            <Input type='checkbox' checked={getRole(user) === ROLE.ADMIN}
                                    onChange={this._onAdminStatusChange}
                                    label={this.i18n('user.is-admin')} inline={true}
-                                   disabled={!Authentication.isAdmin()}/>
+                                   disabled={this.props.currentUser.role !== ROLE.ADMIN}/>
                         </div>
                     </div>
                 </div>

@@ -15,6 +15,7 @@ import RouterStore from "../../stores/RouterStore";
 import Routes from "../../utils/Routes";
 import Routing from "../../utils/Routing";
 import UserStore from "../../stores/UserStore";
+import {connect} from "react-redux";
 
 class InstitutionController extends React.Component {
     constructor(props) {
@@ -123,11 +124,26 @@ class InstitutionController extends React.Component {
     };
 
     render() {
+        const {currentUser} = this.props;
+        if (!currentUser) {
+            return null;
+        }
         return <Institution onSave={this._onSave} onCancel={this._onCancel} onChange={this._onChange} onEditUser={this._onEditUser}
                             onAddNewUser={this._onAddNewUser} onDelete={this._onDeleteUser}
                             institution={this.state.institution} members={this.state.members} patients={this.state.patients}
-                            loading={this.state.loading}/>;
+                            loading={this.state.loading} currentUser={this.props.currentUser}/>;
     }
 }
 
-export default injectIntl(I18nWrapper(MessageWrapper(InstitutionController)));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(MessageWrapper(InstitutionController))));
+
+function mapStateToProps(state) {
+    return {
+        currentUser: state.auth.user
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+    }
+}

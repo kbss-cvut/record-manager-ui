@@ -1,7 +1,6 @@
 'use strict';
 
 import React from "react";
-import Authentication from "../../utils/Authentication";
 import Routes from "../../utils/Routes";
 import Routing from "../../utils/Routing";
 import Users from "./Users";
@@ -12,6 +11,7 @@ import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import {bindActionCreators} from "redux";
 import {deleteUser, loadUsers} from "../../actions";
+import {ROLE} from "../../constants/DefaultConstants";
 
 class UsersController extends React.Component {
     constructor(props) {
@@ -56,8 +56,8 @@ class UsersController extends React.Component {
     };
 
     render() {
-        const {usersLoaded} = this.props;
-        if (!Authentication.isAdmin()) {
+        const {usersLoaded, currentUser} = this.props;
+        if (!currentUser || currentUser.role !== ROLE.ADMIN) {
             return null;
         }
         const handlers = {
@@ -75,7 +75,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapp
 function mapStateToProps(state) {
     return {
         userDeleted: state.user.userDeleted,
-        usersLoaded: state.users.usersLoaded
+        usersLoaded: state.users.usersLoaded,
+        currentUser: state.auth.user
     };
 }
 

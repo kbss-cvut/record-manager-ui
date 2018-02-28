@@ -6,9 +6,13 @@ import Routes from "../../utils/Routes";
 import Routing from "../../utils/Routing";
 import Institutions from "./Institutions";
 import InstitutionStore from "../../stores/InstitutionStore";
-import * as Authentication from "../../utils/Authentication";
+import injectIntl from "../../utils/injectIntl";
+import I18nWrapper from "../../i18n/I18nWrapper";
+import MessageWrapper from "../misc/hoc/MessageWrapper";
+import {connect} from "react-redux";
+import {ROLE} from "../../constants/DefaultConstants";
 
-export default class InstitutionsController extends React.Component {
+class InstitutionsController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -55,7 +59,8 @@ export default class InstitutionsController extends React.Component {
     };
 
     render() {
-        if (!Authentication.isAdmin()) {
+        const {currentUser} = this.props;
+        if (!currentUser || currentUser.role !== ROLE.ADMIN) {
             return null;
         }
         var handlers = {
@@ -63,6 +68,19 @@ export default class InstitutionsController extends React.Component {
             onCreate: this._onAddInstitution,
             onDelete: this._onDeleteInstitution
         };
-        return <Institutions institutions={this.state.institutions} handlers={handlers}/>;
+        return <Institutions institutions={this.state.institutions} handlers={handlers} currentUser={this.props.currentUser}/>;
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(MessageWrapper(InstitutionsController))));
+
+function mapStateToProps(state) {
+    return {
+        currentUser: state.auth.user
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
     }
 }

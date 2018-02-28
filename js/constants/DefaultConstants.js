@@ -16,3 +16,8 @@ export const ACTION_STATUS = {
     ERROR: 'ERROR'
 };
 
+export const ROLE = {
+    ADMIN: 'ADMIN',
+    DOCTOR: 'DOCTOR'
+};
+

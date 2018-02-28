@@ -3,7 +3,6 @@
 import React from 'react';
 import assign from 'object-assign';
 
-import Authentication from '../../utils/Authentication';
 import injectIntl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
 import User from './User';
@@ -14,7 +13,7 @@ import Routing from '../../utils/Routing';
 import {createUser, loadUser, unloadUser, updateUser} from "../../actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {ACTION_FLAG, ACTION_STATUS} from "../../constants/DefaultConstants";
+import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
 
 class UserController extends React.Component {
     constructor(props) {
@@ -75,7 +74,7 @@ class UserController extends React.Component {
         } else if (this.institution) {
             Routing.transitionTo(Routes.editInstitution, {params: {key: this.institution.key}});
         } else {
-            Routing.transitionTo(Authentication.isAdmin() ? Routes.users : Routes.dashboard);
+            Routing.transitionTo(this.props.currentUser.role === ROLE.ADMIN ? Routes.users : Routes.dashboard);
         }
     };
 
@@ -93,14 +92,18 @@ class UserController extends React.Component {
     }
 
     render() {
+        const {currentUser, userSaved, userLoaded} = this.props;
+        if (!currentUser) {
+            return null;
+        }
         const handlers = {
             onSave: this._onSave,
             onCancel: this._onCancel,
             onChange: this._onChange,
         };
         return <User user={this.state.user} handlers={handlers} backToInstitution={this.institution !== null}
-                     loading={this.state.loading} userSaved={this.props.userSaved} showAlert={this.state.showAlert}
-                     userLoaded={this.props.userLoaded}/>;
+                     loading={this.state.loading} userSaved={userSaved} showAlert={this.state.showAlert}
+                     userLoaded={userLoaded} currentUser={currentUser}/>;
     }
 }
 
@@ -109,7 +112,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapp
 function mapStateToProps(state) {
     return {
         userSaved: state.user.userSaved,
-        userLoaded: state.user.userLoaded
+        userLoaded: state.user.userLoaded,
+        currentUser: state.auth.user
     };
 }
 

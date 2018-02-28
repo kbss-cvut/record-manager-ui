@@ -3,18 +3,15 @@
 import Dashboard from "./Dashboard";
 import React from 'react';
 import injectIntl from '../../utils/injectIntl';
-import UserStore from '../../stores/UserStore';
 import Routes from '../../utils/Routes';
 import Routing from '../../utils/Routing';
 import I18nWrapper from "../../i18n/I18nWrapper";
 import MessageWrapper from "../misc/hoc/MessageWrapper";
+import {connect} from "react-redux";
 
 class DashboardController extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            firstName: UserStore.getCurrentUser() ? UserStore.getCurrentUser().firstName : ''
-        };
     }
 
     _showUsers = () => {
@@ -48,11 +45,21 @@ class DashboardController extends React.Component {
         };
         return (
         <div>
-            <Dashboard userFirstName={this.state.firstName} handlers={handlers}/>
+            <Dashboard currentUser={this.props.currentUser} handlers={handlers}/>
         </div>
         );
     }
 }
 
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(MessageWrapper(DashboardController))));
 
-export default injectIntl(I18nWrapper(MessageWrapper(DashboardController)));
+function mapStateToProps(state) {
+    return {
+        currentUser: state.auth.user
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+    }
+}

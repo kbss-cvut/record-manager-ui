@@ -3,7 +3,6 @@
 import React from "react";
 import {Button, Panel} from "react-bootstrap";
 import {FormattedMessage} from "react-intl";
-import Authentication from "../../utils/Authentication";
 import InstitutionMembers from "./InstitutionMembers";
 import InstitutionPatients from "./InstitutionPatients";
 import I18nWrapper from "../../i18n/I18nWrapper";
@@ -13,6 +12,7 @@ import Mask from "../Mask";
 import Routing from "../../utils/Routing";
 import Routes from "../../utils/Routes";
 import Utils from "../../utils/Utils";
+import {ROLE} from "../../constants/DefaultConstants";
 
 /**
  * Institution detail. Editable only for admins.
@@ -27,7 +27,8 @@ class Institution extends React.Component {
         onChange: React.PropTypes.func.isRequired,
         onDelete: React.PropTypes.func.isRequired,
         onEditUser: React.PropTypes.func.isRequired,
-        onAddNewUser: React.PropTypes.func.isRequired
+        onAddNewUser: React.PropTypes.func.isRequired,
+        currentUser: React.PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -55,12 +56,12 @@ class Institution extends React.Component {
                 <div className='row'>
                     <div className='col-xs-6'>
                         <HorizontalInput type='text' name='name' label={this.i18n('institution.name')}
-                                         value={institution.name} readOnly={!Authentication.isAdmin()}
+                                         value={institution.name} readOnly={this.props.currentUser.role !== ROLE.ADMIN}
                                          labelWidth={3} inputWidth={8} onChange={this._onChange}/>
                     </div>
                     <div className='col-xs-6'>
                         <HorizontalInput type='text' name='emailAddress' label={this.i18n('institution.email')}
-                               value={institution.emailAddress} readOnly={!Authentication.isAdmin()}
+                               value={institution.emailAddress} readOnly={this.props.currentUser.role !== ROLE.ADMIN}
                                labelWidth={3} inputWidth={8} onChange={this._onChange}/>
                     </div>
                 </div>
@@ -88,7 +89,7 @@ class Institution extends React.Component {
     }
 
     _renderButtons() {
-        if (!Authentication.isAdmin()) {
+        if (this.props.currentUser.role !== ROLE.ADMIN) {
             return <div className='row'>
                 <div className='col-xs-1'>
                     <Button bsStyle='primary' bsSize='small' onClick={this.props.onCancel}>{this.i18n('back')}</Button>
@@ -107,7 +108,8 @@ class Institution extends React.Component {
     _renderMembers() {
         const members = this.props.institution.members ? this.props.institution.members : this.props.members;
         return <InstitutionMembers institution={this.props.institution} members={members} onDelete={this.props.onDelete}
-                                   onEditUser={this.props.onEditUser} onAddNewUser={this.props.onAddNewUser}/>
+                                   onEditUser={this.props.onEditUser} onAddNewUser={this.props.onAddNewUser}
+                                   currentUser={this.props.currentUser}/>
     }
 }
 
