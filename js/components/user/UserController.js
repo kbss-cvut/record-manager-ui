@@ -54,6 +54,9 @@ class UserController extends React.Component {
         if (this.props.userLoaded.status === ACTION_STATUS.PENDING && nextProps.userLoaded.status === ACTION_STATUS.SUCCESS) {
             this.setState({user: nextProps.userLoaded.user, loading: false});
         }
+        if (this.props.userLoaded.status === ACTION_STATUS.PENDING && nextProps.userLoaded.status === ACTION_STATUS.ERROR) {
+            this.setState({loading: false});
+        }
     }
 
     _onSave = () => {

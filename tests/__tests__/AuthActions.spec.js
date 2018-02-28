@@ -4,7 +4,6 @@ import * as actions from "../../js/actions";
 import * as ActionConstants from "../../js/constants/ActionConstants";
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import {ACTION_FLAG} from "../../js/constants/DefaultConstants";
 
 describe('Auth synchronize actions', function () {
     const user = {username: 'test'},
