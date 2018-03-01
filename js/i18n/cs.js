@@ -102,6 +102,9 @@ module.exports = {
         'institution.patients.panel-title': 'Pacienti kliniky',
         'institution.save-success': 'Klinika úspěšně uložena.',
         'institution.save-error': 'Kliniku se nepodařilo uložit. Odpověď serveru: {}.',
+        'institution.delete-success': 'Klinika úspěšně odstraněn',
+        'institution.delete-error': 'Kliniku se nepodařilo smazat. Odpověď serveru: {error}.',
+        'institution.load-error': 'Kliniku se nepodařilo načíst. Odpověď serveru: {error}.',
 
         'records.panel-title': 'Záznamy o pacientech',
         'records.local-name': 'Identifikátor pacienta',

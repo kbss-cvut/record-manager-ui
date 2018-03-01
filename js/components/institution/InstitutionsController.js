@@ -1,39 +1,27 @@
 'use strict';
 
 import React from "react";
-import Actions from "../../actions/Actions";
 import Routes from "../../utils/Routes";
 import Routing from "../../utils/Routing";
 import Institutions from "./Institutions";
-import InstitutionStore from "../../stores/InstitutionStore";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import MessageWrapper from "../misc/hoc/MessageWrapper";
 import {connect} from "react-redux";
 import {ROLE} from "../../constants/DefaultConstants";
+import {deleteInstitution, loadInstitutions} from "../../actions";
+import {bindActionCreators} from "redux";
 
 class InstitutionsController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            institutions: InstitutionStore.getInstitutions()
+            showAlert: false
         };
     }
 
     componentDidMount() {
-        Actions.loadAllInstitutions();
-        this.unsubscribe = InstitutionStore.listen(this._onInstitutionsLoaded);
-    }
-
-    _onInstitutionsLoaded = (data) => {
-        if (data.action !== Actions.loadAllInstitutions) {
-            return;
-        }
-        this.setState({institutions: data.data});
-    };
-
-    componentWillUnmount() {
-        this.unsubscribe();
+        this.props.loadInstitutions();
     }
 
     _onEditInstitution = (institution) => {
@@ -55,20 +43,22 @@ class InstitutionsController extends React.Component {
     };
 
     _onDeleteInstitution = (institution) => {
-        Actions.deleteInstitution(institution, Actions.loadAllInstitutions);
+        this.props.deleteInstitution(institution);
+        this.setState({showAlert: true});
     };
 
     render() {
-        const {currentUser} = this.props;
+        const {currentUser, institutionsLoaded, institutionDeleted} = this.props;
         if (!currentUser || currentUser.role !== ROLE.ADMIN) {
             return null;
         }
-        var handlers = {
+        const handlers = {
             onEdit: this._onEditInstitution,
             onCreate: this._onAddInstitution,
             onDelete: this._onDeleteInstitution
         };
-        return <Institutions institutions={this.state.institutions} handlers={handlers} currentUser={this.props.currentUser}/>;
+        return <Institutions institutions={institutionsLoaded.institutions || []} showAlert={this.state.showAlert}
+                             handlers={handlers} currentUser={currentUser} institutionDeleted={institutionDeleted}/>;
     }
 }
 
@@ -76,11 +66,15 @@ export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapp
 
 function mapStateToProps(state) {
     return {
+        institutionsLoaded: state.institutions.institutionsLoaded,
+        institutionDeleted: state.institution.institutionDeleted,
         currentUser: state.auth.user
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
+        deleteInstitution: bindActionCreators(deleteInstitution, dispatch),
+        loadInstitutions: bindActionCreators(loadInstitutions, dispatch)
     }
 }

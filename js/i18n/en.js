@@ -102,6 +102,9 @@ module.exports = {
         'institution.patients.panel-title': 'Institution\'s patients',
         'institution.save-success': 'Institution successfully saved.',
         'institution.save-error': 'Unable to save institution. Server responded with {}.',
+        'institution.delete-success': 'Institution deleted successfully',
+        'institution.delete-error': 'Unable to delete institution. Server responded with {error}.',
+        'institution.load-error': 'Unable to load institution. Server responded with {error}.',
 
         'records.panel-title': 'Patient records',
         'records.id': 'Id',

@@ -1,19 +1,19 @@
 'use strict';
 
 import React from "react";
-import {Button, Table} from "react-bootstrap";
+import {Table} from "react-bootstrap";
 
 import DeleteItemDialog from "../DeleteItemDialog";
+import {ACTION_STATUS} from "../../constants/DefaultConstants";
+import InstitutionRow from "./InstitutionRow";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
-import Routes from "../../utils/Routes";
-import {ROLE} from "../../constants/DefaultConstants";
 
 class InstitutionTable extends React.Component {
     static propTypes = {
         institutions: React.PropTypes.array.isRequired,
         handlers: React.PropTypes.object.isRequired,
-        currentUser: React.PropTypes.object.isRequired
+        institutionDeleted: React.PropTypes.object
     };
 
     constructor(props) {
@@ -53,7 +53,7 @@ class InstitutionTable extends React.Component {
     }
 
     _getDeleteLabel() {
-        var institution = this.state.selectedItem;
+        const institution = this.state.selectedItem;
         return institution ? institution.name : '';
     }
 
@@ -68,44 +68,17 @@ class InstitutionTable extends React.Component {
     }
 
     _renderRows() {
-        var items = this.props.institutions,
-            rows = [],
-            onEdit = this.props.handlers.onEdit;
-        for (var i = 0, len = items.length; i < len; i++) {
-            rows.push(<InstitutionRow key={items[i].name} institution={items[i]} onEdit={onEdit} onDelete={this._onDelete}
-                                      currentUser={this.props.currentUser}/>);
+        const {institutions, institutionDeleted} = this.props;
+        const onEdit = this.props.handlers.onEdit;
+        let rows = [];
+        for (let i = 0, len = institutions.length; i < len; i++) {
+            rows.push(<InstitutionRow key={institutions[i].key} institution={institutions[i]} onEdit={onEdit}
+                                      onDelete={this._onDelete}
+                                      deletionLoading={!!(institutionDeleted.status === ACTION_STATUS.PENDING
+                                          && institutionDeleted.key === institutions[i].key)}/>);
         }
         return rows;
     }
 }
-
-var InstitutionRow = (props) => {
-    var institution = props.institution,
-        deleteButton = props.currentUser.role === ROLE.ADMIN ?
-            <Button bsStyle='warning' bsSize='small' title={props.i18n('institutions.delete-tooltip')}
-                    onClick={() => props.onDelete(props.institution)}>{props.i18n('delete')}</Button> : null;
-
-    return <tr>
-        <td className='report-row'>
-            <a href={'#/' + Routes.institutions.path + '/' + institution.key}
-               title={props.i18n('institutions.open-tooltip')}>{institution.name}</a>
-        </td>
-        <td className='report-row'>{institution.emailAddress}</td>
-        <td className='report-row actions'>
-            <Button bsStyle='primary' bsSize='small' title={props.i18n('institutions.open-tooltip')}
-                    onClick={() => props.onEdit(props.institution)}>{props.i18n('open')}</Button>
-            {deleteButton}
-        </td>
-    </tr>;
-};
-
-InstitutionRow.propTypes = {
-    institution: React.PropTypes.object.isRequired,
-    onEdit: React.PropTypes.func.isRequired,
-    onDelete: React.PropTypes.func.isRequired,
-    currentUser: React.PropTypes.object.isRequired
-};
-
-InstitutionRow = injectIntl(I18nWrapper(InstitutionRow));
 
 export default injectIntl(I18nWrapper(InstitutionTable));

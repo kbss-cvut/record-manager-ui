@@ -254,3 +254,72 @@ export function loadUsersError(error) {
         error
     }
 }
+
+export function loadInstitutions() {
+    //console.log("Loading all institutions");
+    return function (dispatch) {
+        dispatch(loadInstitutionsPending());
+        axios.get('rest/institutions').then((response) => {
+            dispatch(loadInstitutionsSuccess(response.data));
+        }).catch ((error) => {
+            dispatch(loadInstitutionsError(error.response.data));
+        });
+    }
+}
+
+export function loadInstitutionsPending() {
+    return {
+        type: ActionConstants.LOAD_INSTITUTIONS_PENDING
+    }
+}
+
+export function loadInstitutionsSuccess(institutions) {
+    return {
+        type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS,
+        institutions
+    }
+}
+
+export function loadInstitutionsError(error) {
+    return {
+        type: ActionConstants.LOAD_INSTITUTIONS_ERROR,
+        error
+    }
+}
+
+export function deleteInstitution(institution) {
+    //console.log("Deleting institution: ", institution);
+    return function (dispatch) {
+        dispatch(deleteInstitutionPending(institution.key));
+        axios.delete(`rest/institutions/${institution.key}`, {
+            ...institution
+        }).then(() => {
+            dispatch(loadInstitutions());
+            dispatch(deleteInstitutionSuccess(institution));
+        }).catch ((error) => {
+            dispatch(deleteInstitutionError(error.response.data, institution));
+        });
+    }
+}
+
+export function deleteInstitutionPending(key) {
+    return {
+        type: ActionConstants.DELETE_INSTITUTION_PENDING,
+        key
+    }
+}
+
+export function deleteInstitutionSuccess(institution) {
+    return {
+        type: ActionConstants.DELETE_INSTITUTION_SUCCESS,
+        institution
+    }
+}
+
+export function deleteInstitutionError(error, institution) {
+    return {
+        type: ActionConstants.DELETE_INSTITUTION_ERROR,
+        error,
+        institution,
+    }
+}
