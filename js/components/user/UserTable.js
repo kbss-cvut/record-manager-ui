@@ -70,9 +70,8 @@ class UserTable extends React.Component {
     }
 
     _renderUsers() {
-        const users = this.props.users,
-            onEdit = this.props.handlers.onEdit,
-            userDeleted = this.props.userDeleted;
+        const {users, userDeleted} = this.props;
+        const onEdit = this.props.handlers.onEdit;
         let rows = [];
         for (let i = 0, len = users.length; i < len; i++) {
             rows.push(<UserRow key={users[i].username} user={users[i]} onEdit={onEdit} onDelete={this._onDelete}

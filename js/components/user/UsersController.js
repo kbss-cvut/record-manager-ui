@@ -56,7 +56,7 @@ class UsersController extends React.Component {
     };
 
     render() {
-        const {usersLoaded, currentUser} = this.props;
+        const {currentUser, usersLoaded, userDeleted} = this.props;
         if (!currentUser || currentUser.role !== ROLE.ADMIN) {
             return null;
         }
@@ -65,7 +65,7 @@ class UsersController extends React.Component {
             onCreate: this._onAddUser,
             onDelete: this._onDeleteUser,
         };
-        return <Users users={usersLoaded.users || []} showAlert={this.state.showAlert} userDeleted={this.props.userDeleted} handlers={handlers}/>;
+        return <Users users={usersLoaded.users || []} showAlert={this.state.showAlert} userDeleted={userDeleted} handlers={handlers}/>;
 
     }
 }
