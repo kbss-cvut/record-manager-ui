@@ -35,7 +35,6 @@ class MainView extends React.Component {
         if (!this.props.status || this.props.status === ACTION_STATUS.PENDING) {
             return <Mask text={this.i18n('please-wait')}/>;
         }
-        /*TODO promyslet authenticated*/
         if (!this.props.isLoaded) {
             return (<div>{this.props.children}</div>);
         }

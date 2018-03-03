@@ -11,6 +11,8 @@ import * as Routes from "../../utils/Routes";
 import {login} from "../../actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
+import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
+import AlertMessage from "../AlertMessage";
 
 class Login extends React.Component {
     constructor(props) {
@@ -19,8 +21,7 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
-            alertVisible: false,
-            mask: false
+            showAlert: false
         }
     }
 
@@ -41,13 +42,9 @@ class Login extends React.Component {
         }
     };
 
-    onLoginError = () => {
-        this.setState({alertVisible: true, mask: false});
-    };
-
     login = () => {
-        this.props.login(this.state.username, this.state.password, this.onLoginError);
-        this.setState({mask: true});
+        this.props.login(this.state.username, this.state.password);
+        this.setState({mask: true, showAlert: true});
     };
 
     onForgotPassword = () => {
@@ -59,19 +56,18 @@ class Login extends React.Component {
         Routing.transitionTo(Routes.register);
     }*/
 
-
-    renderAlert() {
-        return this.state.alertVisible ? <Alert bsStyle='danger' bsSize='small'>
-            <div>{this.i18n('login.error')}</div>
-        </Alert> : null;
-    }
-
     render() {
-        const mask = this.state.mask ? (<Mask text={this.i18n('login.progress-mask')}/>) : null;
-        return(<Panel header={<h3>{this.i18n('login.title')}</h3>} bsStyle='info' className="login-panel">
-            {mask}
+        const mask = this.props.status === ACTION_STATUS.PENDING ? (<Mask text={this.i18n('login.progress-mask')}/>) : null;
+        return(
+            <Panel header={<h3>{this.i18n('login.title')}</h3>} bsStyle='info' className="login-panel">
+                {mask}
+                {this.state.showAlert && this.props.error &&
+                    <div>
+                        <AlertMessage type={ALERT_TYPES.DANGER}
+                              message={this.i18n('login.error')}/>
+                        <br/>
+                    </div>}
             <Form horizontal>
-                {this.renderAlert()}
                 <HorizontalInput type='text' name='username' ref={(input) => { this.usernameField = input; }}
                        label={this.i18n('login.username')} value={this.state.username}
                        onChange={this.onChange} labelWidth={3} onKeyPress={this.onKeyPress}
@@ -86,7 +82,7 @@ class Login extends React.Component {
                 </div>
                 <div className="login-buttons">
                     <Button bsStyle='success' bsSize='large' onClick={this.login}
-                            disabled={this.state.mask}>{this.i18n('login.submit')}</Button>
+                            disabled={this.props.status === ACTION_STATUS.PENDING}>{this.i18n('login.submit')}</Button>
                     {/*TODO i18n forgot password, click*/}
                 </div>
             </Form>
@@ -95,10 +91,17 @@ class Login extends React.Component {
     }
 }
 
-export default connect(null, mapDispatchToProps)(injectIntl(I18nWrapper(Login)));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(Login)));
+
+function mapStateToProps(state) {
+    return {
+        status: state.auth.status,
+        error: state.auth.error
+    };
+}
 
 function mapDispatchToProps(dispatch) {
     return {
-        login: bindActionCreators(login, dispatch)
+        login: bindActionCreators(login, dispatch),
     }
 }

@@ -5,7 +5,7 @@ import * as Routing from "../utils/Routing";
 import * as Routes from "../utils/Routes";
 import * as Logger from "../utils/Logger";
 
-export function login(username, password, errorCallback) {
+export function login(username, password) {
     /* TODO delete errorCallback */
     return function (dispatch) {
         axios.post('j_spring_security_check', `username=${username}&password=${password}`,
@@ -13,17 +13,15 @@ export function login(username, password, errorCallback) {
         }).then((response) => {
             const data = response.data;
             if (!data.success || !data.loggedIn) {
-                /*TODO maybe action*/
-                errorCallback();
+                dispatch(userAuthError(response.data));
                 return;
             }
             dispatch(userAuthSuccess());
             dispatch(loadUserProfile());
-            //Logger.log('User successfully authenticated.');
+            /*This makes test warning*/
             Routing.transitionToOriginalTarget();
         }).catch((error) => {
             dispatch(userAuthError(error.response.data));
-            errorCallback();
         });
     }
 }

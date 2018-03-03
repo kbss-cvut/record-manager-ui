@@ -49,7 +49,9 @@ export default function (state = initialState, action) {
                 isLoaded: false,
                 authenticated: false,
                 status: ACTION_STATUS.ERROR,
-                error: action.error
+                user: {
+                    error: action.error
+                }
             };
         default:
             return state;
