@@ -15,7 +15,8 @@ class Users extends React.Component {
         users: React.PropTypes.array,
         handlers: React.PropTypes.object.isRequired,
         userDeleted: React.PropTypes.object,
-        showAlert: React.PropTypes.bool.isRequired
+        showAlert: React.PropTypes.bool.isRequired,
+        status: React.PropTypes.string
     };
 
     constructor(props) {
@@ -24,8 +25,8 @@ class Users extends React.Component {
     }
 
     render() {
-        const {users, showAlert, userDeleted} = this.props;
-        if (!users.length) {
+        const {users, showAlert, userDeleted, status} = this.props;
+        if (!users.length && status === ACTION_STATUS.PENDING) {
             return <Mask text={this.i18n('please-wait')}/>;
         }
         return <Panel header={this.i18n('users.panel-title')} bsStyle='primary'>

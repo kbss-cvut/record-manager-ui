@@ -6,7 +6,6 @@ import * as Routes from "../utils/Routes";
 import * as Logger from "../utils/Logger";
 
 export function login(username, password) {
-    /* TODO delete errorCallback */
     return function (dispatch) {
         axios.post('j_spring_security_check', `username=${username}&password=${password}`,
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}

@@ -15,7 +15,8 @@ class Institutions extends React.Component {
         institutions: React.PropTypes.array,
         handlers: React.PropTypes.object.isRequired,
         institutionDeleted: React.PropTypes.object,
-        showAlert: React.PropTypes.bool.isRequired
+        showAlert: React.PropTypes.bool.isRequired,
+        status: React.PropTypes.string
     };
 
     constructor(props) {
@@ -24,8 +25,8 @@ class Institutions extends React.Component {
     }
 
     render() {
-        const {institutions, showAlert, institutionDeleted} = this.props;
-        if (!institutions.length) {
+        const {institutions, showAlert, institutionDeleted, status} = this.props;
+        if (!institutions.length && status === ACTION_STATUS.PENDING) {
             return <Mask text={this.i18n('please-wait')}/>;
         }
         return <Panel header={this.i18n('institutions.panel-title')} bsStyle='primary'>
