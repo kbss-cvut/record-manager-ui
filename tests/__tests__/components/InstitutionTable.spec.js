@@ -3,11 +3,11 @@
 import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
-import InstitutionTable from "../../js/components/institution/InstitutionTable";
-import {ACTION_STATUS} from "../../js/constants/DefaultConstants";
+import InstitutionTable from "../../../js/components/institution/InstitutionTable";
+import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
 
 describe('InstitutionTable', function () {
-    const intlData = require('../../js/i18n/en');
+    const intlData = require('../../../js/i18n/en');
     let institutions,
         institutionDeleted = {
             status: ACTION_STATUS.SUCCESS

@@ -1,11 +1,11 @@
 import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
-import {ROLE} from "../../js/constants/DefaultConstants";
-import Dashboard from "../../js/components/dashboard/Dashboard";
+import {ROLE} from "../../../js/constants/DefaultConstants";
+import Dashboard from "../../../js/components/dashboard/Dashboard";
 
 describe('Dashboard', function () {
-    const intlData = require('../../js/i18n/en');
+    const intlData = require('../../../js/i18n/en');
     let currentUserAdmin = {
             username: 'test',
             role: ROLE.ADMIN,

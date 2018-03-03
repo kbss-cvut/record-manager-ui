@@ -142,7 +142,9 @@ describe('UserReducer', function () {
             isLoaded: false,
             authenticated: false,
             status: ACTION_STATUS.ERROR,
-            error: error,
+            user: {
+                error: error
+            },
             testEntry: initialState.testEntry
         };
         expect(newState).toEqual(expectedState);

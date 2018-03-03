@@ -1,11 +1,11 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import * as actions from "../../js/actions";
-import * as ActionConstants from "../../js/constants/ActionConstants";
+import * as actions from "../../../js/actions/index";
+import * as ActionConstants from "../../../js/constants/ActionConstants";
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import {ACTION_FLAG} from "../../js/constants/DefaultConstants";
-import {TEST_TIMEOUT} from "../constants/DefaultTestConstants";
+import {ACTION_FLAG} from "../../../js/constants/DefaultConstants";
+import {TEST_TIMEOUT} from "../../constants/DefaultTestConstants";
 
 describe('User synchronize actions', function () {
     const user = {username: 'test'},

@@ -3,11 +3,11 @@
 import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
-import User from "../../js/components/user/User";
-import {ACTION_STATUS, ROLE} from "../../js/constants/DefaultConstants";
+import User from "../../../js/components/user/User";
+import {ACTION_STATUS, ROLE} from "../../../js/constants/DefaultConstants";
 
 describe('User', function () {
-    const intlData = require('../../js/i18n/en');
+    const intlData = require('../../../js/i18n/en');
     let user,
         admin,
         newUser,

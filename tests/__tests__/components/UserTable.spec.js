@@ -3,11 +3,11 @@
 import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
-import UserTable from "../../js/components/user/UserTable";
-import {ACTION_STATUS} from "../../js/constants/DefaultConstants";
+import UserTable from "../../../js/components/user/UserTable";
+import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
 
 describe('UserTable', function () {
-    const intlData = require('../../js/i18n/en');
+    const intlData = require('../../../js/i18n/en');
     let users,
         userDeleted = {
             status: ACTION_STATUS.SUCCESS

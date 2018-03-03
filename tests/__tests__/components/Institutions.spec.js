@@ -3,11 +3,11 @@
 import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
-import Institutions from "../../js/components/institution/Institutions";
-import {ACTION_STATUS} from "../../js/constants/DefaultConstants";
+import Institutions from "../../../js/components/institution/Institutions";
+import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
 
 describe('Institutions', function () {
-    const intlData = require('../../js/i18n/en');
+    const intlData = require('../../../js/i18n/en');
     let currentUser,
         institutions,
         institutionDeleted,
