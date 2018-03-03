@@ -14,7 +14,6 @@ class Institutions extends React.Component {
     static propTypes = {
         institutions: React.PropTypes.array,
         handlers: React.PropTypes.object.isRequired,
-        currentUser: React.PropTypes.object.isRequired,
         institutionDeleted: React.PropTypes.object,
         showAlert: React.PropTypes.bool.isRequired
     };

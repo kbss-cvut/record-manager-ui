@@ -5,6 +5,7 @@ import * as ActionConstants from "../../js/constants/ActionConstants";
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import {ACTION_FLAG} from "../../js/constants/DefaultConstants";
+import {TEST_TIMEOUT} from "../constants/DefaultTestConstants";
 
 describe('User synchronize actions', function () {
     const user = {username: 'test'},
@@ -97,7 +98,6 @@ describe('User synchronize actions', function () {
     });
 });
 
-const TEST_TIMEOUT = 300;
 const middlewares = [thunk.withExtraArgument(axios)];
 const mockStore = configureMockStore(middlewares);
 

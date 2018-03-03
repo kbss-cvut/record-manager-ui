@@ -58,7 +58,7 @@ class InstitutionsController extends React.Component {
             onDelete: this._onDeleteInstitution
         };
         return <Institutions institutions={institutionsLoaded.institutions || []} showAlert={this.state.showAlert}
-                             handlers={handlers} currentUser={currentUser} institutionDeleted={institutionDeleted}/>;
+                             handlers={handlers} institutionDeleted={institutionDeleted}/>;
     }
 }
 

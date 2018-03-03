@@ -21,8 +21,7 @@ describe('Users', function () {
         handlers = {
             onEdit: jasmine.createSpy('onEdit'),
             onCreate: jasmine.createSpy('onCreate'),
-            onDelete: jasmine.createSpy('onDelete'),
-            onBackToInstitution: null
+            onDelete: jasmine.createSpy('onDelete')
         };
     });
 
