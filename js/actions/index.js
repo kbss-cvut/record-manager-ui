@@ -3,11 +3,24 @@ import {ACTION_FLAG} from "../constants/DefaultConstants";
 import axios from 'axios';
 import * as Routing from "../utils/Routing";
 import * as Routes from "../utils/Routes";
-import * as Logger from "../utils/Logger";
+
+// Axios instance for communicating with Backend
+export let axiosBackend = axios.create();
+
+axiosBackend.interceptors.response.use(
+    response => response,
+    error => {
+        const {status} = error.response;
+        if (status === 401) {
+            Routing.transitionTo(Routes.login);
+        }
+        return Promise.reject(error);
+    }
+);
 
 export function login(username, password) {
     return function (dispatch) {
-        axios.post('j_spring_security_check', `username=${username}&password=${password}`,
+        axiosBackend.post('j_spring_security_check', `username=${username}&password=${password}`,
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).then((response) => {
             const data = response.data;
@@ -41,7 +54,7 @@ export function userAuthError(error) {
 export function logout() {
     //console.log("Logouting user");
     return function (dispatch) {
-        axios.post('j_spring_security_logout').then(() => {
+        axiosBackend.post('j_spring_security_logout').then(() => {
             dispatch(unauthUser());
             //Logger.log('User successfully logged out.');
             Routing.transitionTo(Routes.login);
@@ -63,7 +76,7 @@ export function loadUserProfile() {
     //console.log("Loading user profile");
     return function (dispatch) {
         dispatch(loadUserProfilePending());
-        axios.get('rest/users/current').then((response) => {
+        axiosBackend.get('rest/users/current').then((response) => {
             dispatch(loadUserProfileSuccess(response.data));
         }).catch ((error) => {
             dispatch(loadUserProfileError(error.response.data));
@@ -95,7 +108,7 @@ export function createUser(user) {
     //console.log("Creating user: ", user);
     return function (dispatch) {
         dispatch(saveUserPending(ACTION_FLAG.CREATE_USER));
-        axios.post('rest/users', {
+        axiosBackend.post('rest/users', {
             ...user
         }).then(() => {
             dispatch(saveUserSuccess(user, ACTION_FLAG.CREATE_USER));
@@ -110,7 +123,7 @@ export function updateUser(user) {
     //console.log("Updating user: ", user);
     return function (dispatch) {
         dispatch(saveUserPending(ACTION_FLAG.UPDATE_USER));
-        axios.put(`rest/users/${user.username}`, {
+        axiosBackend.put(`rest/users/${user.username}`, {
             ...user
         }).then(() => {
             dispatch(saveUserSuccess(user, ACTION_FLAG.UPDATE_USER));
@@ -149,7 +162,7 @@ export function deleteUser(user) {
     //console.log("Deleting user: ", user);
     return function (dispatch) {
         dispatch(deleteUserPending(user.username));
-        axios.delete(`rest/users/${user.username}`, {
+        axiosBackend.delete(`rest/users/${user.username}`, {
             ...user
         }).then(() => {
             dispatch(loadUsers());
@@ -186,7 +199,7 @@ export function loadUser(username) {
     //console.log("Loading user with username: ", username);
     return function (dispatch) {
         dispatch(loadUserPending());
-        axios.get(`rest/users/${username}`).then((response) => {
+        axiosBackend.get(`rest/users/${username}`).then((response) => {
             dispatch(loadUserSuccess(response.data));
         }).catch ((error) => {
             dispatch(loadUserError(error.response.data));
@@ -224,7 +237,7 @@ export function loadUsers() {
     //console.log("Loading all users");
     return function (dispatch) {
         dispatch(loadUsersPending());
-        axios.get('rest/users').then((response) => {
+        axiosBackend.get('rest/users').then((response) => {
             dispatch(loadUsersSuccess(response.data));
         }).catch ((error) => {
             dispatch(loadUsersError(error.response.data));
@@ -256,7 +269,7 @@ export function loadInstitutions() {
     //console.log("Loading all institutions");
     return function (dispatch) {
         dispatch(loadInstitutionsPending());
-        axios.get('rest/institutions').then((response) => {
+        axiosBackend.get('rest/institutions').then((response) => {
             dispatch(loadInstitutionsSuccess(response.data));
         }).catch ((error) => {
             dispatch(loadInstitutionsError(error.response.data));
@@ -288,7 +301,7 @@ export function deleteInstitution(institution) {
     //console.log("Deleting institution: ", institution);
     return function (dispatch) {
         dispatch(deleteInstitutionPending(institution.key));
-        axios.delete(`rest/institutions/${institution.key}`, {
+        axiosBackend.delete(`rest/institutions/${institution.key}`, {
             ...institution
         }).then(() => {
             dispatch(loadInstitutions());

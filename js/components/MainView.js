@@ -43,6 +43,7 @@ class MainView extends React.Component {
         const name = user.firstName.substr(0, 1) + '. ' + user.lastName;
         return (
             <div>
+                {this.props.location.pathname !== `/${Routes.login.path}` &&
                 <header>
                     <Navbar>
                         <Navbar.Header>
@@ -78,7 +79,7 @@ class MainView extends React.Component {
                         </Nav>
                         </Navbar.Collapse>
                     </Navbar>
-                </header>
+                </header>}
                 <section className="container" style={{height: '100%'}}>
                     {this.props.children}
                 </section>
