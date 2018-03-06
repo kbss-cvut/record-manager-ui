@@ -165,7 +165,7 @@ class User extends React.Component {
                 </div>
                 <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
                     <Button bsStyle='success' bsSize='small' ref='submit'
-                            disabled={!UserValidator.isValid(user)}
+                            disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
                             onClick={handlers.onSave}>
                         {this.i18n('save')}{userSaved.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
                         </Button>
