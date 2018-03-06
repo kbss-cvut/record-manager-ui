@@ -3,11 +3,43 @@ import {ACTION_STATUS} from "../constants/DefaultConstants";
 import {getRole, isAdmin} from "../utils/Utils";
 
 const initialState = {
-    institutionDeleted: {}
+    institutionDeleted: {},
+    institutionLoaded: {},
+    institutionSaved: {}
 };
 
 export default function (state = initialState, action) {
     switch (action.type) {
+        case ActionConstants.SAVE_INSTITUTION_PENDING:
+            return {
+                ...state,
+                institutionSaved: {
+                    status: ACTION_STATUS.PENDING
+                }
+            };
+        case ActionConstants.SAVE_INSTITUTION_SUCCESS:
+            return {
+                ...state,
+                institutionSaved: {
+                    actionFlag: action.actionFlag,
+                    status: ACTION_STATUS.SUCCESS,
+                    institution: {
+                        ...action.institution,
+                        key: action.key
+                    },
+                    error: ''
+                }
+            };
+        case ActionConstants.SAVE_INSTITUTION_ERROR:
+            return {
+                ...state,
+                institutionSaved: {
+                    actionFlag: action.actionFlag,
+                    status: ACTION_STATUS.ERROR,
+                    institution: action.institution,
+                    error: action.error
+                }
+            };
         case ActionConstants.DELETE_INSTITUTION_PENDING:
             return {
                 ...state,
@@ -33,6 +65,36 @@ export default function (state = initialState, action) {
                     institution: action.institution,
                     error: action.error
                 }
+            };
+        case ActionConstants.LOAD_INSTITUTION_PENDING:
+            return {
+                ...state,
+                institutionLoaded: {
+                    ...state.institutionLoaded,
+                    status: ACTION_STATUS.PENDING
+                }
+            };
+        case ActionConstants.LOAD_INSTITUTION_SUCCESS:
+            return {
+                ...state,
+                institutionLoaded: {
+                    status: ACTION_STATUS.SUCCESS,
+                    institution: action.institution,
+                    error: ''
+                }
+            };
+        case ActionConstants.LOAD_INSTITUTION_ERROR:
+            return {
+                ...state,
+                institutionLoaded: {
+                    status: ACTION_STATUS.ERROR,
+                    error: action.error
+                }
+            };
+        case ActionConstants.UNLOAD_INSTITUTION:
+            return {
+                ...state,
+                institutionLoaded: {}
             };
         default:
             return state;

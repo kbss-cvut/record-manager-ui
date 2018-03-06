@@ -13,7 +13,7 @@ import Routing from '../../utils/Routing';
 import {createUser, loadUser, unloadUser, updateUser} from "../../actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
 
 class UserController extends React.Component {
     constructor(props) {

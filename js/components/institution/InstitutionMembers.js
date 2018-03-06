@@ -36,7 +36,7 @@ class InstitutionMembers extends React.Component {
     }
 
     render(){
-        const members = this.props.members;
+        const {members, institution, currentUser, onAddNewUser, onEditUser} = this.props;
         let rows = [];
         for (let i = 0, len = members.length; i < len; i++) {
             const member = members[i];
@@ -46,10 +46,10 @@ class InstitutionMembers extends React.Component {
                 <td className='report-row'>{member.emailAddress}</td>
                 <td className='report-row actions'>
                     <Button bsStyle='primary' bsSize='small' title={this.props.i18n('users.open-tooltip')}
-                            onClick={() => this.props.onEditUser(member, this.props.institution)}>
+                            onClick={() => onEditUser(member, institution)}>
                         {this.props.i18n('open')}
                     </Button>
-                    {this.props.currentUser.role === ROLE.ADMIN && <Button bsStyle='warning' bsSize='small' title={this.props.i18n('users.delete-tooltip')}
+                    {currentUser.role === ROLE.ADMIN && <Button bsStyle='warning' bsSize='small' title={this.props.i18n('users.delete-tooltip')}
                                 onClick={() => this._onDelete(member)}>{this.props.i18n('delete')}</Button>}
                 </td>
             </tr>);
@@ -60,7 +60,7 @@ class InstitutionMembers extends React.Component {
                               show={this.state.showDialog} item={this.state.selectedItem}
                               itemLabel={this._getDeleteLabel()}/>
             {members.length > 0 &&
-                <Table striped bordered condensed hover>
+                <Table responsive striped bordered condensed hover>
                     <thead>
                     <tr>
                         <th className='col-xs-4 content-center'>{this.props.i18n('name')}</th>
@@ -74,9 +74,9 @@ class InstitutionMembers extends React.Component {
                     </tbody>
                 </Table>
             }
-            {this.props.currentUser.role === ROLE.ADMIN &&
+            {currentUser.role === ROLE.ADMIN &&
                 <div className="btn-toolbar">
-                    <Button bsStyle='primary' className="btn-sm" onClick={() => this.props.onAddNewUser(this.props.institution)}>
+                    <Button bsStyle='primary' className="btn-sm" onClick={() => onAddNewUser(institution)}>
                         {this.props.i18n('users.add-new-user')}
                     </Button>
                 </div>

@@ -7,7 +7,8 @@ const initialState = {
     userLoaded: {},
     currentUser: {
         isLoaded: false
-    }
+    },
+    institutionMembers: {}
 };
 
 export default function (state = initialState, action) {
@@ -94,6 +95,30 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 userLoaded: {}
+            };
+        case ActionConstants.LOAD_INSTITUTION_MEMBERS_PENDING:
+            return {
+                ...state,
+                institutionMembers: {
+                    status: ACTION_STATUS.PENDING
+                }
+            };
+        case ActionConstants.LOAD_INSTITUTION_MEMBERS_SUCCESS:
+            return {
+                ...state,
+                institutionMembers: {
+                    status: ACTION_STATUS.SUCCESS,
+                    members: action.institutionMembers,
+                    error: ''
+                }
+            };
+        case ActionConstants.LOAD_INSTITUTION_MEMBERS_ERROR:
+            return {
+                ...state,
+                institutionMembers: {
+                    status: ACTION_STATUS.ERROR,
+                    error: action.error
+                }
             };
         default:
             return state;

@@ -8,7 +8,7 @@ import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import RecordValidator from "../../validation/RecordValidator";
 import Routes from "../../utils/Routes";
-import Utils from "../../utils/Utils";
+import {formatDate} from "../../utils/Utils";
 
 class RecordTable extends React.Component {
     static propTypes = {
@@ -48,7 +48,7 @@ class RecordTable extends React.Component {
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
                               show={this.state.showDialog} item={this.state.selectedRecord}
                               itemLabel={this._getDeleteLabel()}/>
-            <Table responsive striped bordered condensed hover>
+            <Table  responsive striped bordered condensed hover>
                 {this._renderHeader()}
                 <tbody>
                 {this._renderRows()}
@@ -96,7 +96,7 @@ var RecordRow = (props) => {
         <td className='report-row'><a href={'#/' + Routes.records.path + '/' + record.key}>{record.key}</a></td>
         <td className='report-row'><a href={'#/' + Routes.records.path + '/' + record.key}>{record.localName}</a></td>
         <td className='report-row content-center'>
-            {Utils.formatDate(new Date(record.lastModified ? record.lastModified : record.dateCreated))}
+            {formatDate(new Date(record.lastModified ? record.lastModified : record.dateCreated))}
         </td>
         <td className='report-row content-center'>
             <HelpIcon text={completionTooltip} glyph={isComplete ? 'ok' : 'remove'}/>

@@ -3,19 +3,22 @@
 import React from "react";
 import assign from "object-assign";
 import Actions from "../../actions/Actions";
-import Authentication from "../../utils/Authentication";
 import Institution from "./Institution";
-import InstitutionStore from "../../stores/InstitutionStore";
 import EntityFactory from "../../utils/EntityFactory";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import MessageWrapper from "../misc/hoc/MessageWrapper";
-import RecordStore from "../../stores/RecordStore";
 import RouterStore from "../../stores/RouterStore";
 import Routes from "../../utils/Routes";
 import Routing from "../../utils/Routing";
-import UserStore from "../../stores/UserStore";
 import {connect} from "react-redux";
+import {ACTION_FLAG, ACTION_STATUS} from "../../constants/DefaultConstants";
+import {bindActionCreators} from "redux";
+import {
+    createInstitution, loadInstitution, loadInstitutionMembers, loadInstitutionPatients, unloadInstitution,
+    updateInstitution
+} from "../../actions";
+import {canLoadInstitutionsPatients} from "../../utils/Utils";
 
 class InstitutionController extends React.Component {
     constructor(props) {
@@ -24,7 +27,9 @@ class InstitutionController extends React.Component {
             institution: this._isNew() ? EntityFactory.initNewInstitution() : null,
             members: [],
             patients: [],
-            loading: false
+            loading: false,
+            saved: false,
+            showAlert: false
         };
     }
 
@@ -33,67 +38,57 @@ class InstitutionController extends React.Component {
     }
 
     componentWillMount() {
-        var institutionKey = this.props.params.key;
+        const institutionKey = this.props.params.key;
         if (!this.state.institution) {
-            Actions.loadInstitution(institutionKey);
             this.setState({loading: true});
+            this.props.loadInstitution(institutionKey);
         }
         if (institutionKey) {
-            Actions.loadInstitutionMembers(institutionKey);
-            if (Authentication.canLoadInstitutionsPatients(institutionKey)) {
-                Actions.loadInstitutionPatients(institutionKey);
+            this.props.loadInstitutionMembers(institutionKey);
+            if (this.props.status === ACTION_STATUS.SUCCESS &&
+                canLoadInstitutionsPatients(institutionKey, this.props.currentUser)) {
+                this.props.loadInstitutionPatients(institutionKey);
             }
         }
-        this.unsubscribe = InstitutionStore.listen(this._onInstitutionLoaded);
-        this.unsubscribeMembers = UserStore.listen(this._onMembersLoaded);
-        this.unsubscribePatients = RecordStore.listen(this._onPatientsLoaded);
     }
 
-    _onInstitutionLoaded = (data) => {
-        if (data.action === Actions.loadInstitution) {
-            this.setState({institution: data.data, loading: false});
+    componentWillReceiveProps(nextProps) {
+        if (this.state.saved && nextProps.institutionLoaded.status !== ACTION_STATUS.PENDING
+            && nextProps.institutionSaved.status === ACTION_STATUS.SUCCESS) {
+            this.setState({saved: false});
+            if (nextProps.institutionSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
+                this.props.loadInstitution(nextProps.institutionSaved.institution.key);
+            } else {
+                this.props.loadInstitution(this.state.institution.key);
+            }
         }
-    };
-
-    _onMembersLoaded = (data) => {
-        if (data.action === Actions.loadInstitutionMembers && this.props.params.key === data.institutionKey) {
-            this.setState({members: data.data});
+        if (this.props.institutionLoaded.status === ACTION_STATUS.PENDING && nextProps.institutionLoaded.status === ACTION_STATUS.SUCCESS) {
+            this.setState({institution: nextProps.institutionLoaded.institution, loading: false});
         }
-    };
-
-    _onPatientsLoaded = (data) => {
-        if (data.action === Actions.loadInstitutionPatients && this.props.params.key === data.institutionKey) {
-            this.setState({patients: data.data});
+        if (this.props.institutionLoaded.status === ACTION_STATUS.PENDING && nextProps.institutionLoaded.status === ACTION_STATUS.ERROR) {
+            this.setState({loading: false});
         }
-    };
-
-    componentWillUnmount() {
-        this.unsubscribe();
-        this.unsubscribeMembers();
-        this.unsubscribePatients();
+        if (this.props.institutionPatients.status === ACTION_STATUS.PENDING && nextProps.institutionPatients.status === ACTION_STATUS.SUCCESS) {
+            this.setState({patients: nextProps.institutionPatients.patients});
+        }
+        if (this.props.institutionMembers.status === ACTION_STATUS.PENDING && nextProps.institutionMembers.status === ACTION_STATUS.SUCCESS) {
+            this.setState({members: nextProps.institutionMembers.members});
+        }
     }
 
     _onSave = () => {
-        var institution = this.state.institution;
-        if (institution.isNew) {
+        const institution = this.state.institution;
+        this.setState({saved: true, showAlert: true});
+        if (institution.isNew || (this._isNew() && this.props.institutionSaved.status === ACTION_STATUS.ERROR)) {
             delete institution.isNew;
-            Actions.createInstitution(institution, this._onSaveSuccess, this._onSaveError);
+            this.props.createInstitution(institution);
         } else {
-            Actions.updateInstitution(institution, this._onSaveSuccess, this._onSaveError);
+            this.props.updateInstitution(institution);
         }
     };
 
-    _onSaveSuccess = (newKey) => {
-        this.props.showSuccessMessage(this.props.i18n('institution.save-success'));
-        Actions.loadInstitution(newKey ? newKey : this.props.params.key);
-    };
-
-    _onSaveError = (err) => {
-        this.props.showErrorMessage(this.props.formatMessage('institution.save-error', {error: err.message}));
-    };
-
     _onCancel = () => {
-        var handlers = RouterStore.getViewHandlers(Routes.editInstitution.name);
+        const handlers = RouterStore.getViewHandlers(Routes.editInstitution.name);
         if (handlers) {
             Routing.transitionTo(handlers.onCancel);
         } else {
@@ -102,7 +97,7 @@ class InstitutionController extends React.Component {
     };
 
     _onChange = (change) => {
-        var update = assign({}, this.state.institution, change);
+        const update = assign({}, this.state.institution, change);
         this.setState({institution: update});
     };
 
@@ -124,14 +119,22 @@ class InstitutionController extends React.Component {
     };
 
     render() {
-        const {currentUser} = this.props;
+        const {currentUser, institutionLoaded, institutionSaved} = this.props;
         if (!currentUser) {
             return null;
         }
-        return <Institution onSave={this._onSave} onCancel={this._onCancel} onChange={this._onChange} onEditUser={this._onEditUser}
-                            onAddNewUser={this._onAddNewUser} onDelete={this._onDeleteUser}
-                            institution={this.state.institution} members={this.state.members} patients={this.state.patients}
-                            loading={this.state.loading} currentUser={this.props.currentUser}/>;
+        const handlers = {
+            onSave: this._onSave,
+            onCancel: this._onCancel,
+            onChange: this._onChange,
+            onEditUser: this._onEditUser,
+            onAddNewUser: this._onAddNewUser,
+            onDelete: this._onDeleteUser
+        };
+        return <Institution handlers={handlers} institution={this.state.institution} members={this.state.members}
+                            patients={this.state.patients} loading={this.state.loading} showAlert={this.state.showAlert}
+                            currentUser={currentUser} institutionLoaded={institutionLoaded} institutionSaved={institutionSaved}
+                            />;
     }
 }
 
@@ -139,11 +142,22 @@ export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapp
 
 function mapStateToProps(state) {
     return {
-        currentUser: state.auth.user
+        currentUser: state.auth.user,
+        status: state.auth.status,
+        institutionLoaded: state.institution.institutionLoaded,
+        institutionSaved: state.institution.institutionSaved,
+        institutionMembers: state.user.institutionMembers,
+        institutionPatients: state.record.institutionPatients
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
+        loadInstitution: bindActionCreators(loadInstitution, dispatch),
+        unloadInstitution: bindActionCreators(unloadInstitution, dispatch),
+        createInstitution: bindActionCreators(createInstitution, dispatch),
+        updateInstitution: bindActionCreators(updateInstitution, dispatch),
+        loadInstitutionMembers: bindActionCreators(loadInstitutionMembers, dispatch),
+        loadInstitutionPatients: bindActionCreators(loadInstitutionPatients, dispatch),
     }
 }

@@ -3,6 +3,7 @@ import {ACTION_FLAG} from "../constants/DefaultConstants";
 import axios from 'axios';
 import * as Routing from "../utils/Routing";
 import * as Routes from "../utils/Routes";
+import * as Utils from "../utils/Utils";
 
 // Axios instance for communicating with Backend
 export let axiosBackend = axios.create();
@@ -331,5 +332,164 @@ export function deleteInstitutionError(error, institution) {
         type: ActionConstants.DELETE_INSTITUTION_ERROR,
         error,
         institution,
+    }
+}
+
+export function loadInstitution(key) {
+    //console.log("Loading institution with username: ", username);
+    return function (dispatch) {
+        dispatch(loadInstitutionPending());
+        axiosBackend.get(`rest/institutions/${key}`).then((response) => {
+            dispatch(loadInstitutionSuccess(response.data));
+        }).catch ((error) => {
+            console.log(error);
+            dispatch(loadInstitutionError(error.response.data));
+        });
+    }
+}
+
+export function loadInstitutionPending() {
+    return {
+        type: ActionConstants.LOAD_INSTITUTION_PENDING
+    }
+}
+
+export function loadInstitutionSuccess(institution) {
+    return {
+        type: ActionConstants.LOAD_INSTITUTION_SUCCESS,
+        institution
+    }
+}
+
+export function loadInstitutionError(error) {
+    return {
+        type: ActionConstants.LOAD_INSTITUTION_ERROR,
+        error
+    }
+}
+
+export function unloadInstitution() {
+    return {
+        type: ActionConstants.UNLOAD_INSTITUTION
+    }
+}
+
+export function createInstitution(institution) {
+    //console.log("Creating institution: ", institution);
+    return function (dispatch) {
+        dispatch(saveInstitutionPending(ACTION_FLAG.CREATE_ENTITY));
+        axiosBackend.post('rest/institutions', {
+            ...institution
+        }).then((response) => {
+            const key = Utils.extractKeyFromLocationHeader(response);
+            dispatch(saveInstitutionSuccess(institution, key, ACTION_FLAG.CREATE_ENTITY));
+            dispatch(loadInstitutions());
+        }).catch ((error) => {
+            dispatch(saveInstitutionError(error.response.data, institution, ACTION_FLAG.CREATE_ENTITY));
+        });
+    }
+}
+
+export function updateInstitution(institution) {
+    //console.log("Updating institution: ", institution);
+    return function (dispatch) {
+        dispatch(saveInstitutionPending(ACTION_FLAG.UPDATE_ENTITY));
+        axiosBackend.put(`rest/institutions/${institution.key}`, {
+            ...institution
+        }).then((response) => {
+            dispatch(saveInstitutionSuccess(institution, null, ACTION_FLAG.UPDATE_ENTITY));
+            //dispatch(loadInstitutions());
+        }).catch ((error) => {
+            dispatch(saveInstitutionError(error.response.data, institution, ACTION_FLAG.UPDATE_ENTITY));
+        });
+    }
+}
+
+export function saveInstitutionPending(actionFlag) {
+    return {
+        type: ActionConstants.SAVE_INSTITUTION_PENDING,
+        actionFlag
+    }
+}
+
+export function saveInstitutionSuccess(institution, key, actionFlag) {
+    return {
+        type: ActionConstants.SAVE_INSTITUTION_SUCCESS,
+        institution,
+        key,
+        actionFlag
+    }
+}
+
+export function saveInstitutionError(error, institution, actionFlag) {
+    return {
+        type: ActionConstants.SAVE_INSTITUTION_ERROR,
+        error,
+        institution,
+        actionFlag
+    }
+}
+
+export function loadInstitutionMembers(key) {
+    //console.log("Loading members of institution", key);
+    return function (dispatch) {
+        dispatch(loadInstitutionMembersPending());
+        axiosBackend.get(`rest/users?institution=${key}`).then((response) => {
+            dispatch(loadInstitutionMembersSuccess(response.data));
+        }).catch ((error) => {
+            dispatch(loadInstitutionMembersError(error.response.data));
+        });
+    }
+}
+
+export function loadInstitutionMembersPending() {
+    return {
+        type: ActionConstants.LOAD_INSTITUTION_MEMBERS_PENDING
+    }
+}
+
+export function loadInstitutionMembersSuccess(institutionMembers) {
+    return {
+        type: ActionConstants.LOAD_INSTITUTION_MEMBERS_SUCCESS,
+        institutionMembers
+    }
+}
+
+export function loadInstitutionMembersError(error) {
+    return {
+        type: ActionConstants.LOAD_INSTITUTION_MEMBERS_ERROR,
+        error
+    }
+}
+
+export function loadInstitutionPatients(key) {
+    //console.log("Loading patients of institution", key);
+    return function (dispatch) {
+        dispatch(loadInstitutionPatientsPending());
+        axiosBackend.get(`rest/records?institution=${key}`).then((response) => {
+            dispatch(loadInstitutionPatientsSuccess(response.data));
+        }).catch ((error) => {
+            dispatch(loadInstitutionPatientsError(error.response.data));
+        });
+    }
+}
+
+export function loadInstitutionPatientsPending() {
+    return {
+        type: ActionConstants.LOAD_INSTITUTION_PATIENTS_PENDING
+    }
+}
+
+export function loadInstitutionPatientsSuccess(institutionPatients) {
+    return {
+        type: ActionConstants.LOAD_INSTITUTION_PATIENTS_SUCCESS,
+        institutionPatients
+    }
+}
+
+export function loadInstitutionPatientsError(error) {
+    return {
+        type: ActionConstants.LOAD_INSTITUTION_PATIENTS_ERROR,
+        error
     }
 }
