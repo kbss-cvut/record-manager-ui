@@ -6,8 +6,8 @@ export const ALERT_TYPES = {
 };
 
 export const ACTION_FLAG = {
-    CREATE_USER: 'CREATE_USER',
-    UPDATE_USER: 'UPDATE_USER'
+    CREATE_ENTITY: 'CREATE_ENTITY',
+    UPDATE_ENTITY: 'UPDATE_ENTITY'
 };
 
 export const ACTION_STATUS = {

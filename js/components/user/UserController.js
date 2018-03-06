@@ -64,9 +64,9 @@ class UserController extends React.Component {
         this.setState({saved: true, showAlert: true});
         if (user.isNew || (this._isNew() && this.props.userSaved.status === ACTION_STATUS.ERROR)) {
             delete user.isNew;
-            this.props.createUser(user, ACTION_FLAG.CREATE_USER);
+            this.props.createUser(user);
         } else {
-            this.props.updateUser(user, ACTION_FLAG.UPDATE_USER);
+            this.props.updateUser(user);
         }
     };
 

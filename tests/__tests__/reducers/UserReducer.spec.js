@@ -54,7 +54,7 @@ describe('UserReducer', function () {
         };
         const action = {
             type: ActionConstants.SAVE_USER_SUCCESS,
-            actionFlag: ACTION_FLAG.CREATE_USER,
+            actionFlag: ACTION_FLAG.CREATE_ENTITY,
             user,
         };
 
@@ -62,7 +62,7 @@ describe('UserReducer', function () {
 
         const expectedState = {
             userSaved: {
-                actionFlag: ACTION_FLAG.CREATE_USER,
+                actionFlag: ACTION_FLAG.CREATE_ENTITY,
                 status: ACTION_STATUS.SUCCESS,
                 user,
                 error: ''
@@ -81,7 +81,7 @@ describe('UserReducer', function () {
         };
         const action = {
             type: ActionConstants.SAVE_USER_ERROR,
-            actionFlag: ACTION_FLAG.CREATE_USER,
+            actionFlag: ACTION_FLAG.CREATE_ENTITY,
             user,
             error
         };
@@ -90,7 +90,7 @@ describe('UserReducer', function () {
 
         const expectedState = {
             userSaved: {
-                actionFlag: ACTION_FLAG.CREATE_USER,
+                actionFlag: ACTION_FLAG.CREATE_ENTITY,
                 status: ACTION_STATUS.ERROR,
                 user,
                 error

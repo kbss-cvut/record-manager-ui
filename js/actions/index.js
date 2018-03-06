@@ -107,14 +107,14 @@ export function loadUserProfileError(error) {
 export function createUser(user) {
     //console.log("Creating user: ", user);
     return function (dispatch) {
-        dispatch(saveUserPending(ACTION_FLAG.CREATE_USER));
+        dispatch(saveUserPending(ACTION_FLAG.CREATE_ENTITY));
         axiosBackend.post('rest/users', {
             ...user
         }).then(() => {
-            dispatch(saveUserSuccess(user, ACTION_FLAG.CREATE_USER));
+            dispatch(saveUserSuccess(user, ACTION_FLAG.CREATE_ENTITY));
             dispatch(loadUsers());
         }).catch ((error) => {
-            dispatch(saveUserError(error.response.data, user, ACTION_FLAG.CREATE_USER));
+            dispatch(saveUserError(error.response.data, user, ACTION_FLAG.CREATE_ENTITY));
         });
     }
 }
@@ -122,14 +122,14 @@ export function createUser(user) {
 export function updateUser(user) {
     //console.log("Updating user: ", user);
     return function (dispatch) {
-        dispatch(saveUserPending(ACTION_FLAG.UPDATE_USER));
+        dispatch(saveUserPending(ACTION_FLAG.UPDATE_ENTITY));
         axiosBackend.put(`rest/users/${user.username}`, {
             ...user
         }).then(() => {
-            dispatch(saveUserSuccess(user, ACTION_FLAG.UPDATE_USER));
+            dispatch(saveUserSuccess(user, ACTION_FLAG.UPDATE_ENTITY));
             dispatch(loadUsers());
         }).catch ((error) => {
-            dispatch(saveUserError(error.response.data, user, ACTION_FLAG.UPDATE_USER));
+            dispatch(saveUserError(error.response.data, user, ACTION_FLAG.UPDATE_ENTITY));
         });
     }
 }

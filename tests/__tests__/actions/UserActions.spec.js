@@ -12,7 +12,7 @@ describe('User synchronize actions', function () {
           error = {message: 'error'};
 
     it('should create an action to save user', () => {
-        const actionFlag = ACTION_FLAG.CREATE_USER;
+        const actionFlag = ACTION_FLAG.CREATE_ENTITY;
         const expectedAction = {
             type: ActionConstants.SAVE_USER_PENDING,
             actionFlag
@@ -21,7 +21,7 @@ describe('User synchronize actions', function () {
     });
 
     it('should create an action to announce successful save of user', () => {
-        const actionFlag = ACTION_FLAG.CREATE_USER ;
+        const actionFlag = ACTION_FLAG.CREATE_ENTITY ;
         const expectedAction = {
             type: ActionConstants.SAVE_USER_SUCCESS,
             user,
@@ -31,7 +31,7 @@ describe('User synchronize actions', function () {
     });
 
     it('should create an action to announce unsuccessful save of user', () => {
-        const actionFlag = ACTION_FLAG.UPDATE_USER ;
+        const actionFlag = ACTION_FLAG.UPDATE_ENTITY ;
         const expectedAction = {
             type: ActionConstants.SAVE_USER_ERROR,
             error,
@@ -119,8 +119,8 @@ describe('User asynchronize actions', function () {
 
     it('creates SAVE_USER_SUCCESS action when saving user successfully is done', function (done) {
         const expectedActions = [
-            { type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.CREATE_USER },
-            { type: ActionConstants.SAVE_USER_SUCCESS, actionFlag: ACTION_FLAG.CREATE_USER, user},
+            { type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.CREATE_ENTITY },
+            { type: ActionConstants.SAVE_USER_SUCCESS, actionFlag: ACTION_FLAG.CREATE_ENTITY, user},
             { type: ActionConstants.LOAD_USERS_PENDING},
             { type: ActionConstants.LOAD_USERS_SUCCESS, users},
         ];
@@ -138,8 +138,8 @@ describe('User asynchronize actions', function () {
 
     it('creates SAVE_USER_ERROR action if an error occurred during creating user', function (done) {
         const expectedActions = [
-            { type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.CREATE_USER },
-            { type: ActionConstants.SAVE_USER_ERROR, actionFlag: ACTION_FLAG.CREATE_USER, error, user}
+            { type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.CREATE_ENTITY },
+            { type: ActionConstants.SAVE_USER_ERROR, actionFlag: ACTION_FLAG.CREATE_ENTITY, error, user}
         ];
 
         MockApi.onPost('rest/users').reply(400, error);
@@ -154,8 +154,8 @@ describe('User asynchronize actions', function () {
 
     it('creates UPDATE_USER_SUCCESS action when saving user successfully is done', function (done) {
         const expectedActions = [
-            { type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.UPDATE_USER },
-            { type: ActionConstants.SAVE_USER_SUCCESS, actionFlag: ACTION_FLAG.UPDATE_USER, user},
+            { type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.UPDATE_ENTITY },
+            { type: ActionConstants.SAVE_USER_SUCCESS, actionFlag: ACTION_FLAG.UPDATE_ENTITY, user},
             { type: ActionConstants.LOAD_USERS_PENDING},
             { type: ActionConstants.LOAD_USERS_SUCCESS, users},
         ];
@@ -173,8 +173,8 @@ describe('User asynchronize actions', function () {
 
     it('creates SAVE_USER_ERROR action if an error occurred during updating user', function (done) {
         const expectedActions = [
-            { type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.UPDATE_USER },
-            { type: ActionConstants.SAVE_USER_ERROR, actionFlag: ACTION_FLAG.UPDATE_USER, error, user}
+            { type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.UPDATE_ENTITY },
+            { type: ActionConstants.SAVE_USER_ERROR, actionFlag: ACTION_FLAG.UPDATE_ENTITY, error, user}
         ];
 
         MockApi.onPut(`rest/users/${user.username}`).reply(400, error);
