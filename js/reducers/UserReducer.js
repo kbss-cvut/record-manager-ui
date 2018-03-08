@@ -108,7 +108,7 @@ export default function (state = initialState, action) {
                 ...state,
                 institutionMembers: {
                     status: ACTION_STATUS.SUCCESS,
-                    members: action.institutionMembers,
+                    members: action.members,
                     error: ''
                 }
             };

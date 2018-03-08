@@ -11,7 +11,8 @@ describe('Users', function () {
     let users,
         userDeleted,
         showAlert,
-        handlers;
+        handlers,
+        status;
 
     beforeEach(() => {
         showAlert = false;
@@ -52,10 +53,11 @@ describe('Users', function () {
     }];
 
     it('is showing loader', function () {
+        status = ACTION_STATUS.PENDING;
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Users users={[]} showAlert={showAlert}
-                       userDeleted={userDeleted} handlers={handlers}/>
+                       userDeleted={userDeleted} handlers={handlers} status={status}/>
             </IntlProvider>);
         const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'mask');
         expect(result).not.toBeNull();

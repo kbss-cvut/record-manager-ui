@@ -2,9 +2,9 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import * as actions from "../../../js/actions/index";
 import * as ActionConstants from "../../../js/constants/ActionConstants";
-import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import {TEST_TIMEOUT} from "../../constants/DefaultTestConstants";
+import {axiosBackend} from "../../../js/actions";
 
 describe('Auth synchronize actions', function () {
     const user = {username: 'test'},
@@ -56,7 +56,7 @@ describe('Auth synchronize actions', function () {
     });
 });
 
-const middlewares = [thunk.withExtraArgument(axios)];
+const middlewares = [thunk.withExtraArgument(axiosBackend)];
 const mockStore = configureMockStore(middlewares);
 
 describe('Auth asynchronize actions', function () {
@@ -71,7 +71,7 @@ describe('Auth asynchronize actions', function () {
         username = 'test';
 
     beforeEach(() => {
-        MockApi = new MockAdapter(axios);
+        MockApi = new MockAdapter(axiosBackend);
         store = mockStore();
     });
 

@@ -19,7 +19,7 @@ export default function (state = initialState, action) {
                 ...state,
                 institutionPatients: {
                     status: ACTION_STATUS.SUCCESS,
-                    patients: action.institutionPatients,
+                    patients: action.patients,
                     error: ''
                 }
             };

@@ -342,7 +342,6 @@ export function loadInstitution(key) {
         axiosBackend.get(`rest/institutions/${key}`).then((response) => {
             dispatch(loadInstitutionSuccess(response.data));
         }).catch ((error) => {
-            console.log(error);
             dispatch(loadInstitutionError(error.response.data));
         });
     }
@@ -448,10 +447,10 @@ export function loadInstitutionMembersPending() {
     }
 }
 
-export function loadInstitutionMembersSuccess(institutionMembers) {
+export function loadInstitutionMembersSuccess(members) {
     return {
         type: ActionConstants.LOAD_INSTITUTION_MEMBERS_SUCCESS,
-        institutionMembers
+        members
     }
 }
 
@@ -480,10 +479,10 @@ export function loadInstitutionPatientsPending() {
     }
 }
 
-export function loadInstitutionPatientsSuccess(institutionPatients) {
+export function loadInstitutionPatientsSuccess(patients) {
     return {
         type: ActionConstants.LOAD_INSTITUTION_PATIENTS_SUCCESS,
-        institutionPatients
+        patients
     }
 }
 
