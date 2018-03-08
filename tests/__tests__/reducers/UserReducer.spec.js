@@ -7,6 +7,10 @@ import {ACTION_FLAG, ACTION_STATUS} from "../../../js/constants/DefaultConstants
 
 describe('UserReducer', function () {
     const user = {username: 'test'},
+          members = [
+            {username: 'record1'},
+            {username: 'record2'}
+          ],
           error = {
               message: 'An error has occurred.'
           };
@@ -265,5 +269,72 @@ describe('UserReducer', function () {
             testEntry: initialState.testEntry
         };
         expect(newState).toEqual(expectedState);
+    });
+    
+    it('handles LOAD_INSTITUTION_MEMBERS_PENDING action', () => {
+        const initialState = {
+            institutionMembers: {
+            },
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.LOAD_INSTITUTION_MEMBERS_PENDING
+            })
+        ).toEqual(
+            {
+                institutionMembers: {
+                    status: ACTION_STATUS.PENDING,
+                },
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles LOAD_INSTITUTION_MEMBERS_SUCCESS action', () => {
+        const initialState = {
+            institutionMembers: {
+                status: ACTION_STATUS.PENDING
+            },
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.LOAD_INSTITUTION_MEMBERS_SUCCESS,
+                members
+            })
+        ).toEqual(
+            {
+                institutionMembers: {
+                    status: ACTION_STATUS.SUCCESS,
+                    members,
+                    error: ''
+                },
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles LOAD_INSTITUTION_MEMBERS_ERROR action', () => {
+        const initialState = {
+            institutionMembers: {
+                status: ACTION_STATUS.PENDING
+            },
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.LOAD_INSTITUTION_MEMBERS_ERROR,
+                error
+            })
+        ).toEqual(
+            {
+                institutionMembers: {
+                    status: ACTION_STATUS.ERROR,
+                    error
+                },
+                testEntry: initialState.testEntry
+            });
     });
 });

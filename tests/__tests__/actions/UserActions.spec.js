@@ -7,6 +7,11 @@ import {ACTION_FLAG} from "../../../js/constants/DefaultConstants";
 import {TEST_TIMEOUT} from "../../constants/DefaultTestConstants";
 import {axiosBackend} from "../../../js/actions";
 
+const members = [
+        {username: 'record1'},
+        {username: 'record2'}
+    ];
+
 describe('User synchronize actions', function () {
     const user = {username: 'test'},
           error = {message: 'error'};
@@ -96,6 +101,30 @@ describe('User synchronize actions', function () {
         };
         expect(actions.unloadUser()).toEqual(expectedAction)
     });
+
+    it("creates an action to fetch all institution's members", () => {
+        const expectedAction = {
+            type: ActionConstants.LOAD_INSTITUTION_MEMBERS_PENDING,
+        };
+        expect(actions.loadInstitutionMembersPending()).toEqual(expectedAction)
+    });
+
+    it("creates an action to save fetched institution's members", () => {
+        const expectedAction = {
+            type: ActionConstants.LOAD_INSTITUTION_MEMBERS_SUCCESS,
+            members
+        };
+        expect(actions.loadInstitutionMembersSuccess(members)).toEqual(expectedAction)
+    });
+
+    it("creates an action about error during fetching institution's members", () => {
+        const error = {message: 'error'};
+        const expectedAction = {
+            type: ActionConstants.LOAD_INSTITUTION_MEMBERS_ERROR,
+            error
+        };
+        expect(actions.loadInstitutionMembersError(error)).toEqual(expectedAction)
+    });
 });
 
 const middlewares = [thunk.withExtraArgument(axiosBackend)];
@@ -109,6 +138,7 @@ describe('User asynchronize actions', function () {
             {username: 'test1'},
             {username: 'test2'}
         ],
+        institutionKey = 92979802112,
         error = {
             "message" : "An error has occurred.",
             "requestUri": "/rest/users/xxx"
@@ -250,6 +280,38 @@ describe('User asynchronize actions', function () {
         MockApi.onGet(`rest/users/${user.username}`).reply(400, error);
 
         store.dispatch(actions.loadUser(user.username));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it("creates LOAD_INSTITUTION_MEMBERS_SUCCESS action when loading institution's memebrs successfully is done", function (done) {
+        const expectedActions = [
+            { type: ActionConstants.LOAD_INSTITUTION_MEMBERS_PENDING},
+            { type: ActionConstants.LOAD_INSTITUTION_MEMBERS_SUCCESS, members}
+        ];
+
+        MockApi.onGet(`rest/users?institution=${institutionKey}`).reply(200, members);
+
+        store.dispatch(actions.loadInstitutionMembers(institutionKey));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it("creates LOAD_INSTITUTION_MEMBERS_ERROR action if an error occurred during loading institution's memebrs", function (done) {
+        const expectedActions = [
+            { type: ActionConstants.LOAD_INSTITUTION_MEMBERS_PENDING},
+            { type: ActionConstants.LOAD_INSTITUTION_MEMBERS_ERROR, error}
+        ];
+
+        MockApi.onGet(`rest/users?institution=${institutionKey}`).reply(400, error);
+
+        store.dispatch(actions.loadInstitutionMembers(institutionKey));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
