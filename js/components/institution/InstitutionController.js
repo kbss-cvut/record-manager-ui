@@ -25,8 +25,6 @@ class InstitutionController extends React.Component {
         super(props);
         this.state = {
             institution: this._isNew() ? EntityFactory.initNewInstitution() : null,
-            members: [],
-            patients: [],
             loading: false,
             saved: false,
             showAlert: false
@@ -68,12 +66,10 @@ class InstitutionController extends React.Component {
         if (this.props.institutionLoaded.status === ACTION_STATUS.PENDING && nextProps.institutionLoaded.status === ACTION_STATUS.ERROR) {
             this.setState({loading: false});
         }
-        if (this.props.institutionPatients.status === ACTION_STATUS.PENDING && nextProps.institutionPatients.status === ACTION_STATUS.SUCCESS) {
-            this.setState({patients: nextProps.institutionPatients.patients});
-        }
-        if (this.props.institutionMembers.status === ACTION_STATUS.PENDING && nextProps.institutionMembers.status === ACTION_STATUS.SUCCESS) {
-            this.setState({members: nextProps.institutionMembers.members});
-        }
+    }
+
+    componentWillUnmount() {
+        this.props.unloadInstitution();
     }
 
     _onSave = () => {
@@ -119,7 +115,7 @@ class InstitutionController extends React.Component {
     };
 
     render() {
-        const {currentUser, institutionLoaded, institutionSaved} = this.props;
+        const {currentUser, institutionLoaded, institutionSaved, institutionMembers, institutionPatients} = this.props;
         if (!currentUser) {
             return null;
         }
@@ -131,8 +127,8 @@ class InstitutionController extends React.Component {
             onAddNewUser: this._onAddNewUser,
             onDelete: this._onDeleteUser
         };
-        return <Institution handlers={handlers} institution={this.state.institution} members={this.state.members}
-                            patients={this.state.patients} loading={this.state.loading} showAlert={this.state.showAlert}
+        return <Institution handlers={handlers} institution={this.state.institution} members={institutionMembers.members || []}
+                            patients={institutionPatients.patients || []} loading={this.state.loading} showAlert={this.state.showAlert}
                             currentUser={currentUser} institutionLoaded={institutionLoaded} institutionSaved={institutionSaved}
                             />;
     }

@@ -63,7 +63,7 @@ describe('Users', function () {
         expect(result).not.toBeNull();
     });
 
-    it('should render panel with table and users', function () {
+    it('should render panel with table and table headers', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Users users={users} showAlert={showAlert}

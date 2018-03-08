@@ -10,7 +10,8 @@ import {ROLE} from "../../constants/DefaultConstants";
 
 class InstitutionMembers extends React.Component {
     constructor(props){
-        super(props);this.state = {
+        super(props);
+        this.state = {
             showDialog: false,
             selectedItem: null
         }
@@ -28,7 +29,6 @@ class InstitutionMembers extends React.Component {
         this.props.onDelete(this.state.selectedItem, this.props.institution.key);
         this.setState({showDialog: false, selectedItem: null});
     };
-
 
     _getDeleteLabel() {
         const user = this.state.selectedItem;
