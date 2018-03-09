@@ -20,6 +20,8 @@ describe('Dashboard', function () {
             showInstitutions: jasmine.createSpy('showInstitutions'),
             showRecords: jasmine.createSpy('showRecords'),
             createRecord: jasmine.createSpy('createRecord'),
+            showMyInstitution: jasmine.createSpy('showMyInstitution'),
+            showMyProfile: jasmine.createSpy('showMyProfile'),
         };
 
     it('should render dashboard with title and four buttons', function () {
@@ -64,21 +66,24 @@ describe('Dashboard', function () {
         expect(handlers.showRecords).toHaveBeenCalled();
     });
 
-    it('should render three buttons to doctor and click on them', function () {
+    it('should render four buttons to doctor and click on them', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Dashboard currentUser={currentUserDoctor} handlers={handlers}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "button");
-        expect(buttons.length).toEqual(3);
+        expect(buttons.length).toEqual(4);
 
         TestUtils.Simulate.click(buttons[0]); // Create record
         expect(handlers.createRecord).toHaveBeenCalled();
 
-        TestUtils.Simulate.click(buttons[1]); // View institutions
-        expect(handlers.showInstitutions).toHaveBeenCalled();
+        TestUtils.Simulate.click(buttons[1]); // View my profile
+        expect(handlers.showMyProfile).toHaveBeenCalled();
 
-        TestUtils.Simulate.click(buttons[2]); // View patients records
+        TestUtils.Simulate.click(buttons[2]); // View my institution
+        expect(handlers.showMyInstitution).toHaveBeenCalled();
+
+        TestUtils.Simulate.click(buttons[3]); // View patients records
         expect(handlers.showRecords).toHaveBeenCalled();
     });
 });

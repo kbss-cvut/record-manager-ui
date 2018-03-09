@@ -18,8 +18,20 @@ class DashboardController extends React.Component {
         Routing.transitionTo(Routes.users);
     };
 
+    _showMyProfile = () => {
+        Routing.transitionTo(Routes.editUser, {
+            params: {username: this.props.currentUser.username}
+        });
+    };
+
     _showInstitutions = () => {
         Routing.transitionTo(Routes.institutions);
+    };
+
+    _showMyInstitution = () => {
+        Routing.transitionTo(Routes.editInstitution, {
+            params: {key: this.props.currentUser.institution.key}
+        });
     };
 
     _showRecords = () => {
@@ -41,7 +53,9 @@ class DashboardController extends React.Component {
             showUsers: this._showUsers,
             showInstitutions: this._showInstitutions,
             showRecords: this._showRecords,
-            createRecord: this._createRecord
+            createRecord: this._createRecord,
+            showMyInstitution: this._showMyInstitution,
+            showMyProfile: this._showMyProfile
         };
         return (
         <div>

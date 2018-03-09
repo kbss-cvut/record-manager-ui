@@ -56,7 +56,9 @@ module.exports = {
 
         'dashboard.welcome': 'Hello {name}, Welcome to ' + Constants.APP_NAME + '.',
         'dashboard.create-tile': 'Create record',
+        'dashboard.user-tile': 'View my profile',
         'dashboard.users-tile': 'View users',
+        'dashboard.institution-tile': 'View my institution',
         'dashboard.institutions-tile': 'View institutions',
         'dashboard.records-tile': 'View patient records',
 

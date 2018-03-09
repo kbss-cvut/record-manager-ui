@@ -56,7 +56,9 @@ module.exports = {
 
         'dashboard.welcome': 'Dobrý den, {name}, vítejte v ' + Constants.APP_NAME + '.',
         'dashboard.create-tile': 'Vytvořit záznam',
+        'dashboard.user-tile': 'Můj profil',
         'dashboard.users-tile': 'Uživatelé',
+        'dashboard.institutions-tile': 'Klinika',
         'dashboard.institutions-tile': 'Kliniky',
         'dashboard.records-tile': 'Záznamy pacientů',
 

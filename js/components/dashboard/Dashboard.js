@@ -27,9 +27,7 @@ class Dashboard extends React.Component {
                     <DashboardTile onClick={this.props.handlers.createRecord}>{this.i18n('dashboard.create-tile')}</DashboardTile>
                 </Col>
                 {this._renderUsersTile()}
-                <Col xs={12} sm={3} className='dashboard-sector'>
-                    <DashboardTile onClick={this.props.handlers.showInstitutions}>{this.i18n('dashboard.institutions-tile')}</DashboardTile>
-                </Col>
+                {this._renderInstitutionsTile()}
                 <Col xs={12} sm={3} className='dashboard-sector'>
                     <DashboardTile onClick={this.props.handlers.showRecords}>{this.i18n('dashboard.records-tile')}</DashboardTile>
                 </Col>
@@ -41,7 +39,20 @@ class Dashboard extends React.Component {
         return this.props.currentUser.role === ROLE.ADMIN ?
             <Col xs={12} sm={3} className='dashboard-sector'>
                 <DashboardTile onClick={this.props.handlers.showUsers}>{this.i18n('dashboard.users-tile')}</DashboardTile>
-            </Col> : null;
+            </Col>
+            : <Col xs={12} sm={3} className='dashboard-sector'>
+                <DashboardTile onClick={this.props.handlers.showMyProfile}>{this.i18n('dashboard.user-tile')}</DashboardTile>
+            </Col>;
+    }
+
+    _renderInstitutionsTile() {
+        return this.props.currentUser.role === ROLE.ADMIN ?
+            <Col xs={12} sm={3} className='dashboard-sector'>
+                <DashboardTile onClick={this.props.handlers.showInstitutions}>{this.i18n('dashboard.institutions-tile')}</DashboardTile>
+            </Col>
+            : <Col xs={12} sm={3} className='dashboard-sector'>
+                <DashboardTile onClick={this.props.handlers.showMyInstitution}>{this.i18n('dashboard.institution-tile')}</DashboardTile>
+            </Col>;
     }
 
     render() {
