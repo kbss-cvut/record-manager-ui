@@ -2,8 +2,6 @@
 
 import React from "react";
 import {Button, Panel} from "react-bootstrap";
-import Actions from "../../actions/Actions";
-import InstitutionStore from "../../stores/InstitutionStore";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import Input from "../Input";
@@ -116,6 +114,7 @@ class User extends React.Component {
                                labelWidth={3} inputWidth={8}/>
                     </div>
                 </div>
+                {currentUser.role === ROLE.ADMIN &&
                 <div className='row'>
                     <div className='col-xs-6'>
                         <HorizontalInput type='select' name='institution' label={this.i18n('institution.panel-title')}
@@ -126,17 +125,19 @@ class User extends React.Component {
                         </HorizontalInput>
                     </div>
                 </div>
+                }
+                {currentUser.role === ROLE.ADMIN &&
                 <div className='row'>
                     <div className='col-xs-4'>
                         <div className='col-xs-4'>&nbsp;</div>
                         <div className='col-xs-8' style={{padding: '0 0 0 25px'}}>
                             <Input type='checkbox' checked={getRole(user) === ROLE.ADMIN}
                                    onChange={this._onAdminStatusChange}
-                                   label={this.i18n('user.is-admin')} inline={true}
-                                   disabled={currentUser.role !== ROLE.ADMIN}/>
+                                   label={this.i18n('user.is-admin')} inline={true}/>
                         </div>
                     </div>
                 </div>
+                }
                 <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
                     <Button bsStyle='success' bsSize='small' ref='submit'
                             disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
