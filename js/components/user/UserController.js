@@ -10,7 +10,7 @@ import UserFactory from '../../utils/EntityFactory';
 import RouterStore from '../../stores/RouterStore';
 import Routes from '../../utils/Routes';
 import Routing from '../../utils/Routing';
-import {createUser, loadUser, unloadUser, updateUser} from "../../actions";
+import {createUser, loadInstitutions, loadUser, unloadUser, updateUser} from "../../actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
@@ -43,6 +43,12 @@ class UserController extends React.Component {
 
     componentWillUnmount() {
         this.props.unloadUser();
+    }
+
+    componentDidMount() {
+        if(this.props.currentUser.role === ROLE.ADMIN && !this.props.institutionsLoaded.institutions) {
+            this.props.loadInstitutions();
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -95,7 +101,7 @@ class UserController extends React.Component {
     }
 
     render() {
-        const {currentUser, userSaved, userLoaded} = this.props;
+        const {currentUser, userSaved, userLoaded, institutionsLoaded} = this.props;
         if (!currentUser) {
             return null;
         }
@@ -106,7 +112,8 @@ class UserController extends React.Component {
         };
         return <User user={this.state.user} handlers={handlers} backToInstitution={this.institution !== null}
                      loading={this.state.loading} userSaved={userSaved} showAlert={this.state.showAlert}
-                     userLoaded={userLoaded} currentUser={currentUser}/>;
+                     userLoaded={userLoaded} currentUser={currentUser}
+                     institutions={institutionsLoaded.institutions || []}/>;
     }
 }
 
@@ -116,7 +123,8 @@ function mapStateToProps(state) {
     return {
         userSaved: state.user.userSaved,
         userLoaded: state.user.userLoaded,
-        currentUser: state.auth.user
+        currentUser: state.auth.user,
+        institutionsLoaded: state.institutions.institutionsLoaded
     };
 }
 
@@ -125,6 +133,7 @@ function mapDispatchToProps(dispatch) {
         createUser: bindActionCreators(createUser, dispatch),
         updateUser: bindActionCreators(updateUser, dispatch),
         loadUser: bindActionCreators(loadUser, dispatch),
-        unloadUser: bindActionCreators(unloadUser, dispatch)
+        unloadUser: bindActionCreators(unloadUser, dispatch),
+        loadInstitutions: bindActionCreators(loadInstitutions, dispatch)
     }
 }

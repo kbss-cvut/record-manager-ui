@@ -256,3 +256,9 @@ export function getRole(user) {
     }
     return undefined;
 }
+
+export function processInstitutions(institutions) {
+    return institutions.map((item) => {
+        return {label: item.name, value: item.uri}
+    });
+}

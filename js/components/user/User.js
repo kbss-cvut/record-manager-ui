@@ -13,7 +13,7 @@ import UserValidator from "../../validation/UserValidator";
 import Vocabulary from "../../constants/Vocabulary";
 import AlertMessage from "../AlertMessage";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
-import {getRole} from "../../utils/Utils";
+import {getRole, processInstitutions} from "../../utils/Utils";
 
 class User extends React.Component {
     static propTypes = {
@@ -24,41 +24,14 @@ class User extends React.Component {
         userLoaded: React.PropTypes.object,
         currentUser: React.PropTypes.object,
         showAlert: React.PropTypes.bool,
-        usernameDisabled: React.PropTypes.bool
+        usernameDisabled: React.PropTypes.bool,
+        institutions: React.PropTypes.array
     };
 
     constructor(props) {
         super(props);
         this.i18n = this.props.i18n;
         this.formatMessage = this.props.formatMessage;
-        this.state = {
-            institutions: InstitutionStore.getInstitutions() ? User._processInstitutions(InstitutionStore.getInstitutions()) : []
-        };
-    }
-
-    componentDidMount() {
-        if (this.state.institutions.length === 0 && this.props.currentUser.role === ROLE.ADMIN) {
-            Actions.loadAllInstitutions();
-        }
-        this.unsubscribe = InstitutionStore.listen(this._onInstitutionsLoaded);
-    }
-
-    _onInstitutionsLoaded = (data) => {
-        if (data.action === Actions.loadAllInstitutions) {
-            this.setState({
-                institutions: User._processInstitutions(data.data)
-            });
-        }
-    };
-
-    static _processInstitutions(institutions) {
-        return institutions.map((item) => {
-            return {label: item.name, value: item.uri}
-        });
-    };
-
-    componentWillUnmount() {
-        this.unsubscribe();
     }
 
     _onChange = (e) => {
@@ -69,7 +42,7 @@ class User extends React.Component {
 
     _onInstitutionSelected = (e) => {
         const value = e.target.value,
-            institution = InstitutionStore.getInstitutions().find((item) => item.uri === value),
+            institution = this.props.institutions.find((item) => item.uri === value),
             change = {
                 institution: institution
             };
@@ -89,9 +62,10 @@ class User extends React.Component {
 
     _generateInstitutionsOptions = () => {
         let options = [];
-        const len = this.state.institutions.length;
+        const institutions = processInstitutions(this.props.institutions);
+        const len = institutions.length;
         for (let i = 0; i < len; i++) {
-            let option = this.state.institutions[i];
+            let option = institutions[i];
             options.push(<option key={'opt_' + option.value} value={option.value}>{option.label}</option>);
         }
         options.unshift(<option key='opt_default' value='' disabled style={{display: 'none'}}>
