@@ -33,7 +33,7 @@ I18nStore.setMessages(intlData.messages);
 // Have the imports here, so that the I18nStore is initialized before any of the components which might need it
 import React from "react";
 import ReactDOM from "react-dom";
-import {Router, Route, IndexRoute} from "react-router";
+import {Router, Route, IndexRoute, Redirect} from "react-router";
 import {IntlProvider} from "react-intl";
 import {applyMiddleware, createStore} from "redux";
 import rootReducer from "./reducers";
@@ -87,6 +87,7 @@ var App = React.createClass({
                     <Route path={Routes.records.path} onEnter={onRouteEnter} component={requireAuth(RecordsController)}/>
                     <Route path={Routes.createRecord.path} onEnter={onRouteEnter} component={requireAuth(RecordController)}/>
                     <Route path={Routes.editRecord.path} onEnter={onRouteEnter} component={requireAuth(RecordController)}/>
+                    <Redirect from="*" to={Routes.dashboard.path} />
                 </Route>
             </Router>
             </IntlProvider>
