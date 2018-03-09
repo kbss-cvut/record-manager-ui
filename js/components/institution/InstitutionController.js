@@ -12,7 +12,7 @@ import RouterStore from "../../stores/RouterStore";
 import Routes from "../../utils/Routes";
 import Routing from "../../utils/Routing";
 import {connect} from "react-redux";
-import {ACTION_FLAG, ACTION_STATUS} from "../../constants/DefaultConstants";
+import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
 import {bindActionCreators} from "redux";
 import {
     createInstitution, loadInstitution, loadInstitutionMembers, loadInstitutionPatients, unloadInstitution,
@@ -87,8 +87,10 @@ class InstitutionController extends React.Component {
         const handlers = RouterStore.getViewHandlers(Routes.editInstitution.name);
         if (handlers) {
             Routing.transitionTo(handlers.onCancel);
-        } else {
+        } else if (this.props.currentUser.role === ROLE.ADMIN){
             Routing.transitionTo(Routes.institutions);
+        } else {
+            Routing.transitionTo(Routes.dashboard);
         }
     };
 
