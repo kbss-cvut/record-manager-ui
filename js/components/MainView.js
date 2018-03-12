@@ -57,13 +57,15 @@ class MainView extends React.Component {
                             <LinkContainer
                                 to='dashboard'><NavItem>{this.i18n('main.dashboard-nav')}</NavItem></LinkContainer>
                         {this._renderUsers()}
-                            {this.props.user.role === ROLE.ADMIN ?
+                            {user.role === ROLE.ADMIN ?
                                 <LinkContainer to='institutions'>
                                     <NavItem>{this.i18n('main.institutions-nav')}</NavItem>
                                 </LinkContainer>
-                                : <LinkContainer to={{ pathname: '/institutions/'+user.institution.key}}>
+                                : user.institution ?
+                                    <LinkContainer to={{ pathname: '/institutions/'+user.institution.key}}>
                                     <NavItem>{this.i18n('main.institution-nav')}</NavItem>
                                 </LinkContainer>
+                                    : null
                             }
                             <LinkContainer
                                 to='records'><NavItem>{this.i18n('main.records-nav')}</NavItem></LinkContainer>

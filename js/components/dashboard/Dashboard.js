@@ -50,9 +50,11 @@ class Dashboard extends React.Component {
             <Col xs={12} sm={3} className='dashboard-sector'>
                 <DashboardTile onClick={this.props.handlers.showInstitutions}>{this.i18n('dashboard.institutions-tile')}</DashboardTile>
             </Col>
-            : <Col xs={12} sm={3} className='dashboard-sector'>
-                <DashboardTile onClick={this.props.handlers.showMyInstitution}>{this.i18n('dashboard.institution-tile')}</DashboardTile>
-            </Col>;
+            : this.props.currentUser.institution ?
+                <Col xs={12} sm={3} className='dashboard-sector'>
+                    <DashboardTile onClick={this.props.handlers.showMyInstitution}>{this.i18n('dashboard.institution-tile')}</DashboardTile>
+                </Col>
+                : null;
     }
 
     render() {

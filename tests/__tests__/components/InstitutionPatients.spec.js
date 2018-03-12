@@ -31,7 +31,6 @@ describe('InstitutionPatients', function () {
         expect(panelBody).not.toBeNull();
     });
 
-
     it('does not render anything', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
