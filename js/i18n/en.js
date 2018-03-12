@@ -126,6 +126,9 @@ module.exports = {
         'record.save-success': 'Patient record successfully saved.',
         'record.save-error': 'Unable to save record. Server responded with {}.',
         'record.form.please-wait': 'Loading form, please wait...',
+        'record.delete-success': 'Patient record deleted successfully',
+        'record.delete-error': 'Unable to delete patient record. Server responded with {error}.',
+        'record.load-error': 'Unable to load patient record. Server responded with {error}.',
 
         'help.local-name': 'Purpose of this entry is to help you reference anonymized patients. Use identifiers such as patient ordering number (e.g. "patient_1", "patient_2"), patient\'s initials (e.g. "M.E."), etc.',
 

@@ -2,10 +2,12 @@ import TestUtils from "react-addons-test-utils";
 import React from "react";
 import {IntlProvider} from "react-intl";
 import RecordTable from "../../../js/components/record/RecordTable";
+import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
 
 describe('RecordTable', function () {
     const intlData = require('../../../js/i18n/en');
     let patients,
+        recordDeleted = {status: ACTION_STATUS.SUCCESS},
         handlers = {onEdit: jasmine.createSpy('onEdit')},
         disableDelete = true;
 
@@ -21,7 +23,8 @@ describe('RecordTable', function () {
     it('renders table with headers and columns', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <RecordTable records={patients} handlers={handlers} disableDelete={disableDelete}/>
+                <RecordTable records={patients} handlers={handlers} disableDelete={disableDelete}
+                             recordDeleted={recordDeleted}/>
             </IntlProvider>);
         const table = TestUtils.scryRenderedDOMComponentsWithTag(tree,'table');
         expect(table).not.toBeNull();
@@ -34,7 +37,8 @@ describe('RecordTable', function () {
     it('renders "Open" button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <RecordTable records={patients} handlers={handlers} disableDelete={disableDelete}/>
+                <RecordTable records={patients} handlers={handlers} disableDelete={disableDelete}
+                             recordDeleted={recordDeleted}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
         expect(buttons.length).toEqual(2);

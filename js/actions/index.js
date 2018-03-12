@@ -1,5 +1,5 @@
 import * as ActionConstants from "../constants/ActionConstants";
-import {ACTION_FLAG} from "../constants/DefaultConstants";
+import {ACTION_FLAG, ROLE} from "../constants/DefaultConstants";
 import axios from 'axios';
 import * as Routing from "../utils/Routing";
 import * as Routes from "../utils/Routes";
@@ -493,5 +493,78 @@ export function loadInstitutionPatientsError(error) {
     return {
         type: ActionConstants.LOAD_INSTITUTION_PATIENTS_ERROR,
         error
+    }
+}
+
+export function loadRecords(currentUser) {
+    //console.log("Loading records");
+    let urlSuffix = '';
+    if (currentUser.role !== ROLE.ADMIN && currentUser.institution) {
+        urlSuffix = `?institution='${currentUser.institution.key}`;
+    }
+    return function (dispatch) {
+        dispatch(loadRecordsPending());
+        axiosBackend.get(`rest/records${urlSuffix}`).then((response) => {
+            dispatch(loadRecordsSuccess(response.data));
+        }).catch ((error) => {
+            dispatch(loadRecordsError(error.response.data));
+        });
+    }
+}
+
+export function loadRecordsPending() {
+    return {
+        type: ActionConstants.LOAD_RECORDS_PENDING
+    }
+}
+
+export function loadRecordsSuccess(records) {
+    return {
+        type: ActionConstants.LOAD_RECORDS_SUCCESS,
+        records
+    }
+}
+
+export function loadRecordsError(error) {
+    return {
+        type: ActionConstants.LOAD_RECORDS_ERROR,
+        error
+    }
+}
+
+export function deleteRecord(record, currentUser) {
+    //console.log("Deleting record: ", record);
+    return function (dispatch) {
+        dispatch(deleteRecordPending(record.key));
+        axiosBackend.delete(`rest/records/${record.key}`, {
+            ...record
+        }).then(() => {
+            dispatch(loadRecords(currentUser));
+            dispatch(deleteRecordSuccess(record));
+        }).catch ((error) => {
+            dispatch(deleteRecordError(error.response.data, record));
+        });
+    }
+}
+
+export function deleteRecordPending(key) {
+    return {
+        type: ActionConstants.DELETE_RECORD_PENDING,
+        key
+    }
+}
+
+export function deleteRecordSuccess(record) {
+    return {
+        type: ActionConstants.DELETE_RECORD_SUCCESS,
+        record
+    }
+}
+
+export function deleteRecordError(error, record) {
+    return {
+        type: ActionConstants.DELETE_RECORD_ERROR,
+        error,
+        record,
     }
 }

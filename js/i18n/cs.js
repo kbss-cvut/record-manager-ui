@@ -104,7 +104,7 @@ module.exports = {
         'institution.patients.panel-title': 'Pacienti kliniky',
         'institution.save-success': 'Klinika úspěšně uložena.',
         'institution.save-error': 'Kliniku se nepodařilo uložit. Odpověď serveru: {}.',
-        'institution.delete-success': 'Klinika úspěšně odstraněn',
+        'institution.delete-success': 'Klinika úspěšně odstraněna',
         'institution.delete-error': 'Kliniku se nepodařilo smazat. Odpověď serveru: {error}.',
         'institution.load-error': 'Kliniku se nepodařilo načíst. Odpověď serveru: {error}.',
 
@@ -125,6 +125,9 @@ module.exports = {
         'record.save-success': 'Záznam o pacientovi úspěšně uložen.',
         'record.save-error': 'Záznam se nepodařilo uložit. Odpověď serveru: {}.',
         'record.form.please-wait': 'Nahrávám formulář, prosím, čekejte...',
+        'record.delete-success': 'Záznam o pacientovi úspěšně odstraněn',
+        'record.delete-error': 'Záznam o pacientovi se nepodařilo smazat. Odpověď serveru: {error}.',
+        'record.load-error': 'Záznam o pacientovi se nepodařilo načíst. Odpověď serveru: {error}.',
 
         'help.local-name': 'Účelem tohoto atributu je pomoci vám identifikovat anonymizované pacienty. Můžete použít např. číslování pacientů ("pacient_1", "pacient_2") či iniciály pacientů ("M.E.")',
 

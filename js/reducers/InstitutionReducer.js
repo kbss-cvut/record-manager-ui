@@ -1,6 +1,5 @@
 import * as ActionConstants from "../constants/ActionConstants";
 import {ACTION_STATUS} from "../constants/DefaultConstants";
-import {getRole, isAdmin} from "../utils/Utils";
 
 const initialState = {
     institutionDeleted: {},

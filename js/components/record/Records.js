@@ -6,10 +6,14 @@ import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import Mask from "../Mask";
 import RecordTable from "./RecordTable";
+import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
+import AlertMessage from "../AlertMessage";
 
 class Records extends React.Component {
     static propTypes = {
         records: React.PropTypes.array,
+        recordDeleted: React.PropTypes.object,
+        showAlert: React.PropTypes.bool.isRequired,
         handlers: React.PropTypes.object.isRequired
     };
 
@@ -19,7 +23,7 @@ class Records extends React.Component {
     }
 
     render() {
-        var records = this.props.records;
+        const {records, showAlert, recordDeleted} = this.props;
         if (records === null) {
             return <Mask text={this.i18n('please-wait')}/>;
         }
@@ -29,6 +33,11 @@ class Records extends React.Component {
                 <Button bsStyle='primary'
                         onClick={this.props.handlers.onCreate}>{this.i18n('dashboard.create-tile')}</Button>
             </div>
+            {showAlert && recordDeleted.status === ACTION_STATUS.ERROR &&
+            <AlertMessage type={ALERT_TYPES.DANGER}
+                          message={this.props.formatMessage('record.delete-error', {error: this.props.userDeleted.error.message})}/>}
+            {showAlert && recordDeleted.status === ACTION_STATUS.SUCCESS &&
+            <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('record.delete-success')}/>}
         </Panel>;
     }
 }

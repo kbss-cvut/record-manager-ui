@@ -2,37 +2,27 @@
 
 import React from 'react';
 
-import Actions from "../../actions/Actions";
 import Records from "./Records";
-import RecordStore from "../../stores/RecordStore";
 import Routes from "../../utils/Routes";
 import Routing from "../../utils/Routing";
+import {deleteRecord, deleteUser, loadRecords, loadUsers} from "../../actions";
+import injectIntl from "../../utils/injectIntl";
+import I18nWrapper from "../../i18n/I18nWrapper";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import MessageWrapper from "../misc/hoc/MessageWrapper";
+import {ROLE} from "../../constants/DefaultConstants";
 
-export default class RecordsController extends React.Component {
+class RecordsController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            records: RecordStore.getAllRecords(),
-            loading: false
-        }
+            showAlert: false
+        };
     }
 
     componentDidMount() {
-        if (!this.state.records) {
-            Actions.loadAllRecords();
-            this.setState({loading: true});
-        }
-        this.unsubscribe = RecordStore.listen(this._recordsLoaded);
-    }
-
-    _recordsLoaded = (data) => {
-        if (data.action === Actions.loadAllRecords) {
-            this.setState({records: data.data, loading: false});
-        }
-    };
-
-    componentWillUnmount() {
-        this.unsubscribe();
+        this.props.loadRecords(this.props.currentUser);
     }
 
     _onEditRecord = (record) => {
@@ -54,15 +44,37 @@ export default class RecordsController extends React.Component {
     };
 
     _onDeleteRecord = (record) => {
-        Actions.deleteRecord(record, Actions.loadAllRecords);
+        this.props.deleteRecord(record, this.props.currentUser);
+        this.setState({showAlert: true});
     };
 
     render() {
-        var handlers = {
+        const {recordsLoaded, recordDeleted, currentUser} = this.props;
+        if (!currentUser) {
+            return null;
+        }
+        const handlers = {
             onEdit: this._onEditRecord,
             onCreate: this._onAddRecord,
             onDelete: this._onDeleteRecord
         };
-        return <Records records={this.state.records} handlers={handlers}/>;
+        return <Records records={recordsLoaded.records || []} showAlert={this.state.showAlert} handlers={handlers} recordDeleted={recordDeleted}/>;
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(MessageWrapper(RecordsController))));
+
+function mapStateToProps(state) {
+    return {
+        recordDeleted: state.record.recordDeleted,
+        recordsLoaded: state.records.recordsLoaded,
+        currentUser: state.auth.user
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        deleteRecord: bindActionCreators(deleteRecord, dispatch),
+        loadRecords: bindActionCreators(loadRecords, dispatch)
     }
 }
