@@ -400,7 +400,7 @@ export function updateInstitution(institution) {
             ...institution
         }).then((response) => {
             dispatch(saveInstitutionSuccess(institution, null, ACTION_FLAG.UPDATE_ENTITY));
-            //dispatch(loadInstitutions());
+            dispatch(loadInstitutions());
         }).catch ((error) => {
             dispatch(saveInstitutionError(error.response.data, institution, ACTION_FLAG.UPDATE_ENTITY));
         });
