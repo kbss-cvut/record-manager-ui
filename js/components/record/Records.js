@@ -13,6 +13,7 @@ class Records extends React.Component {
     static propTypes = {
         records: React.PropTypes.array,
         recordDeleted: React.PropTypes.object,
+        status: React.PropTypes.string,
         showAlert: React.PropTypes.bool.isRequired,
         handlers: React.PropTypes.object.isRequired
     };
@@ -23,8 +24,8 @@ class Records extends React.Component {
     }
 
     render() {
-        const {records, showAlert, recordDeleted} = this.props;
-        if (records === null) {
+        const {records, showAlert, recordDeleted, status} = this.props;
+        if (!records.length && status === ACTION_STATUS.PENDING) {
             return <Mask text={this.i18n('please-wait')}/>;
         }
         return <Panel header={this.i18n('records.panel-title')} bsStyle='primary'>
@@ -35,7 +36,7 @@ class Records extends React.Component {
             </div>
             {showAlert && recordDeleted.status === ACTION_STATUS.ERROR &&
             <AlertMessage type={ALERT_TYPES.DANGER}
-                          message={this.props.formatMessage('record.delete-error', {error: this.props.userDeleted.error.message})}/>}
+                          message={this.props.formatMessage('record.delete-error', {error: this.props.recordDeleted.error.message})}/>}
             {showAlert && recordDeleted.status === ACTION_STATUS.SUCCESS &&
             <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('record.delete-success')}/>}
         </Panel>;

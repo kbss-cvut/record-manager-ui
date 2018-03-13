@@ -500,7 +500,7 @@ export function loadRecords(currentUser) {
     //console.log("Loading records");
     let urlSuffix = '';
     if (currentUser.role !== ROLE.ADMIN && currentUser.institution) {
-        urlSuffix = `?institution='${currentUser.institution.key}`;
+        urlSuffix = `?institution=${currentUser.institution.key}`;
     }
     return function (dispatch) {
         dispatch(loadRecordsPending());

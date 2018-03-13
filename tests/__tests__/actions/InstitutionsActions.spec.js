@@ -6,6 +6,8 @@ import MockAdapter from 'axios-mock-adapter';
 import {TEST_TIMEOUT} from "../../constants/DefaultTestConstants";
 import {axiosBackend} from "../../../js/actions";
 
+const institutions = [{key: 786785600}, {key: 86875960}];
+
 describe('Institutions synchronize actions', function () {
     it('should create an action to fetch all institutions', () => {
         const expectedAction = {
@@ -15,7 +17,6 @@ describe('Institutions synchronize actions', function () {
     });
 
     it('should create an action to save fetched institutions', () => {
-        const institutions = [{username: 'test1'},{username: 'test2'}];
         const expectedAction = {
             type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS,
             institutions
@@ -39,8 +40,7 @@ const mockStore = configureMockStore(middlewares);
 describe('Institutions asynchronize actions', function () {
     let store,
         MockApi;
-    const institutions = [{username: 'test1'}, {username: 'test2'}],
-        error = {
+    const error = {
             "message" : "An error has occurred.",
             "requestUri": "/rest/institutions/xxx"
         };

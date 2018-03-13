@@ -11,7 +11,12 @@ describe('Dashboard', function () {
             role: ROLE.ADMIN,
             firstName: 'testName'
         },
-        currentUserDoctor = {
+        doctorWithInstitution = {
+            username: 'test',
+            role: ROLE.DOCTOR,
+            institution: {key: 12345678}
+        },
+        doctorWithoutInstitution = {
             username: 'test',
             role: ROLE.DOCTOR
         },
@@ -66,10 +71,10 @@ describe('Dashboard', function () {
         expect(handlers.showRecords).toHaveBeenCalled();
     });
 
-    it('should render four buttons to doctor and click on them', function () {
+    it('should render four buttons to doctor with institution and click on them', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Dashboard currentUser={currentUserDoctor} handlers={handlers}/>
+                <Dashboard currentUser={doctorWithInstitution} handlers={handlers}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "button");
         expect(buttons.length).toEqual(4);
@@ -84,6 +89,24 @@ describe('Dashboard', function () {
         expect(handlers.showMyInstitution).toHaveBeenCalled();
 
         TestUtils.Simulate.click(buttons[3]); // View patients records
+        expect(handlers.showRecords).toHaveBeenCalled();
+    });
+
+    it('should render three buttons to doctor without institution and click on them', function () {
+        const tree = TestUtils.renderIntoDocument(
+            <IntlProvider locale="en" {...intlData}>
+                <Dashboard currentUser={doctorWithoutInstitution} handlers={handlers}/>
+            </IntlProvider>);
+        const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "button");
+        expect(buttons.length).toEqual(3);
+
+        TestUtils.Simulate.click(buttons[0]); // Create record
+        expect(handlers.createRecord).toHaveBeenCalled();
+
+        TestUtils.Simulate.click(buttons[1]); // View my profile
+        expect(handlers.showMyProfile).toHaveBeenCalled();
+
+        TestUtils.Simulate.click(buttons[2]); // View patients records
         expect(handlers.showRecords).toHaveBeenCalled();
     });
 });
