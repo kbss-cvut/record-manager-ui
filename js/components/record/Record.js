@@ -12,12 +12,17 @@ import RecordProvenance from "./RecordProvenance";
 import RequiredAttributes from "./RequiredAttributes";
 import WizardStore from "../../stores/WizardStore";
 import {FormUtils} from "semforms";
+import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
+import AlertMessage from "../AlertMessage";
 
 class Record extends React.Component {
     static propTypes = {
         record: React.PropTypes.object,
         loading: React.PropTypes.bool,
-        handlers: React.PropTypes.object.isRequired
+        handlers: React.PropTypes.object.isRequired,
+        recordSaved: React.PropTypes.object,
+        recordLoaded: React.PropTypes.object,
+        showAlert: React.PropTypes.bool
     };
 
     constructor(props) {
@@ -36,8 +41,13 @@ class Record extends React.Component {
     };
 
     render() {
+        const {recordLoaded, recordSaved, showAlert} = this.props;
         if (this.props.loading || !this.props.record) {
             return <Mask text={this.i18n('please-wait')}/>;
+        }
+        if (recordLoaded.status === ACTION_STATUS.ERROR) {
+            return <AlertMessage type={ALERT_TYPES.DANGER}
+                                 message={this.props.formatMessage('record.load-error', {error: this.props.recordLoaded.error.message})}/>;
         }
         const record = this.props.record;
         return <Panel header={this._renderHeader()} bsStyle='primary'>
@@ -46,6 +56,11 @@ class Record extends React.Component {
                 {this._renderInstitution()}
                 <RecordProvenance record={record}/>
             </form>
+            {showAlert && recordSaved.status === ACTION_STATUS.ERROR &&
+            <AlertMessage type={ALERT_TYPES.DANGER}
+                          message={this.props.formatMessage('record.save-error', {error: this.props.recordSaved.error.message})}/>}
+            {showAlert && recordSaved.status === ACTION_STATUS.SUCCESS &&
+            <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('record.save-success')}/>}
             {this._renderForm()}
             {this._renderButtons()}
         </Panel>;
@@ -64,7 +79,7 @@ class Record extends React.Component {
             return null;
         }
         return <div className='row'>
-            <div className='col-xs-4'>
+            <div className='col-xs-6'>
                 <HorizontalInput type='text' value={record.institution.name} label={this.i18n('record.institution')}
                        labelWidth={4} inputWidth={8} readOnly/>
             </div>
@@ -78,11 +93,13 @@ class Record extends React.Component {
     }
 
     _renderButtons() {
-        const record = this.props.record;
+        const {record, recordSaved} = this.props;
         return <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
             <Button bsStyle='success' bsSize='small'
                     disabled={this.props.loading || this.props.saving || this._isFormInvalid() || !record.state.isComplete()}
-                    onClick={this.props.handlers.onSave}>{this.i18n(this.props.saving ? 'saving' : 'save')}</Button>
+                    onClick={this.props.handlers.onSave}>
+                {this.i18n('save')}{recordSaved.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
+            </Button>
             <Button bsStyle='link' bsSize='small'
                     onClick={this.props.handlers.onCancel}>{this.i18n('cancel')}</Button>
         </div>

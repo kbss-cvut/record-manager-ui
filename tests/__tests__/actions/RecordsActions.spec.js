@@ -5,7 +5,7 @@ import * as ActionConstants from "../../../js/constants/ActionConstants";
 import MockAdapter from 'axios-mock-adapter';
 import {TEST_TIMEOUT} from "../../constants/DefaultTestConstants";
 import {axiosBackend} from "../../../js/actions";
-import {ROLE} from "../../../js/constants/DefaultConstants";
+import {ACTION_FLAG, ROLE} from "../../../js/constants/DefaultConstants";
 
 const records = [{key: 786785600}, {key: 86875960}];
 
