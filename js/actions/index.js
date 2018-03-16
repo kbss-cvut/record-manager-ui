@@ -162,6 +162,12 @@ export function saveUserError(error, user, actionFlag) {
     }
 }
 
+export function unloadSavedUser() {
+    return {
+        type: ActionConstants.UNLOAD_SAVED_USER
+    }
+}
+
 export function deleteUser(user) {
     //console.log("Deleting user: ", user);
     return function (dispatch) {
@@ -339,7 +345,7 @@ export function deleteInstitutionError(error, institution) {
 }
 
 export function loadInstitution(key) {
-    //console.log("Loading institution with username: ", username);
+    //console.log("Loading institution with key: ", key);
     return function (dispatch) {
         dispatch(loadInstitutionPending());
         axiosBackend.get(`rest/institutions/${key}`).then((response) => {
@@ -429,6 +435,12 @@ export function saveInstitutionError(error, institution, actionFlag) {
         error,
         institution,
         actionFlag
+    }
+}
+
+export function unloadSavedInstitution() {
+    return {
+        type: ActionConstants.UNLOAD_SAVED_INSTITUTION
     }
 }
 

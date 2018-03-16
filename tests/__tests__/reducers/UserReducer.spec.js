@@ -4,6 +4,7 @@ import React from 'react';
 import UserReducer from "../../../js/reducers/UserReducer";
 import * as ActionConstants from "../../../js/constants/ActionConstants";
 import {ACTION_FLAG, ACTION_STATUS} from "../../../js/constants/DefaultConstants";
+import InstitutionReducer from "../../../js/reducers/InstitutionReducer";
 
 describe('UserReducer', function () {
     const user = {username: 'test'},
@@ -102,6 +103,30 @@ describe('UserReducer', function () {
             testEntry: initialState.testEntry
         };
         expect(newState).toEqual(expectedState);
+    });
+
+    it('handles UNLOAD_SAVED_USER', () => {
+        const initialState = {
+            userSaved: {
+                actionFlag: ACTION_FLAG.CREATE_ENTITY,
+                status: ACTION_STATUS.SUCCESS,
+                user,
+                error: ''
+            },
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.UNLOAD_SAVED_USER
+            })
+        ).toEqual(
+            {
+                userSaved: {
+                    status: ACTION_STATUS.SUCCESS
+                },
+                testEntry: initialState.testEntry
+            });
     });
 
     it('should handle DELETE_USER_PENDING', () => {

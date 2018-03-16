@@ -40,6 +40,13 @@ export default function (state = initialState, action) {
                     error: action.error
                 }
             };
+        case ActionConstants.UNLOAD_SAVED_USER:
+            return {
+                ...state,
+                userSaved: {
+                    status: state.userSaved.status
+                }
+            };
         case ActionConstants.DELETE_USER_PENDING:
             return {
                 ...state,

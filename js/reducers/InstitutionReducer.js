@@ -39,6 +39,13 @@ export default function (state = initialState, action) {
                     error: action.error
                 }
             };
+        case ActionConstants.UNLOAD_SAVED_INSTITUTION:
+            return {
+                ...state,
+                institutionSaved: {
+                    status: state.institutionSaved.status
+                }
+            };
         case ActionConstants.DELETE_INSTITUTION_PENDING:
             return {
                 ...state,

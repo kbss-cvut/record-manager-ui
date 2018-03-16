@@ -8,6 +8,7 @@ import RecordRow from "../../../js/components/record/RecordRow";
 describe('RecordRow', function () {
     const intlData = require('../../../js/i18n/en');
     let record,
+        disableDelete = false,
         deletionLoading = false,
         onEdit = jasmine.createSpy('onEdit'),
         onDelete = jasmine.createSpy('onDelete');
@@ -27,7 +28,7 @@ describe('RecordRow', function () {
                 <table>
                     <tbody>
                     <RecordRow record={record} onEdit={onEdit} onDelete={onDelete}
-                             deletionLoading={deletionLoading}/>
+                             deletionLoading={deletionLoading} disableDelete={disableDelete}/>
                     </tbody>
                 </table>
             </IntlProvider>);
@@ -43,7 +44,7 @@ describe('RecordRow', function () {
                 <table>
                     <tbody>
                     <RecordRow record={record} onEdit={onEdit} onDelete={onDelete}
-                             deletionLoading={deletionLoading}/>
+                             deletionLoading={deletionLoading} disableDelete={disableDelete}/>
                     </tbody>
                 </table>
             </IntlProvider>);
@@ -60,7 +61,7 @@ describe('RecordRow', function () {
                 <table>
                     <tbody>
                     <RecordRow record={record} onEdit={onEdit} onDelete={onDelete}
-                             deletionLoading={deletionLoading}/>
+                             deletionLoading={deletionLoading} disableDelete={disableDelete}/>
                     </tbody>
                 </table>
             </IntlProvider>);
@@ -78,7 +79,7 @@ describe('RecordRow', function () {
                 <table>
                     <tbody>
                     <RecordRow record={record} onEdit={onEdit} onDelete={onDelete}
-                             deletionLoading={deletionLoading}/>
+                             deletionLoading={deletionLoading} disableDelete={disableDelete}/>
                     </tbody>
                 </table>
             </IntlProvider>);

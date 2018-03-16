@@ -43,6 +43,13 @@ describe('Institution synchronize actions', function () {
         expect(actions.saveInstitutionError(error, institution, actionFlag)).toEqual(expectedAction)
     });
 
+    it('creates an action to unload saved institution', () => {
+        const expectedAction = {
+            type: ActionConstants.UNLOAD_SAVED_INSTITUTION
+        };
+        expect(actions.unloadSavedInstitution()).toEqual(expectedAction)
+    });
+
     it('creates an action to delete institution', () => {
         const expectedAction = {
             type: ActionConstants.DELETE_INSTITUTION_PENDING,

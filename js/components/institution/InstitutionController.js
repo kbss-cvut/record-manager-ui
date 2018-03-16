@@ -16,6 +16,7 @@ import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants
 import {bindActionCreators} from "redux";
 import {
     createInstitution, loadInstitution, loadInstitutionMembers, loadInstitutionPatients, unloadInstitution,
+    unloadSavedInstitution,
     updateInstitution
 } from "../../actions";
 import {canLoadInstitutionsPatients} from "../../utils/Utils";
@@ -48,15 +49,24 @@ class InstitutionController extends React.Component {
                 this.props.loadInstitutionPatients(institutionKey);
             }
         }
+        if(this.props.institutionSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
+            this.setState({showAlert: true});
+            this.props.unloadSavedInstitution();
+        }
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.state.saved && nextProps.institutionLoaded.status !== ACTION_STATUS.PENDING
             && nextProps.institutionSaved.status === ACTION_STATUS.SUCCESS) {
-            this.setState({saved: false});
             if (nextProps.institutionSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
-                this.props.loadInstitution(nextProps.institutionSaved.institution.key);
+                Routing.transitionTo(Routes.editInstitution, {
+                    params: {key: nextProps.institutionSaved.institution.key},
+                    handlers: {
+                        onCancel: Routes.institutions
+                    }
+                });
             } else {
+                this.setState({saved: false});
                 this.props.loadInstitution(this.state.institution.key);
             }
         }
@@ -153,6 +163,7 @@ function mapDispatchToProps(dispatch) {
     return {
         loadInstitution: bindActionCreators(loadInstitution, dispatch),
         unloadInstitution: bindActionCreators(unloadInstitution, dispatch),
+        unloadSavedInstitution: bindActionCreators(unloadSavedInstitution, dispatch),
         createInstitution: bindActionCreators(createInstitution, dispatch),
         updateInstitution: bindActionCreators(updateInstitution, dispatch),
         loadInstitutionMembers: bindActionCreators(loadInstitutionMembers, dispatch),

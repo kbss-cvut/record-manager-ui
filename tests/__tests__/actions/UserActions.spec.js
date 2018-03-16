@@ -46,6 +46,13 @@ describe('User synchronize actions', function () {
         expect(actions.saveUserError(error, user, actionFlag)).toEqual(expectedAction)
     });
 
+    it('creates an action to unload saved user', () => {
+        const expectedAction = {
+            type: ActionConstants.UNLOAD_SAVED_USER
+        };
+        expect(actions.unloadSavedUser()).toEqual(expectedAction)
+    });
+
     it('should create an action to delete user', () => {
         const username = user.username;
         const expectedAction = {

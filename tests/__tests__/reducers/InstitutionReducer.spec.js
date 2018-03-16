@@ -105,6 +105,30 @@ describe('InstitutionReducer', function () {
             });
     });
 
+    it('handles UNLOAD_SAVED_INSTITUTION', () => {
+        const initialState = {
+            institutionSaved: {
+                actionFlag: ACTION_FLAG.CREATE_ENTITY,
+                status: ACTION_STATUS.SUCCESS,
+                institution,
+                error: ''
+            },
+            testEntry: "should not touch"
+        };
+
+        expect(
+            InstitutionReducer(initialState, {
+                type: ActionConstants.UNLOAD_SAVED_INSTITUTION
+            })
+        ).toEqual(
+            {
+                institutionSaved: {
+                    status: ACTION_STATUS.SUCCESS
+                },
+                testEntry: initialState.testEntry
+            });
+    });
+
     it('handles DELETE_INSTITUTION_PENDING', () => {
         const initialState = {
             institutionDeleted: {},

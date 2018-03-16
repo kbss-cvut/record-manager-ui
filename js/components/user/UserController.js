@@ -10,10 +10,10 @@ import UserFactory from '../../utils/EntityFactory';
 import RouterStore from '../../stores/RouterStore';
 import Routes from '../../utils/Routes';
 import Routing from '../../utils/Routing';
-import {createUser, loadInstitutions, loadUser, unloadUser, updateUser} from "../../actions";
+import {createUser, loadInstitutions, loadUser, unloadSavedUser, unloadUser, updateUser} from "../../actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
+import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
 
 class UserController extends React.Component {
     constructor(props) {
@@ -39,6 +39,10 @@ class UserController extends React.Component {
         if(this.institution) {
             this._onChange({institution: this.institution});
         }
+        if(this.props.userSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
+            this.setState({showAlert: true});
+            this.props.unloadSavedUser();
+        }
     }
 
     componentWillUnmount() {
@@ -54,8 +58,17 @@ class UserController extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (this.state.saved && nextProps.userLoaded.status !== ACTION_STATUS.PENDING
             && nextProps.userSaved.status === ACTION_STATUS.SUCCESS) {
-            this.setState({saved: false});
-            this.props.loadUser(nextProps.userSaved.user.username);
+            if (nextProps.userSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
+                Routing.transitionTo(Routes.editUser, {
+                    params: {username: nextProps.userSaved.user.username},
+                    handlers: {
+                        onCancel: Routes.users
+                    }
+                });
+            } else {
+                this.setState({saved: false});
+                this.props.loadUser(nextProps.userSaved.user.username);
+            }
         }
         if (this.props.userLoaded.status === ACTION_STATUS.PENDING && nextProps.userLoaded.status === ACTION_STATUS.SUCCESS) {
             this.setState({user: nextProps.userLoaded.user, loading: false});
@@ -134,6 +147,7 @@ function mapDispatchToProps(dispatch) {
         updateUser: bindActionCreators(updateUser, dispatch),
         loadUser: bindActionCreators(loadUser, dispatch),
         unloadUser: bindActionCreators(unloadUser, dispatch),
+        unloadSavedUser: bindActionCreators(unloadSavedUser, dispatch),
         loadInstitutions: bindActionCreators(loadInstitutions, dispatch)
     }
 }
