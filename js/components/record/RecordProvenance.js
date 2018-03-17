@@ -22,7 +22,7 @@ const RecordProvenance = (props) => {
     return <div className='notice-small'>
         <FormattedMessage id='record.created-by-msg'
                           values={{date: created, name: <b>{author}</b>}}/>
-        &nbsp;
+        <br/>
         <FormattedMessage id='record.last-edited-msg'
                           values={{date: lastModified, name: <b>{lastEditor}</b>}}/>
     </div>;

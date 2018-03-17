@@ -117,7 +117,7 @@ class RecordController extends React.Component {
             onChange: this._onChange
         };
         return <Record ref={(c) => this.recordComponent = c} handlers={handlers} record={this.state.record}
-                       loading={this.state.loading} saving={this.state.saved} recordLoaded={recordLoaded}
+                       loading={this.state.loading} recordLoaded={recordLoaded}
                        recordSaved={recordSaved} showAlert={this.state.showAlert}/>;
     }
 }

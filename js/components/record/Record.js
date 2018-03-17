@@ -57,10 +57,13 @@ class Record extends React.Component {
                 <RecordProvenance record={record}/>
             </form>
             {showAlert && recordSaved.status === ACTION_STATUS.ERROR &&
-            <AlertMessage type={ALERT_TYPES.DANGER}
-                          message={this.props.formatMessage('record.save-error', {error: this.props.recordSaved.error.message})}/>}
+            <div>
+                <AlertMessage type={ALERT_TYPES.DANGER}
+                              message={this.props.formatMessage('record.save-error', {error: this.props.recordSaved.error.message})}/>
+                <br/>
+            </div>}
             {showAlert && recordSaved.status === ACTION_STATUS.SUCCESS &&
-            <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('record.save-success')}/>}
+            <div><AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('record.save-success')}/><br/></div>}
             {this._renderForm()}
             {this._renderButtons()}
         </Panel>;
@@ -96,7 +99,7 @@ class Record extends React.Component {
         const {record, recordSaved} = this.props;
         return <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
             <Button bsStyle='success' bsSize='small'
-                    disabled={this.props.loading || this.props.saving || this._isFormInvalid() || !record.state.isComplete()}
+                    disabled={this.props.loading ||this.props.recordSaved.status === ACTION_STATUS.PENDING || this._isFormInvalid() || !record.state.isComplete()}
                     onClick={this.props.handlers.onSave}>
                 {this.i18n('save')}{recordSaved.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
             </Button>

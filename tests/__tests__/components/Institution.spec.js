@@ -103,7 +103,7 @@ describe('Institution', function () {
         expect(result.length).toEqual(2);
         for(let input of result) {
             switch(input.name){
-                case "name":
+                case "localName":
                     expect(input.value).toEqual("");
                     expect(input.type).toEqual("text");
                     break;
