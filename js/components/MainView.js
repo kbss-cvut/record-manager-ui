@@ -33,7 +33,7 @@ class MainView extends React.Component {
     }
 
     render() {
-        if (!this.props.status || this.props.status === ACTION_STATUS.PENDING) {
+        if (this.props.status === ACTION_STATUS.PENDING) {
             return <Mask text={this.i18n('please-wait')}/>;
         }
         if (!this.props.isLoaded) {

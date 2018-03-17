@@ -62,7 +62,6 @@ export function logout() {
             dispatch(unauthUser());
             //Logger.log('User successfully logged out.');
             Routing.transitionTo(Routes.login);
-            window.location.reload();
         }).catch((error) => {
             /* TODO maybe action error */
             //Logger.error('Logout failed. Status: ' + error.status);

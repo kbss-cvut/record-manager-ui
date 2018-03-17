@@ -5,7 +5,7 @@ import {ACTION_STATUS} from "../constants/DefaultConstants";
 const initialState = {
     authenticated: false,
     isLoaded: false,
-    user: {}
+    user: {},
 };
 
 export default function (state = initialState, action) {
@@ -20,10 +20,6 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 error: action.error
-            };
-        case ActionConstants.UNAUTH_USER:
-            return {
-                authenticated: false
             };
         case ActionConstants.LOAD_USER_PROFILE_PENDING:
             return {

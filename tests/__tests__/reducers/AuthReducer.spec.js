@@ -1,11 +1,11 @@
 
 import React from 'react';
 import * as ActionConstants from "../../../js/constants/ActionConstants";
-import {ACTION_FLAG, ACTION_STATUS} from "../../../js/constants/DefaultConstants";
+import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
 import {getRole} from "../../../js/utils/Utils";
 import AuthReducer from "../../../js/reducers/AuthReducer";
 
-describe('UserReducer', function () {
+describe('AuthReducer', function () {
     const user = {
             username: 'test',
             types:[
@@ -56,25 +56,6 @@ describe('UserReducer', function () {
             isLoaded: false,
             error
         };
-        expect(newState).toEqual(expectedState);
-    });
-
-    it('should handle UNAUTH_USER', () => {
-        const initialState = {
-            authenticated: false,
-            isLoaded: false,
-            testEntry: "should not touch"
-        };
-        const action = {
-            type: "UNAUTH_USER",
-        };
-
-        const newState = AuthReducer(initialState, action);
-
-        const expectedState = {
-            authenticated: false
-        };
-
         expect(newState).toEqual(expectedState);
     });
 

@@ -6,8 +6,17 @@ import InstitutionsReducer from "./InstitutionsReducer";
 import InstitutionReducer from "./InstitutionReducer";
 import RecordReducer from "./RecordReducer";
 import RecordsReducer from "./RecordsReducer";
+import RouterReducer from "./RouterReducer";
+import * as ActionConstants from "../constants/ActionConstants";
 
-const rootReducer = combineReducers({
+const rootReducer = (state, action) => {
+    if (action.type === ActionConstants.UNAUTH_USER) {
+        state = undefined
+    }
+    return appReducer(state, action);
+};
+
+const appReducer = combineReducers({
     auth: AuthReducer,
     user: UserReducer,
     users: UsersReducer,
