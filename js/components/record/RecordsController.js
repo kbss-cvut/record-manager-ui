@@ -4,14 +4,13 @@ import React from 'react';
 
 import Records from "./Records";
 import Routes from "../../utils/Routes";
-import Routing from "../../utils/Routing";
-import {deleteRecord, deleteUser, loadRecords, loadUsers} from "../../actions";
+import { transitionToWithOpts} from "../../utils/Routing";
+import {deleteRecord, loadRecords} from "../../actions";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import MessageWrapper from "../misc/hoc/MessageWrapper";
-import {ROLE} from "../../constants/DefaultConstants";
 
 class RecordsController extends React.Component {
     constructor(props) {
@@ -26,7 +25,7 @@ class RecordsController extends React.Component {
     }
 
     _onEditRecord = (record) => {
-        Routing.transitionTo(Routes.editRecord, {
+        this.props.transitionToWithOpts(Routes.editRecord, {
             params: {key: record.key},
             handlers: {
                 onCancel: Routes.records
@@ -35,7 +34,7 @@ class RecordsController extends React.Component {
     };
 
     _onAddRecord = () => {
-        Routing.transitionTo(Routes.createRecord, {
+        this.props.transitionToWithOpts(Routes.createRecord, {
             handlers: {
                 onSuccess: Routes.records,
                 onCancel: Routes.records
@@ -76,6 +75,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         deleteRecord: bindActionCreators(deleteRecord, dispatch),
-        loadRecords: bindActionCreators(loadRecords, dispatch)
+        loadRecords: bindActionCreators(loadRecords, dispatch),
+        transitionToWithOpts:bindActionCreators(transitionToWithOpts, dispatch)
     }
 }

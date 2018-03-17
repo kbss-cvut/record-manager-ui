@@ -9,7 +9,7 @@ import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import HorizontalInput from "../HorizontalInput";
 import Mask from "../Mask";
-import Routing from "../../utils/Routing";
+import Routing, {transitionTo} from "../../utils/Routing";
 import Routes from "../../utils/Routes";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import {formatDate} from "../../utils/Utils";
@@ -42,9 +42,7 @@ class Institution extends React.Component {
         this.props.handlers.onChange(change);
     };
 
-    _onEditPatient = (patient) => {
-        Routing.transitionTo(Routes.editRecord, {params: {key: patient.key}});
-    };
+
 
     render() {
         const {loading, showAlert, currentUser, institution, patients, institutionLoaded, institutionSaved} = this.props;
@@ -78,7 +76,7 @@ class Institution extends React.Component {
                 <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('institution.save-success')}/>}
             </form>
             {!this.props.institution.isNew && institutionLoaded.status === ACTION_STATUS.SUCCESS && this._renderMembers()}
-            <InstitutionPatients patients={patients} onEdit={this._onEditPatient}/>
+            <InstitutionPatients patients={patients} onEdit={this.props.handlers.onEditPatient}/>
         </Panel>;
     }
 

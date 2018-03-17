@@ -21,6 +21,7 @@ const appReducer = combineReducers({
     user: UserReducer,
     users: UsersReducer,
     record: RecordReducer,
+    router: RouterReducer,
     records: RecordsReducer,
     institution: InstitutionReducer,
     institutions: InstitutionsReducer

@@ -1,6 +1,6 @@
 'use strict';
 
-var rules = {};
+let rules = {};
 
 /**
  * Rules for each route is just an array of functions, that should be executed.
@@ -13,17 +13,15 @@ var rules = {};
  * application.
  * @type {{execute: module.exports.execute}}
  */
-module.exports = {
 
-    /**
-     * Executes rules defined for the specified route name.
-     * @param routeName Route name
-     */
-    execute: function (routeName) {
-        if (rules[routeName]) {
-            rules[routeName].forEach((item) => {
-                item.call();
-            });
-        }
+/**
+ * Executes rules defined for the specified route name.
+ * @param routeName Route name
+ */
+export function execute(routeName) {
+    if (rules[routeName]) {
+        rules[routeName].forEach((item) => {
+            item.call();
+        });
     }
-};
+}

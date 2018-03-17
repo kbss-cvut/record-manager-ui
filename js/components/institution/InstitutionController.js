@@ -8,9 +8,8 @@ import EntityFactory from "../../utils/EntityFactory";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import MessageWrapper from "../misc/hoc/MessageWrapper";
-import RouterStore from "../../stores/RouterStore";
 import Routes from "../../utils/Routes";
-import Routing from "../../utils/Routing";
+import {transitionTo, transitionToWithOpts} from "../../utils/Routing";
 import {connect} from "react-redux";
 import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
 import {bindActionCreators} from "redux";
@@ -59,7 +58,7 @@ class InstitutionController extends React.Component {
         if (this.state.saved && nextProps.institutionLoaded.status !== ACTION_STATUS.PENDING
             && nextProps.institutionSaved.status === ACTION_STATUS.SUCCESS) {
             if (nextProps.institutionSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
-                Routing.transitionTo(Routes.editInstitution, {
+                this.props.transitionToWithOpts(Routes.editInstitution, {
                     params: {key: nextProps.institutionSaved.institution.key},
                     handlers: {
                         onCancel: Routes.institutions
@@ -94,13 +93,13 @@ class InstitutionController extends React.Component {
     };
 
     _onCancel = () => {
-        const handlers = RouterStore.getViewHandlers(Routes.editInstitution.name);
+        const handlers = this.props.viewHandlers[Routes.editInstitution.name];
         if (handlers) {
-            Routing.transitionTo(handlers.onCancel);
+            transitionTo(handlers.onCancel);
         } else if (this.props.currentUser.role === ROLE.ADMIN){
-            Routing.transitionTo(Routes.institutions);
+            transitionTo(Routes.institutions);
         } else {
-            Routing.transitionTo(Routes.dashboard);
+            transitionTo(Routes.dashboard);
         }
     };
 
@@ -114,14 +113,18 @@ class InstitutionController extends React.Component {
     };
 
     _onEditUser = (user, institution) => {
-        Routing.transitionTo(Routes.editUser, {
+        this.props.transitionToWithOpts(Routes.editUser, {
             params: {username: user.username},
             payload: {institution: institution}
         });
     };
 
+    _onEditPatient = (patient) => {
+        this.props.transitionToWithOpts(Routes.editRecord, {params: {key: patient.key}});
+    };
+
     _onAddNewUser = (institution) => {
-        Routing.transitionTo(Routes.createUser, {
+        this.props.transitionToWithOpts(Routes.createUser, {
             payload: {institution: institution}
         });
     };
@@ -137,6 +140,7 @@ class InstitutionController extends React.Component {
             onChange: this._onChange,
             onEditUser: this._onEditUser,
             onAddNewUser: this._onAddNewUser,
+            onEditPatient: this._onEditPatient,
             onDelete: this._onDeleteUser
         };
         return <Institution handlers={handlers} institution={this.state.institution} members={institutionMembers.members || []}
@@ -155,7 +159,8 @@ function mapStateToProps(state) {
         institutionLoaded: state.institution.institutionLoaded,
         institutionSaved: state.institution.institutionSaved,
         institutionMembers: state.user.institutionMembers,
-        institutionPatients: state.record.institutionPatients
+        institutionPatients: state.record.institutionPatients,
+        viewHandlers: state.router.viewHandlers
     };
 }
 
@@ -168,5 +173,6 @@ function mapDispatchToProps(dispatch) {
         updateInstitution: bindActionCreators(updateInstitution, dispatch),
         loadInstitutionMembers: bindActionCreators(loadInstitutionMembers, dispatch),
         loadInstitutionPatients: bindActionCreators(loadInstitutionPatients, dispatch),
+        transitionToWithOpts:bindActionCreators(transitionToWithOpts, dispatch)
     }
 }

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Routes from "../../utils/Routes";
-import Routing from "../../utils/Routing";
+import {transitionToWithOpts} from "../../utils/Routing";
 import Institutions from "./Institutions";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
@@ -25,7 +25,7 @@ class InstitutionsController extends React.Component {
     }
 
     _onEditInstitution = (institution) => {
-        Routing.transitionTo(Routes.editInstitution, {
+        this.props.transitionToWithOpts(Routes.editInstitution, {
             params: {key: institution.key},
             handlers: {
                 onCancel: Routes.institutions
@@ -34,7 +34,7 @@ class InstitutionsController extends React.Component {
     };
 
     _onAddInstitution = () => {
-        Routing.transitionTo(Routes.createInstitution, {
+        this.props.transitionToWithOpts(Routes.createInstitution, {
             handlers: {
                 onSuccess: Routes.institutions,
                 onCancel: Routes.institutions
@@ -75,6 +75,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         deleteInstitution: bindActionCreators(deleteInstitution, dispatch),
-        loadInstitutions: bindActionCreators(loadInstitutions, dispatch)
+        loadInstitutions: bindActionCreators(loadInstitutions, dispatch),
+        transitionToWithOpts:bindActionCreators(transitionToWithOpts, dispatch)
     }
 }

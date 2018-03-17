@@ -13,6 +13,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
+import {transitionTo} from "../../utils/Routing";
 
 class Login extends React.Component {
     constructor(props) {
@@ -48,13 +49,8 @@ class Login extends React.Component {
     };
 
     onForgotPassword = () => {
-        Routing.transitionTo(Routes.passwordReset)
+        transitionTo(Routes.passwordReset)
     };
-
-    /*
-    register() {
-        Routing.transitionTo(Routes.register);
-    }*/
 
     render() {
         const mask = this.props.status === ACTION_STATUS.PENDING ? (<Mask text={this.i18n('login.progress-mask')}/>) : null;

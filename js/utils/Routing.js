@@ -1,65 +1,61 @@
 'use strict';
 
-var hashHistory = require('react-router').hashHistory;
+import {execute} from "./RoutingRules";
+import {setTransitionPayload, setViewHandlers} from "../actions";
+import { hashHistory } from 'react-router';
+import * as Constants from "../constants/Constants";
 
-var Constants = require('../constants/Constants');
-var RouterStore = require('../stores/RouterStore');
-var RoutingRules = require('./RoutingRules');
+export const history = hashHistory;
+/**
+ * Transitions to the specified route
+ * @param route Route object
+ */
+export function transitionTo(route) {
+    let path = route.path;
+    execute(route.name);
+    history.push({
+        pathname: path,
+    });
+}
 
-var Routing = {
-    history: hashHistory,
-
-    originalTarget: null,
-
-    /**
-     * Transitions to the specified route
-     * @param route Route object
-     * @param options Transition options, can specify path parameters, query parameters, payload and view handlers.
-     */
-    transitionTo: function (route, options) {
-        var path = route.path;
+/**
+ * Transitions to the specified route
+ * @param route Route object
+ * @param options Transition options, can specify path parameters, query parameters, payload and view handlers.
+ */
+export function transitionToWithOpts(route, options) {
+    return function (dispatch) {
+        let path = route.path;
         if (!options) {
             options = {};
         }
         if (options.params) {
-            path = this.setPathParams(path, options.params);
+            path = setPathParams(path, options.params);
         }
-        RouterStore.setTransitionPayload(route.name, options.payload);
-        RouterStore.setViewHandlers(route.name, options.handlers);
-        RoutingRules.execute(route.name);
-        this.history.push({
+        if (options.payload) {
+            dispatch(setTransitionPayload(route.name, options.payload));
+        }
+        if (options.handlers) {
+            dispatch(setViewHandlers(route.name, options.handlers));
+        }
+        execute(route.name);
+        history.push({
             pathname: path,
             search: options.query
         });
-    },
+    }
+}
 
-    setPathParams: function (path, params) {
-        for (var paramName in params) {
-            if (params.hasOwnProperty(paramName)) {
-                path = path.replace(':' + paramName, params[paramName]);
-            }
-        }
-        return path;
-    },
-
-    transitionToHome: function (options) {
-        this.transitionTo(Constants.HOME_ROUTE, options);
-    },
-
-    saveOriginalTarget: function (route) {
-        if (!route || route === '') {
-            return;
-        }
-        this.originalTarget = route;
-    },
-
-    transitionToOriginalTarget: function () {
-        if (this.originalTarget) {
-            this.transitionTo(this.originalTarget);
-        } else {
-            this.transitionTo(Constants.HOME_ROUTE);
+function setPathParams(path, params) {
+    for (let paramName in params) {
+        if (params.hasOwnProperty(paramName)) {
+            path = path.replace(':' + paramName, params[paramName]);
         }
     }
-};
+    return path;
+}
 
-module.exports = Routing;
+export function transitionToHome() {
+    transitionTo(Constants.HOME_ROUTE);
+}
+

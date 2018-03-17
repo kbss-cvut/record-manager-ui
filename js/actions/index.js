@@ -1,9 +1,9 @@
 import * as ActionConstants from "../constants/ActionConstants";
 import {ACTION_FLAG, ROLE} from "../constants/DefaultConstants";
 import axios from 'axios';
-import * as Routing from "../utils/Routing";
 import * as Routes from "../utils/Routes";
 import * as Utils from "../utils/Utils";
+import {transitionTo, transitionToHome} from "../utils/Routing";
 
 // Axios instance for communicating with Backend
 export let axiosBackend = axios.create();
@@ -13,10 +13,10 @@ axiosBackend.interceptors.response.use(
     error => {
         const {status} = error.response;
         if (status === 401) { // non-logged
-            Routing.transitionTo(Routes.login);
+            transitionTo(Routes.login);
         }
         if (status === 403) { // non-authorized
-            Routing.transitionTo(Routes.dashboard);
+            transitionTo(Routes.dashboard);
         }
         return Promise.reject(error);
     }
@@ -35,7 +35,7 @@ export function login(username, password) {
             dispatch(userAuthSuccess());
             dispatch(loadUserProfile());
             /*This makes test warning*/
-            Routing.transitionToOriginalTarget();
+            transitionToHome();
         }).catch((error) => {
             dispatch(userAuthError(error.response.data));
         });
@@ -61,7 +61,7 @@ export function logout() {
         axiosBackend.post('j_spring_security_logout').then(() => {
             dispatch(unauthUser());
             //Logger.log('User successfully logged out.');
-            Routing.transitionTo(Routes.login);
+            transitionTo(Routes.login);
         }).catch((error) => {
             /* TODO maybe action error */
             //Logger.error('Logout failed. Status: ' + error.status);
@@ -678,5 +678,22 @@ export function saveRecordError(error, record, actionFlag) {
 export function unloadSavedRecord() {
     return {
         type: ActionConstants.UNLOAD_SAVED_RECORD
+    }
+}
+
+export function setTransitionPayload(routeName, payload) {
+    return {
+        type: ActionConstants.SET_TRANSITION_PAYLOAD,
+        routeName,
+        payload
+    }
+}
+
+export function setViewHandlers(routeName, handlers) {
+    console.log(handlers);
+    return {
+        type: ActionConstants.SET_VIEW_HANDLERS,
+        routeName,
+        handlers
     }
 }

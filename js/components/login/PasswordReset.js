@@ -6,7 +6,7 @@ import HorizontalInput from "../HorizontalInput";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import Mask from "../Mask";
-import Routing from "../../utils/Routing";
+import Routing, {transitionTo} from "../../utils/Routing";
 import Routes from "../../utils/Routes";
 
 class PasswordReset extends React.Component {
@@ -61,7 +61,7 @@ class PasswordReset extends React.Component {
                     <Button bsStyle='success' onClick={this.resetPassword}
                             disabled={this.state.mask}>{this.i18n('login.reset-password')}</Button>
                     <Button bsStyle='link'
-                            onClick={() => Routing.transitionTo(Routes.login)}
+                            onClick={() => transitionTo(Routes.login)}
                             disabled={this.state.mask}>{this.i18n('login.back-to-login')}</Button>
                 </div>
             </Form>

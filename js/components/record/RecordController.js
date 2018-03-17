@@ -10,9 +10,8 @@ import MessageWrapper from "../misc/hoc/MessageWrapper";
 import Record from './Record';
 import RecordState from "../../model/RecordState";
 import RecordValidator from "../../validation/RecordValidator";
-import RouterStore from '../../stores/RouterStore';
 import Routes from '../../utils/Routes';
-import Routing from '../../utils/Routing';
+import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
 import {ACTION_FLAG, ACTION_STATUS} from "../../constants/DefaultConstants";
 import {createRecord, loadRecord, unloadRecord, unloadSavedRecord, updateRecord} from "../../actions";
 import {connect} from "react-redux";
@@ -49,7 +48,7 @@ class RecordController extends React.Component {
         if (this.state.saved && nextProps.recordLoaded.status !== ACTION_STATUS.PENDING
             && nextProps.recordSaved.status === ACTION_STATUS.SUCCESS) {
             if (nextProps.recordSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
-                Routing.transitionTo(Routes.editRecord, {
+                this.props.transitionToWithOpts(Routes.editRecord, {
                     params: {key: nextProps.recordSaved.record.key},
                     handlers: {
                         onCancel: Routes.records
@@ -88,11 +87,11 @@ class RecordController extends React.Component {
     };
 
     _onCancel = () => {
-        const handlers = RouterStore.getViewHandlers(Routes.editRecord.name);
+        const handlers = this.props.viewHandlers[Routes.editRecord.name];
         if (handlers) {
-            Routing.transitionTo(handlers.onCancel);
+            transitionTo(handlers.onCancel);
         } else {
-            Routing.transitionTo(Routes.records);
+            transitionTo(Routes.records);
         }
     };
 
@@ -130,6 +129,7 @@ function mapStateToProps(state) {
         currentUser: state.auth.user,
         recordLoaded: state.record.recordLoaded,
         recordSaved: state.record.recordSaved,
+        viewHandlers: state.router.viewHandlers
     };
 }
 
@@ -139,6 +139,7 @@ function mapDispatchToProps(dispatch) {
         unloadRecord: bindActionCreators(unloadRecord, dispatch),
         createRecord: bindActionCreators(createRecord, dispatch),
         updateRecord: bindActionCreators(updateRecord, dispatch),
-        unloadSavedRecord: bindActionCreators(unloadSavedRecord, dispatch)
+        unloadSavedRecord: bindActionCreators(unloadSavedRecord, dispatch),
+        transitionToWithOpts:bindActionCreators(transitionToWithOpts, dispatch)
     }
 }

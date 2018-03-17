@@ -51,13 +51,13 @@ import RecordController from "./components/record/RecordController";
 import RecordsController from "./components/record/RecordsController";
 import UsersController from "./components/user/UsersController";
 import UserController from "./components/user/UserController";
-import RoutingRules from "./utils/RoutingRules";
+import {execute} from "./utils/RoutingRules";
 import PasswordReset from "./components/login/PasswordReset";
 import MainView from "./components/MainView";
 import requireAuth from './utils/RequireAuth';
 
 function onRouteEnter() {
-    RoutingRules.execute(this.path);
+    execute(this.path);
 }
 
 const store = createStore(

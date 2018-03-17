@@ -7,10 +7,12 @@ import injectIntl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
 import User from './User';
 import UserFactory from '../../utils/EntityFactory';
-import RouterStore from '../../stores/RouterStore';
 import Routes from '../../utils/Routes';
-import Routing from '../../utils/Routing';
-import {createUser, loadInstitutions, loadUser, unloadSavedUser, unloadUser, updateUser} from "../../actions";
+import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
+import {
+    createUser, loadInstitutions, loadUser, setTransitionPayload, unloadSavedUser, unloadUser,
+    updateUser
+} from "../../actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
@@ -59,7 +61,7 @@ class UserController extends React.Component {
         if (this.state.saved && nextProps.userLoaded.status !== ACTION_STATUS.PENDING
             && nextProps.userSaved.status === ACTION_STATUS.SUCCESS) {
             if (nextProps.userSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
-                Routing.transitionTo(Routes.editUser, {
+                this.props.transitionToWithOpts(Routes.editUser, {
                     params: {username: nextProps.userSaved.user.username},
                     handlers: {
                         onCancel: Routes.users
@@ -90,13 +92,13 @@ class UserController extends React.Component {
     };
 
     _onCancel = () => {
-        const handlers = RouterStore.getViewHandlers(Routes.editUser.name);
+        const handlers = this.props.viewHandlers[Routes.editUser.name];
         if (handlers && !this.institution) {
-            Routing.transitionTo(handlers.onCancel);
+            transitionTo(handlers.onCancel);
         } else if (this.institution) {
-            Routing.transitionTo(Routes.editInstitution, {params: {key: this.institution.key}});
+            this.props.transitionToWithOpts(Routes.editInstitution, {params: {key: this.institution.key}});
         } else {
-            Routing.transitionTo(this.props.currentUser.role === ROLE.ADMIN ? Routes.users : Routes.dashboard);
+            transitionTo(this.props.currentUser.role === ROLE.ADMIN ? Routes.users : Routes.dashboard);
         }
     };
 
@@ -106,10 +108,10 @@ class UserController extends React.Component {
     };
 
     _getPayload() {
-        let payload = this._isNew() ? RouterStore.getTransitionPayload(Routes.createUser.name) :
-                                      RouterStore.getTransitionPayload(Routes.editUser.name);
-        this._isNew() ? RouterStore.setTransitionPayload(Routes.createUser.name, null) :
-                        RouterStore.setTransitionPayload(Routes.editUser.name, null);
+        let payload = this._isNew() ? this.props.transitionPayload[Routes.createUser.name] :
+                                      this.props.transitionPayload[Routes.editUser.name];
+        this._isNew() ? this.props.setTransitionPayload(Routes.createUser.name, null) :
+                        this.props.setTransitionPayload(Routes.editUser.name, null);
         return payload ? payload.institution : null;
     }
 
@@ -137,7 +139,9 @@ function mapStateToProps(state) {
         userSaved: state.user.userSaved,
         userLoaded: state.user.userLoaded,
         currentUser: state.auth.user,
-        institutionsLoaded: state.institutions.institutionsLoaded
+        institutionsLoaded: state.institutions.institutionsLoaded,
+        transitionPayload: state.router.transitionPayload,
+        viewHandlers: state.router.viewHandlers
     };
 }
 
@@ -148,6 +152,8 @@ function mapDispatchToProps(dispatch) {
         loadUser: bindActionCreators(loadUser, dispatch),
         unloadUser: bindActionCreators(unloadUser, dispatch),
         unloadSavedUser: bindActionCreators(unloadSavedUser, dispatch),
-        loadInstitutions: bindActionCreators(loadInstitutions, dispatch)
+        loadInstitutions: bindActionCreators(loadInstitutions, dispatch),
+        setTransitionPayload: bindActionCreators(setTransitionPayload, dispatch),
+        transitionToWithOpts:bindActionCreators(transitionToWithOpts, dispatch)
     }
 }
