@@ -1,7 +1,6 @@
 import * as ActionConstants from "../constants/ActionConstants";
 
 export function setViewHandlers(routeName, handlers) {
-    console.log(handlers);
     return {
         type: ActionConstants.SET_VIEW_HANDLERS,
         routeName,
