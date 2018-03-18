@@ -3,8 +3,8 @@
 import {execute} from "./RoutingRules";
 import {setTransitionPayload} from "../actions/RouterActions";
 import { hashHistory } from 'react-router';
-import * as Constants from "../constants/Constants";
 import {setViewHandlers} from "../actions/RouterActions";
+import * as Constants from "../constants/DefaultConstants";
 
 export const history = hashHistory;
 /**

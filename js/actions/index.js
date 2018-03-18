@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as Routes from "../utils/Routes";
+import {Routes} from "../utils/Routes";
 import {transitionTo} from "../utils/Routing";
 
 // Axios instance for communicating with Backend

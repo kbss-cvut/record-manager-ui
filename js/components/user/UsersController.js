@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import Routes from "../../utils/Routes";
+import {Routes} from "../../utils/Routes";
 import {transitionToWithOpts} from "../../utils/Routing";
 import Users from "./Users";
 import MessageWrapper from "../misc/hoc/MessageWrapper";

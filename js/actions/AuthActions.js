@@ -1,5 +1,5 @@
 import {axiosBackend} from "./index";
-import * as Routes from "../utils/Routes";
+import {Routes} from "../utils/Routes";
 import {transitionTo, transitionToHome} from "../utils/Routing";
 import * as ActionConstants from "../constants/ActionConstants";
 

@@ -4,11 +4,10 @@ import React from "react";
 import assign from "object-assign";
 import Actions from "../../actions/Actions";
 import Institution from "./Institution";
-import EntityFactory from "../../utils/EntityFactory";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import MessageWrapper from "../misc/hoc/MessageWrapper";
-import Routes from "../../utils/Routes";
+import {Routes} from "../../utils/Routes";
 import {transitionTo, transitionToWithOpts} from "../../utils/Routing";
 import {connect} from "react-redux";
 import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
@@ -22,6 +21,7 @@ import {
     createInstitution, loadInstitution, unloadInstitution,
     updateInstitution
 } from "../../actions/InstitutionActions";
+import * as EntityFactory from "../../utils/EntityFactory";
 
 class InstitutionController extends React.Component {
     constructor(props) {

@@ -41,7 +41,7 @@ import {Provider} from "react-redux";
 import thunk from "redux-thunk";
 
 import {history} from "./utils/Routing";
-import Routes from "./utils/Routes";
+import {Routes} from "./utils/Routes";
 
 import Login from "./components/login/Login";
 import InstitutionController from "./components/institution/InstitutionController";

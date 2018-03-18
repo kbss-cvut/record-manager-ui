@@ -3,7 +3,7 @@
 import Dashboard from "./Dashboard";
 import React from 'react';
 import injectIntl from '../../utils/injectIntl';
-import Routes from '../../utils/Routes';
+import {Routes} from '../../utils/Routes';
 import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
 import I18nWrapper from "../../i18n/I18nWrapper";
 import MessageWrapper from "../misc/hoc/MessageWrapper";

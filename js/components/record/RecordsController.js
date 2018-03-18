@@ -3,7 +3,7 @@
 import React from 'react';
 
 import Records from "./Records";
-import Routes from "../../utils/Routes";
+import {Routes} from "../../utils/Routes";
 import { transitionToWithOpts} from "../../utils/Routing";
 import {loadRecords} from "../../actions/RecordsActions";
 import injectIntl from "../../utils/injectIntl";

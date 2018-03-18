@@ -5,7 +5,7 @@ import {Button, Table} from "react-bootstrap";
 import DeleteItemDialog from "../DeleteItemDialog";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
-import Routes from "../../utils/Routes";
+import {Routes} from "../../utils/Routes";
 import UserRow from "./UserRow";
 import {ACTION_STATUS} from "../../constants/DefaultConstants";
 

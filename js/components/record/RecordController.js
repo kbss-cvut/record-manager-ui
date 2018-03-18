@@ -2,21 +2,20 @@
 
 import React from 'react';
 import assign from 'object-assign';
-
-import EntityFactory from '../../utils/EntityFactory';
 import injectIntl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
 import MessageWrapper from "../misc/hoc/MessageWrapper";
 import Record from './Record';
 import RecordState from "../../model/RecordState";
 import RecordValidator from "../../validation/RecordValidator";
-import Routes from '../../utils/Routes';
+import {Routes} from '../../utils/Routes';
 import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
 import {ACTION_FLAG, ACTION_STATUS} from "../../constants/DefaultConstants";
 import {unloadSavedRecord} from "../../actions/RecordActions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {createRecord, loadRecord, unloadRecord, updateRecord} from "../../actions/RecordActions";
+import * as EntityFactory from "../../utils/EntityFactory";
 
 class RecordController extends React.Component {
     constructor(props) {

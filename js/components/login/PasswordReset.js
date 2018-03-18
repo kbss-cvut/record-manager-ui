@@ -7,7 +7,7 @@ import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import Mask from "../Mask";
 import Routing, {transitionTo} from "../../utils/Routing";
-import Routes from "../../utils/Routes";
+import {Routes} from "../../utils/Routes";
 
 class PasswordReset extends React.Component {
     constructor(props) {

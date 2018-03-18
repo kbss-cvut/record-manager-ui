@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as Routing from "./Routing";
-import * as Routes from "./Routes";
+import {Routes} from "./Routes";
 
 export default function(ComposedComponent) {
     class Authentication extends Component {

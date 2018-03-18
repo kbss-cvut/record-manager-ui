@@ -10,7 +10,7 @@ import injectIntl from "../../utils/injectIntl";
 import HorizontalInput from "../HorizontalInput";
 import Mask from "../Mask";
 import Routing, {transitionTo} from "../../utils/Routing";
-import Routes from "../../utils/Routes";
+import {Routes} from "../../utils/Routes";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import {formatDate} from "../../utils/Utils";
 import AlertMessage from "../AlertMessage";

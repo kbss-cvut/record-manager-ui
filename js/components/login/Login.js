@@ -6,7 +6,7 @@ import HorizontalInput from "../HorizontalInput";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import Mask from "../Mask";
-import * as Routes from "../../utils/Routes";
+import {Routes} from "../../utils/Routes";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";

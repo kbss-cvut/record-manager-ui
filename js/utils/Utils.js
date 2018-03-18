@@ -1,10 +1,7 @@
 'use strict';
-
-
-import * as Constants from "../constants/Constants";
-import * as UserStore from "../stores/UserStore";
 import * as Vocabulary from "../constants/Vocabulary";
 import {ROLE} from "../constants/DefaultConstants";
+import * as Constants from "../constants/DefaultConstants";
 
 /**
  * Common propositions that should not be capitalized
@@ -208,19 +205,6 @@ export function generatePassword() {
         pass += CHARACTERS.charAt(Math.floor(Math.random() * CHARACTERS.length));
     }
     return pass;
-}
-
-/**
- * Checks whether user is administrator.
- * @param user Optional parameter, if not specified, the currently logged in user is tested
- * @return {boolean}
- */
-export function isAdmin(user) {
-    const userToTest = user ? user : UserStore.getCurrentUser();
-    if (!userToTest) {
-        return false;
-    }
-    return userToTest.types && userToTest.types.indexOf(Vocabulary.ADMIN_TYPE) !== -1;
 }
 
 /**

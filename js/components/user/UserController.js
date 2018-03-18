@@ -6,8 +6,7 @@ import assign from 'object-assign';
 import injectIntl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
 import User from './User';
-import UserFactory from '../../utils/EntityFactory';
-import Routes from '../../utils/Routes';
+import {Routes} from '../../utils/Routes';
 import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
 import {
     loadInstitutions} from "../../actions/InstitutionsActions";
@@ -16,6 +15,7 @@ import {bindActionCreators} from "redux";
 import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
 import {setTransitionPayload} from "../../actions/RouterActions";
 import {createUser, loadUser, unloadSavedUser, unloadUser, updateUser} from "../../actions/UserActions";
+import * as UserFactory from "../../utils/EntityFactory";
 
 class UserController extends React.Component {
     constructor(props) {

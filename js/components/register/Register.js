@@ -12,7 +12,7 @@ import HorizontalInput from "../HorizontalInput";
 import Logger from "../../utils/Logger";
 import Mask from "../Mask";
 import Routing from "../../utils/Routing";
-import Routes from "../../utils/Routes";
+import {Routes} from "../../utils/Routes";
 import Ajax from "../../utils/Ajax";
 import Actions from "../../actions/Actions";
 

@@ -1,8 +1,8 @@
 import React from "react";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
-import Routes from "../../utils/Routes";
 import {Button} from "react-bootstrap";
+import {Routes} from "../../utils/Routes";
 
 let UserRow = (props) => {
     const user = props.user;

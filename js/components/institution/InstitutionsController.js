@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import Routes from "../../utils/Routes";
+import {Routes} from "../../utils/Routes";
 import {transitionToWithOpts} from "../../utils/Routing";
 import Institutions from "./Institutions";
 import injectIntl from "../../utils/injectIntl";
