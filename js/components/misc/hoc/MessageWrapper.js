@@ -2,7 +2,7 @@
 
 import React from "react";
 import {Alert} from "react-bootstrap";
-import Constants from "../../../constants/Constants";
+import * as Constants from "../../../constants/DefaultConstants";
 import getDisplayName from "../../../utils/getDisplayName";
 
 /**
