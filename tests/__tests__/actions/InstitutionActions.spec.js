@@ -1,11 +1,27 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import * as actions from "../../../js/actions/index";
 import * as ActionConstants from "../../../js/constants/ActionConstants";
 import MockAdapter from 'axios-mock-adapter';
 import {ACTION_FLAG} from "../../../js/constants/DefaultConstants";
 import {TEST_TIMEOUT} from "../../constants/DefaultTestConstants";
 import {axiosBackend} from "../../../js/actions";
+import {
+    createInstitution,
+    deleteInstitution,
+    deleteInstitutionError,
+    deleteInstitutionPending,
+    deleteInstitutionSuccess,
+    loadInstitution,
+    loadInstitutionError,
+    loadInstitutionPending,
+    loadInstitutionSuccess,
+    saveInstitutionError,
+    saveInstitutionPending,
+    saveInstitutionSuccess,
+    unloadInstitution,
+    unloadSavedInstitution,
+    updateInstitution
+} from "../../../js/actions/InstitutionActions";
 
 describe('Institution synchronize actions', function () {
     const institution = {key: 7979868757},
@@ -18,7 +34,7 @@ describe('Institution synchronize actions', function () {
             type: ActionConstants.SAVE_INSTITUTION_PENDING,
             actionFlag
         };
-        expect(actions.saveInstitutionPending(actionFlag)).toEqual(expectedAction)
+        expect(saveInstitutionPending(actionFlag)).toEqual(expectedAction)
     });
 
     it('creates an action to announce successful save of institution', () => {
@@ -29,7 +45,7 @@ describe('Institution synchronize actions', function () {
             key,
             actionFlag
         };
-        expect(actions.saveInstitutionSuccess(institution, key, actionFlag)).toEqual(expectedAction)
+        expect(saveInstitutionSuccess(institution, key, actionFlag)).toEqual(expectedAction)
     });
 
     it('creates an action to announce unsuccessful save of institution', () => {
@@ -40,14 +56,14 @@ describe('Institution synchronize actions', function () {
             institution,
             actionFlag,
         };
-        expect(actions.saveInstitutionError(error, institution, actionFlag)).toEqual(expectedAction)
+        expect(saveInstitutionError(error, institution, actionFlag)).toEqual(expectedAction)
     });
 
     it('creates an action to unload saved institution', () => {
         const expectedAction = {
             type: ActionConstants.UNLOAD_SAVED_INSTITUTION
         };
-        expect(actions.unloadSavedInstitution()).toEqual(expectedAction)
+        expect(unloadSavedInstitution()).toEqual(expectedAction)
     });
 
     it('creates an action to delete institution', () => {
@@ -55,7 +71,7 @@ describe('Institution synchronize actions', function () {
             type: ActionConstants.DELETE_INSTITUTION_PENDING,
             key
         };
-        expect(actions.deleteInstitutionPending(key)).toEqual(expectedAction)
+        expect(deleteInstitutionPending(key)).toEqual(expectedAction)
     });
 
     it('creates an action to announce successful delete of institution', () => {
@@ -63,7 +79,7 @@ describe('Institution synchronize actions', function () {
             type: ActionConstants.DELETE_INSTITUTION_SUCCESS,
             institution
         };
-        expect(actions.deleteInstitutionSuccess(institution)).toEqual(expectedAction)
+        expect(deleteInstitutionSuccess(institution)).toEqual(expectedAction)
     });
 
     it('creates an action to announce unsuccessful delete of institution', () => {
@@ -72,14 +88,14 @@ describe('Institution synchronize actions', function () {
             error,
             institution
         };
-        expect(actions.deleteInstitutionError(error, institution)).toEqual(expectedAction)
+        expect(deleteInstitutionError(error, institution)).toEqual(expectedAction)
     });
 
     it('creates an action to fetch institution', () => {
         const expectedAction = {
             type: ActionConstants.LOAD_INSTITUTION_PENDING,
         };
-        expect(actions.loadInstitutionPending()).toEqual(expectedAction)
+        expect(loadInstitutionPending()).toEqual(expectedAction)
     });
 
     it('creates an action to save fetched institution', () => {
@@ -87,7 +103,7 @@ describe('Institution synchronize actions', function () {
             type: ActionConstants.LOAD_INSTITUTION_SUCCESS,
             institution
         };
-        expect(actions.loadInstitutionSuccess(institution)).toEqual(expectedAction)
+        expect(loadInstitutionSuccess(institution)).toEqual(expectedAction)
     });
 
     it('creates an action about error during fetching institution', () => {
@@ -95,14 +111,14 @@ describe('Institution synchronize actions', function () {
             type: ActionConstants.LOAD_INSTITUTION_ERROR,
             error
         };
-        expect(actions.loadInstitutionError(error)).toEqual(expectedAction)
+        expect(loadInstitutionError(error)).toEqual(expectedAction)
     });
 
     it('creates an action to unload loaded institution', () => {
         const expectedAction = {
             type: ActionConstants.UNLOAD_INSTITUTION,
         };
-        expect(actions.unloadInstitution()).toEqual(expectedAction)
+        expect(unloadInstitution()).toEqual(expectedAction)
     });
 });
 
@@ -140,7 +156,7 @@ describe('Institution asynchronize actions', function () {
         MockApi.onPost('rest/institutions').reply(200, null, {location});
         MockApi.onGet('rest/institutions').reply(200, institutions);
 
-        store.dispatch(actions.createInstitution(institution));
+        store.dispatch(createInstitution(institution));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -156,7 +172,7 @@ describe('Institution asynchronize actions', function () {
 
         MockApi.onPost('rest/institutions').reply(400, error);
 
-        store.dispatch(actions.createInstitution(institution));
+        store.dispatch(createInstitution(institution));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -175,7 +191,7 @@ describe('Institution asynchronize actions', function () {
         MockApi.onPut(`rest/institutions/${institution.key}`).reply(200, null, {location});
         MockApi.onGet('rest/institutions').reply(200, institutions);
 
-        store.dispatch(actions.updateInstitution(institution));
+        store.dispatch(updateInstitution(institution));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -191,7 +207,7 @@ describe('Institution asynchronize actions', function () {
 
         MockApi.onPut(`rest/institutions/${institution.key}`).reply(400, error);
 
-        store.dispatch(actions.updateInstitution(institution));
+        store.dispatch(updateInstitution(institution));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -210,7 +226,7 @@ describe('Institution asynchronize actions', function () {
         MockApi.onDelete(`rest/institutions/${institution.key}`).reply(200);
         MockApi.onGet('rest/institutions').reply(200, institutions);
 
-        store.dispatch(actions.deleteInstitution(institution));
+        store.dispatch(deleteInstitution(institution));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -226,7 +242,7 @@ describe('Institution asynchronize actions', function () {
 
         MockApi.onDelete(`rest/institutions/${institution.key}`).reply(400, error);
 
-        store.dispatch(actions.deleteInstitution(institution));
+        store.dispatch(deleteInstitution(institution));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -242,7 +258,7 @@ describe('Institution asynchronize actions', function () {
 
         MockApi.onGet(`rest/institutions/${institution.key}`).reply(200, {key: institution.key});
 
-        store.dispatch(actions.loadInstitution(institution.key));
+        store.dispatch(loadInstitution(institution.key));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -258,7 +274,7 @@ describe('Institution asynchronize actions', function () {
 
         MockApi.onGet(`rest/institutions/${institution.key}`).reply(400, error);
 
-        store.dispatch(actions.loadInstitution(institution.key));
+        store.dispatch(loadInstitution(institution.key));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);

@@ -5,7 +5,7 @@
 
 'use strict';
 
-import {loadUserProfile} from "./actions";
+import {loadUserProfile} from "./actions/AuthActions";
 
 const I18nStore = require('./stores/I18nStore');
 const addLocaleData = require('react-intl').addLocaleData;
@@ -68,7 +68,7 @@ const store = createStore(
 store.dispatch(loadUserProfile());
 
 // Wrapping router in a React component to allow Intl to initialize
-var App = React.createClass({
+let App = React.createClass({
     render: function () {
         return <Provider store={store}>
             <IntlProvider {...intlData}>

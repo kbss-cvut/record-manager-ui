@@ -10,12 +10,12 @@ import UserFactory from '../../utils/EntityFactory';
 import Routes from '../../utils/Routes';
 import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
 import {
-    createUser, loadInstitutions, loadUser, setTransitionPayload, unloadSavedUser, unloadUser,
-    updateUser
-} from "../../actions";
+    loadInstitutions} from "../../actions/InstitutionsActions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
+import {setTransitionPayload} from "../../actions/RouterActions";
+import {createUser, loadUser, unloadSavedUser, unloadUser, updateUser} from "../../actions/UserActions";
 
 class UserController extends React.Component {
     constructor(props) {

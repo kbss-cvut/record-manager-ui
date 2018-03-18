@@ -9,8 +9,9 @@ import {connect} from "react-redux";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import {bindActionCreators} from "redux";
-import {deleteUser, loadUsers} from "../../actions";
+import {loadUsers} from "../../actions/UsersActions";
 import {ROLE} from "../../constants/DefaultConstants";
+import {deleteUser} from "../../actions/UserActions";
 
 class UsersController extends React.Component {
     constructor(props) {

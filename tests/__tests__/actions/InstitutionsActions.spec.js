@@ -1,10 +1,15 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import * as actions from "../../../js/actions/index";
 import * as ActionConstants from "../../../js/constants/ActionConstants";
 import MockAdapter from 'axios-mock-adapter';
 import {TEST_TIMEOUT} from "../../constants/DefaultTestConstants";
 import {axiosBackend} from "../../../js/actions";
+import {
+    loadInstitutions,
+    loadInstitutionsError,
+    loadInstitutionsPending,
+    loadInstitutionsSuccess
+} from "../../../js/actions/InstitutionsActions";
 
 const institutions = [{key: 786785600}, {key: 86875960}];
 
@@ -13,7 +18,7 @@ describe('Institutions synchronize actions', function () {
         const expectedAction = {
             type: ActionConstants.LOAD_INSTITUTIONS_PENDING,
         };
-        expect(actions.loadInstitutionsPending()).toEqual(expectedAction)
+        expect(loadInstitutionsPending()).toEqual(expectedAction)
     });
 
     it('should create an action to save fetched institutions', () => {
@@ -21,7 +26,7 @@ describe('Institutions synchronize actions', function () {
             type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS,
             institutions
         };
-        expect(actions.loadInstitutionsSuccess(institutions)).toEqual(expectedAction)
+        expect(loadInstitutionsSuccess(institutions)).toEqual(expectedAction)
     });
 
     it('should create an action about error during fetching institutions', () => {
@@ -30,7 +35,7 @@ describe('Institutions synchronize actions', function () {
             type: ActionConstants.LOAD_INSTITUTIONS_ERROR,
             error
         };
-        expect(actions.loadInstitutionsError(error)).toEqual(expectedAction)
+        expect(loadInstitutionsError(error)).toEqual(expectedAction)
     });
 });
 
@@ -58,7 +63,7 @@ describe('Institutions asynchronize actions', function () {
 
         MockApi.onGet('rest/institutions').reply(200, institutions);
 
-        store.dispatch(actions.loadInstitutions());
+        store.dispatch(loadInstitutions());
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -74,7 +79,7 @@ describe('Institutions asynchronize actions', function () {
 
         MockApi.onGet('rest/institutions').reply(400, error);
 
-        store.dispatch(actions.loadInstitutions());
+        store.dispatch(loadInstitutions());
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);

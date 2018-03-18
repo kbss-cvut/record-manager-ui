@@ -1,11 +1,31 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import * as actions from "../../../js/actions/index";
 import * as ActionConstants from "../../../js/constants/ActionConstants";
 import MockAdapter from 'axios-mock-adapter';
 import {ACTION_FLAG} from "../../../js/constants/DefaultConstants";
 import {TEST_TIMEOUT} from "../../constants/DefaultTestConstants";
 import {axiosBackend} from "../../../js/actions";
+import {
+    createUser,
+    deleteUser,
+    deleteUserError,
+    deleteUserPending,
+    deleteUserSuccess,
+    loadInstitutionMembers,
+    loadInstitutionMembersError,
+    loadInstitutionMembersPending,
+    loadInstitutionMembersSuccess,
+    loadUser,
+    loadUserError,
+    loadUserPending,
+    loadUserSuccess,
+    saveUserError,
+    saveUserPending,
+    saveUserSuccess,
+    unloadSavedUser,
+    unloadUser,
+    updateUser
+} from "../../../js/actions/UserActions";
 
 const members = [
         {username: 'record1'},
@@ -22,7 +42,7 @@ describe('User synchronize actions', function () {
             type: ActionConstants.SAVE_USER_PENDING,
             actionFlag
         };
-        expect(actions.saveUserPending(actionFlag)).toEqual(expectedAction)
+        expect(saveUserPending(actionFlag)).toEqual(expectedAction)
     });
 
     it('should create an action to announce successful save of user', () => {
@@ -32,7 +52,7 @@ describe('User synchronize actions', function () {
             user,
             actionFlag
         };
-        expect(actions.saveUserSuccess(user, actionFlag)).toEqual(expectedAction)
+        expect(saveUserSuccess(user, actionFlag)).toEqual(expectedAction)
     });
 
     it('should create an action to announce unsuccessful save of user', () => {
@@ -43,14 +63,14 @@ describe('User synchronize actions', function () {
             user,
             actionFlag,
         };
-        expect(actions.saveUserError(error, user, actionFlag)).toEqual(expectedAction)
+        expect(saveUserError(error, user, actionFlag)).toEqual(expectedAction)
     });
 
     it('creates an action to unload saved user', () => {
         const expectedAction = {
             type: ActionConstants.UNLOAD_SAVED_USER
         };
-        expect(actions.unloadSavedUser()).toEqual(expectedAction)
+        expect(unloadSavedUser()).toEqual(expectedAction)
     });
 
     it('should create an action to delete user', () => {
@@ -59,7 +79,7 @@ describe('User synchronize actions', function () {
             type: ActionConstants.DELETE_USER_PENDING,
             username
         };
-        expect(actions.deleteUserPending(username)).toEqual(expectedAction)
+        expect(deleteUserPending(username)).toEqual(expectedAction)
     });
 
     it('should create an action to announce successful delete of user', () => {
@@ -67,7 +87,7 @@ describe('User synchronize actions', function () {
             type: ActionConstants.DELETE_USER_SUCCESS,
             user
         };
-        expect(actions.deleteUserSuccess(user)).toEqual(expectedAction)
+        expect(deleteUserSuccess(user)).toEqual(expectedAction)
     });
 
     it('should create an action to announce unsuccessful delete of user', () => {
@@ -76,14 +96,14 @@ describe('User synchronize actions', function () {
             error,
             user
         };
-        expect(actions.deleteUserError(error, user)).toEqual(expectedAction)
+        expect(deleteUserError(error, user)).toEqual(expectedAction)
     });
 
     it('should create an action to fetch user', () => {
         const expectedAction = {
             type: ActionConstants.LOAD_USER_PENDING,
         };
-        expect(actions.loadUserPending()).toEqual(expectedAction)
+        expect(loadUserPending()).toEqual(expectedAction)
     });
 
     it('should create an action to save fetched user', () => {
@@ -91,7 +111,7 @@ describe('User synchronize actions', function () {
             type: ActionConstants.LOAD_USER_SUCCESS,
             user
         };
-        expect(actions.loadUserSuccess(user)).toEqual(expectedAction)
+        expect(loadUserSuccess(user)).toEqual(expectedAction)
     });
 
     it('should create an action about error during fetching user', () => {
@@ -99,21 +119,21 @@ describe('User synchronize actions', function () {
             type: ActionConstants.LOAD_USER_ERROR,
             error
         };
-        expect(actions.loadUserError(error)).toEqual(expectedAction)
+        expect(loadUserError(error)).toEqual(expectedAction)
     });
 
     it('should create an action to unload loaded user', () => {
         const expectedAction = {
             type: ActionConstants.UNLOAD_USER,
         };
-        expect(actions.unloadUser()).toEqual(expectedAction)
+        expect(unloadUser()).toEqual(expectedAction)
     });
 
     it("creates an action to fetch all institution's members", () => {
         const expectedAction = {
             type: ActionConstants.LOAD_INSTITUTION_MEMBERS_PENDING,
         };
-        expect(actions.loadInstitutionMembersPending()).toEqual(expectedAction)
+        expect(loadInstitutionMembersPending()).toEqual(expectedAction)
     });
 
     it("creates an action to save fetched institution's members", () => {
@@ -121,7 +141,7 @@ describe('User synchronize actions', function () {
             type: ActionConstants.LOAD_INSTITUTION_MEMBERS_SUCCESS,
             members
         };
-        expect(actions.loadInstitutionMembersSuccess(members)).toEqual(expectedAction)
+        expect(loadInstitutionMembersSuccess(members)).toEqual(expectedAction)
     });
 
     it("creates an action about error during fetching institution's members", () => {
@@ -130,7 +150,7 @@ describe('User synchronize actions', function () {
             type: ActionConstants.LOAD_INSTITUTION_MEMBERS_ERROR,
             error
         };
-        expect(actions.loadInstitutionMembersError(error)).toEqual(expectedAction)
+        expect(loadInstitutionMembersError(error)).toEqual(expectedAction)
     });
 });
 
@@ -168,7 +188,7 @@ describe('User asynchronize actions', function () {
         MockApi.onPost('rest/users').reply(200);
         MockApi.onGet('rest/users').reply(200, users);
 
-        store.dispatch(actions.createUser(user));
+        store.dispatch(createUser(user));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -184,7 +204,7 @@ describe('User asynchronize actions', function () {
 
         MockApi.onPost('rest/users').reply(400, error);
 
-        store.dispatch(actions.createUser(user));
+        store.dispatch(createUser(user));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -203,7 +223,7 @@ describe('User asynchronize actions', function () {
         MockApi.onPut(`rest/users/${user.username}`).reply(200);
         MockApi.onGet('rest/users').reply(200, users);
 
-        store.dispatch(actions.updateUser(user));
+        store.dispatch(updateUser(user));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -219,7 +239,7 @@ describe('User asynchronize actions', function () {
 
         MockApi.onPut(`rest/users/${user.username}`).reply(400, error);
 
-        store.dispatch(actions.updateUser(user));
+        store.dispatch(updateUser(user));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -238,7 +258,7 @@ describe('User asynchronize actions', function () {
         MockApi.onDelete(`rest/users/${user.username}`).reply(200);
         MockApi.onGet('rest/users').reply(200, users);
 
-        store.dispatch(actions.deleteUser(user));
+        store.dispatch(deleteUser(user));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -254,7 +274,7 @@ describe('User asynchronize actions', function () {
 
         MockApi.onDelete(`rest/users/${user.username}`).reply(400, error);
 
-        store.dispatch(actions.deleteUser(user));
+        store.dispatch(deleteUser(user));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -270,7 +290,7 @@ describe('User asynchronize actions', function () {
 
         MockApi.onGet(`rest/users/${user.username}`).reply(200, {username});
 
-        store.dispatch(actions.loadUser(user.username));
+        store.dispatch(loadUser(user.username));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -286,7 +306,7 @@ describe('User asynchronize actions', function () {
 
         MockApi.onGet(`rest/users/${user.username}`).reply(400, error);
 
-        store.dispatch(actions.loadUser(user.username));
+        store.dispatch(loadUser(user.username));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -302,7 +322,7 @@ describe('User asynchronize actions', function () {
 
         MockApi.onGet(`rest/users?institution=${institutionKey}`).reply(200, members);
 
-        store.dispatch(actions.loadInstitutionMembers(institutionKey));
+        store.dispatch(loadInstitutionMembers(institutionKey));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -318,7 +338,7 @@ describe('User asynchronize actions', function () {
 
         MockApi.onGet(`rest/users?institution=${institutionKey}`).reply(400, error);
 
-        store.dispatch(actions.loadInstitutionMembers(institutionKey));
+        store.dispatch(loadInstitutionMembers(institutionKey));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);

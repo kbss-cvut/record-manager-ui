@@ -14,11 +14,14 @@ import {connect} from "react-redux";
 import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
 import {bindActionCreators} from "redux";
 import {
-    createInstitution, loadInstitution, loadInstitutionMembers, loadInstitutionPatients, unloadInstitution,
-    unloadSavedInstitution,
-    updateInstitution
-} from "../../actions";
+    unloadSavedInstitution} from "../../actions/InstitutionActions";
 import {canLoadInstitutionsPatients} from "../../utils/Utils";
+import {loadInstitutionPatients} from "../../actions/RecordActions";
+import {loadInstitutionMembers} from "../../actions/UserActions";
+import {
+    createInstitution, loadInstitution, unloadInstitution,
+    updateInstitution
+} from "../../actions/InstitutionActions";
 
 class InstitutionController extends React.Component {
     constructor(props) {

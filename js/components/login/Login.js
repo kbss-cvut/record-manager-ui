@@ -1,19 +1,18 @@
 'use strict';
 
 import React from "react";
-import {Alert, Button, Form, Panel} from "react-bootstrap";
+import {Button, Form, Panel} from "react-bootstrap";
 import HorizontalInput from "../HorizontalInput";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import Mask from "../Mask";
-import * as Routing from "../../utils/Routing";
 import * as Routes from "../../utils/Routes";
-import {login} from "../../actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {transitionTo} from "../../utils/Routing";
+import {login} from "../../actions/AuthActions";
 
 class Login extends React.Component {
     constructor(props) {

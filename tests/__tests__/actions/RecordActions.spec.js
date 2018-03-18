@@ -1,11 +1,31 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import * as actions from "../../../js/actions/index";
 import * as ActionConstants from "../../../js/constants/ActionConstants";
 import MockAdapter from 'axios-mock-adapter';
 import {TEST_TIMEOUT} from "../../constants/DefaultTestConstants";
 import {axiosBackend} from "../../../js/actions";
 import {ACTION_FLAG, ROLE} from "../../../js/constants/DefaultConstants";
+import {
+    createRecord,
+    deleteRecord,
+    deleteRecordError,
+    deleteRecordPending,
+    deleteRecordSuccess,
+    loadInstitutionPatients,
+    loadInstitutionPatientsError,
+    loadInstitutionPatientsPending,
+    loadInstitutionPatientsSuccess,
+    loadRecord,
+    loadRecordError,
+    loadRecordPending,
+    loadRecordSuccess,
+    saveRecordError,
+    saveRecordPending,
+    saveRecordSuccess,
+    unloadRecord,
+    unloadSavedRecord,
+    updateRecord
+} from "../../../js/actions/RecordActions";
 
 const patients = [
     {localName: 'record1'},
@@ -23,7 +43,7 @@ describe('Record synchronize actions', function () {
             type: ActionConstants.SAVE_RECORD_PENDING,
             actionFlag
         };
-        expect(actions.saveRecordPending(actionFlag)).toEqual(expectedAction)
+        expect(saveRecordPending(actionFlag)).toEqual(expectedAction)
     });
 
     it('creates an action to announce successful save of record', () => {
@@ -34,7 +54,7 @@ describe('Record synchronize actions', function () {
             key,
             actionFlag
         };
-        expect(actions.saveRecordSuccess(record, key, actionFlag)).toEqual(expectedAction)
+        expect(saveRecordSuccess(record, key, actionFlag)).toEqual(expectedAction)
     });
 
     it('creates an action to announce unsuccessful save of record', () => {
@@ -45,14 +65,14 @@ describe('Record synchronize actions', function () {
             record,
             actionFlag,
         };
-        expect(actions.saveRecordError(error, record, actionFlag)).toEqual(expectedAction)
+        expect(saveRecordError(error, record, actionFlag)).toEqual(expectedAction)
     });
 
     it('creates an action to unload saved record', () => {
         const expectedAction = {
             type: ActionConstants.UNLOAD_SAVED_RECORD
         };
-        expect(actions.unloadSavedRecord()).toEqual(expectedAction)
+        expect(unloadSavedRecord()).toEqual(expectedAction)
     });
 
     it('creates an action to delete record', () => {
@@ -60,7 +80,7 @@ describe('Record synchronize actions', function () {
             type: ActionConstants.DELETE_RECORD_PENDING,
             key
         };
-        expect(actions.deleteRecordPending(key)).toEqual(expectedAction)
+        expect(deleteRecordPending(key)).toEqual(expectedAction)
     });
 
     it('creates an action to announce successful delete of record', () => {
@@ -68,7 +88,7 @@ describe('Record synchronize actions', function () {
             type: ActionConstants.DELETE_RECORD_SUCCESS,
             record
         };
-        expect(actions.deleteRecordSuccess(record)).toEqual(expectedAction)
+        expect(deleteRecordSuccess(record)).toEqual(expectedAction)
     });
 
     it('creates an action to announce unsuccessful delete of record', () => {
@@ -77,14 +97,14 @@ describe('Record synchronize actions', function () {
             error,
             record
         };
-        expect(actions.deleteRecordError(error, record)).toEqual(expectedAction)
+        expect(deleteRecordError(error, record)).toEqual(expectedAction)
     });
 
     it('creates an action to fetch record', () => {
         const expectedAction = {
             type: ActionConstants.LOAD_RECORD_PENDING,
         };
-        expect(actions.loadRecordPending()).toEqual(expectedAction)
+        expect(loadRecordPending()).toEqual(expectedAction)
     });
 
     it('creates an action to save fetched record', () => {
@@ -92,7 +112,7 @@ describe('Record synchronize actions', function () {
             type: ActionConstants.LOAD_RECORD_SUCCESS,
             record
         };
-        expect(actions.loadRecordSuccess(record)).toEqual(expectedAction)
+        expect(loadRecordSuccess(record)).toEqual(expectedAction)
     });
 
     it('creates an action about error during fetching record', () => {
@@ -100,21 +120,21 @@ describe('Record synchronize actions', function () {
             type: ActionConstants.LOAD_RECORD_ERROR,
             error
         };
-        expect(actions.loadRecordError(error)).toEqual(expectedAction)
+        expect(loadRecordError(error)).toEqual(expectedAction)
     });
 
     it('creates an action to unload loaded record', () => {
         const expectedAction = {
             type: ActionConstants.UNLOAD_RECORD,
         };
-        expect(actions.unloadRecord()).toEqual(expectedAction)
+        expect(unloadRecord()).toEqual(expectedAction)
     });
     
     it("creates an action to fetch all patient's records", () => {
         const expectedAction = {
             type: ActionConstants.LOAD_INSTITUTION_PATIENTS_PENDING,
         };
-        expect(actions.loadInstitutionPatientsPending()).toEqual(expectedAction)
+        expect(loadInstitutionPatientsPending()).toEqual(expectedAction)
     });
 
     it("creates an action to save fetched patient's records", () => {
@@ -122,7 +142,7 @@ describe('Record synchronize actions', function () {
             type: ActionConstants.LOAD_INSTITUTION_PATIENTS_SUCCESS,
             patients
         };
-        expect(actions.loadInstitutionPatientsSuccess(patients)).toEqual(expectedAction)
+        expect(loadInstitutionPatientsSuccess(patients)).toEqual(expectedAction)
     });
 
     it("creates an action about error during fetching patient's records", () => {
@@ -131,7 +151,7 @@ describe('Record synchronize actions', function () {
             type: ActionConstants.LOAD_INSTITUTION_PATIENTS_ERROR,
             error
         };
-        expect(actions.loadInstitutionPatientsError(error)).toEqual(expectedAction)
+        expect(loadInstitutionPatientsError(error)).toEqual(expectedAction)
     });
 });
 
@@ -173,7 +193,7 @@ describe('Record asynchronize actions', function () {
         MockApi.onPost('rest/records').reply(200, null, {location});
         MockApi.onGet('rest/records').reply(200, records);
 
-        store.dispatch(actions.createRecord(record, currentUser));
+        store.dispatch(createRecord(record, currentUser));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -192,7 +212,7 @@ describe('Record asynchronize actions', function () {
         MockApi.onPut(`rest/records/${record.key}`).reply(200, null, {location});
         MockApi.onGet('rest/records').reply(200, records);
 
-        store.dispatch(actions.updateRecord(record, currentUser));
+        store.dispatch(updateRecord(record, currentUser));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -208,7 +228,7 @@ describe('Record asynchronize actions', function () {
 
         MockApi.onPut(`rest/records/${record.key}`).reply(400, error);
 
-        store.dispatch(actions.updateRecord(record, currentUser));
+        store.dispatch(updateRecord(record, currentUser));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -227,7 +247,7 @@ describe('Record asynchronize actions', function () {
         MockApi.onDelete(`rest/records/${record.key}`).reply(200);
         MockApi.onGet('rest/records').reply(200, records);
 
-        store.dispatch(actions.deleteRecord(record, currentUser));
+        store.dispatch(deleteRecord(record, currentUser));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -243,7 +263,7 @@ describe('Record asynchronize actions', function () {
 
         MockApi.onDelete(`rest/records/${record.key}`).reply(400, error);
 
-        store.dispatch(actions.deleteRecord(record, currentUser));
+        store.dispatch(deleteRecord(record, currentUser));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -259,7 +279,7 @@ describe('Record asynchronize actions', function () {
 
         MockApi.onGet(`rest/records/${record.key}`).reply(200, {key: record.key});
 
-        store.dispatch(actions.loadRecord(record.key));
+        store.dispatch(loadRecord(record.key));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -275,7 +295,7 @@ describe('Record asynchronize actions', function () {
 
         MockApi.onGet(`rest/records/${record.key}`).reply(400, error);
 
-        store.dispatch(actions.loadRecord(record.key));
+        store.dispatch(loadRecord(record.key));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -291,7 +311,7 @@ describe('Record asynchronize actions', function () {
 
         MockApi.onGet(`rest/records?institution=${institutionKey}`).reply(200, patients);
 
-        store.dispatch(actions.loadInstitutionPatients(institutionKey));
+        store.dispatch(loadInstitutionPatients(institutionKey));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -307,7 +327,7 @@ describe('Record asynchronize actions', function () {
 
         MockApi.onGet(`rest/records?institution=${institutionKey}`).reply(400, error);
 
-        store.dispatch(actions.loadInstitutionPatients(institutionKey));
+        store.dispatch(loadInstitutionPatients(institutionKey));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);

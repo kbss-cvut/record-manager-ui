@@ -9,8 +9,9 @@ import I18nWrapper from "../../i18n/I18nWrapper";
 import MessageWrapper from "../misc/hoc/MessageWrapper";
 import {connect} from "react-redux";
 import {ROLE} from "../../constants/DefaultConstants";
-import {deleteInstitution, loadInstitutions} from "../../actions";
+import {loadInstitutions} from "../../actions/InstitutionsActions";
 import {bindActionCreators} from "redux";
+import {deleteInstitution} from "../../actions/InstitutionActions";
 
 class InstitutionsController extends React.Component {
     constructor(props) {

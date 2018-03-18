@@ -6,15 +6,13 @@ import {MenuItem, Nav, Navbar, NavDropdown, NavItem} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
 import * as Constants from "../constants/Constants";
 import * as Routes from "../utils/Routes";
-import * as Authentication from "../utils/Authentication";
 import {injectIntl} from "react-intl";
 import I18nWrapper from "../i18n/I18nWrapper";
-import {loadCurrentUser, loadUserProfile, logout} from "../actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {ACTION_STATUS, ROLE} from "../constants/DefaultConstants";
 import Mask from "./Mask";
-import Routing from "../utils/Routing";
+import {loadUserProfile, logout} from "../actions/AuthActions";
 
 class MainView extends React.Component {
     constructor(props) {

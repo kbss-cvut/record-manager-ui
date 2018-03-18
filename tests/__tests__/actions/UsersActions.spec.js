@@ -1,17 +1,17 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import * as actions from "../../../js/actions/index";
 import * as ActionConstants from "../../../js/constants/ActionConstants";
 import MockAdapter from 'axios-mock-adapter';
 import {TEST_TIMEOUT} from "../../constants/DefaultTestConstants";
 import {axiosBackend} from "../../../js/actions";
+import {loadUsers, loadUsersError, loadUsersPending, loadUsersSuccess} from "../../../js/actions/UsersActions";
 
 describe('Users synchronize actions', function () {
     it('should create an action to fetch all users', () => {
         const expectedAction = {
             type: ActionConstants.LOAD_USERS_PENDING,
         };
-        expect(actions.loadUsersPending()).toEqual(expectedAction)
+        expect(loadUsersPending()).toEqual(expectedAction)
     });
 
     it('should create an action to save fetched users', () => {
@@ -20,7 +20,7 @@ describe('Users synchronize actions', function () {
             type: ActionConstants.LOAD_USERS_SUCCESS,
             users
         };
-        expect(actions.loadUsersSuccess(users)).toEqual(expectedAction)
+        expect(loadUsersSuccess(users)).toEqual(expectedAction)
     });
 
     it('should create an action about error during fetching users', () => {
@@ -29,7 +29,7 @@ describe('Users synchronize actions', function () {
             type: ActionConstants.LOAD_USERS_ERROR,
             error
         };
-        expect(actions.loadUsersError(error)).toEqual(expectedAction)
+        expect(loadUsersError(error)).toEqual(expectedAction)
     });
 });
 
@@ -58,7 +58,7 @@ describe('Users asynchronize actions', function () {
 
         MockApi.onGet('rest/users').reply(200, users);
 
-        store.dispatch(actions.loadUsers());
+        store.dispatch(loadUsers());
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -74,7 +74,7 @@ describe('Users asynchronize actions', function () {
 
         MockApi.onGet('rest/users').reply(400, error);
 
-        store.dispatch(actions.loadUsers());
+        store.dispatch(loadUsers());
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);

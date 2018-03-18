@@ -1,9 +1,10 @@
 'use strict';
 
 import {execute} from "./RoutingRules";
-import {setTransitionPayload, setViewHandlers} from "../actions";
+import {setTransitionPayload} from "../actions/RouterActions";
 import { hashHistory } from 'react-router';
 import * as Constants from "../constants/Constants";
+import {setViewHandlers} from "../actions/RouterActions";
 
 export const history = hashHistory;
 /**

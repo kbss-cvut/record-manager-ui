@@ -13,9 +13,10 @@ import RecordValidator from "../../validation/RecordValidator";
 import Routes from '../../utils/Routes';
 import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
 import {ACTION_FLAG, ACTION_STATUS} from "../../constants/DefaultConstants";
-import {createRecord, loadRecord, unloadRecord, unloadSavedRecord, updateRecord} from "../../actions";
+import {unloadSavedRecord} from "../../actions/RecordActions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
+import {createRecord, loadRecord, unloadRecord, updateRecord} from "../../actions/RecordActions";
 
 class RecordController extends React.Component {
     constructor(props) {

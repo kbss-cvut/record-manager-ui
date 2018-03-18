@@ -1,11 +1,16 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import * as actions from "../../../js/actions/index";
 import * as ActionConstants from "../../../js/constants/ActionConstants";
 import MockAdapter from 'axios-mock-adapter';
 import {TEST_TIMEOUT} from "../../constants/DefaultTestConstants";
 import {axiosBackend} from "../../../js/actions";
-import {ACTION_FLAG, ROLE} from "../../../js/constants/DefaultConstants";
+import {ROLE} from "../../../js/constants/DefaultConstants";
+import {
+    loadRecords,
+    loadRecordsError,
+    loadRecordsPending,
+    loadRecordsSuccess
+} from "../../../js/actions/RecordsActions";
 
 const records = [{key: 786785600}, {key: 86875960}];
 
@@ -14,7 +19,7 @@ describe('Records synchronize actions', function () {
         const expectedAction = {
             type: ActionConstants.LOAD_RECORDS_PENDING,
         };
-        expect(actions.loadRecordsPending()).toEqual(expectedAction)
+        expect(loadRecordsPending()).toEqual(expectedAction)
     });
 
     it('creates an action to save fetched records', () => {
@@ -22,7 +27,7 @@ describe('Records synchronize actions', function () {
             type: ActionConstants.LOAD_RECORDS_SUCCESS,
             records
         };
-        expect(actions.loadRecordsSuccess(records)).toEqual(expectedAction)
+        expect(loadRecordsSuccess(records)).toEqual(expectedAction)
     });
 
     it('creates an action about error during fetching records', () => {
@@ -31,7 +36,7 @@ describe('Records synchronize actions', function () {
             type: ActionConstants.LOAD_RECORDS_ERROR,
             error
         };
-        expect(actions.loadRecordsError(error)).toEqual(expectedAction)
+        expect(loadRecordsError(error)).toEqual(expectedAction)
     });
 });
 
@@ -69,7 +74,7 @@ describe('Records asynchronize actions', function () {
 
         MockApi.onGet('rest/records').reply(200, records);
 
-        store.dispatch(actions.loadRecords(admin));
+        store.dispatch(loadRecords(admin));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -85,7 +90,7 @@ describe('Records asynchronize actions', function () {
 
         MockApi.onGet(`rest/records?institution=${doctor.institution.key}`).reply(200, records);
 
-        store.dispatch(actions.loadRecords(doctor));
+        store.dispatch(loadRecords(doctor));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -101,7 +106,7 @@ describe('Records asynchronize actions', function () {
 
         MockApi.onGet('rest/records').reply(400, error);
 
-        store.dispatch(actions.loadRecords(admin));
+        store.dispatch(loadRecords(admin));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
