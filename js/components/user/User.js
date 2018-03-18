@@ -8,10 +8,10 @@ import Input from "../Input";
 import HorizontalInput from "../HorizontalInput";
 import Mask from "../Mask";
 import UserValidator from "../../validation/UserValidator";
-import Vocabulary from "../../constants/Vocabulary";
 import AlertMessage from "../AlertMessage";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import {getRole, processInstitutions} from "../../utils/Utils";
+import * as Vocabulary from "../../constants/Vocabulary";
 
 class User extends React.Component {
     static propTypes = {

@@ -1,10 +1,9 @@
 'use strict';
+import * as Constants from "../constants/DefaultConstants";
 
-const Constants = require('../constants/Constants');
+export default class RecordValidator {
 
-module.exports = {
-
-    isComplete: function (record) {
+    static isComplete(record) {
         if (!record) {
             return false;
         }
@@ -15,4 +14,4 @@ module.exports = {
         }
         return true;
     }
-};
+}

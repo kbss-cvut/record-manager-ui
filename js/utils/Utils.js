@@ -1,7 +1,7 @@
 'use strict';
-import * as Vocabulary from "../constants/Vocabulary";
 import {ROLE} from "../constants/DefaultConstants";
 import * as Constants from "../constants/DefaultConstants";
+import * as Vocabulary from "../constants/Vocabulary";
 
 /**
  * Common propositions that should not be capitalized

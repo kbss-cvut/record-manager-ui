@@ -1,4 +1,3 @@
-import RecordValidator from "../../validation/RecordValidator";
 import React from "react";
 import {formatDate} from "../../utils/Utils";
 import {Routes} from "../../utils/Routes";
@@ -6,6 +5,7 @@ import HelpIcon from "../HelpIcon";
 import {Button} from "react-bootstrap";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
+import RecordValidator from "../../validation/RecordValidator";
 
 let RecordRow = (props) => {
     const record = props.record,
