@@ -25,6 +25,7 @@ describe('Institution', function () {
             onEditUser: jasmine.createSpy('onEditUser'),
             onAddNewUser: jasmine.createSpy('onAddNewUser'),
             onDelete: jasmine.createSpy('onDelete'),
+            onEditPatient: jasmine.createSpy('onEditPatient')
         };
 
     beforeEach(() => {
@@ -180,5 +181,25 @@ describe('Institution', function () {
 
         TestUtils.Simulate.click(buttons[1]); // cancel
         expect(handlers.onCancel).toHaveBeenCalled();
+    });
+
+    it('shows unsuccessful alert that institution was not saved', function () {
+        showAlert = true;
+        institutionSaved = {
+            ...institutionSaved,
+            status: ACTION_STATUS.ERROR,
+            error: {
+                message: "error"
+            }
+        };
+        const tree = TestUtils.renderIntoDocument(
+            <IntlProvider locale="en" {...intlData}>
+                <Institution handlers={handlers} institution={institution} members={members}
+                             patients={patients} loading={loading} showAlert={showAlert}
+                             currentUser={admin} institutionLoaded={institutionLoaded}
+                             institutionSaved={institutionSaved}/>
+            </IntlProvider>);
+        const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
+        expect(alert).not.toBeNull();
     });
 });

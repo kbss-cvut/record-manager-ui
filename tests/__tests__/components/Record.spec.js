@@ -129,7 +129,7 @@ describe('Record', function () {
         expect(alert).not.toBeNull();
     });
 
-    it('should show unsuccessful alert that user was not saved', function () {
+    it('shows unsuccessful alert that record was not saved', function () {
         showAlert = true;
         recordSaved = {
             ...recordSaved,
