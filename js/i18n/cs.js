@@ -90,6 +90,12 @@ module.exports = {
         'user.delete-success': 'Uživatel úspěšně odstraněn',
         'user.delete-error': 'Uživatele se nepodařilo smazat. Odpověď serveru: {error}.',
         'user.load-error': 'Uživatele se nepodařilo načíst. Odpověď serveru: {error}.',
+        'user.password-change': 'Změnit heslo',
+        'user.password-current': 'Staré heslo',
+        'user.password-new': 'Nové heslo',
+        'user.password-change-success': 'Heslo úspěšně změněno',
+        'user.password-change-error': 'Heslo se nepodařilo změnit. Odpověd serveru: {error}',
+        'user.password-non-valid': 'Nové a potvrzovací hesla se musí shodovat a musí být alespoň 4 znaky dlouhá.',
 
         'institutions.panel-title': 'Kliniky',
         'institutions.create-institution': 'Vytvořit kliniku',

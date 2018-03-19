@@ -55,6 +55,7 @@ import {execute} from "./utils/RoutingRules";
 import PasswordReset from "./components/login/PasswordReset";
 import MainView from "./components/MainView";
 import requireAuth from './utils/RequireAuth';
+import PasswordChangeController from "./components/user/PasswordChangeController";
 
 function onRouteEnter() {
     execute(this.path);
@@ -81,6 +82,7 @@ let App = React.createClass({
                     <Route path={Routes.users.path} onEnter={onRouteEnter} component={requireAuth(UsersController)}/>
                     <Route path={Routes.createUser.path} onEnter={onRouteEnter} component={requireAuth(UserController)}/>
                     <Route path={Routes.editUser.path} onEnter={onRouteEnter} component={requireAuth(UserController)}/>
+                    <Route path={Routes.passwordChange.path} onEnter={onRouteEnter} component={requireAuth(PasswordChangeController)}/>
                     <Route path={Routes.institutions.path} onEnter={onRouteEnter} component={requireAuth(InstitutionsController)}/>
                     <Route path={Routes.createInstitution.path} onEnter={onRouteEnter} component={requireAuth(InstitutionController)}/>
                     <Route path={Routes.editInstitution.path} onEnter={onRouteEnter} component={requireAuth(InstitutionController)}/>

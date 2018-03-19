@@ -169,3 +169,35 @@ export function loadInstitutionMembersError(error) {
         error
     }
 }
+
+export function changePassword(username, password) {
+    return function (dispatch) {
+        dispatch(changePasswordPending());
+        axiosBackend.put(`rest/users/${username}/password-change`, {
+            ...password
+        }).then(() => {
+            dispatch(changePasswordSuccess());
+        }).catch((error) => {
+            dispatch(changePasswordError(error.response.data));
+        });
+    }
+}
+
+export function changePasswordPending() {
+    return {
+        type: ActionConstants.PASSWORD_CHANGE_PENDING
+    }
+}
+
+export function changePasswordSuccess() {
+    return {
+        type: ActionConstants.PASSWORD_CHANGE_SUCCESS,
+    }
+}
+
+export function changePasswordError(error) {
+    return {
+        type: ActionConstants.PASSWORD_CHANGE_ERROR,
+        error
+    }
+}

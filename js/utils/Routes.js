@@ -7,6 +7,7 @@ export const Routes = {
     users: {name: 'users', path: 'users'},
     createUser: {name: 'createUser', path: 'users/create'},
     editUser: {name: 'editUser', path: 'users/:username'},
+    passwordChange: {name: 'passwordChange', path: 'users/:username/password-change'},
     institutions: {name: 'institutions', path: 'institutions'},
     createInstitution: {name: 'createInstitution', path: 'institutions/create'},
     editInstitution: {name: 'editInstitution', path: 'institutions/:key'},

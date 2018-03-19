@@ -107,6 +107,12 @@ class UserController extends React.Component {
         this.setState({user: update});
     };
 
+    _onPasswordChange = () => {
+        this.props.transitionToWithOpts(Routes.passwordChange, {
+            params: {username: this.props.params.username}
+        });
+    };
+
     _getPayload() {
         let payload = this._isNew() ? this.props.transitionPayload[Routes.createUser.name] :
                                       this.props.transitionPayload[Routes.editUser.name];
@@ -124,6 +130,7 @@ class UserController extends React.Component {
             onSave: this._onSave,
             onCancel: this._onCancel,
             onChange: this._onChange,
+            onPasswordChange: this._onPasswordChange
         };
         return <User user={this.state.user} handlers={handlers} backToInstitution={this.institution !== null}
                      loading={this.state.loading} userSaved={userSaved} showAlert={this.state.showAlert}

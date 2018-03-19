@@ -8,7 +8,8 @@ const initialState = {
     currentUser: {
         isLoaded: false
     },
-    institutionMembers: {}
+    institutionMembers: {},
+    passwordChange: {}
 };
 
 export default function (state = initialState, action) {
@@ -123,6 +124,29 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 institutionMembers: {
+                    status: ACTION_STATUS.ERROR,
+                    error: action.error
+                }
+            };
+        case ActionConstants.PASSWORD_CHANGE_PENDING:
+            return {
+                ...state,
+                passwordChange: {
+                    status: ACTION_STATUS.PENDING
+                }
+            };
+        case ActionConstants.PASSWORD_CHANGE_SUCCESS:
+            return {
+                ...state,
+                passwordChange: {
+                    status: ACTION_STATUS.SUCCESS,
+                    error: ''
+                }
+            };
+        case ActionConstants.PASSWORD_CHANGE_ERROR:
+            return {
+                ...state,
+                passwordChange: {
                     status: ACTION_STATUS.ERROR,
                     error: action.error
                 }

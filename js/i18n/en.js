@@ -90,6 +90,12 @@ module.exports = {
         'user.delete-success': 'User deleted successfully',
         'user.delete-error': 'Unable to delete user. Server responded with {error}.',
         'user.load-error': 'Unable to load user. Server responded with {error}.',
+        'user.password-change': 'Change password',
+        'user.password-current': 'Current password',
+        'user.password-new': 'New password',
+        'user.password-change-success': 'Password changed successfully',
+        'user.password-change-error': 'Unable to change password. Server responded with {error}',
+        'user.password-non-valid': 'New password and confirm password must match and be at least 4 characters long.',
 
         'institutions.panel-title': 'Institutions',
         'institutions.create-institution': 'Create institution',

@@ -72,6 +72,16 @@ class User extends React.Component {
         return options;
     };
 
+    _passwordChange() {
+        const {user, currentUser, handlers} = this.props;
+        if (user.isNew || (currentUser.username !== user.username && currentUser.role !== ROLE.ADMIN)) {
+            return null;
+        } else {
+            return <Button style={{margin: '0 0.3em 0 0'}} bsStyle='info' bsSize='small' ref='submit'
+                           onClick={handlers.onPasswordChange}>{this.i18n('user.password-change')}</Button>;
+        }
+    }
+
     render() {
         const {userSaved, userLoaded, currentUser, showAlert, user, handlers} = this.props;
         if (this.props.loading) {
@@ -79,39 +89,39 @@ class User extends React.Component {
         }
         if (userLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
-                 message={this.props.formatMessage('user.load-error', {error: this.props.userLoaded.error.message})}/>;
+                                 message={this.props.formatMessage('user.load-error', {error: this.props.userLoaded.error.message})}/>;
         }
         return <Panel header={<h3>{this.i18n('user.panel-title')}</h3>} bsStyle='primary'>
             <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
                 <div className='row'>
                     <div className='col-xs-6'>
                         <HorizontalInput type='text' name='firstName' label={this.i18n('user.first-name')}
-                               value={user.firstName}
-                               labelWidth={3} inputWidth={8} onChange={this._onChange}/>
+                                         value={user.firstName}
+                                         labelWidth={3} inputWidth={8} onChange={this._onChange}/>
                     </div>
                     <div className='col-xs-6'>
                         <HorizontalInput type='text' name='lastName' label={this.i18n('user.last-name')}
-                               value={user.lastName}
-                               labelWidth={3} inputWidth={8} onChange={this._onChange}/>
+                                         value={user.lastName}
+                                         labelWidth={3} inputWidth={8} onChange={this._onChange}/>
                     </div>
                 </div>
                 <div className='row'>
                     <div className='col-xs-6'>
                         <HorizontalInput type='text' name='username' label={this.i18n('user.username')}
-                               disabled={userLoaded.status === ACTION_STATUS.SUCCESS}
-                               value={user.username} labelWidth={3} inputWidth={8} onChange={this._onChange}/>
+                                         disabled={userLoaded.status === ACTION_STATUS.SUCCESS}
+                                         value={user.username} labelWidth={3} inputWidth={8} onChange={this._onChange}/>
                     </div>
                     <div className='col-xs-6'>
                         <HorizontalInput type='email' name='emailAddress' label={this.i18n('users.email')}
-                               value={user.emailAddress}
-                               labelWidth={3} inputWidth={8} onChange={this._onChange}/>
+                                         value={user.emailAddress}
+                                         labelWidth={3} inputWidth={8} onChange={this._onChange}/>
                     </div>
                 </div>
                 <div className='row'>
                     <div className='col-xs-6'>
                         <HorizontalInput type='text' name='password' label={this.i18n('user.password')}
-                               readOnly={true} value={user.password}
-                               labelWidth={3} inputWidth={8}/>
+                                         readOnly={true} value={user.password}
+                                         labelWidth={3} inputWidth={8}/>
                     </div>
                 </div>
                 {currentUser.role === ROLE.ADMIN &&
@@ -139,20 +149,22 @@ class User extends React.Component {
                 </div>
                 }
                 <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
+                    {this._passwordChange()}
                     <Button bsStyle='success' bsSize='small' ref='submit'
                             disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
                             onClick={handlers.onSave}>
-                        {this.i18n('save')}{userSaved.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
-                        </Button>
+                        {this.i18n('save')}{userSaved.status === ACTION_STATUS.PENDING &&
+                    <div className="loader"></div>}
+                    </Button>
                     <Button bsStyle='link' bsSize='small' onClick={handlers.onCancel}>
                         {this.i18n(this.props.backToInstitution ? 'users.back-to-institution' : 'cancel')}
                     </Button>
                 </div>
                 {showAlert && userSaved.status === ACTION_STATUS.ERROR &&
-                    <AlertMessage type={ALERT_TYPES.DANGER}
-                                  message={this.props.formatMessage('user.save-error', {error: this.props.userSaved.error.message})}/>}
+                <AlertMessage type={ALERT_TYPES.DANGER}
+                              message={this.props.formatMessage('user.save-error', {error: this.props.userSaved.error.message})}/>}
                 {showAlert && userSaved.status === ACTION_STATUS.SUCCESS &&
-                    <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('user.save-success')}/>}
+                <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('user.save-success')}/>}
             </form>
         </Panel>;
     }
