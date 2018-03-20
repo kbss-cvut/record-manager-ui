@@ -32,3 +32,10 @@ export function initNewPatientRecord() {
     }
 }
 
+export function initNewPassword() {
+    return {
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+    }
+}

@@ -7,6 +7,7 @@ import injectIntl from "../../utils/injectIntl";
 import HorizontalInput from "../HorizontalInput";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
+import UserValidator from "../../validation/UserValidator";
 
 class PasswordChange extends React.Component {
     static propTypes = {
@@ -14,7 +15,8 @@ class PasswordChange extends React.Component {
         currentUser: React.PropTypes.object.isRequired,
         showAlert: React.PropTypes.bool.isRequired,
         passwordChange: React.PropTypes.object.isRequired,
-        params: React.PropTypes.object.isRequired
+        params: React.PropTypes.object.isRequired,
+        password: React.PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -30,32 +32,32 @@ class PasswordChange extends React.Component {
     };
 
     render() {
-        const { handlers, currentUser, showAlert, valid, passwordChange, params} = this.props;
+        const { handlers, currentUser, showAlert, valid, passwordChange, params, password} = this.props;
         return <Panel header={<h3>{this.i18n('user.password-change')}</h3>} bsStyle='primary'>
             <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
                 {currentUser.username === params.username &&
                 <div className='row'>
                     <div className='col-xs-6'>
                         <HorizontalInput type='password' name='currentPassword' label={this.i18n('user.password-current')}
-                                         labelWidth={3} inputWidth={8} onChange={this._onChange}/>
+                                         labelWidth={3} inputWidth={8} value={password.currentPassword} onChange={this._onChange}/>
                     </div>
                 </div>
                 }
                 <div className='row'>
                     <div className='col-xs-6'>
                         <HorizontalInput type='password' name='newPassword' label={this.i18n('user.password-new')}
-                                         labelWidth={3} inputWidth={8} onChange={this._onChange}/>
+                                         labelWidth={3} inputWidth={8} value={password.newPassword} onChange={this._onChange}/>
                     </div>
                 </div>
                 <div className='row'>
                     <div className='col-xs-6'>
                         <HorizontalInput type='password' name='confirmPassword' label={this.i18n('user.password-confirm')}
-                                         labelWidth={3} inputWidth={8} onChange={this._onChange}/>
+                                         labelWidth={3} inputWidth={8} value={password.confirmPassword} onChange={this._onChange}/>
                     </div>
                 </div>
                 <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
                     <Button bsStyle='success' bsSize='small' ref='submit' onClick={handlers.onSave}
-                            disabled={passwordChange.status === ACTION_STATUS.PENDING}>
+                            disabled={!UserValidator.isPasswordValid(password) ||passwordChange.status === ACTION_STATUS.PENDING}>
                         {this.i18n('save')}{passwordChange.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
                     </Button>
                     <Button bsStyle='link' bsSize='small' onClick={handlers.onCancel} >

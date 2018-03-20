@@ -11,16 +11,13 @@ import {transitionToWithOpts} from "../../utils/Routing";
 import {bindActionCreators} from "redux";
 import {ROLE} from "../../constants/DefaultConstants";
 import {changePassword} from "../../actions/UserActions";
+import * as UserFactory from "../../utils/EntityFactory";
 
 class PasswordChangeController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            password: {
-                currentPassword: '',
-                newPassword: '',
-                confirmPassword: ''
-            },
+            password: UserFactory.initNewPassword(),
             showAlert: false,
             valid: true
         };
@@ -35,7 +32,7 @@ class PasswordChangeController extends React.Component {
         if(this._passwordValid()){
             delete this.state.password.confirmPassword;
             this.props.changePassword(this.props.params.username, this.state.password);
-            this.setState({showAlert: true, password: {}});
+            this.setState({showAlert: true, password: UserFactory.initNewPassword()});
         }
     };
 
@@ -64,7 +61,7 @@ class PasswordChangeController extends React.Component {
             onChange: this._onChange
         };
         return <PasswordChange handlers={handlers} currentUser={currentUser} showAlert={this.state.showAlert}
-        valid={this.state.valid} passwordChange={passwordChange} params={params}/>;
+        valid={this.state.valid} passwordChange={passwordChange} params={params} password={this.state.password}/>;
     }
 }
 
