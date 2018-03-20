@@ -32,7 +32,7 @@ class PasswordChangeController extends React.Component {
     };
 
     _onSave = () => {
-        if(this._validatePassword()){
+        if(this._passwordValid()){
             delete this.state.password.confirmPassword;
             this.props.changePassword(this.props.params.username, this.state.password);
             this.setState({showAlert: true, password: {}});
@@ -43,7 +43,7 @@ class PasswordChangeController extends React.Component {
         this.props.transitionToWithOpts(Routes.editUser, {params: {username: this.props.params.username}});
     };
 
-    _validatePassword = () => {
+    _passwordValid = () => {
         if (this.state.password.newPassword.length >= 4
                 && this.state.password.newPassword === this.state.password.confirmPassword) {
             this.setState({valid: true});

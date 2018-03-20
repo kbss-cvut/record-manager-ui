@@ -362,4 +362,69 @@ describe('UserReducer', function () {
                 testEntry: initialState.testEntry
             });
     });
+
+    it('handles PASSWORD_CHANGE_PENDING action', () => {
+        const initialState = {
+            passwordChange: {
+            },
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.PASSWORD_CHANGE_PENDING
+            })
+        ).toEqual(
+            {
+                passwordChange: {
+                    status: ACTION_STATUS.PENDING,
+                },
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles PASSWORD_CHANGE_SUCCESS action', () => {
+        const initialState = {
+            passwordChange: {
+                status: ACTION_STATUS.PENDING
+            },
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.PASSWORD_CHANGE_SUCCESS
+            })
+        ).toEqual(
+            {
+                passwordChange: {
+                    status: ACTION_STATUS.SUCCESS,
+                    error: ''
+                },
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles PASSWORD_CHANGE_ERROR action', () => {
+        const initialState = {
+            passwordChange: {
+                status: ACTION_STATUS.PENDING
+            },
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.PASSWORD_CHANGE_ERROR,
+                error
+            })
+        ).toEqual(
+            {
+                passwordChange: {
+                    status: ACTION_STATUS.ERROR,
+                    error
+                },
+                testEntry: initialState.testEntry
+            });
+    });
 });

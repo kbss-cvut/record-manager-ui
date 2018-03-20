@@ -6,6 +6,7 @@ import {ACTION_FLAG} from "../../../js/constants/DefaultConstants";
 import {TEST_TIMEOUT} from "../../constants/DefaultTestConstants";
 import {axiosBackend} from "../../../js/actions";
 import {
+    changePassword,
     createUser,
     deleteUser,
     deleteUserError,
@@ -170,7 +171,11 @@ describe('User asynchronize actions', function () {
             "message" : "An error has occurred.",
             "requestUri": "/rest/users/xxx"
         },
-        username = 'test';
+        username = 'test',
+        password = {
+            newPassword: 'aaaa',
+            currentPassword: '1234'
+        };
 
     beforeEach(() => {
         MockApi = new MockAdapter(axiosBackend);
@@ -345,4 +350,37 @@ describe('User asynchronize actions', function () {
             done();
         }, TEST_TIMEOUT);
     });
+
+    it("creates PASSWORD_CHANGE_SUCCESS action when changing password successfully is done", function (done) {
+        const expectedActions = [
+            { type: ActionConstants.PASSWORD_CHANGE_PENDING},
+            { type: ActionConstants.PASSWORD_CHANGE_SUCCESS}
+        ];
+
+        MockApi.onPut(`rest/users/${username}/password-change`).reply(200);
+
+        store.dispatch(changePassword(username, password));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it("creates PASSWORD_CHANGE_ERROR action if an error occurred during chaning password", function (done) {
+        const expectedActions = [
+            { type: ActionConstants.PASSWORD_CHANGE_PENDING},
+            { type: ActionConstants.PASSWORD_CHANGE_ERROR, error}
+        ];
+
+        MockApi.onPut(`rest/users/${username}/password-change`).reply(400, error);
+
+        store.dispatch(changePassword(username, password));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
 });

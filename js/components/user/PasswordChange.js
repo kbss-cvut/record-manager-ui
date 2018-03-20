@@ -54,7 +54,8 @@ class PasswordChange extends React.Component {
                     </div>
                 </div>
                 <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
-                    <Button bsStyle='success' bsSize='small' ref='submit' onClick={handlers.onSave}>
+                    <Button bsStyle='success' bsSize='small' ref='submit' onClick={handlers.onSave}
+                            disabled={passwordChange.status === ACTION_STATUS.PENDING}>
                         {this.i18n('save')}{passwordChange.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
                     </Button>
                     <Button bsStyle='link' bsSize='small' onClick={handlers.onCancel} >
