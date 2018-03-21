@@ -6,7 +6,6 @@ import injectIntl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
 import MessageWrapper from "../misc/hoc/MessageWrapper";
 import Record from './Record';
-import RecordState from "../../model/RecordState";
 import {Routes} from '../../utils/Routes';
 import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
 import {ACTION_FLAG, ACTION_STATUS} from "../../constants/DefaultConstants";
@@ -16,6 +15,7 @@ import {bindActionCreators} from "redux";
 import {createRecord, loadRecord, unloadRecord, updateRecord} from "../../actions/RecordActions";
 import * as EntityFactory from "../../utils/EntityFactory";
 import RecordValidator from "../../validation/RecordValidator";
+import * as RecordState from "../../model/RecordState";
 
 class RecordController extends React.Component {
     constructor(props) {
