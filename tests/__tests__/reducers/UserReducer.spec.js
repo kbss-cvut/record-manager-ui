@@ -16,7 +16,7 @@ describe('UserReducer', function () {
               message: 'An error has occurred.'
           };
 
-    it('should leave state unchanged if action not recognized', () => {
+    it('leaves state unchanged if action not recognized', () => {
         const initialState = {
             testEntry: 'should not touch'
         };
@@ -30,7 +30,7 @@ describe('UserReducer', function () {
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle SAVE_USER_PENDING', () => {
+    it('handles SAVE_USER_PENDING', () => {
         const initialState = {
             userSaved: {},
             testEntry: "should not touch"
@@ -50,7 +50,7 @@ describe('UserReducer', function () {
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle SAVE_USER_SUCCESS', () => {
+    it('handles SAVE_USER_SUCCESS', () => {
         const initialState = {
             userSaved: {
                 status: ACTION_STATUS.PENDING
@@ -77,7 +77,7 @@ describe('UserReducer', function () {
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle SAVE_USER_ERROR', () => {
+    it('handles SAVE_USER_ERROR', () => {
         const initialState = {
             userSaved: {
                 status: ACTION_STATUS.PENDING
@@ -129,7 +129,7 @@ describe('UserReducer', function () {
             });
     });
 
-    it('should handle DELETE_USER_PENDING', () => {
+    it('handles DELETE_USER_PENDING', () => {
         const initialState = {
             userDeleted: {},
             testEntry: "should not touch"
@@ -151,7 +151,7 @@ describe('UserReducer', function () {
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle DELETE_USER_SUCCESS', () => {
+    it('handles DELETE_USER_SUCCESS', () => {
         const initialState = {
             userDeleted: {
                 status: ACTION_STATUS.PENDING
@@ -176,7 +176,7 @@ describe('UserReducer', function () {
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle DELETE_USER_ERROR', () => {
+    it('handles DELETE_USER_ERROR', () => {
         const initialState = {
             userDeleted: {
                 status: ACTION_STATUS.PENDING
@@ -202,7 +202,7 @@ describe('UserReducer', function () {
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle LOAD_USER_PENDING', () => {
+    it('handles LOAD_USER_PENDING', () => {
         const initialState = {
             userLoaded: {
                 testEntry: "should not touch"
@@ -226,7 +226,7 @@ describe('UserReducer', function () {
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle LOAD_USER_SUCCESS', () => {
+    it('handles LOAD_USER_SUCCESS', () => {
         const initialState = {
             userLoaded: {
                 status: ACTION_STATUS.PENDING
@@ -251,7 +251,7 @@ describe('UserReducer', function () {
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle LOAD_USER_ERROR', () => {
+    it('handles LOAD_USER_ERROR', () => {
         const initialState = {
             userLoaded: {
                 status: ACTION_STATUS.PENDING
@@ -275,7 +275,7 @@ describe('UserReducer', function () {
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle UNLOAD_USER', () => {
+    it('handles UNLOAD_USER', () => {
         const initialState = {
             userLoaded: {
                 status: ACTION_STATUS.SUCCESS,

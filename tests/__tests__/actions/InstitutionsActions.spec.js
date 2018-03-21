@@ -14,14 +14,14 @@ import {
 const institutions = [{key: 786785600}, {key: 86875960}];
 
 describe('Institutions synchronize actions', function () {
-    it('should create an action to fetch all institutions', () => {
+    it('creates an action to fetch all institutions', () => {
         const expectedAction = {
             type: ActionConstants.LOAD_INSTITUTIONS_PENDING,
         };
         expect(loadInstitutionsPending()).toEqual(expectedAction)
     });
 
-    it('should create an action to save fetched institutions', () => {
+    it('creates an action to save fetched institutions', () => {
         const expectedAction = {
             type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS,
             institutions
@@ -29,7 +29,7 @@ describe('Institutions synchronize actions', function () {
         expect(loadInstitutionsSuccess(institutions)).toEqual(expectedAction)
     });
 
-    it('should create an action about error during fetching institutions', () => {
+    it('creates an action about error during fetching institutions', () => {
         const error = {message: 'error'};
         const expectedAction = {
             type: ActionConstants.LOAD_INSTITUTIONS_ERROR,

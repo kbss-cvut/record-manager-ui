@@ -29,7 +29,7 @@ describe('Dashboard', function () {
             showMyProfile: jasmine.createSpy('showMyProfile'),
         };
 
-    it('should render dashboard with title and four buttons', function () {
+    it('renders dashboard with title and four buttons', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Dashboard currentUser={currentUserAdmin} handlers={handlers}/>
@@ -50,7 +50,7 @@ describe('Dashboard', function () {
         expect(cols.length).toEqual(4);
     });
 
-    it('should render four buttons to admin and click on them', function () {
+    it('renders four buttons to admin and click on them', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Dashboard currentUser={currentUserAdmin} handlers={handlers}/>
@@ -71,7 +71,7 @@ describe('Dashboard', function () {
         expect(handlers.showRecords).toHaveBeenCalled();
     });
 
-    it('should render four buttons to doctor with institution and click on them', function () {
+    it('renders four buttons to doctor with institution and click on them', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Dashboard currentUser={doctorWithInstitution} handlers={handlers}/>
@@ -92,7 +92,7 @@ describe('Dashboard', function () {
         expect(handlers.showRecords).toHaveBeenCalled();
     });
 
-    it('should render three buttons to doctor without institution and click on them', function () {
+    it('renders three buttons to doctor without institution and click on them', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Dashboard currentUser={doctorWithoutInstitution} handlers={handlers}/>

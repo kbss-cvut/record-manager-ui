@@ -10,14 +10,14 @@ describe('Auth synchronize actions', function () {
     const user = {username: 'test'},
         error = {message: 'error'};
 
-    it('should create an action that user was authenticated', () => {
+    it('creates an action that user was authenticated', () => {
         const expectedAction = {
             type: ActionConstants.AUTH_USER
         };
         expect(actions.userAuthSuccess()).toEqual(expectedAction)
     });
 
-    it('should create an action that there was error during authentication', () => {
+    it('creates an action that there was error during authentication', () => {
         const expectedAction = {
             type: ActionConstants.AUTH_USER_ERROR,
             error
@@ -25,21 +25,21 @@ describe('Auth synchronize actions', function () {
         expect(actions.userAuthError(error)).toEqual(expectedAction)
     });
 
-    it('should create an action that user was unauthenticated', () => {
+    it('creates an action that user was unauthenticated', () => {
         const expectedAction = {
             type: ActionConstants.UNAUTH_USER
         };
         expect(actions.unauthUser()).toEqual(expectedAction)
     });
 
-    it('should create an action to fetch current user', () => {
+    it('creates an action to fetch current user', () => {
         const expectedAction = {
             type: ActionConstants.LOAD_USER_PROFILE_PENDING
         };
         expect(actions.loadUserProfilePending()).toEqual(expectedAction)
     });
 
-    it('should create an action to save fetched current user', () => {
+    it('creates an action to save fetched current user', () => {
         const expectedAction = {
             type: ActionConstants.LOAD_USER_PROFILE_SUCCESS,
             user
@@ -47,7 +47,7 @@ describe('Auth synchronize actions', function () {
         expect(actions.loadUserProfileSuccess(user)).toEqual(expectedAction)
     });
 
-    it('should create an action about error during fetching current user', () => {
+    it('creates an action about error during fetching current user', () => {
         const expectedAction = {
             type: ActionConstants.LOAD_USER_PROFILE_ERROR,
             error

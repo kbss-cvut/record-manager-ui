@@ -11,7 +11,7 @@ describe('UsersReducer', function () {
               message: 'An error has occurred.'
           };
 
-    it('should handle LOAD_USERS_PENDING', () => {
+    it('handles LOAD_USERS_PENDING', () => {
         const initialState = {
             usersLoaded: {
                 testEntry: "should not touch"
@@ -34,7 +34,7 @@ describe('UsersReducer', function () {
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle LOAD_USERS_SUCCESS', () => {
+    it('handles LOAD_USERS_SUCCESS', () => {
         const initialState = {
             usersLoaded: {
                 status: ACTION_STATUS.PENDING
@@ -59,7 +59,7 @@ describe('UsersReducer', function () {
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle LOAD_USERS_ERROR', () => {
+    it('handles LOAD_USERS_ERROR', () => {
         const initialState = {
             usersLoaded: {
                 status: ACTION_STATUS.PENDING

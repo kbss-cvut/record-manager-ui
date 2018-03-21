@@ -6,7 +6,7 @@ describe('RouterReducer', function () {
         payload = {data: 123456},
         handlers = {onEvent: jasmine.createSpy('onEvent')};
 
-    it('should leave state unchanged if action not recognized', () => {
+    it('leaves state unchanged if action not recognized', () => {
         const initialState = {
             transitionPayload: {},
             viewHandlers: {},

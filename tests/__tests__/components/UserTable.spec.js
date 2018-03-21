@@ -29,7 +29,7 @@ describe('UserTable', function () {
         ]
     }];
 
-    it('should render table with 5 headers columns', function () {
+    it('renders table with 5 headers columns', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <UserTable users={users} userDeleted={userDeleted} handlers={handlers}/>
@@ -40,7 +40,7 @@ describe('UserTable', function () {
         expect(th.length).toEqual(5);
     });
 
-    it('should render modal window by "Delete" button click', function () {
+    it('renders modal window by "Delete" button click', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <UserTable users={users} userDeleted={userDeleted} handlers={handlers}/>

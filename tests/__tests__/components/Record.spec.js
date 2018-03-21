@@ -3,7 +3,7 @@
 import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
-import {ACTION_STATUS, ROLE} from "../../../js/constants/DefaultConstants";
+import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
 import Record from "../../../js/components/record/Record";
 import * as RecordState from "../../../js/model/RecordState";
 
@@ -146,5 +146,20 @@ describe('Record', function () {
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
         expect(alert).not.toBeNull();
+    });
+
+    it('renders loading spinner in "Save" button on saving', function () {
+        recordSaved = {
+            ...recordSaved,
+            status: ACTION_STATUS.PENDING
+        };
+        const tree = TestUtils.renderIntoDocument(
+            <IntlProvider locale="en" {...intlData}>
+                <Record ref={null} handlers={handlers} record={newRecord}
+                        loading={loading} recordLoaded={recordLoaded}
+                        recordSaved={recordSaved} showAlert={showAlert}/>
+            </IntlProvider>);
+        const loader = TestUtils.findRenderedDOMComponentWithClass(tree, "loader");
+        expect(loader).not.toBeNull();
     });
 });

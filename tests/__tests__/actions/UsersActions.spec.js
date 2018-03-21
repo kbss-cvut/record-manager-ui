@@ -7,14 +7,14 @@ import {axiosBackend} from "../../../js/actions";
 import {loadUsers, loadUsersError, loadUsersPending, loadUsersSuccess} from "../../../js/actions/UsersActions";
 
 describe('Users synchronize actions', function () {
-    it('should create an action to fetch all users', () => {
+    it('creates an action to fetch all users', () => {
         const expectedAction = {
             type: ActionConstants.LOAD_USERS_PENDING,
         };
         expect(loadUsersPending()).toEqual(expectedAction)
     });
 
-    it('should create an action to save fetched users', () => {
+    it('creates an action to save fetched users', () => {
         const users = [{username: 'test1'},{username: 'test2'}];
         const expectedAction = {
             type: ActionConstants.LOAD_USERS_SUCCESS,
@@ -23,7 +23,7 @@ describe('Users synchronize actions', function () {
         expect(loadUsersSuccess(users)).toEqual(expectedAction)
     });
 
-    it('should create an action about error during fetching users', () => {
+    it('creates an action about error during fetching users', () => {
         const error = {message: 'error'};
         const expectedAction = {
             type: ActionConstants.LOAD_USERS_ERROR,

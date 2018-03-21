@@ -16,7 +16,7 @@ describe('AuthReducer', function () {
             message: 'An error has occurred.'
         };
 
-    it('should handle AUTH_USER', () => {
+    it('handles AUTH_USER', () => {
         const initialState = {
             authenticated: false,
             isLoaded: false,
@@ -37,7 +37,7 @@ describe('AuthReducer', function () {
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle AUTH_USER_ERROR', () => {
+    it('handles AUTH_USER_ERROR', () => {
         const initialState = {
             authenticated: false,
             isLoaded: false,
@@ -59,7 +59,7 @@ describe('AuthReducer', function () {
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle LOAD_USER_PROFILE_PENDING', () => {
+    it('handles LOAD_USER_PROFILE_PENDING', () => {
         const initialState = {
             authenticated: false,
             isLoaded: false,
@@ -80,7 +80,7 @@ describe('AuthReducer', function () {
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle LOAD_USER_PROFILE_SUCCESS', () => {
+    it('handles LOAD_USER_PROFILE_SUCCESS', () => {
         const initialState = {
             authenticated: false,
             isLoaded: false,
@@ -106,7 +106,7 @@ describe('AuthReducer', function () {
         expect(newState).toEqual(expectedState);
     });
 
-    it('should handle LOAD_USER_PROFILE_ERROR', () => {
+    it('handles LOAD_USER_PROFILE_ERROR', () => {
         const initialState = {
             authenticated: false,
             isLoaded: false,

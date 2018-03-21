@@ -11,7 +11,7 @@ describe('InstitutionReducer', function () {
             message: 'An error has occurred.'
         };
 
-    it('should leave state unchanged if action not recognized', () => {
+    it('leaves state unchanged if action not recognized', () => {
         const initialState = {
             institutionDeleted: {},
             testEntry: "should not touch"
@@ -29,7 +29,7 @@ describe('InstitutionReducer', function () {
             });
     });
 
-    it('should handle SAVE_INSTITUTION_PENDING', () => {
+    it('handles SAVE_INSTITUTION_PENDING', () => {
         const initialState = {
             institutionSaved: {},
             testEntry: "should not touch"
@@ -48,7 +48,7 @@ describe('InstitutionReducer', function () {
             });
     });
 
-    it('should handle SAVE_INSTITUTION_SUCCESS', () => {
+    it('handles SAVE_INSTITUTION_SUCCESS', () => {
         const initialState = {
             institutionSaved: {
                 status: ACTION_STATUS.PENDING
@@ -78,7 +78,7 @@ describe('InstitutionReducer', function () {
             });
     });
 
-    it('should handle SAVE_INSTITUTION_ERROR', () => {
+    it('handles SAVE_INSTITUTION_ERROR', () => {
         const initialState = {
             institutionSaved: {
                 status: ACTION_STATUS.PENDING
@@ -199,7 +199,7 @@ describe('InstitutionReducer', function () {
             });
     });
 
-    it('should handle LOAD_INSTITUTION_PENDING', () => {
+    it('handles LOAD_INSTITUTION_PENDING', () => {
         const initialState = {
             institutionLoaded: {
                 testEntry: "should not touch"
@@ -221,7 +221,7 @@ describe('InstitutionReducer', function () {
             });
     });
 
-    it('should handle LOAD_INSTITUTION_SUCCESS', () => {
+    it('handles LOAD_INSTITUTION_SUCCESS', () => {
         const initialState = {
             institutionLoaded: {
                 status: ACTION_STATUS.PENDING
@@ -245,7 +245,7 @@ describe('InstitutionReducer', function () {
             });
     });
 
-    it('should handle LOAD_INSTITUTION_ERROR', () => {
+    it('handles LOAD_INSTITUTION_ERROR', () => {
         const initialState = {
             institutionLoaded: {
                 status: ACTION_STATUS.PENDING
@@ -268,7 +268,7 @@ describe('InstitutionReducer', function () {
             });
     });
 
-    it('should handle UNLOAD_INSTITUTION', () => {
+    it('handles UNLOAD_INSTITUTION', () => {
         const initialState = {
             institutionLoaded: {
                 status: ACTION_STATUS.SUCCESS,

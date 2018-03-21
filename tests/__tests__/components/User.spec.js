@@ -110,7 +110,7 @@ describe('User', function () {
         expect(result).not.toBeNull();
     });
 
-    it('should show error about user was not loaded', function () {
+    it('shows error about user was not loaded', function () {
         userLoaded = {
             ...userLoaded,
             status: ACTION_STATUS.ERROR,
@@ -128,7 +128,7 @@ describe('User', function () {
     expect(alert).not.toBeNull();
     });
 
-    it("should render user's form empty", function () {
+    it("renders user's form empty", function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
@@ -166,7 +166,7 @@ describe('User', function () {
         expect(select).not.toBeNull();
     });
 
-    it('should render clickable "Save" button and click on it', function () {
+    it('renders clickable "Save" button and click on it', function () {
         newUser = {
             ...newUser,
             username: 'test',
@@ -188,7 +188,7 @@ describe('User', function () {
     });
 
 
-    it('should show successful alert that user was successfully saved', function () {
+    it('shows successful alert that user was successfully saved', function () {
         showAlert = true;
         userSaved = {
             ...userSaved,
@@ -204,7 +204,7 @@ describe('User', function () {
         expect(alert).not.toBeNull();
     });
 
-    it('should show unsuccessful alert that user was not saved', function () {
+    it('shows unsuccessful alert that user was not saved', function () {
         showAlert = true;
         userSaved = {
             ...userSaved,
@@ -223,7 +223,7 @@ describe('User', function () {
         expect(alert).not.toBeNull();
     });
 
-    it('should render filled user\'s form without checked administrator checkbox', function () {
+    it('renders filled user\'s form without checked administrator checkbox', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={user} handlers={handlers} backToInstitution={backToInstitution}
@@ -265,7 +265,7 @@ describe('User', function () {
         expect(select).not.toBeNull();
     });
 
-    it('should render filled user\'s form with checked administrator checkbox', function () {
+    it('renders filled user\'s form with checked administrator checkbox', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={admin} handlers={handlers} backToInstitution={backToInstitution}
@@ -307,7 +307,7 @@ describe('User', function () {
         expect(select).not.toBeNull();
     });
 
-    it('should render filled user\'s form without checkbox and selectbox', function () {
+    it('renders filled user\'s form without checkbox and selectbox', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={admin} handlers={handlers} backToInstitution={backToInstitution}
@@ -346,7 +346,7 @@ describe('User', function () {
         expect(select.length).toEqual(0);
     });
 
-    it('should render "Cancel" button and click on it', function () {
+    it('renders "Cancel" button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
@@ -360,7 +360,7 @@ describe('User', function () {
         expect(handlers.onCancel).toHaveBeenCalled();
     });
 
-    it('should render "Back to institution" button and click on it', function () {
+    it('renders "Back to institution" button and click on it', function () {
         backToInstitution = true;
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
@@ -373,5 +373,20 @@ describe('User', function () {
 
         TestUtils.Simulate.click(buttons[1]); // back to institution
         expect(handlers.onCancel).toHaveBeenCalled();
+    });
+
+    it('renders loading spinner in "Save" button on saving', function () {
+        userSaved = {
+            ...userSaved,
+            status: ACTION_STATUS.PENDING
+        };
+        const tree = TestUtils.renderIntoDocument(
+            <IntlProvider locale="en" {...intlData}>
+                <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
+                      loading={loading} userSaved={userSaved} showAlert={showAlert}
+                      userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
+            </IntlProvider>);
+        const loader = TestUtils.findRenderedDOMComponentWithClass(tree, "loader");
+        expect(loader).not.toBeNull();
     });
 });

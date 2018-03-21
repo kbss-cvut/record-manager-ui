@@ -30,7 +30,7 @@ describe('UserRow', function () {
         ]
     };
 
-    it('should render one row of table with 5 columns and 2 buttons', function () {
+    it('renders one row of table with 5 columns and 2 buttons', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <table>
@@ -46,7 +46,7 @@ describe('UserRow', function () {
         expect(buttons.length).toEqual(2);
     });
 
-    it('should render "Open" button and click on it', function () {
+    it('renders "Open" button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <table>
@@ -63,7 +63,7 @@ describe('UserRow', function () {
         expect(onEdit).toHaveBeenCalled();
     });
 
-    it('should render name with link and click on it', function () {
+    it('renders name with link and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <table>
@@ -81,7 +81,7 @@ describe('UserRow', function () {
         expect(onEdit).toHaveBeenCalled();
     });
 
-    it('should render "Delete" button and click on it', function () {
+    it('renders "Delete" button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <table>

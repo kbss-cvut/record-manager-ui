@@ -37,7 +37,7 @@ describe('User synchronize actions', function () {
     const user = {username: 'test'},
           error = {message: 'error'};
 
-    it('should create an action to save user', () => {
+    it('creates an action to save user', () => {
         const actionFlag = ACTION_FLAG.CREATE_ENTITY;
         const expectedAction = {
             type: ActionConstants.SAVE_USER_PENDING,
@@ -46,7 +46,7 @@ describe('User synchronize actions', function () {
         expect(saveUserPending(actionFlag)).toEqual(expectedAction)
     });
 
-    it('should create an action to announce successful save of user', () => {
+    it('creates an action to announce successful save of user', () => {
         const actionFlag = ACTION_FLAG.CREATE_ENTITY ;
         const expectedAction = {
             type: ActionConstants.SAVE_USER_SUCCESS,
@@ -56,7 +56,7 @@ describe('User synchronize actions', function () {
         expect(saveUserSuccess(user, actionFlag)).toEqual(expectedAction)
     });
 
-    it('should create an action to announce unsuccessful save of user', () => {
+    it('creates an action to announce unsuccessful save of user', () => {
         const actionFlag = ACTION_FLAG.UPDATE_ENTITY ;
         const expectedAction = {
             type: ActionConstants.SAVE_USER_ERROR,
@@ -74,7 +74,7 @@ describe('User synchronize actions', function () {
         expect(unloadSavedUser()).toEqual(expectedAction)
     });
 
-    it('should create an action to delete user', () => {
+    it('creates an action to delete user', () => {
         const username = user.username;
         const expectedAction = {
             type: ActionConstants.DELETE_USER_PENDING,
@@ -83,7 +83,7 @@ describe('User synchronize actions', function () {
         expect(deleteUserPending(username)).toEqual(expectedAction)
     });
 
-    it('should create an action to announce successful delete of user', () => {
+    it('creates an action to announce successful delete of user', () => {
         const expectedAction = {
             type: ActionConstants.DELETE_USER_SUCCESS,
             user
@@ -91,7 +91,7 @@ describe('User synchronize actions', function () {
         expect(deleteUserSuccess(user)).toEqual(expectedAction)
     });
 
-    it('should create an action to announce unsuccessful delete of user', () => {
+    it('creates an action to announce unsuccessful delete of user', () => {
         const expectedAction = {
             type: ActionConstants.DELETE_USER_ERROR,
             error,
@@ -100,14 +100,14 @@ describe('User synchronize actions', function () {
         expect(deleteUserError(error, user)).toEqual(expectedAction)
     });
 
-    it('should create an action to fetch user', () => {
+    it('creates an action to fetch user', () => {
         const expectedAction = {
             type: ActionConstants.LOAD_USER_PENDING,
         };
         expect(loadUserPending()).toEqual(expectedAction)
     });
 
-    it('should create an action to save fetched user', () => {
+    it('creates an action to save fetched user', () => {
         const expectedAction = {
             type: ActionConstants.LOAD_USER_SUCCESS,
             user
@@ -115,7 +115,7 @@ describe('User synchronize actions', function () {
         expect(loadUserSuccess(user)).toEqual(expectedAction)
     });
 
-    it('should create an action about error during fetching user', () => {
+    it('creates an action about error during fetching user', () => {
         const expectedAction = {
             type: ActionConstants.LOAD_USER_ERROR,
             error
@@ -123,7 +123,7 @@ describe('User synchronize actions', function () {
         expect(loadUserError(error)).toEqual(expectedAction)
     });
 
-    it('should create an action to unload loaded user', () => {
+    it('creates an action to unload loaded user', () => {
         const expectedAction = {
             type: ActionConstants.UNLOAD_USER,
         };

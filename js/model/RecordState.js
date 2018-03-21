@@ -5,7 +5,6 @@ const States = {
 };
 
 class RecordState {
-
     constructor(initialState = States.INITIAL) {
         this.state = initialState;
     }
@@ -30,12 +29,10 @@ class RecordState {
     }
 }
 
-module.exports = {
-    createInitialState: function () {
-        return new RecordState();
-    },
+export function createInitialState() {
+    return new RecordState();
+}
 
-    createRecordState: function () {
-        return new RecordState(States.COMPLETE);
-    }
-};
+export function createRecordState() {
+    return new RecordState(States.COMPLETE);
+}

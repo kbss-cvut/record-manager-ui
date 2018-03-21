@@ -63,7 +63,7 @@ describe('Users', function () {
         expect(result).not.toBeNull();
     });
 
-    it('should render panel with table and table headers', function () {
+    it('renders panel with table and table headers', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Users users={users} showAlert={showAlert}
@@ -79,7 +79,7 @@ describe('Users', function () {
         expect(th.length).toEqual(5);
     });
 
-   it('should render "Create user" button and click on it', function () {
+   it('renders "Create user" button and click on it', function () {
        const tree = TestUtils.renderIntoDocument(
            <IntlProvider locale="en" {...intlData}>
                <Users users={users} showAlert={showAlert}
@@ -92,7 +92,7 @@ describe('Users', function () {
        expect(handlers.onCreate).toHaveBeenCalled();
    });
 
-    it('should show successful alert that user was successfully deleted', function () {
+    it('shows successful alert that user was successfully deleted', function () {
         showAlert = true;
         userDeleted = {
             ...userDeleted,
@@ -107,7 +107,7 @@ describe('Users', function () {
         expect(alert).not.toBeNull();
     });
 
-    it('should show unsuccessful alert that user was not deleted', function () {
+    it('shows unsuccessful alert that user was not deleted', function () {
         showAlert = true;
         userDeleted = {
             ...userDeleted,

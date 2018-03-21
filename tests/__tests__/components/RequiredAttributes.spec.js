@@ -3,8 +3,8 @@
 import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
-import * as RecordState from "../../../js/model/RecordState";
 import RequiredAttributes from "../../../js/components/record/RequiredAttributes";
+import * as RecordState from "../../../js/model/RecordState";
 
 describe('RequiredAttributes', function () {
     const intlData = require('../../../js/i18n/en');

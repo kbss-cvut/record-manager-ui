@@ -202,4 +202,20 @@ describe('Institution', function () {
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
         expect(alert).not.toBeNull();
     });
+
+    it('renders loading spinner in "Save" button on saving', function () {
+        institutionSaved = {
+            ...institutionSaved,
+            status: ACTION_STATUS.PENDING
+        };
+        const tree = TestUtils.renderIntoDocument(
+            <IntlProvider locale="en" {...intlData}>
+                <Institution handlers={handlers} institution={institution} members={members}
+                             patients={patients} loading={loading} showAlert={showAlert}
+                             currentUser={admin} institutionLoaded={institutionLoaded}
+                             institutionSaved={institutionSaved}/>
+            </IntlProvider>);
+        const loader = TestUtils.findRenderedDOMComponentWithClass(tree, "loader");
+        expect(loader).not.toBeNull();
+    });
 });
