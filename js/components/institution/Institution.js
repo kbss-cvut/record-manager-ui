@@ -8,9 +8,7 @@ import InstitutionPatients from "./InstitutionPatients";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import HorizontalInput from "../HorizontalInput";
-import Mask from "../Mask";
-import Routing, {transitionTo} from "../../utils/Routing";
-import {Routes} from "../../utils/Routes";
+
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import {formatDate} from "../../utils/Utils";
 import AlertMessage from "../AlertMessage";
@@ -24,7 +22,6 @@ class Institution extends React.Component {
         institution: React.PropTypes.object,
         institutionLoaded: React.PropTypes.object,
         institutionSaved: React.PropTypes.object,
-        loading: React.PropTypes.bool,
         institutionMembers: React.PropTypes.object,
         recordsLoaded: React.PropTypes.object,
         handlers: React.PropTypes.object.isRequired,
@@ -96,7 +93,7 @@ class Institution extends React.Component {
     }
 
     _renderButtons() {
-        const { loading, currentUser, handlers, institutionSaved } = this.props;
+        const { currentUser, handlers, institutionSaved } = this.props;
         if (currentUser.role !== ROLE.ADMIN) {
             return <div className='row'>
                 <div className='col-xs-1'>
@@ -106,7 +103,7 @@ class Institution extends React.Component {
         } else {
             return <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
                 <Button bsStyle='success' bsSize='small' ref='submit'
-                        disabled={loading || this.props.institutionSaved.status === ACTION_STATUS.PENDING}
+                        disabled={this.props.institutionSaved.status === ACTION_STATUS.PENDING}
                         onClick={handlers.onSave}>{this.i18n('save')}
                         {institutionSaved.status === ACTION_STATUS.PENDING && <div className="loader"></div>}</Button>
                 <Button bsStyle='link' bsSize='small' onClick={handlers.onCancel}>{this.i18n('cancel')}</Button>
