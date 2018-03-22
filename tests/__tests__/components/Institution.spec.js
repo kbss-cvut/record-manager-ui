@@ -17,7 +17,7 @@ describe('Institution', function () {
         admin,
         user,
         members = [],
-        patients = [],
+        recordsLoaded = {},
         handlers = {
             onSave: jasmine.createSpy('onSave'),
             onCancel: jasmine.createSpy('onCancel'),
@@ -44,6 +44,10 @@ describe('Institution', function () {
             emailAddress: '',
             isNew: true
         };
+        recordsLoaded = {
+            status: ACTION_STATUS.SUCCESS,
+            records: {}
+        };
     });
 
     user = {
@@ -65,7 +69,7 @@ describe('Institution', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={institution} members={members}
-                             patients={patients} loading={loading} showAlert={showAlert}
+                             recordsLoaded={recordsLoaded} loading={loading} showAlert={showAlert}
                              currentUser={admin} institutionLoaded={institutionLoaded}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
@@ -84,7 +88,7 @@ describe('Institution', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={institution} members={members}
-                             patients={patients} loading={loading} showAlert={showAlert}
+                             recordsLoaded={recordsLoaded} loading={loading} showAlert={showAlert}
                              currentUser={admin} institutionLoaded={institutionLoaded}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
@@ -96,7 +100,7 @@ describe('Institution', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={newInstitution} members={members}
-                             patients={patients} loading={loading} showAlert={showAlert}
+                             recordsLoaded={recordsLoaded} loading={loading} showAlert={showAlert}
                              currentUser={admin} institutionLoaded={institutionLoaded}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
@@ -124,7 +128,7 @@ describe('Institution', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={newInstitution} members={members}
-                             patients={patients} loading={loading} showAlert={showAlert}
+                             recordsLoaded={recordsLoaded} loading={loading} showAlert={showAlert}
                              currentUser={admin} institutionLoaded={institutionLoaded}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
@@ -143,7 +147,7 @@ describe('Institution', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={newInstitution} members={members}
-                             patients={patients} loading={loading} showAlert={showAlert}
+                             recordsLoaded={recordsLoaded} loading={loading} showAlert={showAlert}
                              currentUser={user} institutionLoaded={institutionLoaded}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
@@ -160,7 +164,7 @@ describe('Institution', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={institution} members={members}
-                             patients={patients} loading={loading} showAlert={showAlert}
+                             recordsLoaded={recordsLoaded} loading={loading} showAlert={showAlert}
                              currentUser={admin} institutionLoaded={institutionLoaded}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
@@ -172,7 +176,7 @@ describe('Institution', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={institution} members={members}
-                             patients={patients} loading={loading} showAlert={showAlert}
+                             recordsLoaded={recordsLoaded} loading={loading} showAlert={showAlert}
                              currentUser={admin} institutionLoaded={institutionLoaded}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
@@ -195,7 +199,7 @@ describe('Institution', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={institution} members={members}
-                             patients={patients} loading={loading} showAlert={showAlert}
+                             recordsLoaded={recordsLoaded} loading={loading} showAlert={showAlert}
                              currentUser={admin} institutionLoaded={institutionLoaded}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
@@ -211,7 +215,7 @@ describe('Institution', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={institution} members={members}
-                             patients={patients} loading={loading} showAlert={showAlert}
+                             recordsLoaded={recordsLoaded} loading={loading} showAlert={showAlert}
                              currentUser={admin} institutionLoaded={institutionLoaded}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);

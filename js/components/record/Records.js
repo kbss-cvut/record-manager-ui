@@ -11,9 +11,8 @@ import AlertMessage from "../AlertMessage";
 
 class Records extends React.Component {
     static propTypes = {
-        records: React.PropTypes.array,
+        recordsLoaded: React.PropTypes.object,
         recordDeleted: React.PropTypes.object,
-        status: React.PropTypes.string,
         showAlert: React.PropTypes.bool.isRequired,
         handlers: React.PropTypes.object.isRequired
     };
@@ -24,10 +23,7 @@ class Records extends React.Component {
     }
 
     render() {
-        const {records, showAlert, recordDeleted, status} = this.props;
-        if (!records.length && status === ACTION_STATUS.PENDING) {
-            return <Mask text={this.i18n('please-wait')}/>;
-        }
+        const {showAlert, recordDeleted} = this.props;
         return <Panel header={this.i18n('records.panel-title')} bsStyle='primary'>
             <RecordTable {...this.props}/>
             <div>

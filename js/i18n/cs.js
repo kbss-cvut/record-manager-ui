@@ -122,6 +122,8 @@ module.exports = {
         'records.last-modified': 'Naposledy upraveno',
         'records.open-tooltip': 'Zobrazit či upravit záznam tohoto pacienta',
         'records.delete-tooltip': 'Smazat tento záznam',
+        'records.not-found': 'Žádný záznam o pacientovi nebyl nalezen...',
+        'records.loading-error': 'Záznamy o pacientech se nepodařilo načíst. Odpověď serveru: {error}.',
 
         'record.panel-title': 'Záznam o pacientovi {identifier}',
         'record.form-title': 'Details',

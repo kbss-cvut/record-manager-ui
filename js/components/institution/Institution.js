@@ -25,7 +25,7 @@ class Institution extends React.Component {
         institutionSaved: React.PropTypes.object,
         loading: React.PropTypes.bool,
         members: React.PropTypes.array,
-        patients: React.PropTypes.array,
+        recordsLoaded: React.PropTypes.object,
         handlers: React.PropTypes.object.isRequired,
         currentUser: React.PropTypes.object.isRequired,
         showAlert: React.PropTypes.bool
@@ -42,10 +42,8 @@ class Institution extends React.Component {
         this.props.handlers.onChange(change);
     };
 
-
-
     render() {
-        const {loading, showAlert, currentUser, institution, patients, institutionLoaded, institutionSaved} = this.props;
+        const {loading, showAlert, currentUser, institution, recordsLoaded, institutionLoaded, institutionSaved} = this.props;
         if (loading) {
             return <Mask text={this.i18n('please-wait')}/>;
         }
@@ -76,7 +74,7 @@ class Institution extends React.Component {
                 <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('institution.save-success')}/>}
             </form>
             {!this.props.institution.isNew && institutionLoaded.status === ACTION_STATUS.SUCCESS && this._renderMembers()}
-            <InstitutionPatients patients={patients} onEdit={this.props.handlers.onEditPatient}/>
+            {!this.props.institution.isNew && <InstitutionPatients recordsLoaded={recordsLoaded} onEdit={this.props.handlers.onEditPatient}/>}
         </Panel>;
     }
 

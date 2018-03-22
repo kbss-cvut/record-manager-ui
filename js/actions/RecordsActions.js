@@ -2,10 +2,12 @@ import * as ActionConstants from "../constants/ActionConstants";
 import {ROLE} from "../constants/DefaultConstants";
 import {axiosBackend} from "./index";
 
-export function loadRecords(currentUser) {
+export function loadRecords(currentUser, institutionKey = null) {
     //console.log("Loading records");
     let urlSuffix = '';
-    if (currentUser.role !== ROLE.ADMIN && currentUser.institution) {
+    if (institutionKey){
+        urlSuffix = `?institution=${institutionKey}`;
+    } else if (currentUser.role !== ROLE.ADMIN && currentUser.institution) {
         urlSuffix = `?institution=${currentUser.institution.key}`;
     }
     return function (dispatch) {

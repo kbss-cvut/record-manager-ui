@@ -15,13 +15,13 @@ import {bindActionCreators} from "redux";
 import {
     unloadSavedInstitution} from "../../actions/InstitutionActions";
 import {canLoadInstitutionsPatients} from "../../utils/Utils";
-import {loadInstitutionPatients} from "../../actions/RecordActions";
 import {loadInstitutionMembers} from "../../actions/UserActions";
 import {
     createInstitution, loadInstitution, unloadInstitution,
     updateInstitution
 } from "../../actions/InstitutionActions";
 import * as EntityFactory from "../../utils/EntityFactory";
+import {loadRecords} from "../../actions/RecordsActions";
 
 class InstitutionController extends React.Component {
     constructor(props) {
@@ -46,9 +46,8 @@ class InstitutionController extends React.Component {
         }
         if (institutionKey) {
             this.props.loadInstitutionMembers(institutionKey);
-            if (this.props.status === ACTION_STATUS.SUCCESS &&
-                canLoadInstitutionsPatients(institutionKey, this.props.currentUser)) {
-                this.props.loadInstitutionPatients(institutionKey);
+            if (this.props.status === ACTION_STATUS.SUCCESS && canLoadInstitutionsPatients(institutionKey, this.props.currentUser)) {
+                this.props.loadRecords(null, institutionKey);
             }
         }
         if(this.props.institutionSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
@@ -133,7 +132,7 @@ class InstitutionController extends React.Component {
     };
 
     render() {
-        const {currentUser, institutionLoaded, institutionSaved, institutionMembers, institutionPatients} = this.props;
+        const {currentUser, institutionLoaded, institutionSaved, institutionMembers, recordsLoaded} = this.props;
         if (!currentUser) {
             return null;
         }
@@ -147,7 +146,7 @@ class InstitutionController extends React.Component {
             onDelete: this._onDeleteUser
         };
         return <Institution handlers={handlers} institution={this.state.institution} members={institutionMembers.members || []}
-                            patients={institutionPatients.patients || []} loading={this.state.loading} showAlert={this.state.showAlert}
+                            recordsLoaded={recordsLoaded} loading={this.state.loading} showAlert={this.state.showAlert}
                             currentUser={currentUser} institutionLoaded={institutionLoaded} institutionSaved={institutionSaved}
                             />;
     }
@@ -162,7 +161,7 @@ function mapStateToProps(state) {
         institutionLoaded: state.institution.institutionLoaded,
         institutionSaved: state.institution.institutionSaved,
         institutionMembers: state.user.institutionMembers,
-        institutionPatients: state.record.institutionPatients,
+        recordsLoaded: state.records.recordsLoaded,
         viewHandlers: state.router.viewHandlers
     };
 }
@@ -175,7 +174,7 @@ function mapDispatchToProps(dispatch) {
         createInstitution: bindActionCreators(createInstitution, dispatch),
         updateInstitution: bindActionCreators(updateInstitution, dispatch),
         loadInstitutionMembers: bindActionCreators(loadInstitutionMembers, dispatch),
-        loadInstitutionPatients: bindActionCreators(loadInstitutionPatients, dispatch),
+        loadRecords: bindActionCreators(loadRecords, dispatch),
         transitionToWithOpts:bindActionCreators(transitionToWithOpts, dispatch)
     }
 }

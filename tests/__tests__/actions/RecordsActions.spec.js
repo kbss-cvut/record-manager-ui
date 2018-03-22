@@ -58,8 +58,8 @@ describe('Records asynchronize actions', function () {
         },
         admin = {
             role: ROLE.ADMIN
-        }
-    ;
+        },
+        institutionKey = 12345678;
 
     beforeEach(() => {
         MockApi = new MockAdapter(axiosBackend);
@@ -82,7 +82,7 @@ describe('Records asynchronize actions', function () {
         }, TEST_TIMEOUT);
     });
 
-    it('creates LOAD_RECORDS_SUCCESS action when loading institution records successfully is done', function (done) {
+    it("creates LOAD_RECORDS_SUCCESS action when loading doctor's institution records is done successfully", function (done) {
         const expectedActions = [
             { type: ActionConstants.LOAD_RECORDS_PENDING},
             { type: ActionConstants.LOAD_RECORDS_SUCCESS, records}
@@ -91,6 +91,22 @@ describe('Records asynchronize actions', function () {
         MockApi.onGet(`rest/records?institution=${doctor.institution.key}`).reply(200, records);
 
         store.dispatch(loadRecords(doctor));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it('creates LOAD_RECORDS_SUCCESS action when loading institution records by institution key is done successfully', function (done) {
+        const expectedActions = [
+            { type: ActionConstants.LOAD_RECORDS_PENDING},
+            { type: ActionConstants.LOAD_RECORDS_SUCCESS, records}
+        ];
+
+        MockApi.onGet(`rest/records?institution=${institutionKey}`).reply(200, records);
+
+        store.dispatch(loadRecords(null, institutionKey));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);

@@ -123,6 +123,8 @@ module.exports = {
         'records.last-modified': 'Last modified',
         'records.open-tooltip': 'View and edit the record of this patient',
         'records.delete-tooltip': 'Delete this record',
+        'records.not-found': 'No patient records were found...',
+        'records.loading-error': 'Unable to load patient records. Server responded with {error}.',
 
         'record.panel-title': 'Record of patient {identifier}',
         'record.form-title': 'Details',

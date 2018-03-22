@@ -5,12 +5,14 @@ import {Table} from "react-bootstrap";
 import DeleteItemDialog from "../DeleteItemDialog";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
-import {ACTION_STATUS} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import RecordRow from "./RecordRow";
+import AlertMessage from "../AlertMessage";
+import Loader from "../Loader";
 
 class RecordTable extends React.Component {
     static propTypes = {
-        records: React.PropTypes.array.isRequired,
+        recordsLoaded: React.PropTypes.object.isRequired,
         handlers: React.PropTypes.object.isRequired,
         recordDeleted: React.PropTypes.object,
         disableDelete: React.PropTypes.bool
@@ -43,6 +45,15 @@ class RecordTable extends React.Component {
     };
 
     render() {
+        const {recordsLoaded} = this.props;
+        if(!recordsLoaded.records && (!recordsLoaded.status || recordsLoaded.status === ACTION_STATUS.PENDING)) {
+            return <Loader />
+        } else if(recordsLoaded.status === ACTION_STATUS.SUCCESS && !recordsLoaded.records.length) {
+            return <p className="font-italic">{this.i18n('records.not-found')}</p>
+        } else if(recordsLoaded.status === ACTION_STATUS.ERROR) {
+            return <AlertMessage type={ALERT_TYPES.DANGER}
+                                 message={this.props.formatMessage('records.loading-error', {error: recordsLoaded.error.message})}/>
+        }
         return <div>
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
                               show={this.state.showDialog} item={this.state.selectedRecord}
@@ -73,7 +84,8 @@ class RecordTable extends React.Component {
     }
 
     _renderRows() {
-        const {records, handlers, recordDeleted} = this.props;
+        const {recordsLoaded, handlers, recordDeleted} = this.props;
+        const records = recordsLoaded.records;
         let rows = [];
         for (let i = 0, len = records.length; i < len; i++) {
             rows.push(<RecordRow key={records[i].key} record={records[i]} onEdit={handlers.onEdit} onDelete={this._onDelete}

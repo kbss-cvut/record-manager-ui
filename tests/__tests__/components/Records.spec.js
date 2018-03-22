@@ -9,23 +9,11 @@ import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
 describe('Records', function () {
     const intlData = require('../../../js/i18n/en');
     let records,
+        recordsLoaded,
         recordDeleted,
         showAlert,
-        handlers,
-        status;
-
-    beforeEach(() => {
-        showAlert = false;
-        recordDeleted = {
-            status: ACTION_STATUS.SUCCESS
-        };
-        handlers = {
-            onEdit: jasmine.createSpy('onEdit'),
-            onCreate: jasmine.createSpy('onCreate'),
-            onDelete: jasmine.createSpy('onDelete')
-        };
-    });
-
+        handlers;
+    
     records = [{
         "uri":"http://vfn.cz/ontologies/study-manager/patient-record#instance456619209",
         "key":"159968282553298774",
@@ -42,22 +30,28 @@ describe('Records', function () {
         "institution": {key: 12345678}
     }];
 
-    it('shows loader', function () {
-        status = ACTION_STATUS.PENDING;
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <Records records={[]} showAlert={showAlert}
-                         handlers={handlers} recordDeleted={recordDeleted} status={status}/>
-            </IntlProvider>);
-        const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'mask');
-        expect(result).not.toBeNull();
+    beforeEach(() => {
+        showAlert = false;
+        recordsLoaded = {
+            status: ACTION_STATUS.SUCCESS,
+            records
+        };
+        recordDeleted = {
+            status: ACTION_STATUS.SUCCESS
+        };
+        handlers = {
+            onEdit: jasmine.createSpy('onEdit'),
+            onCreate: jasmine.createSpy('onCreate'),
+            onDelete: jasmine.createSpy('onDelete')
+        };
+
     });
 
     it('renders panel with table and records', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Records records={records} showAlert={showAlert}
-                              recordDeleted={recordDeleted} handlers={handlers}/>
+                <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
+                         recordDeleted={recordDeleted} handlers={handlers}/>
             </IntlProvider>);
         const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
         expect(panelHeading).not.toBeNull();
@@ -72,13 +66,13 @@ describe('Records', function () {
     it('renders "Create record" button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Records records={records} showAlert={showAlert}
-                              recordDeleted={recordDeleted} handlers={handlers}/>
+                <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
+                         recordDeleted={recordDeleted} handlers={handlers}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
         expect(buttons.length).toEqual(5);
 
-        TestUtils.Simulate.click(buttons[4]); // Create Institution
+        TestUtils.Simulate.click(buttons[4]); // Create record
         expect(handlers.onCreate).toHaveBeenCalled();
     });
 
@@ -89,8 +83,8 @@ describe('Records', function () {
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Records records={records} showAlert={showAlert}
-                              recordDeleted={recordDeleted} handlers={handlers}/>
+                <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
+                         recordDeleted={recordDeleted} handlers={handlers}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-success");
         expect(alert).not.toBeNull();
@@ -106,7 +100,7 @@ describe('Records', function () {
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Records records={records} showAlert={showAlert}
+                <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
                          recordDeleted={recordDeleted} handlers={handlers}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");

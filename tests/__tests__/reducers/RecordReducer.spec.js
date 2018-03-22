@@ -5,10 +5,6 @@ import {ACTION_FLAG, ACTION_STATUS} from "../../../js/constants/DefaultConstants
 describe('RecordReducer', function () {
     const record = {key: 12345678},
         key = 12345678,
-        patients = [
-            {localName: 'record1'},
-            {localName: 'record2'}
-        ],
         error = {
             message: 'An error has occurred.'
         };
@@ -286,95 +282,6 @@ describe('RecordReducer', function () {
         ).toEqual(
             {
                 recordLoaded: {},
-                testEntry: initialState.testEntry
-            });
-    });
-
-    it('leaves state unchanged if action not recognized', () => {
-        const initialState = {
-            recordPatients: {
-                patients
-            },
-            testEntry: "should not touch"
-        };
-
-        expect(
-            RecordReducer(initialState, {
-                type: 'NONEXISTENT_ACTION_TYPE',
-                payload: 'error'
-            })
-        ).toEqual(
-            {
-                recordPatients: {
-                    patients
-                },
-                testEntry: "should not touch"
-            });
-    });
-
-    it('handles LOAD_INSTITUTION_PATIENTS_PENDING action', () => {
-        const initialState = {
-            institutionPatients: {
-            },
-            testEntry: "should not touch"
-        };
-
-        expect(
-            RecordReducer(initialState, {
-                type: ActionConstants.LOAD_INSTITUTION_PATIENTS_PENDING
-            })
-        ).toEqual(
-            {
-                institutionPatients: {
-                    status: ACTION_STATUS.PENDING,
-                },
-                testEntry: initialState.testEntry
-            });
-    });
-
-    it('handles LOAD_INSTITUTION_PATIENTS_SUCCESS action', () => {
-        const initialState = {
-            institutionPatients: {
-                status: ACTION_STATUS.PENDING
-            },
-            testEntry: "should not touch"
-        };
-
-        expect(
-            RecordReducer(initialState, {
-                type: ActionConstants.LOAD_INSTITUTION_PATIENTS_SUCCESS,
-                patients
-            })
-        ).toEqual(
-            {
-                institutionPatients: {
-                    status: ACTION_STATUS.SUCCESS,
-                    patients,
-                    error: ''
-                },
-                testEntry: initialState.testEntry
-            });
-    });
-
-    it('handles LOAD_INSTITUTION_PATIENTS_ERROR action', () => {
-        const initialState = {
-            institutionPatients: {
-                status: ACTION_STATUS.PENDING
-            },
-            testEntry: "should not touch"
-        };
-
-        expect(
-            RecordReducer(initialState, {
-                type: ActionConstants.LOAD_INSTITUTION_PATIENTS_ERROR,
-                error
-            })
-        ).toEqual(
-            {
-                institutionPatients: {
-                    status: ACTION_STATUS.ERROR,
-                    error
-                },
                 testEntry: initialState.testEntry
             });
     });

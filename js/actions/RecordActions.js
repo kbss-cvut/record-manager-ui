@@ -141,35 +141,3 @@ export function unloadSavedRecord() {
         type: ActionConstants.UNLOAD_SAVED_RECORD
     }
 }
-
-export function loadInstitutionPatients(key) {
-    //console.log("Loading patients of institution", key);
-    return function (dispatch) {
-        dispatch(loadInstitutionPatientsPending());
-        axiosBackend.get(`rest/records?institution=${key}`).then((response) => {
-            dispatch(loadInstitutionPatientsSuccess(response.data));
-        }).catch((error) => {
-            dispatch(loadInstitutionPatientsError(error.response.data));
-        });
-    }
-}
-
-export function loadInstitutionPatientsPending() {
-    return {
-        type: ActionConstants.LOAD_INSTITUTION_PATIENTS_PENDING
-    }
-}
-
-export function loadInstitutionPatientsSuccess(patients) {
-    return {
-        type: ActionConstants.LOAD_INSTITUTION_PATIENTS_SUCCESS,
-        patients
-    }
-}
-
-export function loadInstitutionPatientsError(error) {
-    return {
-        type: ActionConstants.LOAD_INSTITUTION_PATIENTS_ERROR,
-        error
-    }
-}

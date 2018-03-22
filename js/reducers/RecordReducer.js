@@ -103,30 +103,6 @@ export default function (state = initialState, action) {
                     error: action.error
                 }
             };
-        case ActionConstants.LOAD_INSTITUTION_PATIENTS_PENDING:
-            return {
-                ...state,
-                institutionPatients: {
-                    status: ACTION_STATUS.PENDING
-                }
-            };
-        case ActionConstants.LOAD_INSTITUTION_PATIENTS_SUCCESS:
-            return {
-                ...state,
-                institutionPatients: {
-                    status: ACTION_STATUS.SUCCESS,
-                    patients: action.patients,
-                    error: ''
-                }
-            };
-        case ActionConstants.LOAD_INSTITUTION_PATIENTS_ERROR:
-            return {
-                ...state,
-                institutionPatients: {
-                    status: ACTION_STATUS.ERROR,
-                    error: action.error
-                }
-            };
         default:
             return state;
     }

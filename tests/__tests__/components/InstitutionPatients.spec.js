@@ -5,39 +5,21 @@ import InstitutionPatients from "../../../js/components/institution/InstitutionP
 
 describe('InstitutionPatients', function () {
     const intlData = require('../../../js/i18n/en');
-    let patients,
-        patientsEmpty,
+    let recordsLoaded,
+        records,
         onEdit = jasmine.createSpy('onEdit');
 
-    patients = [
-        {
-            key: 4324344
-        },
-        {
-            key: 4321434
-        }
-    ];
-
-    patientsEmpty = [];
-
-    it('renders panel with table and table headers and columns', function () {
+    it('renders panel', function () {
+        recordsLoaded = {
+            records
+        };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <InstitutionPatients patients={patients} onEdit={onEdit}/>
+                <InstitutionPatients recordsLoaded={recordsLoaded} onEdit={onEdit}/>
             </IntlProvider>);
         const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
         expect(panelHeading).not.toBeNull();
         const panelBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel-body');
         expect(panelBody).not.toBeNull();
     });
-
-    it('does not render anything', function () {
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <InstitutionPatients patients={patientsEmpty} onEdit={onEdit}/>
-            </IntlProvider>);
-        const panelHeading = TestUtils.scryRenderedDOMComponentsWithClass(tree, 'panel');
-        expect(panelHeading.length).toEqual(0);
-    });
-
 });

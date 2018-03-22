@@ -6,12 +6,13 @@ import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
 
 describe('RecordTable', function () {
     const intlData = require('../../../js/i18n/en');
-    let patients,
+    let records,
+        recordsLoaded,
         recordDeleted = {status: ACTION_STATUS.SUCCESS},
         handlers = {onEdit: jasmine.createSpy('onEdit')},
         disableDelete = true;
 
-    patients = [
+    records = [
         {
             key: 4324344
         },
@@ -20,10 +21,46 @@ describe('RecordTable', function () {
         }
     ];
 
+    beforeEach(() => {
+        recordsLoaded = {
+            status: ACTION_STATUS.SUCCESS,
+            records
+        }
+    });
+
+    it('shows loader', function () {
+        recordsLoaded = {
+            status: ACTION_STATUS.PENDING
+        };
+        const tree = TestUtils.renderIntoDocument(
+            <IntlProvider locale="en" {...intlData}>
+                <RecordTable recordsLoaded={recordsLoaded} handlers={handlers} disableDelete={disableDelete}
+                             recordDeleted={recordDeleted}/>
+            </IntlProvider>);
+        const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'loader-spin');
+        expect(result).not.toBeNull();
+    });
+
+    it('renders unsuccessful alert that records were not loaded', function () {
+        recordsLoaded = {
+            status: ACTION_STATUS.ERROR,
+            error: {
+                message: "Error"
+            }
+        };
+        const tree = TestUtils.renderIntoDocument(
+            <IntlProvider locale="en" {...intlData}>
+                <RecordTable recordsLoaded={recordsLoaded} handlers={handlers} disableDelete={disableDelete}
+                             recordDeleted={recordDeleted}/>
+            </IntlProvider>);
+        const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
+        expect(alert).not.toBeNull();
+    });
+
     it('renders table with headers and columns', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <RecordTable records={patients} handlers={handlers} disableDelete={disableDelete}
+                <RecordTable recordsLoaded={recordsLoaded} handlers={handlers} disableDelete={disableDelete}
                              recordDeleted={recordDeleted}/>
             </IntlProvider>);
         const table = TestUtils.scryRenderedDOMComponentsWithTag(tree,'table');
@@ -37,7 +74,7 @@ describe('RecordTable', function () {
     it('renders "Open" button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <RecordTable records={patients} handlers={handlers} disableDelete={disableDelete}
+                <RecordTable recordsLoaded={recordsLoaded} handlers={handlers} disableDelete={disableDelete}
                              recordDeleted={recordDeleted}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
