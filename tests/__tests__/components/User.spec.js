@@ -36,25 +36,25 @@ describe('User', function () {
             status: ACTION_STATUS.SUCCESS,
             error: ''
         };
-        currentUser = {
-            username: 'test',
-            role: ROLE.DOCTOR
-        };
-        currentUserAdmin = {
-            username: 'test',
-            role: ROLE.ADMIN
-        };
-        newUser = {
-            firstName: '',
-            lastName: '',
-            username: '',
-            emailAddress: '',
-            password: 'test',
-            isAdmin: false,
-            isNew: true
-        };
     });
 
+    currentUser = {
+        username: 'test',
+        role: ROLE.DOCTOR
+    };
+    currentUserAdmin = {
+        username: 'test',
+        role: ROLE.ADMIN
+    };
+    newUser = {
+        firstName: '',
+        lastName: '',
+        username: '',
+        emailAddress: '',
+        password: 'test',
+        isAdmin: false,
+        isNew: true
+    };
 
     admin = {
         "uri":"http://vfn.cz/ontologies/study-manager/Admin-Administratorowitch",

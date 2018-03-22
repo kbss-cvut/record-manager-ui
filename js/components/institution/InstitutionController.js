@@ -28,7 +28,6 @@ class InstitutionController extends React.Component {
         super(props);
         this.state = {
             institution: this._isNew() ? EntityFactory.initNewInstitution() : null,
-            loading: false,
             saved: false,
             showAlert: false
         };
@@ -41,7 +40,6 @@ class InstitutionController extends React.Component {
     componentWillMount() {
         const institutionKey = this.props.params.key;
         if (!this.state.institution) {
-            this.setState({loading: true});
             this.props.loadInstitution(institutionKey);
         }
         if (institutionKey) {
@@ -72,10 +70,7 @@ class InstitutionController extends React.Component {
             }
         }
         if (this.props.institutionLoaded.status === ACTION_STATUS.PENDING && nextProps.institutionLoaded.status === ACTION_STATUS.SUCCESS) {
-            this.setState({institution: nextProps.institutionLoaded.institution, loading: false});
-        }
-        if (this.props.institutionLoaded.status === ACTION_STATUS.PENDING && nextProps.institutionLoaded.status === ACTION_STATUS.ERROR) {
-            this.setState({loading: false});
+            this.setState({institution: nextProps.institutionLoaded.institution});
         }
     }
 
@@ -145,9 +140,9 @@ class InstitutionController extends React.Component {
             onEditPatient: this._onEditPatient,
             onDelete: this._onDeleteUser
         };
-        return <Institution handlers={handlers} institution={this.state.institution} members={institutionMembers.members || []}
-                            recordsLoaded={recordsLoaded} loading={this.state.loading} showAlert={this.state.showAlert}
-                            currentUser={currentUser} institutionLoaded={institutionLoaded} institutionSaved={institutionSaved}
+        return <Institution handlers={handlers} institution={this.state.institution} institutionMembers={institutionMembers}
+                            recordsLoaded={recordsLoaded} showAlert={this.state.showAlert} currentUser={currentUser}
+                            institutionLoaded={institutionLoaded} institutionSaved={institutionSaved}
                             />;
     }
 }

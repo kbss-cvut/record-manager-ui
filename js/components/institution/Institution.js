@@ -14,6 +14,7 @@ import {Routes} from "../../utils/Routes";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import {formatDate} from "../../utils/Utils";
 import AlertMessage from "../AlertMessage";
+import Loader from "../Loader";
 
 /**
  * Institution detail. Editable only for admins.
@@ -24,7 +25,7 @@ class Institution extends React.Component {
         institutionLoaded: React.PropTypes.object,
         institutionSaved: React.PropTypes.object,
         loading: React.PropTypes.bool,
-        members: React.PropTypes.array,
+        institutionMembers: React.PropTypes.object,
         recordsLoaded: React.PropTypes.object,
         handlers: React.PropTypes.object.isRequired,
         currentUser: React.PropTypes.object.isRequired,
@@ -43,11 +44,12 @@ class Institution extends React.Component {
     };
 
     render() {
-        const {loading, showAlert, currentUser, institution, recordsLoaded, institutionLoaded, institutionSaved} = this.props;
-        if (loading) {
-            return <Mask text={this.i18n('please-wait')}/>;
-        }
-        if (institutionLoaded.status === ACTION_STATUS.ERROR) {
+        const {showAlert, currentUser, institution, recordsLoaded, institutionLoaded, institutionSaved} = this.props;
+        if (!institutionLoaded.status || institutionLoaded.status === ACTION_STATUS.PENDING) {
+            return <Panel header={<h3>{this.i18n('institution.panel-title')}</h3>} bsStyle='primary'>
+                <Loader />
+            </Panel>;
+        } else if(institutionLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('institution.load-error', {error: institutionLoaded.error.message})}/>;
         }
@@ -73,7 +75,7 @@ class Institution extends React.Component {
                 {showAlert && institutionSaved.status === ACTION_STATUS.SUCCESS &&
                 <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('institution.save-success')}/>}
             </form>
-            {!this.props.institution.isNew && institutionLoaded.status === ACTION_STATUS.SUCCESS && this._renderMembers()}
+            {!this.props.institution.isNew && this._renderMembers()}
             {!this.props.institution.isNew && <InstitutionPatients recordsLoaded={recordsLoaded} onEdit={this.props.handlers.onEditPatient}/>}
         </Panel>;
     }
@@ -113,11 +115,10 @@ class Institution extends React.Component {
     }
 
     _renderMembers() {
-        const { institution, handlers, currentUser } = this.props;
-        const members = institution.members ? institution.members : this.props.members;
-        return <InstitutionMembers institution={institution} members={members} onDelete={handlers.onDelete}
-                                   onEditUser={handlers.onEditUser} onAddNewUser={handlers.onAddNewUser}
-                                   currentUser={currentUser}/>
+        const { institution, handlers, currentUser, institutionMembers } = this.props;
+        return <InstitutionMembers institution={institution} institutionMembers={institutionMembers}
+                                   onDelete={handlers.onDelete} onEditUser={handlers.onEditUser}
+                                   onAddNewUser={handlers.onAddNewUser} currentUser={currentUser}/>
     }
 }
 

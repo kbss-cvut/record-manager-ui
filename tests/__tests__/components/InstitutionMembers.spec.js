@@ -1,13 +1,14 @@
 import TestUtils from "react-addons-test-utils";
-import {ROLE} from "../../../js/constants/DefaultConstants";
+import {ACTION_STATUS, ROLE} from "../../../js/constants/DefaultConstants";
 import React from "react";
 import {IntlProvider} from "react-intl";
 import InstitutionMembers from "../../../js/components/institution/InstitutionMembers";
 
 describe('InstitutionMembers', function () {
     const intlData = require('../../../js/i18n/en');
-    let members,
-        membersEmpty,
+    let institutionMembers,
+        institutionMembersEmpty,
+        members,
         institution,
         onEditUser = jasmine.createSpy('onEditUser'),
         onAddNewUser = jasmine.createSpy('onAddNewUser'),
@@ -30,7 +31,10 @@ describe('InstitutionMembers', function () {
         }
     ];
 
-    membersEmpty = [];
+    institutionMembersEmpty = {
+        status: ACTION_STATUS.SUCCESS,
+        members: []
+    };
 
     institution = {
         key: 23123323312
@@ -46,11 +50,49 @@ describe('InstitutionMembers', function () {
         role: ROLE.ADMIN
     };
 
+    beforeEach(() => {
+        institutionMembers = {
+            status: ACTION_STATUS.SUCCESS,
+            members
+        };
+    });
+
+    it('shows loader', function () {
+        institutionMembers = {
+            status: ACTION_STATUS.PENDING
+        };
+        const tree = TestUtils.renderIntoDocument(
+            <IntlProvider locale="en" {...intlData}>
+                <InstitutionMembers institution={institution} institutionMembers={institutionMembers}
+                                    onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
+                                    currentUser={admin}/>
+            </IntlProvider>);
+        const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'loader-spin');
+        expect(result).not.toBeNull();
+    });
+
+    it('renders unsuccessful alert that members were not loaded', function () {
+        institutionMembers = {
+            status: ACTION_STATUS.ERROR,
+            error: {
+                message: "Error"
+            }
+        };
+        const tree = TestUtils.renderIntoDocument(
+            <IntlProvider locale="en" {...intlData}>
+                <InstitutionMembers institution={institution} institutionMembers={institutionMembers}
+                                    onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
+                                    currentUser={admin}/>
+            </IntlProvider>);
+        const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
+        expect(alert).not.toBeNull();
+    });
+
     it('renders panel with table and table headers and columns', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <InstitutionMembers institution={institution} members={members} onDelete={onDelete}
-                                    onEditUser={onEditUser} onAddNewUser={onAddNewUser}
+                <InstitutionMembers institution={institution} institutionMembers={institutionMembers}
+                                    onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
                                     currentUser={admin}/>
             </IntlProvider>);
         const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
@@ -65,26 +107,26 @@ describe('InstitutionMembers', function () {
         expect(td.length).toEqual(8);
     });
 
-    it('renders panel without table', function () {
+    it('renders panel with text, that no members were found', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <InstitutionMembers institution={institution} members={membersEmpty} onDelete={onDelete}
-                                    onEditUser={onEditUser} onAddNewUser={onAddNewUser}
+                <InstitutionMembers institution={institution} institutionMembers={institutionMembersEmpty}
+                                    onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
                                     currentUser={admin}/>
             </IntlProvider>);
         const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
         expect(panelHeading).not.toBeNull();
         const panelBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel-body');
         expect(panelBody).not.toBeNull();
-        const table = TestUtils.scryRenderedDOMComponentsWithTag(tree,'table');
-        expect(table.length).toEqual(0);
+        const text = TestUtils.scryRenderedDOMComponentsWithTag(tree,'p');
+        expect(text.length).toEqual(1);
     });
 
     it('renders "Add new user" button for admin and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <InstitutionMembers institution={institution} members={membersEmpty} onDelete={onDelete}
-                                    onEditUser={onEditUser} onAddNewUser={onAddNewUser}
+                <InstitutionMembers institution={institution} institutionMembers={institutionMembersEmpty}
+                                    onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
                                     currentUser={admin}/>
             </IntlProvider>);
         const button = TestUtils.findRenderedDOMComponentWithTag(tree, "Button");
@@ -96,8 +138,8 @@ describe('InstitutionMembers', function () {
     it('does not render "Add new user" button for user', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <InstitutionMembers institution={institution} members={membersEmpty} onDelete={onDelete}
-                                    onEditUser={onEditUser} onAddNewUser={onAddNewUser}
+                <InstitutionMembers institution={institution} institutionMembers={institutionMembersEmpty}
+                                    onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
                                     currentUser={user}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
@@ -107,8 +149,8 @@ describe('InstitutionMembers', function () {
     it('renders "Delete" button for admin for deleting user and opens modal when click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <InstitutionMembers institution={institution} members={members} onDelete={onDelete}
-                                    onEditUser={onEditUser} onAddNewUser={onAddNewUser}
+                <InstitutionMembers institution={institution} institutionMembers={institutionMembers}
+                                    onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
                                     currentUser={admin}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
@@ -121,8 +163,8 @@ describe('InstitutionMembers', function () {
     it('does not render "Delete" button for user, renders only open button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <InstitutionMembers institution={institution} members={members} onDelete={onDelete}
-                                    onEditUser={onEditUser} onAddNewUser={onAddNewUser}
+                <InstitutionMembers institution={institution} institutionMembers={institutionMembers}
+                                    onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
                                     currentUser={user}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
