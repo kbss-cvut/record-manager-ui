@@ -10,7 +10,7 @@ export default class UserValidator {
     }
 
     static isPasswordValid(password) {
-        if (!password.currentPassword || !password.newPassword || !password.confirmPassword) {
+        if (!password.newPassword || !password.confirmPassword) {
             return false;
         }
         return true;
