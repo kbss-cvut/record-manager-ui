@@ -68,7 +68,7 @@ describe('Institution', function () {
     });
 
     it('shows loader', function () {
-        recordsLoaded = {
+        institutionLoaded = {
             status: ACTION_STATUS.PENDING
         };
         const tree = TestUtils.renderIntoDocument(

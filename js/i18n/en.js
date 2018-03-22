@@ -101,6 +101,8 @@ module.exports = {
         'institutions.create-institution': 'Create institution',
         'institutions.open-tooltip': 'View and edit details of this institution',
         'institutions.delete-tooltip': 'Delete this institution',
+        'institutions.not-found': 'No institutions were found...',
+        'institutions.loading-error': 'Unable to load institutions. Server responded with {error}.',
 
         'institution.panel-title': 'Institution',
         'institution.name': 'Institution name',
@@ -113,6 +115,8 @@ module.exports = {
         'institution.delete-success': 'Institution deleted successfully',
         'institution.delete-error': 'Unable to delete institution. Server responded with {error}.',
         'institution.load-error': 'Unable to load institution. Server responded with {error}.',
+        'institution.members.not-found': 'No institution\'s members were found...',
+        'institution.members.loading-error': 'Unable to load institution\'s members. Server responded with {error}.',
 
         'records.panel-title': 'Patient records',
         'records.id': 'Id',

@@ -11,7 +11,6 @@ describe('Record', function () {
     const intlData = require('../../../js/i18n/en');
     let record,
         newRecord,
-        loading,
         recordSaved,
         showAlert,
         recordLoaded,
@@ -25,7 +24,6 @@ describe('Record', function () {
         };
 
     beforeEach(() => {
-        loading = false;
         showAlert = false;
         recordLoaded = {
             status: ACTION_STATUS.SUCCESS,
@@ -54,14 +52,15 @@ describe('Record', function () {
     };
 
     it('shows loader', function () {
-        loading = true;
+        recordLoaded = {
+            status: ACTION_STATUS.PENDING
+        };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Record ref={null} handlers={handlers} record={record}
-                        loading={loading} recordLoaded={recordLoaded}
+                <Record ref={null} handlers={handlers} record={record} recordLoaded={recordLoaded}
                         recordSaved={recordSaved} showAlert={showAlert}/>
             </IntlProvider>);
-        const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'mask');
+        const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'loader-spin');
         expect(result).not.toBeNull();
     });
 
@@ -75,8 +74,7 @@ describe('Record', function () {
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Record ref={null} handlers={handlers} record={record}
-                        loading={loading} recordLoaded={recordLoaded}
+                <Record ref={null} handlers={handlers} record={record} recordLoaded={recordLoaded}
                         recordSaved={recordSaved} showAlert={showAlert}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
@@ -86,8 +84,7 @@ describe('Record', function () {
     it("renders record's form empty", function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Record ref={null} handlers={handlers} record={newRecord}
-                        loading={loading} recordLoaded={recordLoaded}
+                <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
                         recordSaved={recordSaved} showAlert={showAlert}/>
             </IntlProvider>);
         const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'input');
@@ -105,8 +102,7 @@ describe('Record', function () {
     it('renders "Save" and "Cancel" buttons', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Record ref={null} handlers={handlers} record={newRecord}
-                        loading={loading} recordLoaded={recordLoaded}
+                <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
                         recordSaved={recordSaved} showAlert={showAlert}/>
             </IntlProvider>);
         let buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
@@ -121,8 +117,7 @@ describe('Record', function () {
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Record ref={null} handlers={handlers} record={newRecord}
-                        loading={loading} recordLoaded={recordLoaded}
+                <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
                         recordSaved={recordSaved} showAlert={showAlert}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-success");
@@ -140,8 +135,7 @@ describe('Record', function () {
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Record ref={null} handlers={handlers} record={newRecord}
-                        loading={loading} recordLoaded={recordLoaded}
+                <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
                         recordSaved={recordSaved} showAlert={showAlert}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
@@ -155,8 +149,7 @@ describe('Record', function () {
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Record ref={null} handlers={handlers} record={newRecord}
-                        loading={loading} recordLoaded={recordLoaded}
+                <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
                         recordSaved={recordSaved} showAlert={showAlert}/>
             </IntlProvider>);
         const loader = TestUtils.findRenderedDOMComponentWithClass(tree, "loader");

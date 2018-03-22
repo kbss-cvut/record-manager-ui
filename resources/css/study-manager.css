@@ -796,7 +796,7 @@ button.reset-filters {
     animation: circleOneAnimation 3s infinite;
 }
 .loader-spin .circle2 {
-    background-color: #5bc0de;
+    background-color: #d9edf7;
     animation: circleTwoAnimation 3s infinite;
 }
 .loader-spin .circle3 {
@@ -804,6 +804,6 @@ button.reset-filters {
     animation: circleThreeAnimation 3s infinite;
 }
 .loader-spin .circle4 {
-    background-color: #5bc0de;
+    background-color: #d9edf7;
     animation: circleFourAnimation 3s infinite;
 }

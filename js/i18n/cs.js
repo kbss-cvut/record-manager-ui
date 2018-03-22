@@ -101,6 +101,8 @@ module.exports = {
         'institutions.create-institution': 'Vytvořit kliniku',
         'institutions.open-tooltip': 'Zobrazit či upravit detaily o této klinice',
         'institutions.delete-tooltip': 'Smazat tuto kliniku',
+        'institutions.not-found': 'Žádná klinika nebyla nalezen...',
+        'institutions.loading-error': 'Kliniky se nepodařilo načíst. Odpověď serveru: {error}.',
 
         'institution.panel-title': 'Klinika',
         'institution.name': 'Název kliniky',

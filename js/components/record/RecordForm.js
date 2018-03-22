@@ -10,6 +10,7 @@ import Mask from '../Mask';
 import Wizard from '../wizard/Wizard';
 import WizardBuilder from '../wizard/generator/WizardBuilder';
 import WizardStore from '../../stores/WizardStore';
+import Loader from "../Loader";
 
 class RecordForm extends React.Component {
     static propTypes = {
@@ -44,11 +45,11 @@ class RecordForm extends React.Component {
     };
 
     render() {
-        if (!this.state.wizardProperties) {
-            return <Mask text={this.i18n('record.form.please-wait')}/>;
-        }
         return <Panel header={<h5>{this.i18n('record.form-title')}</h5>} bsStyle='info'>
-            <Wizard steps={this.state.wizardProperties.steps} enableForwardSkip={true}/>
+            {!this.state.wizardProperties ?
+                <Loader />
+                :
+                <Wizard steps={this.state.wizardProperties.steps} enableForwardSkip={true}/>}
         </Panel>;
     }
 }

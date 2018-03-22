@@ -22,7 +22,6 @@ class RecordController extends React.Component {
         super(props);
         this.state = {
             record: this._isNew() ? EntityFactory.initNewPatientRecord() : null,
-            loading: false,
             saved: false,
             showAlert: false
         };
@@ -35,7 +34,6 @@ class RecordController extends React.Component {
     componentWillMount() {
         const recordKey = this.props.params.key;
         if (!this.state.record) {
-            this.setState({loading: true});
             this.props.loadRecord(recordKey);
         }
         if(this.props.recordSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
@@ -62,10 +60,7 @@ class RecordController extends React.Component {
         if (this.props.recordLoaded.status === ACTION_STATUS.PENDING && nextProps.recordLoaded.status === ACTION_STATUS.SUCCESS) {
             const record = nextProps.recordLoaded.record;
             record.state = RecordState.createRecordState();
-            this.setState({record: record, loading: false});
-        }
-        if (this.props.recordLoaded.status === ACTION_STATUS.PENDING && nextProps.recordLoaded.status === ACTION_STATUS.ERROR) {
-            this.setState({loading: false});
+            this.setState({record: record});
         }
     }
 
@@ -116,8 +111,7 @@ class RecordController extends React.Component {
             onChange: this._onChange
         };
         return <Record ref={(c) => this.recordComponent = c} handlers={handlers} record={this.state.record}
-                       loading={this.state.loading} recordLoaded={recordLoaded}
-                       recordSaved={recordSaved} showAlert={this.state.showAlert}/>;
+                       recordLoaded={recordLoaded} recordSaved={recordSaved} showAlert={this.state.showAlert}/>;
     }
 }
 

@@ -14,11 +14,11 @@ import WizardStore from "../../stores/WizardStore";
 import {FormUtils} from "semforms";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
+import Loader from "../Loader";
 
 class Record extends React.Component {
     static propTypes = {
         record: React.PropTypes.object,
-        loading: React.PropTypes.bool,
         handlers: React.PropTypes.object.isRequired,
         recordSaved: React.PropTypes.object,
         recordLoaded: React.PropTypes.object,
@@ -42,10 +42,11 @@ class Record extends React.Component {
 
     render() {
         const {recordLoaded, recordSaved, showAlert} = this.props;
-        if (this.props.loading || !this.props.record) {
-            return <Mask text={this.i18n('please-wait')}/>;
-        }
-        if (recordLoaded.status === ACTION_STATUS.ERROR) {
+        if (!recordLoaded.status || recordLoaded.status === ACTION_STATUS.PENDING) {
+            return <Panel header={this._renderHeader()} bsStyle='primary'>
+                <Loader />
+            </Panel>;
+        } else if (recordLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('record.load-error', {error: this.props.recordLoaded.error.message})}/>;
         }
@@ -99,7 +100,7 @@ class Record extends React.Component {
         const {record, recordSaved} = this.props;
         return <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
             <Button bsStyle='success' bsSize='small'
-                    disabled={this.props.loading ||this.props.recordSaved.status === ACTION_STATUS.PENDING || this._isFormInvalid() || !record.state.isComplete()}
+                    disabled={this.props.recordSaved.status === ACTION_STATUS.PENDING || this._isFormInvalid() || !record.state.isComplete()}
                     onClick={this.props.handlers.onSave}>
                 {this.i18n('save')}{recordSaved.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
             </Button>
