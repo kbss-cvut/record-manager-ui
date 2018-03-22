@@ -58,8 +58,8 @@ class UsersController extends React.Component {
             onCreate: this._onAddUser,
             onDelete: this._onDeleteUser,
         };
-        return <Users users={usersLoaded.users || []} showAlert={this.state.showAlert} userDeleted={userDeleted}
-                      handlers={handlers} status={usersLoaded.status}/>;
+        return <Users usersLoaded={usersLoaded} showAlert={this.state.showAlert} userDeleted={userDeleted}
+                      handlers={handlers}/>;
 
     }
 }

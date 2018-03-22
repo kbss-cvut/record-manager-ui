@@ -9,14 +9,14 @@ import Mask from '../Mask';
 import UserTable from './UserTable';
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
+import Loader from "../Loader";
 
 class Users extends React.Component {
     static propTypes = {
-        users: React.PropTypes.array,
+        usersLoaded: React.PropTypes.object,
         handlers: React.PropTypes.object.isRequired,
         userDeleted: React.PropTypes.object,
         showAlert: React.PropTypes.bool.isRequired,
-        status: React.PropTypes.string
     };
 
     constructor(props) {
@@ -25,12 +25,17 @@ class Users extends React.Component {
     }
 
     render() {
-        const {users, showAlert, userDeleted, status} = this.props;
-        if (!users.length && status === ACTION_STATUS.PENDING) {
-            return <Mask text={this.i18n('please-wait')}/>;
+        const {usersLoaded, showAlert, userDeleted} = this.props;
+        if(!usersLoaded.users && (!usersLoaded.status || usersLoaded.status === ACTION_STATUS.PENDING)) {
+            return <Panel header={this.i18n('users.panel-title')} bsStyle='primary'>
+                <Loader />
+            </Panel>
+        } else if(usersLoaded.status === ACTION_STATUS.ERROR) {
+            return <AlertMessage type={ALERT_TYPES.DANGER}
+                                 message={this.props.formatMessage('users.loading-error', {error: usersLoaded.error.message})}/>
         }
         return <Panel header={this.i18n('users.panel-title')} bsStyle='primary'>
-            <UserTable {...this.props}/>
+            <UserTable users={usersLoaded.users}{...this.props}/>
             <div>
                 <Button bsStyle='primary'
                         onClick={this.props.handlers.onCreate}>{this.i18n('users.create-user')}</Button>

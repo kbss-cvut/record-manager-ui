@@ -43,12 +43,16 @@ class UserTable extends React.Component {
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
                               show={this.state.showDialog} item={this.state.selectedUser}
                               itemLabel={this._getDeleteLabel()}/>
-            <Table responsive striped bordered condensed hover>
-                {this._renderHeader()}
-                <tbody>
-                {this._renderUsers()}
-                </tbody>
-            </Table>
+            {this.props.users.length > 0 ?
+                <Table responsive striped bordered condensed hover>
+                    {this._renderHeader()}
+                    <tbody>
+                    {this._renderUsers()}
+                    </tbody>
+                </Table>
+                :
+                <p className="font-italic">{this.i18n('users.not-found')}</p>
+            }
         </div>;
     }
 

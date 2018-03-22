@@ -9,10 +9,17 @@ import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
 describe('Users', function () {
     const intlData = require('../../../js/i18n/en');
     let users,
+        usersLoaded,
+        usersLoadedEmpty,
         userDeleted,
         showAlert,
-        handlers,
-        status;
+        handlers;
+
+    users = [{
+        "username":"testman1"
+    }, {
+        "username":"testman2"
+    }];
 
     beforeEach(() => {
         showAlert = false;
@@ -24,49 +31,63 @@ describe('Users', function () {
             onCreate: jasmine.createSpy('onCreate'),
             onDelete: jasmine.createSpy('onDelete')
         };
+        usersLoaded = {
+            status: ACTION_STATUS.SUCCESS,
+            users
+        };
+        usersLoadedEmpty = {
+            status: ACTION_STATUS.SUCCESS,
+            users: []
+        };
     });
 
-    users = [{
-        "uri":"http://vfn.cz/ontologies/study-manager/Admin-Administratorowitch",
-        "firstName":"Test1",
-        "lastName":"Man",
-        "username":"testman1",
-        "institution":{
-            "uri":"http://test.io",
-            "key":"823372507340798303",
-            "name":"Test Institution",
-            "emailAddress":"test@institution.io"
-        },
-        "types":[
-            "http://vfn.cz/ontologies/study-manager/administrator",
-            "http://vfn.cz/ontologies/study-manager/doctor"
-        ]
-    }, {
-        "uri":"http://vfn.cz/ontologies/study-manager/erter-tert",
-        "firstName":"Test2",
-        "lastName":"Man",
-        "username":"testman2",
-        "emailAddress":"test@man.io",
-        "types":[
-            "http://vfn.cz/ontologies/study-manager/doctor"
-        ]
-    }];
-
-    it('is showing loader', function () {
-        status = ACTION_STATUS.PENDING;
+    it('shows loader', function () {
+        usersLoaded = {
+            status: ACTION_STATUS.PENDING
+        };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Users users={[]} showAlert={showAlert}
-                       userDeleted={userDeleted} handlers={handlers} status={status}/>
+                <Users usersLoaded={usersLoaded} showAlert={showAlert}
+                       userDeleted={userDeleted} handlers={handlers}/>
             </IntlProvider>);
-        const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'mask');
+        const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'loader-spin');
         expect(result).not.toBeNull();
+    });
+
+    it('shows error about institutions were not loaded', function () {
+        usersLoaded = {
+            status: ACTION_STATUS.ERROR,
+            error: {
+                message: "Error"
+            }
+        };
+        const tree = TestUtils.renderIntoDocument(
+            <IntlProvider locale="en" {...intlData}>
+                <Users usersLoaded={usersLoaded} showAlert={showAlert}
+                       userDeleted={userDeleted} handlers={handlers}/>
+            </IntlProvider>);
+        const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
+        expect(alert).not.toBeNull();
+    });
+
+    it('renders panel with text, that no users were found', function () {
+        const tree = TestUtils.renderIntoDocument(
+            <IntlProvider locale="en" {...intlData}>
+                <Users usersLoaded={usersLoadedEmpty} showAlert={showAlert}
+                       userDeleted={userDeleted} handlers={handlers}/>
+            </IntlProvider>);
+        const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
+        expect(panelHeading).not.toBeNull();
+        const panelBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel-body');
+        expect(panelBody).not.toBeNull();
+        const text = TestUtils.scryRenderedDOMComponentsWithTag(tree,'p');
+        expect(text.length).toEqual(1);
     });
 
     it('renders panel with table and table headers', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Users users={users} showAlert={showAlert}
+                <Users usersLoaded={usersLoaded} showAlert={showAlert}
                        userDeleted={userDeleted} handlers={handlers}/>
             </IntlProvider>);
         const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
@@ -82,7 +103,7 @@ describe('Users', function () {
    it('renders "Create user" button and click on it', function () {
        const tree = TestUtils.renderIntoDocument(
            <IntlProvider locale="en" {...intlData}>
-               <Users users={users} showAlert={showAlert}
+               <Users usersLoaded={usersLoaded} showAlert={showAlert}
                       userDeleted={userDeleted} handlers={handlers}/>
            </IntlProvider>);
        const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
@@ -100,7 +121,7 @@ describe('Users', function () {
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Users users={users} showAlert={showAlert}
+                <Users usersLoaded={usersLoaded} showAlert={showAlert}
                        userDeleted={userDeleted} handlers={handlers}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-success");
@@ -118,7 +139,7 @@ describe('Users', function () {
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Users users={users} showAlert={showAlert}
+                <Users usersLoaded={usersLoaded} showAlert={showAlert}
                        userDeleted={userDeleted} handlers={handlers}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");

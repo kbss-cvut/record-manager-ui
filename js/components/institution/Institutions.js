@@ -25,7 +25,7 @@ class Institutions extends React.Component {
 
     render() {
         const {showAlert, institutionDeleted, institutionsLoaded} = this.props;
-        if(!institutionsLoaded.records && (!institutionsLoaded.status || institutionsLoaded.status === ACTION_STATUS.PENDING)) {
+        if(!institutionsLoaded.institutions && (!institutionsLoaded.status || institutionsLoaded.status === ACTION_STATUS.PENDING)) {
             return <Panel header={this.i18n('institutions.panel-title')} bsStyle='primary'>
                 <Loader />
             </Panel>
