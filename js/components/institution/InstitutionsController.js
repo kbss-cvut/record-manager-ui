@@ -58,8 +58,8 @@ class InstitutionsController extends React.Component {
             onCreate: this._onAddInstitution,
             onDelete: this._onDeleteInstitution
         };
-        return <Institutions institutions={institutionsLoaded.institutions || []} showAlert={this.state.showAlert}
-                             handlers={handlers} institutionDeleted={institutionDeleted} status={institutionsLoaded.status}/>;
+        return <Institutions institutionsLoaded={institutionsLoaded} showAlert={this.state.showAlert}
+                             handlers={handlers} institutionDeleted={institutionDeleted}/>;
     }
 }
 

@@ -8,24 +8,12 @@ import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
 
 describe('Institutions', function () {
     const intlData = require('../../../js/i18n/en');
-    let currentUser,
-        institutions,
+    let institutionsLoaded,
+        institutionsLoadedEmpty,
         institutionDeleted,
+        institutions,
         showAlert,
-        handlers,
-        status;
-
-    beforeEach(() => {
-        showAlert = false;
-        institutionDeleted = {
-            status: ACTION_STATUS.SUCCESS
-        };
-        handlers = {
-            onEdit: jasmine.createSpy('onEdit'),
-            onCreate: jasmine.createSpy('onCreate'),
-            onDelete: jasmine.createSpy('onDelete')
-        };
-    });
+        handlers;
 
     institutions = [{
         "uri":"http://test1.io",
@@ -39,21 +27,73 @@ describe('Institutions', function () {
         "emailAddress":"test2@institution.io"
     }];
 
+    beforeEach(() => {
+        showAlert = false;
+        institutionDeleted = {
+            status: ACTION_STATUS.SUCCESS
+        };
+        handlers = {
+            onEdit: jasmine.createSpy('onEdit'),
+            onCreate: jasmine.createSpy('onCreate'),
+            onDelete: jasmine.createSpy('onDelete')
+        };
+        institutionsLoaded = {
+            status: ACTION_STATUS.SUCCESS,
+            institutions
+        };
+        institutionsLoadedEmpty = {
+            status: ACTION_STATUS.SUCCESS,
+            institutions: []
+        };
+    });
+
     it('shows loader', function () {
-        status = ACTION_STATUS.PENDING;
+        institutionsLoaded = {
+            status: ACTION_STATUS.PENDING
+        };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Institutions institutions={[]} showAlert={showAlert}
-                       institutionDeleted={institutionDeleted} handlers={handlers} status={status}/>
+                <Institutions institutionsLoaded={institutionsLoaded} showAlert={showAlert}
+                       institutionDeleted={institutionDeleted} handlers={handlers} />
             </IntlProvider>);
-        const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'mask');
+        const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'loader-spin');
         expect(result).not.toBeNull();
+    });
+
+    it('shows error about institutions were not loaded', function () {
+        institutionsLoaded = {
+            status: ACTION_STATUS.ERROR,
+            error: {
+                message: "Error"
+            }
+        };
+        const tree = TestUtils.renderIntoDocument(
+            <IntlProvider locale="en" {...intlData}>
+                <Institutions institutionsLoaded={institutionsLoaded} showAlert={showAlert}
+                              institutionDeleted={institutionDeleted} handlers={handlers} />
+            </IntlProvider>);
+        const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
+        expect(alert).not.toBeNull();
+    });
+
+    it('renders panel with text, that no institutions were found', function () {
+        const tree = TestUtils.renderIntoDocument(
+            <IntlProvider locale="en" {...intlData}>
+                <Institutions institutionsLoaded={institutionsLoadedEmpty} showAlert={showAlert}
+                              institutionDeleted={institutionDeleted} handlers={handlers} />
+            </IntlProvider>);
+        const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
+        expect(panelHeading).not.toBeNull();
+        const panelBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel-body');
+        expect(panelBody).not.toBeNull();
+        const text = TestUtils.scryRenderedDOMComponentsWithTag(tree,'p');
+        expect(text.length).toEqual(1);
     });
 
     it('renders panel with table and institutions', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Institutions institutions={institutions} showAlert={showAlert}
+                <Institutions institutionsLoaded={institutionsLoaded} showAlert={showAlert}
                        institutionDeleted={institutionDeleted} handlers={handlers}/>
             </IntlProvider>);
         const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
@@ -69,7 +109,7 @@ describe('Institutions', function () {
     it('renders "Create institution" button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Institutions institutions={institutions} showAlert={showAlert}
+                <Institutions institutionsLoaded={institutionsLoaded} showAlert={showAlert}
                        institutionDeleted={institutionDeleted} handlers={handlers}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
@@ -86,7 +126,7 @@ describe('Institutions', function () {
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Institutions institutions={institutions} showAlert={showAlert}
+                <Institutions institutionsLoaded={institutionsLoaded} showAlert={showAlert}
                        institutionDeleted={institutionDeleted} handlers={handlers}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-success");
@@ -103,7 +143,7 @@ describe('Institutions', function () {
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Institutions institutions={institutions} showAlert={showAlert}
+                <Institutions institutionsLoaded={institutionsLoaded} showAlert={showAlert}
                        institutionDeleted={institutionDeleted} handlers={handlers}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");

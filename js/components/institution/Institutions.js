@@ -5,18 +5,17 @@ import {Button, Panel} from 'react-bootstrap';
 
 import injectIntl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
-import Mask from '../Mask';
 import InstitutionTable from './InstitutionTable';
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
+import Loader from "../Loader";
 
 class Institutions extends React.Component {
     static propTypes = {
-        institutions: React.PropTypes.array,
+        institutionsLoaded: React.PropTypes.object,
         handlers: React.PropTypes.object.isRequired,
         institutionDeleted: React.PropTypes.object,
-        showAlert: React.PropTypes.bool.isRequired,
-        status: React.PropTypes.string
+        showAlert: React.PropTypes.bool.isRequired
     };
 
     constructor(props) {
@@ -25,12 +24,17 @@ class Institutions extends React.Component {
     }
 
     render() {
-        const {institutions, showAlert, institutionDeleted, status} = this.props;
-        if (!institutions.length && status === ACTION_STATUS.PENDING) {
-            return <Mask text={this.i18n('please-wait')}/>;
+        const {showAlert, institutionDeleted, institutionsLoaded} = this.props;
+        if(!institutionsLoaded.records && (!institutionsLoaded.status || institutionsLoaded.status === ACTION_STATUS.PENDING)) {
+            return <Panel header={this.i18n('institutions.panel-title')} bsStyle='primary'>
+                <Loader />
+            </Panel>
+        } else if(institutionsLoaded.status === ACTION_STATUS.ERROR) {
+            return <AlertMessage type={ALERT_TYPES.DANGER}
+                                 message={this.props.formatMessage('institutions.loading-error', {error: institutionsLoaded.error.message})}/>
         }
         return <Panel header={this.i18n('institutions.panel-title')} bsStyle='primary'>
-            <InstitutionTable {...this.props}/>
+            <InstitutionTable institutions={institutionsLoaded.institutions} {...this.props}/>
             <div>
                 <Button bsStyle='primary'
                         onClick={this.props.handlers.onCreate}>{this.i18n('institutions.create-institution')}</Button>
