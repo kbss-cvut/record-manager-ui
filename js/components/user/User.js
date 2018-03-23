@@ -12,6 +12,7 @@ import AlertMessage from "../AlertMessage";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import {getRole, processInstitutions} from "../../utils/Utils";
 import * as Vocabulary from "../../constants/Vocabulary";
+import Loader from "../Loader";
 
 class User extends React.Component {
     static propTypes = {
@@ -22,7 +23,6 @@ class User extends React.Component {
         userLoaded: React.PropTypes.object,
         currentUser: React.PropTypes.object,
         showAlert: React.PropTypes.bool,
-        usernameDisabled: React.PropTypes.bool,
         institutions: React.PropTypes.array
     };
 
@@ -84,12 +84,13 @@ class User extends React.Component {
 
     render() {
         const {userSaved, userLoaded, currentUser, showAlert, user, handlers} = this.props;
-        if (this.props.loading) {
-            return <Mask text={this.i18n('please-wait')}/>;
-        }
-        if (userLoaded.status === ACTION_STATUS.ERROR) {
+        if (!userLoaded.status || userLoaded.status === ACTION_STATUS.PENDING) {
+            return <Panel header={<h3>{this.i18n('user.panel-title')}</h3>} bsStyle='primary'>
+                <Loader />
+            </Panel>;
+        } else if (userLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
-                                 message={this.props.formatMessage('user.load-error', {error: this.props.userLoaded.error.message})}/>;
+                                 message={this.props.formatMessage('user.load-error', {error: userLoaded.error.message})}/>;
         }
         return <Panel header={<h3>{this.i18n('user.panel-title')}</h3>} bsStyle='primary'>
             <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>

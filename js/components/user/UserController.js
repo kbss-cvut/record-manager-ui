@@ -8,8 +8,7 @@ import I18nWrapper from '../../i18n/I18nWrapper';
 import User from './User';
 import {Routes} from '../../utils/Routes';
 import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
-import {
-    loadInstitutions} from "../../actions/InstitutionsActions";
+import {loadInstitutions} from "../../actions/InstitutionsActions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
@@ -22,7 +21,6 @@ class UserController extends React.Component {
         super(props);
         this.state = {
             user: this._isNew() ? UserFactory.initNewUser() : null,
-            loading: false,
             saved: false,
             showAlert: false
         };
@@ -35,14 +33,12 @@ class UserController extends React.Component {
 
     componentWillMount() {
         if (!this.state.user) {
-            this.setState({loading: true});
             this.props.loadUser(this.props.params.username);
         }
         if(this.institution) {
             this._onChange({institution: this.institution});
         }
         if(this.props.userSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
-            this.setState({showAlert: true});
             this.props.unloadSavedUser();
         }
     }
@@ -68,15 +64,11 @@ class UserController extends React.Component {
                     }
                 });
             } else {
-                this.setState({saved: false});
                 this.props.loadUser(nextProps.userSaved.user.username);
             }
         }
         if (this.props.userLoaded.status === ACTION_STATUS.PENDING && nextProps.userLoaded.status === ACTION_STATUS.SUCCESS) {
-            this.setState({user: nextProps.userLoaded.user, loading: false});
-        }
-        if (this.props.userLoaded.status === ACTION_STATUS.PENDING && nextProps.userLoaded.status === ACTION_STATUS.ERROR) {
-            this.setState({loading: false});
+            this.setState({user: nextProps.userLoaded.user});
         }
     }
 
@@ -133,9 +125,8 @@ class UserController extends React.Component {
             onPasswordChange: this._onPasswordChange
         };
         return <User user={this.state.user} handlers={handlers} backToInstitution={this.institution !== null}
-                     loading={this.state.loading} userSaved={userSaved} showAlert={this.state.showAlert}
-                     userLoaded={userLoaded} currentUser={currentUser}
-                     institutions={institutionsLoaded.institutions || []}/>;
+                     userSaved={userSaved} showAlert={this.state.showAlert} userLoaded={userLoaded}
+                     currentUser={currentUser} institutions={institutionsLoaded.institutions || []}/>;
     }
 }
 

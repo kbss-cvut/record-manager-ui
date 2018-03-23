@@ -13,7 +13,6 @@ describe('User', function () {
         newUser,
         institutions,
         backToInstitution,
-        loading,
         userSaved,
         showAlert,
         userLoaded,
@@ -24,19 +23,6 @@ describe('User', function () {
             onCancel: jasmine.createSpy('onCancel'),
             onChange: jasmine.createSpy('onChange'),
         };
-
-    beforeEach(() => {
-        loading = false;
-        showAlert = false;
-        userLoaded = {
-            status: ACTION_STATUS.SUCCESS,
-            error: ''
-        };
-        userSaved = {
-            status: ACTION_STATUS.SUCCESS,
-            error: ''
-        };
-    });
 
     currentUser = {
         username: 'test',
@@ -98,15 +84,29 @@ describe('User', function () {
         "emailAddress":"test2@institution.io"
     }];
 
-    it('is showing loader', function () {
-        loading = true;
+    beforeEach(() => {
+        showAlert = false;
+        userLoaded = {
+            status: ACTION_STATUS.SUCCESS,
+            error: ''
+        };
+        userSaved = {
+            status: ACTION_STATUS.SUCCESS,
+            error: ''
+        };
+    });
+
+    it('shows loader', function () {
+        userLoaded = {
+            status: ACTION_STATUS.PENDING
+        };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={user} handlers={handlers} backToInstitution={backToInstitution}
-                      loading={loading} userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);
-        const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'mask');
+        const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'loader-spin');
         expect(result).not.toBeNull();
     });
 
@@ -121,7 +121,7 @@ describe('User', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={user} handlers={handlers} backToInstitution={backToInstitution}
-                      loading={loading} userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);
     const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
@@ -132,7 +132,7 @@ describe('User', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
-                      loading={loading} userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert}
                       userLoaded={userLoaded} currentUser={currentUserAdmin} institutions={institutions}/>
             </IntlProvider>);
         const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'input');
@@ -176,7 +176,7 @@ describe('User', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
-                      loading={loading} userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);
         let buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
@@ -197,7 +197,7 @@ describe('User', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
-                      loading={loading} userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-success");
@@ -216,7 +216,7 @@ describe('User', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
-                      loading={loading} userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
@@ -227,7 +227,7 @@ describe('User', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={user} handlers={handlers} backToInstitution={backToInstitution}
-                      loading={loading} userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert}
                       userLoaded={userLoaded} currentUser={currentUserAdmin} institutions={institutions}/>
             </IntlProvider>);
         const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'input');
@@ -269,7 +269,7 @@ describe('User', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={admin} handlers={handlers} backToInstitution={backToInstitution}
-                      loading={loading} userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert}
                       userLoaded={userLoaded} currentUser={currentUserAdmin} institutions={institutions}/>
             </IntlProvider>);
         const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'input');
@@ -311,7 +311,7 @@ describe('User', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={admin} handlers={handlers} backToInstitution={backToInstitution}
-                      loading={loading} userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);
         const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'input');
@@ -350,7 +350,7 @@ describe('User', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
-                      loading={loading} userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
@@ -365,7 +365,7 @@ describe('User', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
-                      loading={loading} userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
@@ -383,7 +383,7 @@ describe('User', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
-                      loading={loading} userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);
         const loader = TestUtils.findRenderedDOMComponentWithClass(tree, "loader");
