@@ -10,6 +10,7 @@ export function initNewUser() {
         username: '',
         emailAddress: '',
         password: Utils.generatePassword(),
+        types: [],
         isAdmin: false,
         isNew: true
     };
