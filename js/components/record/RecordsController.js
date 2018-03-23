@@ -10,7 +10,6 @@ import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import MessageWrapper from "../misc/hoc/MessageWrapper";
 import {deleteRecord} from "../../actions/RecordActions";
 
 class RecordsController extends React.Component {
@@ -63,7 +62,7 @@ class RecordsController extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(MessageWrapper(RecordsController))));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(RecordsController)));
 
 function mapStateToProps(state) {
     return {

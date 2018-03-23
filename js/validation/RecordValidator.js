@@ -2,7 +2,6 @@
 import * as Constants from "../constants/DefaultConstants";
 
 export default class RecordValidator {
-
     static isComplete(record) {
         if (!record) {
             return false;

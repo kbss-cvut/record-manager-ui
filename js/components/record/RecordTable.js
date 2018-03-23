@@ -48,8 +48,6 @@ class RecordTable extends React.Component {
         const {recordsLoaded} = this.props;
         if(!recordsLoaded.records && (!recordsLoaded.status || recordsLoaded.status === ACTION_STATUS.PENDING)) {
             return <Loader />
-        } else if(recordsLoaded.status === ACTION_STATUS.SUCCESS && !recordsLoaded.records.length) {
-            return <p className="font-italic">{this.i18n('records.not-found')}</p>
         } else if(recordsLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('records.loading-error', {error: recordsLoaded.error.message})}/>
@@ -58,12 +56,16 @@ class RecordTable extends React.Component {
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
                               show={this.state.showDialog} item={this.state.selectedRecord}
                               itemLabel={this._getDeleteLabel()}/>
-            <Table  responsive striped bordered condensed hover>
-                {this._renderHeader()}
-                <tbody>
-                {this._renderRows()}
-                </tbody>
-            </Table>
+            {this.props.recordsLoaded.records.length > 0 ?
+                <Table responsive striped bordered condensed hover>
+                    {this._renderHeader()}
+                    <tbody>
+                    {this._renderRows()}
+                    </tbody>
+                </Table>
+                :
+                <p className="font-italic">{this.i18n('records.not-found')}</p>
+            }
         </div>;
     }
 

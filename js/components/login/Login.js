@@ -9,7 +9,7 @@ import Mask from "../Mask";
 import {Routes} from "../../utils/Routes";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
+import {ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {transitionTo} from "../../utils/Routing";
 import {login} from "../../actions/AuthActions";

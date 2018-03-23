@@ -73,6 +73,8 @@ module.exports = {
         'users.delete-tooltip': 'Smazat tohoto uživatele',
         'users.add-new-user': 'Přidat nového uživatele',
         'users.back-to-institution': 'Zpět do instituce',
+        'users.not-found': 'Žádný uživatel nebyl nalezen...',
+        'users.loading-error': 'Uživatele se nepodařilo načíst. Odpověď serveru: {error}.',
 
         'delete.dialog-title': 'Smazat položku?',
         'delete.dialog-content': 'Určitě chcete odstranit {itemLabel}?',

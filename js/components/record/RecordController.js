@@ -4,7 +4,6 @@ import React from 'react';
 import assign from 'object-assign';
 import injectIntl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
-import MessageWrapper from "../misc/hoc/MessageWrapper";
 import Record from './Record';
 import {Routes} from '../../utils/Routes';
 import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
@@ -115,7 +114,7 @@ class RecordController extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(MessageWrapper(RecordController)), {withRef: true}));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(RecordController), {withRef: true}));
 
 function mapStateToProps(state) {
     return {

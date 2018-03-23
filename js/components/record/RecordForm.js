@@ -6,7 +6,6 @@ import {QuestionAnswerProcessor} from 'semforms';
 
 import I18nWrapper from '../../i18n/I18nWrapper';
 import injectIntl from '../../utils/injectIntl';
-import Mask from '../Mask';
 import Wizard from '../wizard/Wizard';
 import WizardBuilder from '../wizard/generator/WizardBuilder';
 import WizardStore from '../../stores/WizardStore';

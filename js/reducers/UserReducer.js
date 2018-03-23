@@ -5,9 +5,6 @@ const initialState = {
     userSaved: {},
     userDeleted: {},
     userLoaded: {},
-    currentUser: {
-        isLoaded: false
-    },
     institutionMembers: {},
     passwordChange: {}
 };

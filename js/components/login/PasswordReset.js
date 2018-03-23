@@ -5,8 +5,7 @@ import {Alert, Button, Form, Panel} from "react-bootstrap";
 import HorizontalInput from "../HorizontalInput";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
-import Mask from "../Mask";
-import Routing, {transitionTo} from "../../utils/Routing";
+import {transitionTo} from "../../utils/Routing";
 import {Routes} from "../../utils/Routes";
 
 class PasswordReset extends React.Component {
@@ -48,9 +47,7 @@ class PasswordReset extends React.Component {
     }
 
     render() {
-        const mask = this.state.mask ? (<Mask text={this.i18n('login.progress-mask')}/>) : null;
         return(<Panel header={<h3>{this.i18n('login.forgot-your-password')}</h3>} bsStyle='info' className="login-panel">
-            {mask}
             <Form horizontal>
                 {this.renderAlert()}
                 <HorizontalInput type='email' name='email' ref={(input) => { this.emailField = input; }}

@@ -6,7 +6,6 @@ import Actions from "../../actions/Actions";
 import Institution from "./Institution";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
-import MessageWrapper from "../misc/hoc/MessageWrapper";
 import {Routes} from "../../utils/Routes";
 import {transitionTo, transitionToWithOpts} from "../../utils/Routing";
 import {connect} from "react-redux";
@@ -147,7 +146,7 @@ class InstitutionController extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(MessageWrapper(InstitutionController))));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(InstitutionController)));
 
 function mapStateToProps(state) {
     return {

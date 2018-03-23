@@ -4,7 +4,6 @@ import React from "react";
 import {Routes} from "../../utils/Routes";
 import {transitionToWithOpts} from "../../utils/Routing";
 import Users from "./Users";
-import MessageWrapper from "../misc/hoc/MessageWrapper";
 import {connect} from "react-redux";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
@@ -64,7 +63,7 @@ class UsersController extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(MessageWrapper(UsersController))));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(UsersController)));
 
 function mapStateToProps(state) {
     return {

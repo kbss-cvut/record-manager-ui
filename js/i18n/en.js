@@ -73,6 +73,8 @@ module.exports = {
         'users.delete-tooltip': 'Delete this user',
         'users.add-new-user': 'Add new user',
         'users.back-to-institution': 'Back to institution',
+        'users.not-found': 'No users were found...',
+        'users.loading-error': 'Unable to users. Server responded with {error}.',
 
         'delete.dialog-title': 'Delete item?',
         'delete.dialog-content': 'Are you sure you want to remove {itemLabel}?',

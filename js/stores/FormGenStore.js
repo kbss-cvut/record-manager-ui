@@ -5,9 +5,9 @@ var jsonld = require('jsonld');
 
 var Actions = require('../actions/Actions');
 var Ajax = require('../utils/Ajax');
-var Logger = require('../utils/Logger');
 
 var options = {};
+import * as Logger from "../utils/Logger";
 
 var FormGenStore = Reflux.createStore({
     init: function () {

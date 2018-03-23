@@ -6,7 +6,6 @@ import injectIntl from '../../utils/injectIntl';
 import {Routes} from '../../utils/Routes';
 import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
 import I18nWrapper from "../../i18n/I18nWrapper";
-import MessageWrapper from "../misc/hoc/MessageWrapper";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 
@@ -66,7 +65,7 @@ class DashboardController extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(MessageWrapper(DashboardController))));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(DashboardController)));
 
 function mapStateToProps(state) {
     return {
