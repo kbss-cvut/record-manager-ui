@@ -54,7 +54,7 @@ import UserController from "./components/user/UserController";
 import {execute} from "./utils/RoutingRules";
 import PasswordReset from "./components/login/PasswordReset";
 import MainView from "./components/MainView";
-import requireAuth from './utils/RequireAuth';
+import requireAuth from './components/misc/hoc/RequireAuth';
 import PasswordChangeController from "./components/user/PasswordChangeController";
 
 function onRouteEnter() {

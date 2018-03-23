@@ -15,6 +15,7 @@ import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants
 import {setTransitionPayload} from "../../actions/RouterActions";
 import {createUser, loadUser, unloadSavedUser, unloadUser, updateUser} from "../../actions/UserActions";
 import * as UserFactory from "../../utils/EntityFactory";
+import omit from 'lodash/omit';
 
 class UserController extends React.Component {
     constructor(props) {
@@ -64,6 +65,7 @@ class UserController extends React.Component {
                     }
                 });
             } else {
+                this.setState({saved: false});
                 this.props.loadUser(nextProps.userSaved.user.username);
             }
         }
@@ -76,8 +78,7 @@ class UserController extends React.Component {
         let user = this.state.user;
         this.setState({saved: true, showAlert: true});
         if (user.isNew || (this._isNew() && this.props.userSaved.status === ACTION_STATUS.ERROR)) {
-            delete user.isNew;
-            this.props.createUser(user);
+            this.props.createUser(omit(user, 'isNew'));
         } else {
             this.props.updateUser(user);
         }

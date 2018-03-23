@@ -16,6 +16,7 @@ import {createRecord, loadRecord, unloadRecord, updateRecord} from "../../action
 import * as EntityFactory from "../../utils/EntityFactory";
 import RecordValidator from "../../validation/RecordValidator";
 import * as RecordState from "../../model/RecordState";
+import omit from 'lodash/omit';
 
 class RecordController extends React.Component {
     constructor(props) {
@@ -74,8 +75,7 @@ class RecordController extends React.Component {
         this.setState({saved: true, showAlert: true});
         record.question = this.recordComponent.refs.wrappedInstance.getWrappedComponent().getFormData();
         if (record.isNew) {
-            delete record.isNew;
-            this.props.createRecord(record, currentUser);
+            this.props.createRecord(omit(record, 'isNew'), currentUser);
         } else {
             this.props.updateRecord(record, currentUser);
         }

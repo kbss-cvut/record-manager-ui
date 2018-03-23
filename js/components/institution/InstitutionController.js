@@ -22,6 +22,7 @@ import {
 } from "../../actions/InstitutionActions";
 import * as EntityFactory from "../../utils/EntityFactory";
 import {loadRecords} from "../../actions/RecordsActions";
+import omit from 'lodash/omit';
 
 class InstitutionController extends React.Component {
     constructor(props) {
@@ -82,8 +83,7 @@ class InstitutionController extends React.Component {
         const institution = this.state.institution;
         this.setState({saved: true, showAlert: true});
         if (institution.isNew || (this._isNew() && this.props.institutionSaved.status === ACTION_STATUS.ERROR)) {
-            delete institution.isNew;
-            this.props.createInstitution(institution);
+            this.props.createInstitution(omit(institution, 'isNew'));
         } else {
             this.props.updateInstitution(institution);
         }
