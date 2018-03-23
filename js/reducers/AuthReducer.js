@@ -4,22 +4,30 @@ import {ACTION_STATUS} from "../constants/DefaultConstants";
 
 const initialState = {
     authenticated: false,
+    loggingIn: false,
     isLoaded: false,
     user: {},
 };
 
 export default function (state = initialState, action) {
     switch (action.type) {
-        case ActionConstants.AUTH_USER:
+        case ActionConstants.AUTH_USER_PENDING:
+            return {
+                ...state,
+                loggingIn: true
+            };
+        case ActionConstants.AUTH_USER_SUCCESS:
             return {
                 ...state,
                 error: '',
-                authenticated: true
+                authenticated: true,
+                loggingIn: false
             };
         case ActionConstants.AUTH_USER_ERROR:
             return {
                 ...state,
-                error: action.error
+                error: action.error,
+                loggingIn: false
             };
         case ActionConstants.LOAD_USER_PROFILE_PENDING:
             return {

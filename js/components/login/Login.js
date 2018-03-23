@@ -77,8 +77,9 @@ class Login extends React.Component {
                 </div>
                 <div className="login-buttons">
                     <Button bsStyle='success' bsSize='large' onClick={this.login}
-                            disabled={this.props.status === ACTION_STATUS.PENDING}>{this.i18n('login.submit')}</Button>
-                    {/*TODO i18n forgot password, click*/}
+                            disabled={this.props.loggingIn}>
+                        {this.i18n('login.submit')}{this.props.loggingIn && <div className="loader"></div>}
+                        </Button>
                 </div>
             </Form>
         </Panel>
@@ -90,6 +91,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapp
 
 function mapStateToProps(state) {
     return {
+        loggingIn: state.auth.loggingIn,
         status: state.auth.status,
         error: state.auth.error
     };

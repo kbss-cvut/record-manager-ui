@@ -5,6 +5,7 @@ import * as ActionConstants from "../constants/ActionConstants";
 
 export function login(username, password) {
     return function (dispatch) {
+        dispatch(userAuthPending());
         axiosBackend.post('j_spring_security_check', `username=${username}&password=${password}`,
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).then((response) => {
@@ -22,9 +23,15 @@ export function login(username, password) {
     }
 }
 
+export function userAuthPending() {
+    return {
+        type: ActionConstants.AUTH_USER_PENDING
+    }
+}
+
 export function userAuthSuccess() {
     return {
-        type: ActionConstants.AUTH_USER
+        type: ActionConstants.AUTH_USER_SUCCESS
     }
 }
 
@@ -62,6 +69,7 @@ export function loadUserProfile() {
         axiosBackend.get('rest/users/current').then((response) => {
             dispatch(loadUserProfileSuccess(response.data));
         }).catch ((error) => {
+            console.log(error);
             dispatch(loadUserProfileError(error.response.data));
         });
     }

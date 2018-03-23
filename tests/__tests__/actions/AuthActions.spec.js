@@ -12,7 +12,7 @@ describe('Auth synchronize actions', function () {
 
     it('creates an action that user was authenticated', () => {
         const expectedAction = {
-            type: ActionConstants.AUTH_USER
+            type: ActionConstants.AUTH_USER_SUCCESS
         };
         expect(actions.userAuthSuccess()).toEqual(expectedAction)
     });
@@ -75,7 +75,7 @@ describe('Auth asynchronize actions', function () {
         store = mockStore();
     });
 
-    it('creates AUTH_USER action when logging in successfully is done', function (done) {
+    it('creates AUTH_USER_SUCCESS action when logging in successfully is done', function (done) {
         const reply = {
             errorMessage: null,
             loggedIn: true,
@@ -83,7 +83,7 @@ describe('Auth asynchronize actions', function () {
             username: "test"
         };
         const expectedActions = [
-            { type: ActionConstants.AUTH_USER },
+            { type: ActionConstants.AUTH_USER_SUCCESS },
             { type: ActionConstants.LOAD_USER_PROFILE_PENDING },
             { type: ActionConstants.LOAD_USER_PROFILE_SUCCESS, user}
         ];

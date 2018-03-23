@@ -16,14 +16,14 @@ describe('AuthReducer', function () {
             message: 'An error has occurred.'
         };
 
-    it('handles AUTH_USER', () => {
+    it('handles AUTH_USER_SUCCESS', () => {
         const initialState = {
             authenticated: false,
             isLoaded: false,
             testEntry: "should not touch"
         };
         const action = {
-            type: ActionConstants.AUTH_USER,
+            type: ActionConstants.AUTH_USER_SUCCESS,
         };
 
         const newState = AuthReducer(initialState, action);
