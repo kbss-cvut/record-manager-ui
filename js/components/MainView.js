@@ -44,7 +44,7 @@ class MainView extends React.Component {
             <div>
                 {this.props.location.pathname !== `/${Routes.login.path}` &&
                 <header>
-                    <Navbar>
+                    <Navbar collapseOnSelect>
                         <Navbar.Header>
                         <Navbar.Brand>
                             <a href={`/#/${Routes.dashboard.path}`}>{Constants.APP_NAME}</a>
