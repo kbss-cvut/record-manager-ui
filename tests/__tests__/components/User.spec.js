@@ -102,7 +102,7 @@ describe('User', function () {
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <User user={user} handlers={handlers} backToInstitution={backToInstitution}
+                <User user={null} handlers={handlers} backToInstitution={backToInstitution}
                       userSaved={userSaved} showAlert={showAlert}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);

@@ -57,7 +57,7 @@ describe('Record', function () {
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Record ref={null} handlers={handlers} record={record} recordLoaded={recordLoaded}
+                <Record ref={null} handlers={handlers} record={null} recordLoaded={recordLoaded}
                         recordSaved={recordSaved} showAlert={showAlert}/>
             </IntlProvider>);
         const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'loader-spin');

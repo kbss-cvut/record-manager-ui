@@ -4,7 +4,7 @@ import {ACTION_STATUS} from "../constants/DefaultConstants";
 
 const initialState = {
     authenticated: false,
-    loggingIn: false,
+    isLogging: false,
     isLoaded: false,
     user: {},
 };
@@ -14,20 +14,20 @@ export default function (state = initialState, action) {
         case ActionConstants.AUTH_USER_PENDING:
             return {
                 ...state,
-                loggingIn: true
+                isLogging: true
             };
         case ActionConstants.AUTH_USER_SUCCESS:
             return {
                 ...state,
                 error: '',
                 authenticated: true,
-                loggingIn: false
+                isLogging: false
             };
         case ActionConstants.AUTH_USER_ERROR:
             return {
                 ...state,
                 error: action.error,
-                loggingIn: false
+                isLogging: false
             };
         case ActionConstants.LOAD_USER_PROFILE_PENDING:
             return {

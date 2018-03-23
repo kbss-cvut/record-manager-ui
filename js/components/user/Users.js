@@ -7,7 +7,7 @@ import I18nWrapper from '../../i18n/I18nWrapper';
 import UserTable from './UserTable';
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
-import Loader, {LoaderPanel} from "../Loader";
+import {LoaderPanel} from "../Loader";
 
 class Users extends React.Component {
     static propTypes = {

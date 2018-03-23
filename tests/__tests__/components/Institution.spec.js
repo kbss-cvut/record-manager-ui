@@ -73,7 +73,7 @@ describe('Institution', function () {
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Institution handlers={handlers} institution={institution} institutionMembers={institutionMembers}
+                <Institution handlers={handlers} institution={null} institutionMembers={institutionMembers}
                              recordsLoaded={recordsLoaded} showAlert={showAlert}
                              currentUser={admin} institutionLoaded={institutionLoaded}
                              institutionSaved={institutionSaved}/>

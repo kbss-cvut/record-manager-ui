@@ -16,10 +16,33 @@ describe('AuthReducer', function () {
             message: 'An error has occurred.'
         };
 
+    it('handles AUTH_USER_PENDING', () => {
+        const initialState = {
+            authenticated: false,
+            isLoaded: false,
+            isLogging: false,
+            testEntry: "should not touch"
+        };
+        const action = {
+            type: ActionConstants.AUTH_USER_PENDING,
+        };
+
+        const newState = AuthReducer(initialState, action);
+
+        const expectedState = {
+            authenticated: false,
+            isLoaded: false,
+            isLogging: true,
+            testEntry: initialState.testEntry
+        };
+        expect(newState).toEqual(expectedState);
+    });
+
     it('handles AUTH_USER_SUCCESS', () => {
         const initialState = {
             authenticated: false,
             isLoaded: false,
+            isLogging: true,
             testEntry: "should not touch"
         };
         const action = {
@@ -32,6 +55,7 @@ describe('AuthReducer', function () {
             error: '',
             authenticated: true,
             isLoaded: false,
+            isLogging: false,
             testEntry: initialState.testEntry
         };
         expect(newState).toEqual(expectedState);
@@ -41,6 +65,7 @@ describe('AuthReducer', function () {
         const initialState = {
             authenticated: false,
             isLoaded: false,
+            isLogging: true,
             testEntry: "should not touch"
         };
         const action = {
@@ -54,6 +79,7 @@ describe('AuthReducer', function () {
             testEntry: "should not touch",
             authenticated: false,
             isLoaded: false,
+            isLogging: false,
             error
         };
         expect(newState).toEqual(expectedState);

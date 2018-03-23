@@ -69,7 +69,6 @@ export function loadUserProfile() {
         axiosBackend.get('rest/users/current').then((response) => {
             dispatch(loadUserProfileSuccess(response.data));
         }).catch ((error) => {
-            console.log(error);
             dispatch(loadUserProfileError(error.response.data));
         });
     }

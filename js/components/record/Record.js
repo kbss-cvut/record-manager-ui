@@ -67,7 +67,7 @@ class Record extends React.Component {
     }
 
     _renderHeader() {
-        const name = this.props.record.localName ? this.props.record.localName : '';
+        const name = this.props.record && this.props.record.localName ? this.props.record.localName : '';
         return <h3>
             <FormattedMessage id='record.panel-title' values={{identifier: name}}/>
         </h3>;
