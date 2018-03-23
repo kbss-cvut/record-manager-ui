@@ -6,13 +6,12 @@ import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import Input from "../Input";
 import HorizontalInput from "../HorizontalInput";
-import Mask from "../Mask";
 import UserValidator from "../../validation/UserValidator";
 import AlertMessage from "../AlertMessage";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import {getRole, processInstitutions} from "../../utils/Utils";
 import * as Vocabulary from "../../constants/Vocabulary";
-import Loader from "../Loader";
+import {LoaderPanel} from "../Loader";
 
 class User extends React.Component {
     static propTypes = {
@@ -84,10 +83,8 @@ class User extends React.Component {
 
     render() {
         const {userSaved, userLoaded, currentUser, showAlert, user, handlers} = this.props;
-        if (!userLoaded.status || userLoaded.status === ACTION_STATUS.PENDING) {
-            return <Panel header={<h3>{this.i18n('user.panel-title')}</h3>} bsStyle='primary'>
-                <Loader />
-            </Panel>;
+        if (!user && (!userLoaded.status || userLoaded.status === ACTION_STATUS.PENDING)) {
+            return <LoaderPanel header={<h3>{this.i18n('user.panel-title')}</h3>} />;
         } else if (userLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('user.load-error', {error: userLoaded.error.message})}/>;

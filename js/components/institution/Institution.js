@@ -12,7 +12,7 @@ import HorizontalInput from "../HorizontalInput";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import {formatDate} from "../../utils/Utils";
 import AlertMessage from "../AlertMessage";
-import Loader from "../Loader";
+import {LoaderPanel} from "../Loader";
 
 /**
  * Institution detail. Editable only for admins.
@@ -42,10 +42,8 @@ class Institution extends React.Component {
 
     render() {
         const {showAlert, currentUser, institution, recordsLoaded, institutionLoaded, institutionSaved} = this.props;
-        if (!institutionLoaded.status || institutionLoaded.status === ACTION_STATUS.PENDING) {
-            return <Panel header={<h3>{this.i18n('institution.panel-title')}</h3>} bsStyle='primary'>
-                <Loader />
-            </Panel>;
+        if (!institution && (!institutionLoaded.status || institutionLoaded.status === ACTION_STATUS.PENDING)) {
+            return <LoaderPanel header={<h3>{this.i18n('institution.panel-title')}</h3>}/>;
         } else if(institutionLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('institution.load-error', {error: institutionLoaded.error.message})}/>;

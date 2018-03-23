@@ -1,4 +1,5 @@
 import React from 'react';
+import {Panel} from "react-bootstrap";
 
 const Loader = () => (
     <div className="loader-spin">
@@ -12,3 +13,17 @@ const Loader = () => (
 );
 
 export default Loader;
+
+export const LoaderMask = () => (
+    <div className='mask'>
+        <div className='spinner-container'>
+            <Loader/>
+        </div>
+    </div>
+);
+
+export const LoaderPanel = (props) => (
+    <Panel header={props.header} bsStyle='primary'>
+        <Loader/>
+    </Panel>
+);

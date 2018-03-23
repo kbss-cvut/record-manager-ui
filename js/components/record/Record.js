@@ -6,7 +6,6 @@ import {FormattedMessage} from "react-intl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import HorizontalInput from "../HorizontalInput";
-import Mask from "../Mask";
 import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
 import RequiredAttributes from "./RequiredAttributes";
@@ -14,7 +13,7 @@ import WizardStore from "../../stores/WizardStore";
 import {FormUtils} from "semforms";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
-import Loader from "../Loader";
+import {LoaderPanel} from "../Loader";
 
 class Record extends React.Component {
     static propTypes = {
@@ -41,16 +40,13 @@ class Record extends React.Component {
     };
 
     render() {
-        const {recordLoaded, recordSaved, showAlert} = this.props;
-        if (!recordLoaded.status || recordLoaded.status === ACTION_STATUS.PENDING) {
-            return <Panel header={this._renderHeader()} bsStyle='primary'>
-                <Loader />
-            </Panel>;
+        const {recordLoaded, recordSaved, showAlert, record} = this.props;
+        if (!record && (!recordLoaded.status || recordLoaded.status === ACTION_STATUS.PENDING)) {
+            return <LoaderPanel header={this._renderHeader()} bsStyle='primary' />;
         } else if (recordLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('record.load-error', {error: this.props.recordLoaded.error.message})}/>;
         }
-        const record = this.props.record;
         return <Panel header={this._renderHeader()} bsStyle='primary'>
             <form className='form-horizontal'>
                 <RequiredAttributes record={record} onChange={this._onChange} completed={record.state.isComplete()}/>

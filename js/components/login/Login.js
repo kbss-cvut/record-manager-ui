@@ -5,7 +5,6 @@ import {Button, Form, Panel} from "react-bootstrap";
 import HorizontalInput from "../HorizontalInput";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
-import Mask from "../Mask";
 import {Routes} from "../../utils/Routes";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -44,7 +43,7 @@ class Login extends React.Component {
 
     login = () => {
         this.props.login(this.state.username, this.state.password);
-        this.setState({mask: true, showAlert: true});
+        this.setState({showAlert: true});
     };
 
     onForgotPassword = () => {
@@ -52,10 +51,8 @@ class Login extends React.Component {
     };
 
     render() {
-        const mask = this.props.status === ACTION_STATUS.PENDING ? (<Mask text={this.i18n('login.progress-mask')}/>) : null;
         return(
             <Panel header={<h3>{this.i18n('login.title')}</h3>} bsStyle='info' className="login-panel">
-                {mask}
                 {this.state.showAlert && this.props.error &&
                     <div>
                         <AlertMessage type={ALERT_TYPES.DANGER}
