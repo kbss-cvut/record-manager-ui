@@ -80,7 +80,7 @@ class UserController extends React.Component {
         if (user.isNew || (this._isNew() && this.props.userSaved.status === ACTION_STATUS.ERROR)) {
             this.props.createUser(omit(user, 'isNew'));
         } else {
-            this.props.updateUser(user);
+            this.props.updateUser(user, this.props.currentUser);
         }
     };
 

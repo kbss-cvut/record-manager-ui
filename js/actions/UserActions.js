@@ -1,4 +1,4 @@
-import {ACTION_FLAG} from "../constants/DefaultConstants";
+import {ACTION_FLAG, ROLE} from "../constants/DefaultConstants";
 import {axiosBackend} from "./index";
 import * as ActionConstants from "../constants/ActionConstants";
 import {loadUsers} from "./UsersActions";
@@ -18,7 +18,7 @@ export function createUser(user) {
     }
 }
 
-export function updateUser(user) {
+export function updateUser(user, currentUser) {
     //console.log("Updating user: ", user);
     return function (dispatch) {
         dispatch(saveUserPending(ACTION_FLAG.UPDATE_ENTITY));
@@ -26,7 +26,9 @@ export function updateUser(user) {
             ...user
         }).then(() => {
             dispatch(saveUserSuccess(user, ACTION_FLAG.UPDATE_ENTITY));
-            dispatch(loadUsers());
+            if (currentUser.role === ROLE.ADMIN){
+                dispatch(loadUsers());
+            }
         }).catch((error) => {
             dispatch(saveUserError(error.response.data, user, ACTION_FLAG.UPDATE_ENTITY));
         });

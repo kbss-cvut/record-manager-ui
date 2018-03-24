@@ -2,7 +2,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import * as ActionConstants from "../../../js/constants/ActionConstants";
 import MockAdapter from 'axios-mock-adapter';
-import {ACTION_FLAG} from "../../../js/constants/DefaultConstants";
+import {ACTION_FLAG, ROLE} from "../../../js/constants/DefaultConstants";
 import {TEST_TIMEOUT} from "../../constants/DefaultTestConstants";
 import {axiosBackend} from "../../../js/actions";
 import {
@@ -175,6 +175,9 @@ describe('User asynchronize actions', function () {
         password = {
             newPassword: 'aaaa',
             currentPassword: '1234'
+        },
+        currentUserAdmin = {
+            role: ROLE.ADMIN
         };
 
     beforeEach(() => {
@@ -228,7 +231,7 @@ describe('User asynchronize actions', function () {
         MockApi.onPut(`rest/users/${user.username}`).reply(200);
         MockApi.onGet('rest/users').reply(200, users);
 
-        store.dispatch(updateUser(user));
+        store.dispatch(updateUser(user, currentUserAdmin));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -244,7 +247,7 @@ describe('User asynchronize actions', function () {
 
         MockApi.onPut(`rest/users/${user.username}`).reply(400, error);
 
-        store.dispatch(updateUser(user));
+        store.dispatch(updateUser(user, currentUserAdmin));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
