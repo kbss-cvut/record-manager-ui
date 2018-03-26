@@ -23,7 +23,7 @@ export const LoaderMask = () => (
 );
 
 export const LoaderPanel = (props) => (
-    <Panel header={props.header} bsStyle='primary'>
+    <Panel header={<span>{props.header}</span>} bsStyle='primary'>
         <Loader/>
     </Panel>
 );
