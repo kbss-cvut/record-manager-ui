@@ -466,6 +466,12 @@ ul.event-type {
     margin-bottom: 0.5em;
 }
 
+@media screen and (min-width: 1199px){
+    .notice-small {
+        margin-left: 4.7%;
+    }
+}
+
 .report-type-icon {
     width: 24px;
     height: 24px;
@@ -593,7 +599,7 @@ button.reset-filters {
     margin-top: 7px
 }
 
-@media screen and (max-width: 767px){
+@media screen and (max-width: 1199px){
     .glyphicon-question-sign {
         margin-top: 30px
     }
