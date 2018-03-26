@@ -16,6 +16,7 @@ import {setTransitionPayload} from "../../actions/RouterActions";
 import {createUser, loadUser, unloadSavedUser, unloadUser, updateUser} from "../../actions/UserActions";
 import * as UserFactory from "../../utils/EntityFactory";
 import omit from 'lodash/omit';
+import {loadUsers} from "../../actions/UsersActions";
 
 class UserController extends React.Component {
     constructor(props) {
@@ -35,6 +36,9 @@ class UserController extends React.Component {
     componentWillMount() {
         if (!this.state.user) {
             this.props.loadUser(this.props.params.username);
+        }
+        if (this.state.user && this.state.user.isNew) {
+            this.props.loadUsers()
         }
         if(this.institution) {
             this._onChange({institution: this.institution});
@@ -116,7 +120,7 @@ class UserController extends React.Component {
     }
 
     render() {
-        const {currentUser, userSaved, userLoaded, institutionsLoaded} = this.props;
+        const {currentUser, userSaved, userLoaded, institutionsLoaded, usersLoaded} = this.props;
         if (!currentUser) {
             return null;
         }
@@ -128,7 +132,8 @@ class UserController extends React.Component {
         };
         return <User user={this.state.user} handlers={handlers} backToInstitution={this.institution !== null}
                      userSaved={userSaved} showAlert={this.state.showAlert} userLoaded={userLoaded}
-                     currentUser={currentUser} institutions={institutionsLoaded.institutions || []}/>;
+                     currentUser={currentUser} institutions={institutionsLoaded.institutions || []}
+                     usersLoaded={usersLoaded}/>;
     }
 }
 
@@ -138,6 +143,7 @@ function mapStateToProps(state) {
     return {
         userSaved: state.user.userSaved,
         userLoaded: state.user.userLoaded,
+        usersLoaded: state.users.usersLoaded,
         currentUser: state.auth.user,
         institutionsLoaded: state.institutions.institutionsLoaded,
         transitionPayload: state.router.transitionPayload,
@@ -150,6 +156,7 @@ function mapDispatchToProps(dispatch) {
         createUser: bindActionCreators(createUser, dispatch),
         updateUser: bindActionCreators(updateUser, dispatch),
         loadUser: bindActionCreators(loadUser, dispatch),
+        loadUsers: bindActionCreators(loadUsers, dispatch),
         unloadUser: bindActionCreators(unloadUser, dispatch),
         unloadSavedUser: bindActionCreators(unloadSavedUser, dispatch),
         loadInstitutions: bindActionCreators(loadInstitutions, dispatch),

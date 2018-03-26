@@ -1,10 +1,9 @@
 'use strict';
 
 import React from "react";
-import {Button, Panel} from "react-bootstrap";
+import {Button, Glyphicon, Panel} from "react-bootstrap";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
-import Input from "../Input";
 import HorizontalInput from "../HorizontalInput";
 import UserValidator from "../../validation/UserValidator";
 import AlertMessage from "../AlertMessage";
@@ -22,7 +21,8 @@ class User extends React.Component {
         userLoaded: React.PropTypes.object,
         currentUser: React.PropTypes.object,
         showAlert: React.PropTypes.bool,
-        institutions: React.PropTypes.array
+        institutions: React.PropTypes.array,
+        usersLoaded: React.PropTypes.object
     };
 
     constructor(props) {
@@ -47,9 +47,9 @@ class User extends React.Component {
     };
 
     _onAdminStatusChange = (e) => {
-        const isAdmin = e.target.checked;
+        const role = e.target.value;
         let types = this.props.user.types.slice();
-        if (isAdmin) {
+        if (role === ROLE.ADMIN) {
             types.push(Vocabulary.ADMIN_TYPE);
         } else {
             types.splice(types.indexOf(Vocabulary.ADMIN_TYPE), 1);
@@ -71,24 +71,45 @@ class User extends React.Component {
         return options;
     };
 
+    _generateRolesOptions = () => {
+        const roles = ROLE;
+        return Object.keys(roles).map(key => {
+            return <option key={roles[key]} value={roles[key]}>{roles[key]}</option>
+        });
+    };
+
+    _generateUsername = () => {
+        const change = {
+            username: `${getRole(this.props.user)}${this.props.usersLoaded.users.length}`.toLowerCase()
+        };
+        this.props.handlers.onChange(change);
+    };
+
     _passwordChange() {
         const {user, currentUser, handlers} = this.props;
         if (user.isNew || (currentUser.username !== user.username && currentUser.role !== ROLE.ADMIN)) {
             return null;
         } else {
-            return <Button style={{margin: '0 0.3em 0 0'}} bsStyle='info' bsSize='small' ref='submit'
+            return <Button style={{margin: '0 0.3em 0 0'}} bsStyle='primary' bsSize='small' ref='submit'
                            onClick={handlers.onPasswordChange}>{this.i18n('user.password-change')}</Button>;
         }
     }
 
     render() {
-        const {userSaved, userLoaded, currentUser, showAlert, user, handlers} = this.props;
+        const {userSaved, usersLoaded, userLoaded, currentUser, showAlert, user, handlers} = this.props;
         if (!user && (!userLoaded.status || userLoaded.status === ACTION_STATUS.PENDING)) {
             return <LoaderPanel header={<span>{this.i18n('user.panel-title')}</span>} />;
         } else if (userLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('user.load-error', {error: userLoaded.error.message})}/>;
         }
+        const generateButton = user.isNew &&
+            <Button bsStyle='link' bsSize='small' onClick={this._generateUsername}
+                    disabled={!usersLoaded.status || usersLoaded.status === ACTION_STATUS.PENDING ||
+                               usersLoaded.status === ACTION_STATUS.ERROR}>
+                <Glyphicon glyph="random" />
+            </Button>;
+
         return <Panel header={<span>{this.i18n('user.panel-title')}</span>} bsStyle='primary'>
             <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
                 <div className='row'>
@@ -106,8 +127,9 @@ class User extends React.Component {
                 <div className='row'>
                     <div className='col-xs-6'>
                         <HorizontalInput type='text' name='username' label={this.i18n('user.username')}
-                                         disabled={userLoaded.status === ACTION_STATUS.SUCCESS}
-                                         value={user.username} labelWidth={3} inputWidth={8} onChange={this._onChange}/>
+                                         disabled={!user.isNew}
+                                         value={user.username} labelWidth={3} inputWidth={8} onChange={this._onChange}
+                                         iconRight={user.isNew ? generateButton : null} />
                     </div>
                     <div className='col-xs-6'>
                         <HorizontalInput type='email' name='emailAddress' label={this.i18n('users.email')}
@@ -117,32 +139,30 @@ class User extends React.Component {
                 </div>
                 <div className='row'>
                     <div className='col-xs-6'>
-                        <HorizontalInput type='text' name='password' label={this.i18n('user.password')}
-                                         readOnly={true} value={user.password}
-                                         labelWidth={3} inputWidth={8}/>
-                    </div>
-                </div>
-                {currentUser.role === ROLE.ADMIN &&
-                <div className='row'>
-                    <div className='col-xs-6'>
                         <HorizontalInput type='select' name='institution' label={this.i18n('institution.panel-title')}
                                          onChange={this._onInstitutionSelected}
+                                         disabled={currentUser.role !== ROLE.ADMIN}
                                          value={user.institution ? user.institution.uri : ''}
                                          labelWidth={3} inputWidth={8}>
                             {this._generateInstitutionsOptions()}
                         </HorizontalInput>
                     </div>
+                    <div className='col-xs-6'>
+                        <HorizontalInput type='select' name='role' label="Role"
+                                         onChange={this._onAdminStatusChange}
+                                         disabled={currentUser.role !== ROLE.ADMIN}
+                                         value={getRole(user)}
+                                         labelWidth={3} inputWidth={8}>
+                            {this._generateRolesOptions()}
+                        </HorizontalInput>
+                    </div>
                 </div>
-                }
-                {currentUser.role === ROLE.ADMIN &&
+                {user.isNew &&
                 <div className='row'>
-                    <div className='col-xs-4'>
-                        <div className='col-xs-4'>&nbsp;</div>
-                        <div className='col-xs-8' style={{padding: '0 0 0 25px'}}>
-                            <Input type='checkbox' checked={getRole(user) === ROLE.ADMIN}
-                                   onChange={this._onAdminStatusChange}
-                                   label={this.i18n('user.is-admin')} inline={true}/>
-                        </div>
+                    <div className='col-xs-6'>
+                        <HorizontalInput type='text' name='password' label={this.i18n('user.password')}
+                                         readOnly={true} value={user.password}
+                                         labelWidth={3} inputWidth={8}/>
                     </div>
                 </div>
                 }

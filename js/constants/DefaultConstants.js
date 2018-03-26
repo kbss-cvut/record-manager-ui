@@ -88,7 +88,7 @@ export const ACTION_STATUS = {
 };
 
 export const ROLE = {
-    ADMIN: 'ADMIN',
-    DOCTOR: 'DOCTOR'
+    ADMIN: 'Admin',
+    DOCTOR: 'Doctor'
 };
 

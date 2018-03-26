@@ -819,3 +819,7 @@ button.reset-filters {
     background-color: #d9edf7;
     animation: circleFourAnimation 3s infinite;
 }
+
+.input-group-addon {
+    padding: 0;
+}
