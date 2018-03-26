@@ -10,7 +10,7 @@ import RecordTable from '../record/RecordTable';
 const InstitutionPatients = (props) => {
     const { recordsLoaded, onEdit } = props;
 
-    return <Panel header={<h3>{props.i18n('institution.patients.panel-title')}</h3>} bsStyle='info'>
+    return <Panel header={<span>{props.i18n('institution.patients.panel-title')}</span>} bsStyle='info'>
         <RecordTable recordsLoaded={recordsLoaded} handlers={{onEdit: onEdit}} disableDelete={true} />
     </Panel>;
 };

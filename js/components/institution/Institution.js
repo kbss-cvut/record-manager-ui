@@ -43,12 +43,12 @@ class Institution extends React.Component {
     render() {
         const {showAlert, currentUser, institution, recordsLoaded, institutionLoaded, institutionSaved} = this.props;
         if (!institution && (!institutionLoaded.status || institutionLoaded.status === ACTION_STATUS.PENDING)) {
-            return <LoaderPanel header={<h3>{this.i18n('institution.panel-title')}</h3>}/>;
+            return <LoaderPanel header={<span>{this.i18n('institution.panel-title')}</span>}/>;
         } else if(institutionLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('institution.load-error', {error: institutionLoaded.error.message})}/>;
         }
-        return <Panel header={<h3>{this.i18n('institution.panel-title')}</h3>} bsStyle='primary'>
+        return <Panel header={<span>{this.i18n('institution.panel-title')}</span>} bsStyle='primary'>
             <form className='form-horizontal' style={{margin: '0.5em 0 1.5em 0'}}>
                 <div className='row'>
                     <div className='col-xs-6'>

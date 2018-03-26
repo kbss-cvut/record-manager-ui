@@ -53,6 +53,8 @@ class Record extends React.Component {
                 {this._renderInstitution()}
                 <RecordProvenance record={record}/>
             </form>
+            {this._renderForm()}
+            {this._renderButtons()}
             {showAlert && recordSaved.status === ACTION_STATUS.ERROR &&
             <div>
                 <AlertMessage type={ALERT_TYPES.DANGER}
@@ -61,29 +63,12 @@ class Record extends React.Component {
             </div>}
             {showAlert && recordSaved.status === ACTION_STATUS.SUCCESS &&
             <div><AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('record.save-success')}/><br/></div>}
-            {this._renderForm()}
-            {this._renderButtons()}
         </Panel>;
     }
 
     _renderHeader() {
         const name = this.props.record && this.props.record.localName ? this.props.record.localName : '';
-        return <h3>
-            <FormattedMessage id='record.panel-title' values={{identifier: name}}/>
-        </h3>;
-    }
-
-    _renderInstitution() {
-        const record = this.props.record;
-        if (!record.institution) {
-            return null;
-        }
-        return <div className='row'>
-            <div className='col-xs-6'>
-                <HorizontalInput type='text' value={record.institution.name} label={this.i18n('record.institution')}
-                       labelWidth={4} inputWidth={8} readOnly/>
-            </div>
-        </div>;
+        return <span><FormattedMessage id='record.panel-title' values={{identifier: name}}/></span>;
     }
 
     _renderForm() {
@@ -103,6 +88,19 @@ class Record extends React.Component {
             <Button bsStyle='link' bsSize='small'
                     onClick={this.props.handlers.onCancel}>{this.i18n('cancel')}</Button>
         </div>
+    }
+
+    _renderInstitution() {
+        const record = this.props.record;
+        if (!record.institution) {
+            return null;
+        }
+        return <div className='row'>
+            <div className='col-xs-6'>
+                <HorizontalInput type='text' value={record.institution.name} label={this.i18n('record.institution')}
+                                 labelWidth={4} inputWidth={8} readOnly/>
+            </div>
+        </div>;
     }
 
     _isFormInvalid() {

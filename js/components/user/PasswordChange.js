@@ -33,7 +33,7 @@ class PasswordChange extends React.Component {
 
     render() {
         const { handlers, currentUser, showAlert, valid, passwordChange, params, password} = this.props;
-        return <Panel header={<h3>{this.i18n('user.password-change')}</h3>} bsStyle='primary'>
+        return <Panel header={<span>{this.i18n('user.password-change')}</span>} bsStyle='primary'>
             <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
                 {currentUser.username === params.username &&
                 <div className='row'>

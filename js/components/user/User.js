@@ -84,12 +84,12 @@ class User extends React.Component {
     render() {
         const {userSaved, userLoaded, currentUser, showAlert, user, handlers} = this.props;
         if (!user && (!userLoaded.status || userLoaded.status === ACTION_STATUS.PENDING)) {
-            return <LoaderPanel header={<h3>{this.i18n('user.panel-title')}</h3>} />;
+            return <LoaderPanel header={<span>{this.i18n('user.panel-title')}</span>} />;
         } else if (userLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('user.load-error', {error: userLoaded.error.message})}/>;
         }
-        return <Panel header={<h3>{this.i18n('user.panel-title')}</h3>} bsStyle='primary'>
+        return <Panel header={<span>{this.i18n('user.panel-title')}</span>} bsStyle='primary'>
             <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
                 <div className='row'>
                     <div className='col-xs-6'>

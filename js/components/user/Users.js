@@ -30,7 +30,7 @@ class Users extends React.Component {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('users.loading-error', {error: usersLoaded.error.message})}/>
         }
-        return <Panel header={this.i18n('users.panel-title')} bsStyle='primary'>
+        return <Panel header={this._renderHeader()} bsStyle='primary'>
             <UserTable users={usersLoaded.users}{...this.props}/>
             <div>
                 <Button bsStyle='primary'
@@ -42,6 +42,12 @@ class Users extends React.Component {
             {showAlert && userDeleted.status === ACTION_STATUS.SUCCESS &&
             <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('user.delete-success')}/>}
         </Panel>;
+    }
+
+    _renderHeader() {
+        return <span>
+            {this.i18n('users.panel-title')}{this.props.usersLoaded.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
+        </span>;
     }
 }
 

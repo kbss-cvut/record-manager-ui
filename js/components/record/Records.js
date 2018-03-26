@@ -23,7 +23,7 @@ class Records extends React.Component {
 
     render() {
         const {showAlert, recordDeleted} = this.props;
-        return <Panel header={this.i18n('records.panel-title')} bsStyle='primary'>
+        return <Panel header={this._renderHeader()} bsStyle='primary'>
             <RecordTable {...this.props}/>
             <div>
                 <Button bsStyle='primary'
@@ -35,6 +35,13 @@ class Records extends React.Component {
             {showAlert && recordDeleted.status === ACTION_STATUS.SUCCESS &&
             <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('record.delete-success')}/>}
         </Panel>;
+    }
+
+    _renderHeader() {
+        return <span>
+            {this.i18n('records.panel-title')}
+            {this.props.recordsLoaded.records && this.props.recordsLoaded.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
+        </span>;
     }
 }
 

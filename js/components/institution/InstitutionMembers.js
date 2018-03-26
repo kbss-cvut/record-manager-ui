@@ -46,7 +46,7 @@ class InstitutionMembers extends React.Component {
                                  message={this.props.formatMessage('institution.members.loading-error', {error: institutionMembers.error.message})}/>
         }
 
-        return <Panel header={<h3>{this.props.i18n('institution.members.panel-title')}</h3>} bsStyle='info'>
+        return <Panel header={<span>{this.props.i18n('institution.members.panel-title')}</span>} bsStyle='info'>
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
                               show={this.state.showDialog} item={this.state.selectedItem}
                               itemLabel={this._getDeleteLabel()}/>

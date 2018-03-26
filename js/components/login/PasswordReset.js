@@ -47,7 +47,7 @@ class PasswordReset extends React.Component {
     }
 
     render() {
-        return(<Panel header={<h3>{this.i18n('login.forgot-your-password')}</h3>} bsStyle='info' className="login-panel">
+        return(<Panel header={<span>{this.i18n('login.forgot-your-password')}</span>} bsStyle='info' className="login-panel">
             <Form horizontal>
                 {this.renderAlert()}
                 <HorizontalInput type='email' name='email' ref={(input) => { this.emailField = input; }}
