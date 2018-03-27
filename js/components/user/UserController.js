@@ -65,9 +65,7 @@ class UserController extends React.Component {
             if (nextProps.userSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
                 this.props.transitionToWithOpts(Routes.editUser, {
                     params: {username: nextProps.userSaved.user.username},
-                    handlers: {
-                        onCancel: Routes.users
-                    }
+                    payload: {institution: this.institution}
                 });
             } else {
                 this.setState({saved: false});
