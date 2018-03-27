@@ -36,7 +36,7 @@ class RecordController extends React.Component {
         if (!this.state.record) {
             this.props.loadRecord(recordKey);
         }
-        if(this.props.recordSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
+        if(this.props.recordSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY && this.props.recordSaved.status === ACTION_STATUS.SUCCESS) {
             this.setState({showAlert: true});
             this.props.unloadSavedRecord();
         }

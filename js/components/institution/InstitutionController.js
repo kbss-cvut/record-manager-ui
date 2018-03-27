@@ -48,7 +48,7 @@ class InstitutionController extends React.Component {
                 this.props.loadRecords(null, institutionKey);
             }
         }
-        if(this.props.institutionSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
+        if(this.props.institutionSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY && this.props.institutionSaved.status === ACTION_STATUS.SUCCESS) {
             this.setState({showAlert: true});
             this.props.unloadSavedInstitution();
         }
