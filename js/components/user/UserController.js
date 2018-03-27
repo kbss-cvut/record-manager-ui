@@ -40,7 +40,7 @@ class UserController extends React.Component {
         if (this.state.user && this.state.user.isNew) {
             this.props.loadUsers()
         }
-        if(this.institution) {
+        if(this.state.user && this.state.user.isNew && this.institution) {
             this._onChange({institution: this.institution});
         }
         if(this.props.userSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
