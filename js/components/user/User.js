@@ -177,9 +177,9 @@ class User extends React.Component {
                 </div>
                 {showAlert && userSaved.status === ACTION_STATUS.ERROR &&
                 <AlertMessage type={ALERT_TYPES.DANGER}
-                              message={this.props.formatMessage('user.save-error', {error: this.props.userSaved.error.message})}/>}
+                              message={this.props.formatMessage('user.save-error', {error: this.i18n(this.props.userSaved.error.message)})}/>}
                 {showAlert && userSaved.status === ACTION_STATUS.SUCCESS &&
-                <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('user.save-success')}/>}
+                <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.save-success')}/>}
             </form>
         </Panel>;
     }

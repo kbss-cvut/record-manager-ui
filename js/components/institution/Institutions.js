@@ -39,9 +39,9 @@ class Institutions extends React.Component {
             </div>
             {showAlert && institutionDeleted.status === ACTION_STATUS.ERROR &&
             <AlertMessage type={ALERT_TYPES.DANGER}
-                          message={this.props.formatMessage('institution.delete-error', {error: this.props.institutionDeleted.error.message})}/>}
+                          message={this.props.formatMessage('institution.delete-error', {error: this.i18n(this.props.institutionDeleted.error.message)})}/>}
             {showAlert && institutionDeleted.status === ACTION_STATUS.SUCCESS &&
-            <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('institution.delete-success')}/>}
+            <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('institution.delete-success')}/>}
         </Panel>
     }
 

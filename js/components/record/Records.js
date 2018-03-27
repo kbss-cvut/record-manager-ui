@@ -31,9 +31,9 @@ class Records extends React.Component {
             </div>
             {showAlert && recordDeleted.status === ACTION_STATUS.ERROR &&
             <AlertMessage type={ALERT_TYPES.DANGER}
-                          message={this.props.formatMessage('record.delete-error', {error: this.props.recordDeleted.error.message})}/>}
+                          message={this.props.formatMessage('record.delete-error', {error: this.i18n(this.props.recordDeleted.error.message)})}/>}
             {showAlert && recordDeleted.status === ACTION_STATUS.SUCCESS &&
-            <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('record.delete-success')}/>}
+            <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('record.delete-success')}/>}
         </Panel>;
     }
 
