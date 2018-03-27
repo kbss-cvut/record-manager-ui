@@ -5,12 +5,13 @@ import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
 import User from "../../../js/components/user/User";
 import {ACTION_STATUS, ROLE} from "../../../js/constants/DefaultConstants";
+import * as EntityFactory from "../../../js/utils/EntityFactory";
 
 describe('User', function () {
     const intlData = require('../../../js/i18n/en');
     let user,
         admin,
-        newUser,
+        newUser = EntityFactory.initNewUser(),
         institutions,
         backToInstitution,
         userSaved,
@@ -18,6 +19,7 @@ describe('User', function () {
         userLoaded,
         currentUser,
         currentUserAdmin,
+        usersLoaded = {},
         handlers = {
             onSave: jasmine.createSpy('onSave'),
             onCancel: jasmine.createSpy('onCancel'),
@@ -33,13 +35,8 @@ describe('User', function () {
         role: ROLE.ADMIN
     };
     newUser = {
-        firstName: '',
-        lastName: '',
-        username: '',
-        emailAddress: '',
-        password: 'test',
-        isAdmin: false,
-        isNew: true
+        ...newUser,
+        password: 'test'
     };
 
     admin = {
@@ -103,7 +100,7 @@ describe('User', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={null} handlers={handlers} backToInstitution={backToInstitution}
-                      userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert} usersLoaded={usersLoaded}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);
         const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'loader-spin');
@@ -121,22 +118,22 @@ describe('User', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={user} handlers={handlers} backToInstitution={backToInstitution}
-                      userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert} usersLoaded={usersLoaded}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);
     const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
     expect(alert).not.toBeNull();
     });
 
-    it("renders user's form empty", function () {
+    it("renders user's form empty with random button", function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
-                      userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert} usersLoaded={usersLoaded}
                       userLoaded={userLoaded} currentUser={currentUserAdmin} institutions={institutions}/>
             </IntlProvider>);
         const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'input');
-        expect(result.length).toEqual(6);
+        expect(result.length).toEqual(5);
         for(let input of result) {
             switch(input.name){
                 case "firstName":
@@ -162,8 +159,12 @@ describe('User', function () {
                     break;
             }
         }
-        const select = TestUtils.findRenderedDOMComponentWithTag(tree,'select');
-        expect(select).not.toBeNull();
+        const selects = TestUtils.scryRenderedDOMComponentsWithTag(tree,'select');
+        expect(selects.length).toEqual(2);
+        expect(selects[1].value).toEqual(ROLE.DOCTOR);
+
+        const randomButton = TestUtils.findRenderedDOMComponentWithClass(tree,'glyphicon');
+        expect(randomButton).not.toBeNull();
     });
 
     it('renders clickable "Save" button and click on it', function () {
@@ -176,14 +177,14 @@ describe('User', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
-                      userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert} usersLoaded={usersLoaded}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);
         let buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-        expect(buttons.length).toEqual(2);
+        expect(buttons.length).toEqual(3);
 
-        expect(buttons[0].disabled).toBeFalsy();
-        TestUtils.Simulate.click(buttons[0]); // save
+        expect(buttons[1].disabled).toBeFalsy();
+        TestUtils.Simulate.click(buttons[1]); // save
         expect(handlers.onSave).toHaveBeenCalled();
     });
 
@@ -197,7 +198,7 @@ describe('User', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
-                      userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert} usersLoaded={usersLoaded}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-success");
@@ -216,22 +217,22 @@ describe('User', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
-                      userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert} usersLoaded={usersLoaded}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
         expect(alert).not.toBeNull();
     });
 
-    it('renders filled user\'s form without checked administrator checkbox', function () {
+    it('renders filled user\'s form without random button', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={user} handlers={handlers} backToInstitution={backToInstitution}
-                      userSaved={userSaved} showAlert={showAlert}
-                      userLoaded={userLoaded} currentUser={currentUserAdmin} institutions={institutions}/>
+                      userSaved={userSaved} showAlert={showAlert} userLoaded={userLoaded} 
+                      currentUser={currentUserAdmin} institutions={institutions} usersLoaded={usersLoaded}/>
             </IntlProvider>);
         const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'input');
-        expect(result.length).toEqual(6);
+        expect(result.length).toEqual(4);
         for(let input of result) {
             switch(input.name){
                 case "firstName":
@@ -251,29 +252,26 @@ describe('User', function () {
                     expect(input.value).toEqual("test@man.io");
                     expect(input.type).toEqual("email");
                     break;
-                case "password":
-                    expect(input.value).toEqual("test");
-                    expect(input.type).toEqual("text");
-                    expect(input.readOnly).toBeTruthy();
-                    break;
-                default:
-                    expect(input.type).toEqual("checkbox");
-                    expect(input.checked).toBeFalsy();
             }
         }
-        const select = TestUtils.findRenderedDOMComponentWithTag(tree,'select');
-        expect(select).not.toBeNull();
+        const selects = TestUtils.scryRenderedDOMComponentsWithTag(tree,'select');
+        expect(selects.length).toEqual(2);
+        expect(selects[0].disabled).toBeFalsy();
+        expect(selects[1].disabled).toBeFalsy();
+
+        const randomButton = TestUtils.scryRenderedDOMComponentsWithClass(tree,'glyphicon');
+        expect(randomButton.length).toEqual(0);
     });
 
-    it('renders filled user\'s form with checked administrator checkbox', function () {
+    it('renders filled admin\'s form', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={admin} handlers={handlers} backToInstitution={backToInstitution}
-                      userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert} usersLoaded={usersLoaded}
                       userLoaded={userLoaded} currentUser={currentUserAdmin} institutions={institutions}/>
             </IntlProvider>);
         const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'input');
-        expect(result.length).toEqual(6);
+        expect(result.length).toEqual(4);
         for(let input of result) {
             switch(input.name){
                 case "firstName":
@@ -293,29 +291,24 @@ describe('User', function () {
                     expect(input.value).toEqual("");
                     expect(input.type).toEqual("email");
                     break;
-                case "password":
-                    expect(input.value).toEqual("test");
-                    expect(input.type).toEqual("text");
-                    expect(input.readOnly).toBeTruthy();
-                    break;
-                default:
-                    expect(input.type).toEqual("checkbox");
-                    expect(input.checked).toBeTruthy();
             }
         }
-        const select = TestUtils.findRenderedDOMComponentWithTag(tree,'select');
-        expect(select).not.toBeNull();
+        const selects = TestUtils.scryRenderedDOMComponentsWithTag(tree,'select');
+        expect(selects.length).toEqual(2);
+        expect(selects[1].value).toEqual(ROLE.ADMIN);
+        expect(selects[0].disabled).toBeFalsy();
+        expect(selects[1].disabled).toBeFalsy();
     });
 
-    it('renders filled user\'s form without checkbox and selectbox', function () {
+    it('renders filled user\'s form', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={admin} handlers={handlers} backToInstitution={backToInstitution}
-                      userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert} usersLoaded={usersLoaded}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);
         const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'input');
-        expect(result.length).toEqual(5);
+        expect(result.length).toEqual(4);
         for(let input of result) {
             switch(input.name){
                 case "firstName":
@@ -335,28 +328,26 @@ describe('User', function () {
                     expect(input.value).toEqual("");
                     expect(input.type).toEqual("email");
                     break;
-                case "password":
-                    expect(input.value).toEqual("test");
-                    expect(input.type).toEqual("text");
-                    expect(input.readOnly).toBeTruthy();
-                    break;
             }
         }
-        const select = TestUtils.scryRenderedDOMComponentsWithTag(tree,'select');
-        expect(select.length).toEqual(0);
+        const selects = TestUtils.scryRenderedDOMComponentsWithTag(tree,'select');
+        expect(selects.length).toEqual(2);
+        expect(selects[1].value).toEqual(ROLE.ADMIN);
+        expect(selects[0].disabled).toBeTruthy();
+        expect(selects[1].disabled).toBeTruthy();
     });
 
     it('renders "Cancel" button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
-                      userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert} usersLoaded={usersLoaded}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-        expect(buttons.length).toEqual(2);
+        expect(buttons.length).toEqual(3);
 
-        TestUtils.Simulate.click(buttons[1]); // cancel
+        TestUtils.Simulate.click(buttons[2]); // cancel
         expect(handlers.onCancel).toHaveBeenCalled();
     });
 
@@ -365,13 +356,13 @@ describe('User', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
-                      userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert} usersLoaded={usersLoaded}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-        expect(buttons.length).toEqual(2);
+        expect(buttons.length).toEqual(3);
 
-        TestUtils.Simulate.click(buttons[1]); // back to institution
+        TestUtils.Simulate.click(buttons[2]); // back to institution
         expect(handlers.onCancel).toHaveBeenCalled();
     });
 
@@ -383,7 +374,7 @@ describe('User', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <User user={newUser} handlers={handlers} backToInstitution={backToInstitution}
-                      userSaved={userSaved} showAlert={showAlert}
+                      userSaved={userSaved} showAlert={showAlert} usersLoaded={usersLoaded}
                       userLoaded={userLoaded} currentUser={currentUser} institutions={institutions}/>
             </IntlProvider>);
         const loader = TestUtils.findRenderedDOMComponentWithClass(tree, "loader");
