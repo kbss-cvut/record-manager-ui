@@ -2,7 +2,7 @@
 
 export default class UserValidator {
     static isValid(user) {
-        return user.firstName && user.lastName && user.username && !/[^a-zA-Z0-9\-\/]/.test(user.username);
+        return user.firstName && user.lastName && user.username && user.emailAddress;
     }
 
     static isPasswordValid(password) {
