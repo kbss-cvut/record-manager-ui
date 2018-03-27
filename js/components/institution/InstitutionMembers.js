@@ -17,7 +17,8 @@ class InstitutionMembers extends React.Component {
             showDialog: false,
             showAlert: false,
             selectedUser: null
-        }
+        };
+        this.i18n = this.props.i18n;
     }
 
     _onDelete = (user) => {
@@ -46,7 +47,7 @@ class InstitutionMembers extends React.Component {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('institution.members.loading-error', {error: institutionMembers.error.message})}/>
         }
-        return <Panel header={<span>{this.props.i18n('institution.members.panel-title')}</span>} bsStyle='info'>
+        return <Panel header={<span>{this.i18n('institution.members.panel-title')}</span>} bsStyle='info'>
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
                               show={this.state.showDialog} item={this.state.selectedUser}
                               itemLabel={this._getDeleteLabel()}/>
@@ -54,10 +55,10 @@ class InstitutionMembers extends React.Component {
                 <Table responsive striped bordered condensed hover>
                     <thead>
                     <tr>
-                        <th className='col-xs-4 content-center'>{this.props.i18n('name')}</th>
-                        <th className='col-xs-2 content-center'>{this.props.i18n('login.username')}</th>
-                        <th className='col-xs-4 content-center'>{this.props.i18n('users.email')}</th>
-                        <th className='col-xs-2 content-center'>{this.props.i18n('table-actions')}</th>
+                        <th className='col-xs-4 content-center'>{this.i18n('name')}</th>
+                        <th className='col-xs-2 content-center'>{this.i18n('login.username')}</th>
+                        <th className='col-xs-4 content-center'>{this.i18n('users.email')}</th>
+                        <th className='col-xs-2 content-center'>{this.i18n('table-actions')}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -65,20 +66,20 @@ class InstitutionMembers extends React.Component {
                     </tbody>
                 </Table>
                 :
-                <p className="font-italic">{this.props.i18n('institution.members.not-found')}</p>
+                <p className="font-italic">{this.i18n('institution.members.not-found')}</p>
             }
             {currentUser.role === ROLE.ADMIN &&
                 <div className="btn-toolbar">
                     <Button bsStyle='primary' className="btn-sm" onClick={() => onAddNewUser(institution)}>
-                        {this.props.i18n('users.add-new-user')}
+                        {this.i18n('users.add-new-user')}
                     </Button>
                 </div>
             }
             {this.state.showAlert && userDeleted.status === ACTION_STATUS.ERROR &&
             <AlertMessage type={ALERT_TYPES.DANGER}
-                          message={this.props.formatMessage('user.delete-error', {error: this.props.userDeleted.error.message})}/>}
+                          message={this.props.formatMessage('user.delete-error', {error: this.i18n(this.props.userDeleted.error.message)})}/>}
             {this.state.showAlert && userDeleted.status === ACTION_STATUS.SUCCESS &&
-            <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('user.delete-success')}/>}
+            <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.delete-success')}/>}
         </Panel>;
     };
 
@@ -94,14 +95,14 @@ class InstitutionMembers extends React.Component {
                 <td className='report-row'>{member.username}</td>
                 <td className='report-row'>{member.emailAddress}</td>
                 <td className='report-row actions'>
-                    <Button bsStyle='primary' bsSize='small' title={this.props.i18n('users.open-tooltip')}
+                    <Button bsStyle='primary' bsSize='small' title={this.i18n('users.open-tooltip')}
                             onClick={() => onEditUser(member, institution)}>
-                        {this.props.i18n('open')}
+                        {this.i18n('open')}
                     </Button>
                     {currentUser.role === ROLE.ADMIN &&
-                        <Button bsStyle='warning' bsSize='small' title={this.props.i18n('users.delete-tooltip')}
+                        <Button bsStyle='warning' bsSize='small' title={this.i18n('users.delete-tooltip')}
                                 onClick={() => this._onDelete(member)}>
-                            {this.props.i18n('delete')}{deletionLoading && <div className="loader"></div>}
+                            {this.i18n('delete')}{deletionLoading && <div className="loader"></div>}
                         </Button>}
                 </td>
             </tr>);

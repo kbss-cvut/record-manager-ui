@@ -38,9 +38,9 @@ class Users extends React.Component {
             </div>
             {showAlert && userDeleted.status === ACTION_STATUS.ERROR &&
             <AlertMessage type={ALERT_TYPES.DANGER}
-                          message={this.props.formatMessage('user.delete-error', {error: this.props.userDeleted.error.message})}/>}
+                          message={this.props.formatMessage('user.delete-error', {error: this.i18n(this.props.userDeleted.error.message)})}/>}
             {showAlert && userDeleted.status === ACTION_STATUS.SUCCESS &&
-            <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('user.delete-success')}/>}
+            <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.delete-success')}/>}
         </Panel>;
     }
 

@@ -58,11 +58,11 @@ class Record extends React.Component {
             {showAlert && recordSaved.status === ACTION_STATUS.ERROR &&
             <div>
                 <AlertMessage type={ALERT_TYPES.DANGER}
-                              message={this.props.formatMessage('record.save-error', {error: recordSaved.error.message})}/>
+                              message={this.props.formatMessage('record.save-error', {error: this.i18n(recordSaved.error.message)})}/>
                 <br/>
             </div>}
             {showAlert && recordSaved.status === ACTION_STATUS.SUCCESS &&
-            <div><AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('record.save-success')}/><br/></div>}
+            <div><AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('record.save-success')}/><br/></div>}
         </Panel>;
     }
 
