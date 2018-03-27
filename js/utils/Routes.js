@@ -1,12 +1,13 @@
 'use strict';
 
-var Routes = {
+export const Routes = {
     login: {name: 'login', path: 'login'},
     passwordReset: {name: 'passwordReset', path: 'login/password-reset'},
     dashboard: {name: 'dashboard', path: 'dashboard'},
     users: {name: 'users', path: 'users'},
     createUser: {name: 'createUser', path: 'users/create'},
     editUser: {name: 'editUser', path: 'users/:username'},
+    passwordChange: {name: 'passwordChange', path: 'users/:username/password-change'},
     institutions: {name: 'institutions', path: 'institutions'},
     createInstitution: {name: 'createInstitution', path: 'institutions/create'},
     editInstitution: {name: 'editInstitution', path: 'institutions/:key'},
@@ -15,4 +16,3 @@ var Routes = {
     editRecord: {name: 'editRecord', path: 'records/:key'}
 };
 
-module.exports = Routes;

@@ -3,9 +3,6 @@
 /**
  * Ontological vocabulary used by JSON-LD responses we get.
  */
-module.exports = {
-    RDFS_LABEL: 'http://www.w3.org/2000/01/rdf-schema#label',
-    RDFS_COMMENT: 'http://www.w3.org/2000/01/rdf-schema#comment',
-
-    ADMIN_TYPE: 'http://vfn.cz/ontologies/study-manager/administrator'
-};
+export const RDFS_LABEL = 'http://www.w3.org/2000/01/rdf-schema#label';
+export const RDFS_COMMENT = 'http://www.w3.org/2000/01/rdf-schema#comment';
+export const ADMIN_TYPE = 'http://vfn.cz/ontologies/study-manager/administrator';

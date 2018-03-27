@@ -1,41 +1,31 @@
 'use strict';
 
 import React from "react";
-import Actions from "../../actions/Actions";
-import Authentication from "../../utils/Authentication";
-import Routes from "../../utils/Routes";
-import Routing from "../../utils/Routing";
+import {Routes} from "../../utils/Routes";
+import {transitionToWithOpts} from "../../utils/Routing";
 import Users from "./Users";
-import UserStore from "../../stores/UserStore";
-import * as RouterStore from "../../stores/RouterStore";
+import {connect} from "react-redux";
+import I18nWrapper from "../../i18n/I18nWrapper";
+import injectIntl from "../../utils/injectIntl";
+import {bindActionCreators} from "redux";
+import {loadUsers} from "../../actions/UsersActions";
+import {ROLE} from "../../constants/DefaultConstants";
+import {deleteUser} from "../../actions/UserActions";
 
-export default class UsersController extends React.Component {
+class UsersController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: UserStore.getAllUsers()
+            showAlert: false
         };
-        this.institution = this._getPayload();
     }
 
     componentDidMount() {
-        Actions.loadAllUsers();
-        this.unsubscribe = UserStore.listen(this._onUsersLoaded);
-    }
-
-    _onUsersLoaded = (data) => {
-        if (data.action !== Actions.loadAllUsers) {
-            return;
-        }
-        this.setState({users: data.data});
-    };
-
-    componentWillUnmount() {
-        this.unsubscribe();
+        this.props.loadUsers();
     }
 
     _onEditUser = (user) => {
-        Routing.transitionTo(Routes.editUser, {
+        this.props.transitionToWithOpts(Routes.editUser, {
             params: {username: user.username},
             handlers: {
                 onCancel: Routes.users
@@ -44,7 +34,7 @@ export default class UsersController extends React.Component {
     };
 
     _onAddUser = () => {
-        Routing.transitionTo(Routes.createUser, {
+        this.props.transitionToWithOpts(Routes.createUser, {
             handlers: {
                 onSuccess: Routes.users,
                 onCancel: Routes.users
@@ -53,29 +43,40 @@ export default class UsersController extends React.Component {
     };
 
     _onDeleteUser = (user) => {
-        Actions.deleteUser(user, Actions.loadAllUsers);
+        this.props.deleteUser(user);
+        this.setState({showAlert: true});
     };
 
-    _getPayload() {
-        let payload = RouterStore.getTransitionPayload(Routes.users.name);
-        RouterStore.setTransitionPayload(Routes.users.name, null);
-        return payload ? payload.institution : null;
-    }
-
-    _onBackToInstitution = () => {
-        Routing.transitionTo(Routes.editInstitution, {params: {key: this.institution.key}});
-    }
-
     render() {
-        if (!Authentication.isAdmin()) {
+        const {currentUser, usersLoaded, userDeleted} = this.props;
+        if (!currentUser || currentUser.role !== ROLE.ADMIN) {
             return null;
         }
-        var handlers = {
+        const handlers = {
             onEdit: this._onEditUser,
             onCreate: this._onAddUser,
             onDelete: this._onDeleteUser,
-            onBackToInstitution: this.institution ? this._onBackToInstitution : null
         };
-        return <Users users={this.state.users} handlers={handlers}/>;
+        return <Users usersLoaded={usersLoaded} showAlert={this.state.showAlert} userDeleted={userDeleted}
+                      handlers={handlers}/>;
+
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(UsersController)));
+
+function mapStateToProps(state) {
+    return {
+        userDeleted: state.user.userDeleted,
+        usersLoaded: state.users.usersLoaded,
+        currentUser: state.auth.user
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        deleteUser: bindActionCreators(deleteUser, dispatch),
+        loadUsers: bindActionCreators(loadUsers, dispatch),
+        transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch)
     }
 }

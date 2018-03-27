@@ -1,0 +1,178 @@
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import * as ActionConstants from "../../../js/constants/ActionConstants";
+import MockAdapter from 'axios-mock-adapter';
+import {TEST_TIMEOUT} from "../../constants/DefaultTestConstants";
+import {axiosBackend} from "../../../js/actions";
+import * as actions from "../../../js/actions/AuthActions";
+
+describe('Auth synchronize actions', function () {
+    const user = {username: 'test'},
+        error = {message: 'error'};
+
+    it('creates an action that user is authenticating', () => {
+        const expectedAction = {
+            type: ActionConstants.AUTH_USER_PENDING
+        };
+        expect(actions.userAuthPending()).toEqual(expectedAction)
+    });
+
+    it('creates an action that user was authenticated', () => {
+        const expectedAction = {
+            type: ActionConstants.AUTH_USER_SUCCESS
+        };
+        expect(actions.userAuthSuccess()).toEqual(expectedAction)
+    });
+
+    it('creates an action that there was error during authentication', () => {
+        const expectedAction = {
+            type: ActionConstants.AUTH_USER_ERROR,
+            error
+        };
+        expect(actions.userAuthError(error)).toEqual(expectedAction)
+    });
+
+    it('creates an action that user was unauthenticated', () => {
+        const expectedAction = {
+            type: ActionConstants.UNAUTH_USER
+        };
+        expect(actions.unauthUser()).toEqual(expectedAction)
+    });
+
+    it('creates an action to fetch current user', () => {
+        const expectedAction = {
+            type: ActionConstants.LOAD_USER_PROFILE_PENDING
+        };
+        expect(actions.loadUserProfilePending()).toEqual(expectedAction)
+    });
+
+    it('creates an action to save fetched current user', () => {
+        const expectedAction = {
+            type: ActionConstants.LOAD_USER_PROFILE_SUCCESS,
+            user
+        };
+        expect(actions.loadUserProfileSuccess(user)).toEqual(expectedAction)
+    });
+
+    it('creates an action about error during fetching current user', () => {
+        const expectedAction = {
+            type: ActionConstants.LOAD_USER_PROFILE_ERROR,
+            error
+        };
+        expect(actions.loadUserProfileError(error)).toEqual(expectedAction)
+    });
+});
+
+const middlewares = [thunk.withExtraArgument(axiosBackend)];
+const mockStore = configureMockStore(middlewares);
+
+describe('Auth asynchronize actions', function () {
+    let store,
+        MockApi;
+    const user = {username: 'test', password: 'testPassword'},
+        users = [{username: 'test1'}, {username: 'test2'}],
+        error = {
+            "message" : "An error has occurred.",
+            "requestUri": "/rest/users/xxx"
+        },
+        username = 'test';
+
+    beforeEach(() => {
+        MockApi = new MockAdapter(axiosBackend);
+        store = mockStore();
+    });
+
+    it('creates AUTH_USER_SUCCESS action when logging in successfully is done', function (done) {
+        const reply = {
+            errorMessage: null,
+            loggedIn: true,
+            success: true,
+            username: "test"
+        };
+        const expectedActions = [
+            { type: ActionConstants.AUTH_USER_PENDING },
+            { type: ActionConstants.AUTH_USER_SUCCESS },
+            { type: ActionConstants.LOAD_USER_PROFILE_PENDING },
+            { type: ActionConstants.LOAD_USER_PROFILE_SUCCESS, user}
+        ];
+
+        MockApi.onPost('j_spring_security_check').reply(200, reply);
+        MockApi.onGet('rest/users/current').reply(200, user);
+
+        store.dispatch(actions.login(user.username, user.password, null));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it('creates AUTH_USER_ERROR action when logging in fails', function (done) {
+        const reply = {
+            errorMessage: "User with username test not found.",
+            loggedIn: false,
+            success: false,
+            username: null
+        };
+        const expectedActions = [
+            { type: ActionConstants.AUTH_USER_PENDING },
+            { type: ActionConstants.AUTH_USER_ERROR, error: reply }
+        ];
+
+        MockApi.onPost('j_spring_security_check').reply(400, reply);
+
+        store.dispatch(actions.login(user.username, user.password, null));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it('creates UNAUTH_USER action when user successfully logs out', function (done) {
+        const expectedActions = [
+            { type: ActionConstants.UNAUTH_USER }
+        ];
+
+        MockApi.onPost('j_spring_security_logout').reply(200);
+
+        store.dispatch(actions.logout(user));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it('creates LOAD_USER_PROFILE_SUCCESS action when current user is successfully loaded', function (done) {
+        const expectedActions = [
+            { type: ActionConstants.LOAD_USER_PROFILE_PENDING },
+            { type: ActionConstants.LOAD_USER_PROFILE_SUCCESS, user}
+        ];
+
+        MockApi.onGet('rest/users/current').reply(200, user);
+
+        store.dispatch(actions.loadUserProfile());
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it('creates LOAD_USER_PROFILE_ERROR action when current user is successfully loaded', function (done) {
+        const expectedActions = [
+            { type: ActionConstants.LOAD_USER_PROFILE_PENDING },
+            { type: ActionConstants.LOAD_USER_PROFILE_ERROR, error }
+        ];
+
+        MockApi.onGet('rest/users/current').reply(400, error);
+
+        store.dispatch(actions.loadUserProfile());
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+});

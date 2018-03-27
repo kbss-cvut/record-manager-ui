@@ -3,27 +3,33 @@
 import React from 'react';
 import assign from 'object-assign';
 
-import Actions from '../../actions/Actions';
-import Authentication from '../../utils/Authentication';
 import injectIntl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
-import MessageWrapper from "../misc/hoc/MessageWrapper";
 import User from './User';
-import UserFactory from '../../utils/EntityFactory';
-import UserStore from '../../stores/UserStore';
-import RouterStore from '../../stores/RouterStore';
-import Routes from '../../utils/Routes';
-import Routing from '../../utils/Routing';
+import {Routes} from '../../utils/Routes';
+import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
+import {loadInstitutions} from "../../actions/InstitutionsActions";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
+import {setTransitionPayload} from "../../actions/RouterActions";
+import {
+    createUser, generateUsername, loadUser, unloadSavedUser, unloadUser,
+    updateUser
+} from "../../actions/UserActions";
+import * as UserFactory from "../../utils/EntityFactory";
+import omit from 'lodash/omit';
+import {getRole} from "../../utils/Utils";
 
 class UserController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             user: this._isNew() ? UserFactory.initNewUser() : null,
-            loading: false
+            saved: false,
+            showAlert: false
         };
         this.institution = this._getPayload()
-
     }
 
     _isNew() {
@@ -32,73 +38,134 @@ class UserController extends React.Component {
 
     componentWillMount() {
         if (!this.state.user) {
-            Actions.loadUser(this.props.params.username);
-            this.setState({loading: true});
+            this.props.loadUser(this.props.params.username);
         }
-        if(this.institution) {
+        if(this.state.user && this.state.user.isNew && this.institution) {
             this._onChange({institution: this.institution});
         }
-        this.unsubscribe = UserStore.listen(this._onUserLoaded);
+        if(this.props.userSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
+            this.setState({showAlert: true});
+            this.props.unloadSavedUser();
+        }
     }
 
-    _onUserLoaded = (data) => {
-        if (data.action !== Actions.loadUser) {
-            return;
-        }
-        this.setState({user: data.data, loading: false});
-    };
-
     componentWillUnmount() {
-        this.unsubscribe();
+        this.props.unloadUser();
+    }
+
+    componentDidMount() {
+        if(this.props.currentUser.role === ROLE.ADMIN && !this.props.institutionsLoaded.institutions) {
+            this.props.loadInstitutions();
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.state.saved && nextProps.userLoaded.status !== ACTION_STATUS.PENDING
+            && nextProps.userSaved.status === ACTION_STATUS.SUCCESS) {
+            if (nextProps.userSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
+                this.props.transitionToWithOpts(Routes.editUser, {
+                    params: {username: nextProps.userSaved.user.username},
+                    payload: {institution: this.institution}
+                });
+            } else {
+                this.setState({saved: false});
+                this.props.loadUser(nextProps.userSaved.user.username);
+            }
+        }
+        if (this.props.userLoaded.status === ACTION_STATUS.PENDING && nextProps.userLoaded.status === ACTION_STATUS.SUCCESS) {
+            this.setState({user: nextProps.userLoaded.user});
+        }
+        if (this.props.generatedUsername.status === ACTION_STATUS.PENDING && nextProps.generatedUsername.status === ACTION_STATUS.SUCCESS) {
+            this._onChange({username: nextProps.generatedUsername.username});
+        }
     }
 
     _onSave = () => {
-        var user = this.state.user;
-        if (user.isNew) {
-            delete user.isNew;
-            Actions.createUser(user, this._onSaveSuccess, this._onSaveError);
+        let user = this.state.user;
+        this.setState({saved: true, showAlert: true});
+        if (user.isNew || (this._isNew() && this.props.userSaved.status === ACTION_STATUS.ERROR)) {
+            this.props.createUser(omit(user, 'isNew'));
         } else {
-            Actions.updateUser(user, this._onSaveSuccess, this._onSaveError);
+            this.props.updateUser(user, this.props.currentUser);
         }
     };
 
-    _onSaveSuccess = (username) => {
-        this.props.showSuccessMessage(this.props.i18n('user.save-success'));
-        Actions.loadUser(username ? username : this.props.params.username);
-    };
-
-    _onSaveError = (err) => {
-        this.props.showErrorMessage(this.props.formatMessage('user.save-error', {error: err.message}));
-    };
-
     _onCancel = () => {
-        const handlers = RouterStore.getViewHandlers(Routes.editUser.name);
+        const handlers = this.props.viewHandlers[Routes.editUser.name];
         if (handlers && !this.institution) {
-            Routing.transitionTo(handlers.onCancel);
+            transitionTo(handlers.onCancel);
         } else if (this.institution) {
-            Routing.transitionTo(Routes.editInstitution, {params: {key: this.institution.key}});
+            this.props.transitionToWithOpts(Routes.editInstitution, {params: {key: this.institution.key}});
         } else {
-            Routing.transitionTo(Authentication.isAdmin() ? Routes.users : Routes.dashboard);
+            transitionTo(this.props.currentUser.role === ROLE.ADMIN ? Routes.users : Routes.dashboard);
         }
     };
 
     _onChange = (change) => {
-        var update = assign({}, this.state.user, change);
+        const update = assign({}, this.state.user, change);
         this.setState({user: update});
     };
 
+    _onPasswordChange = () => {
+        this.props.transitionToWithOpts(Routes.passwordChange, {
+            params: {username: this.props.params.username}
+        });
+    };
+
+    _generateUsername = () => {
+        this.props.generateUsername(getRole(this.state.user).toLowerCase());
+    };
+
     _getPayload() {
-        let payload = this._isNew() ? RouterStore.getTransitionPayload(Routes.createUser.name) :
-                                      RouterStore.getTransitionPayload(Routes.editUser.name);
-        this._isNew() ? RouterStore.setTransitionPayload(Routes.createUser.name, null) :
-                        RouterStore.setTransitionPayload(Routes.editUser.name, null);
+        let payload = this._isNew() ? this.props.transitionPayload[Routes.createUser.name] :
+                                      this.props.transitionPayload[Routes.editUser.name];
+        this._isNew() ? this.props.setTransitionPayload(Routes.createUser.name, null) :
+                        this.props.setTransitionPayload(Routes.editUser.name, null);
         return payload ? payload.institution : null;
     }
 
     render() {
-        return <User onSave={this._onSave} onCancel={this._onCancel} onChange={this._onChange} user={this.state.user}
-                     backToInstitution={this.institution !== null} loading={this.state.loading}/>;
+        const {currentUser, userSaved, userLoaded, institutionsLoaded} = this.props;
+        if (!currentUser) {
+            return null;
+        }
+        const handlers = {
+            onSave: this._onSave,
+            onCancel: this._onCancel,
+            onChange: this._onChange,
+            onPasswordChange: this._onPasswordChange,
+            generateUsername: this._generateUsername
+        };
+        return <User user={this.state.user} handlers={handlers} backToInstitution={this.institution !== null}
+                     userSaved={userSaved} showAlert={this.state.showAlert} userLoaded={userLoaded}
+                     currentUser={currentUser} institutions={institutionsLoaded.institutions || []}/>;
     }
 }
 
-export default injectIntl(I18nWrapper(MessageWrapper(UserController)));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(UserController)));
+
+function mapStateToProps(state) {
+    return {
+        userSaved: state.user.userSaved,
+        userLoaded: state.user.userLoaded,
+        currentUser: state.auth.user,
+        institutionsLoaded: state.institutions.institutionsLoaded,
+        transitionPayload: state.router.transitionPayload,
+        viewHandlers: state.router.viewHandlers,
+        generatedUsername: state.user.generatedUsername
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        createUser: bindActionCreators(createUser, dispatch),
+        updateUser: bindActionCreators(updateUser, dispatch),
+        loadUser: bindActionCreators(loadUser, dispatch),
+        unloadUser: bindActionCreators(unloadUser, dispatch),
+        unloadSavedUser: bindActionCreators(unloadSavedUser, dispatch),
+        loadInstitutions: bindActionCreators(loadInstitutions, dispatch),
+        setTransitionPayload: bindActionCreators(setTransitionPayload, dispatch),
+        transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),
+        generateUsername: bindActionCreators(generateUsername, dispatch)
+    }
+}

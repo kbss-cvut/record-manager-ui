@@ -2,7 +2,7 @@
  * English localization.
  */
 
-var Constants = require('../constants/Constants');
+import * as Constants from "../constants/DefaultConstants";
 
 module.exports = {
     'locale': 'en',
@@ -56,7 +56,9 @@ module.exports = {
 
         'dashboard.welcome': 'Hello {name}, Welcome to ' + Constants.APP_NAME + '.',
         'dashboard.create-tile': 'Create record',
+        'dashboard.user-tile': 'View my profile',
         'dashboard.users-tile': 'View users',
+        'dashboard.institution-tile': 'View my institution',
         'dashboard.institutions-tile': 'View institutions',
         'dashboard.records-tile': 'View patient records',
 
@@ -71,6 +73,8 @@ module.exports = {
         'users.delete-tooltip': 'Delete this user',
         'users.add-new-user': 'Add new user',
         'users.back-to-institution': 'Back to institution',
+        'users.not-found': 'No users were found...',
+        'users.loading-error': 'Unable to users. Server responded with {error}.',
 
         'delete.dialog-title': 'Delete item?',
         'delete.dialog-content': 'Are you sure you want to remove {itemLabel}?',
@@ -85,11 +89,22 @@ module.exports = {
         'user.is-admin': 'Is administrator?',
         'user.save-success': 'User saved successfully',
         'user.save-error': 'Unable to save user. Server responded with {error}.',
+        'user.delete-success': 'User deleted successfully',
+        'user.delete-error': 'Unable to delete user. Server responded with {error}.',
+        'user.load-error': 'Unable to load user. Server responded with {error}.',
+        'user.password-change': 'Change password',
+        'user.password-current': 'Current password',
+        'user.password-new': 'New password',
+        'user.password-change-success': 'Password changed successfully',
+        'user.password-change-error': 'Unable to change password. Server responded with {error}',
+        'user.password-non-valid': 'New password and confirm password must match and be at least 4 characters long.',
 
         'institutions.panel-title': 'Institutions',
         'institutions.create-institution': 'Create institution',
         'institutions.open-tooltip': 'View and edit details of this institution',
         'institutions.delete-tooltip': 'Delete this institution',
+        'institutions.not-found': 'No institutions were found...',
+        'institutions.loading-error': 'Unable to load institutions. Server responded with {error}.',
 
         'institution.panel-title': 'Institution',
         'institution.name': 'Institution name',
@@ -98,7 +113,12 @@ module.exports = {
         'institution.members.panel-title': 'Institution\'s members',
         'institution.patients.panel-title': 'Institution\'s patients',
         'institution.save-success': 'Institution successfully saved.',
-        'institution.save-error': 'Unable to save institution. Server responded with {}.',
+        'institution.save-error': 'Unable to save institution. Server responded with {error}.',
+        'institution.delete-success': 'Institution deleted successfully',
+        'institution.delete-error': 'Unable to delete institution. Server responded with {error}.',
+        'institution.load-error': 'Unable to load institution. Server responded with {error}.',
+        'institution.members.not-found': 'No institution\'s members were found...',
+        'institution.members.loading-error': 'Unable to load institution\'s members. Server responded with {error}.',
 
         'records.panel-title': 'Patient records',
         'records.id': 'Id',
@@ -109,6 +129,8 @@ module.exports = {
         'records.last-modified': 'Last modified',
         'records.open-tooltip': 'View and edit the record of this patient',
         'records.delete-tooltip': 'Delete this record',
+        'records.not-found': 'No patient records were found...',
+        'records.loading-error': 'Unable to load patient records. Server responded with {error}.',
 
         'record.panel-title': 'Record of patient {identifier}',
         'record.form-title': 'Details',
@@ -116,8 +138,11 @@ module.exports = {
         'record.created-by-msg': 'Created {date} by {name}.',
         'record.last-edited-msg': 'Last modified {date} by {name}.',
         'record.save-success': 'Patient record successfully saved.',
-        'record.save-error': 'Unable to save record. Server responded with {}.',
+        'record.save-error': 'Unable to save record. Server responded with {error}.',
         'record.form.please-wait': 'Loading form, please wait...',
+        'record.delete-success': 'Patient record deleted successfully',
+        'record.delete-error': 'Unable to delete patient record. Server responded with {error}.',
+        'record.load-error': 'Unable to load patient record. Server responded with {error}.',
 
         'help.local-name': 'Purpose of this entry is to help you reference anonymized patients. Use identifiers such as patient ordering number (e.g. "patient_1", "patient_2"), patient\'s initials (e.g. "M.E."), etc.',
 

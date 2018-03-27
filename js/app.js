@@ -2,12 +2,14 @@
  Main entry point for the ReactJS frontend
  */
 
+
 'use strict';
 
-var I18nStore = require('./stores/I18nStore');
-var addLocaleData = require('react-intl').addLocaleData;
+import {loadUserProfile} from "./actions/AuthActions";
 
-var intlData = null;
+const I18nStore = require('./stores/I18nStore');
+const addLocaleData = require('react-intl').addLocaleData;
+let intlData = null;
 
 function selectLocalization() {
     // Load react-intl locales
@@ -16,7 +18,7 @@ function selectLocalization() {
             addLocaleData(ReactIntlLocaleData[lang]);
         });
     }
-    var lang = navigator.language;
+    const lang = navigator.language;
     // if (lang && lang === 'cs' || lang === 'cs-CZ' || lang === 'sk' || lang === 'sk-SK') {
     //     intlData = require('./i18n/cs');
     // } else {
@@ -31,12 +33,15 @@ I18nStore.setMessages(intlData.messages);
 // Have the imports here, so that the I18nStore is initialized before any of the components which might need it
 import React from "react";
 import ReactDOM from "react-dom";
-import {Router, Route, IndexRoute} from "react-router";
+import {Router, Route, IndexRoute, Redirect} from "react-router";
 import {IntlProvider} from "react-intl";
+import {applyMiddleware, createStore} from "redux";
+import rootReducer from "./reducers";
+import {Provider} from "react-redux";
+import thunk from "redux-thunk";
 
 import {history} from "./utils/Routing";
-import Routes from "./utils/Routes";
-import Actions from "./actions/Actions";
+import {Routes} from "./utils/Routes";
 
 import Login from "./components/login/Login";
 import InstitutionController from "./components/institution/InstitutionController";
@@ -46,41 +51,51 @@ import RecordController from "./components/record/RecordController";
 import RecordsController from "./components/record/RecordsController";
 import UsersController from "./components/user/UsersController";
 import UserController from "./components/user/UserController";
-import RoutingRules from "./utils/RoutingRules";
+import {execute} from "./utils/RoutingRules";
 import PasswordReset from "./components/login/PasswordReset";
 import MainView from "./components/MainView";
-
+import requireAuth from './components/misc/hoc/RequireAuth';
+import PasswordChangeController from "./components/user/PasswordChangeController";
 
 function onRouteEnter() {
-    RoutingRules.execute(this.path);
+    execute(this.path);
 }
 
+const store = createStore(
+    rootReducer,
+    applyMiddleware(thunk)
+);
+
+store.dispatch(loadUserProfile());
+
 // Wrapping router in a React component to allow Intl to initialize
-var App = React.createClass({
+let App = React.createClass({
     render: function () {
-        return <IntlProvider {...intlData}>
+        return <Provider store={store}>
+            <IntlProvider {...intlData}>
             <Router history={history}>
                 <Route path='/' component={MainView}>
-                    <IndexRoute component={DashboardController}/>
+                    <IndexRoute component={requireAuth(DashboardController)}/>
                     <Route path={Routes.login.path} onEnter={onRouteEnter} component={Login}/>
-                    <Route path={Routes.passwordReset.path} onEnter={onRouteEnter} component={PasswordReset}/>
-                    <Route path={Routes.dashboard.path} onEnter={onRouteEnter} component={DashboardController}/>
-                    <Route path={Routes.users.path} onEnter={onRouteEnter} component={UsersController}/>
-                    <Route path={Routes.createUser.path} onEnter={onRouteEnter} component={UserController}/>
-                    <Route path={Routes.editUser.path} onEnter={onRouteEnter} component={UserController}/>
-                    <Route path={Routes.institutions.path} onEnter={onRouteEnter} component={InstitutionsController}/>
-                    <Route path={Routes.createInstitution.path} onEnter={onRouteEnter} component={InstitutionController}/>
-                    <Route path={Routes.editInstitution.path} onEnter={onRouteEnter} component={InstitutionController}/>
-                    <Route path={Routes.records.path} onEnter={onRouteEnter} component={RecordsController}/>
-                    <Route path={Routes.createRecord.path} onEnter={onRouteEnter} component={RecordController}/>
-                    <Route path={Routes.editRecord.path} onEnter={onRouteEnter} component={RecordController}/>
+                    <Route path={Routes.passwordReset.path} onEnter={onRouteEnter} component={requireAuth(PasswordReset)}/>
+                    <Route path={Routes.dashboard.path} onEnter={onRouteEnter} component={requireAuth(DashboardController)}/>
+                    <Route path={Routes.users.path} onEnter={onRouteEnter} component={requireAuth(UsersController)}/>
+                    <Route path={Routes.createUser.path} onEnter={onRouteEnter} component={requireAuth(UserController)}/>
+                    <Route path={Routes.editUser.path} onEnter={onRouteEnter} component={requireAuth(UserController)}/>
+                    <Route path={Routes.passwordChange.path} onEnter={onRouteEnter} component={requireAuth(PasswordChangeController)}/>
+                    <Route path={Routes.institutions.path} onEnter={onRouteEnter} component={requireAuth(InstitutionsController)}/>
+                    <Route path={Routes.createInstitution.path} onEnter={onRouteEnter} component={requireAuth(InstitutionController)}/>
+                    <Route path={Routes.editInstitution.path} onEnter={onRouteEnter} component={requireAuth(InstitutionController)}/>
+                    <Route path={Routes.records.path} onEnter={onRouteEnter} component={requireAuth(RecordsController)}/>
+                    <Route path={Routes.createRecord.path} onEnter={onRouteEnter} component={requireAuth(RecordController)}/>
+                    <Route path={Routes.editRecord.path} onEnter={onRouteEnter} component={requireAuth(RecordController)}/>
+                    <Redirect from="*" to={Routes.dashboard.path} />
                 </Route>
             </Router>
-        </IntlProvider>;
+            </IntlProvider>
+        </Provider>
     }
 });
-
-Actions.loadCurrentUser();
 
 // Pass intl data to the top-level component
 ReactDOM.render(<App/>, document.getElementById('content'));

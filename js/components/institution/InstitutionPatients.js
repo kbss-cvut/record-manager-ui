@@ -8,18 +8,15 @@ import injectIntl from '../../utils/injectIntl';
 import RecordTable from '../record/RecordTable';
 
 const InstitutionPatients = (props) => {
-    var patients = props.patients;
-    if (patients.length === 0) {
-        return null;
-    }
+    const { recordsLoaded, onEdit } = props;
 
-    return <Panel header={<h3>{props.i18n('institution.patients.panel-title')}</h3>} bsStyle='info'>
-        <RecordTable records={patients} handlers={{onEdit: props.onEdit}} disableDelete={true}/>
+    return <Panel header={<span>{props.i18n('institution.patients.panel-title')}</span>} bsStyle='info'>
+        <RecordTable recordsLoaded={recordsLoaded} handlers={{onEdit: onEdit}} disableDelete={true} />
     </Panel>;
 };
 
 InstitutionPatients.propTypes = {
-    patients: React.PropTypes.array.isRequired,
+    recordsLoaded: React.PropTypes.object.isRequired,
     onEdit: React.PropTypes.func.isRequired
 };
 

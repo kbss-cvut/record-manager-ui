@@ -7,7 +7,7 @@ import {FormattedMessage} from 'react-intl';
 import injectIntl from '../utils/injectIntl';
 import I18nWrapper from '../i18n/I18nWrapper';
 
-var DeleteItemDialog = (props) => {
+const DeleteItemDialog = (props) => {
     if (!props.item) {
         return null;
     }

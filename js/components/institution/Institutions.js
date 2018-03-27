@@ -5,13 +5,17 @@ import {Button, Panel} from 'react-bootstrap';
 
 import injectIntl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
-import Mask from '../Mask';
 import InstitutionTable from './InstitutionTable';
+import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
+import AlertMessage from "../AlertMessage";
+import {LoaderPanel} from "../Loader";
 
 class Institutions extends React.Component {
     static propTypes = {
-        institutions: React.PropTypes.array,
-        handlers: React.PropTypes.object.isRequired
+        institutionsLoaded: React.PropTypes.object,
+        handlers: React.PropTypes.object.isRequired,
+        institutionDeleted: React.PropTypes.object,
+        showAlert: React.PropTypes.bool.isRequired
     };
 
     constructor(props) {
@@ -20,17 +24,31 @@ class Institutions extends React.Component {
     }
 
     render() {
-        var institutions = this.props.institutions;
-        if (institutions === null) {
-            return <Mask text={this.i18n('please-wait')}/>;
+        const {showAlert, institutionDeleted, institutionsLoaded} = this.props;
+        if(!institutionsLoaded.institutions && (!institutionsLoaded.status || institutionsLoaded.status === ACTION_STATUS.PENDING)) {
+            return <LoaderPanel header={this.i18n('institutions.panel-title')} />;
+        } else if(institutionsLoaded.status === ACTION_STATUS.ERROR) {
+            return <AlertMessage type={ALERT_TYPES.DANGER}
+                                 message={this.props.formatMessage('institutions.loading-error', {error: institutionsLoaded.error.message})}/>
         }
-        return <Panel header={this.i18n('institutions.panel-title')} bsStyle='primary'>
-            <InstitutionTable {...this.props}/>
+        return <Panel header={this._renderHeader()} bsStyle='primary'>
+            <InstitutionTable institutions={institutionsLoaded.institutions} {...this.props}/>
             <div>
                 <Button bsStyle='primary'
                         onClick={this.props.handlers.onCreate}>{this.i18n('institutions.create-institution')}</Button>
             </div>
+            {showAlert && institutionDeleted.status === ACTION_STATUS.ERROR &&
+            <AlertMessage type={ALERT_TYPES.DANGER}
+                          message={this.props.formatMessage('institution.delete-error', {error: this.props.institutionDeleted.error.message})}/>}
+            {showAlert && institutionDeleted.status === ACTION_STATUS.SUCCESS &&
+            <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('institution.delete-success')}/>}
         </Panel>
+    }
+
+    _renderHeader() {
+        return <span>
+            {this.i18n('institutions.panel-title')}{this.props.institutionsLoaded.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
+        </span>;
     }
 }
 

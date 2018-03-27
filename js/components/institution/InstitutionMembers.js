@@ -5,62 +5,53 @@ import {Button, Panel, Table} from 'react-bootstrap';
 
 import injectInl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
-import * as Authentication from "../../utils/Authentication";
 import DeleteItemDialog from "../DeleteItemDialog";
+import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
+import Loader from "../Loader";
+import AlertMessage from "../AlertMessage";
 
 class InstitutionMembers extends React.Component {
     constructor(props){
-        super(props);this.state = {
+        super(props);
+        this.state = {
             showDialog: false,
-            selectedItem: null
+            showAlert: false,
+            selectedUser: null
         }
     }
 
-    _onDelete = (item) => {
-        this.setState({showDialog: true, selectedItem: item});
+    _onDelete = (user) => {
+        this.setState({showDialog: true, selectedUser: user});
     };
 
     _onCancelDelete = () => {
-        this.setState({showDialog: false, selectedItem: null});
+        this.setState({showDialog: false, selectedUser: null});
     };
 
     _onSubmitDelete = () => {
-        this.props.onDelete(this.state.selectedItem, this.props.institution.key);
-        this.setState({showDialog: false, selectedItem: null});
+        this.props.onDelete(this.state.selectedUser);
+        this.setState({showDialog: false, selectedUser: null, showAlert: true});
     };
 
-
     _getDeleteLabel() {
-        const user = this.state.selectedItem;
+        const user = this.state.selectedUser;
         return user ? user.username : '';
     }
 
     render(){
-        const members = this.props.members;
-        let rows = [];
-        for (let i = 0, len = members.length; i < len; i++) {
-            const member = members[i];
-            rows.push(<tr key={member.username}>
-                <td className='report-row'>{member.firstName + ' ' + member.lastName}</td>
-                <td className='report-row'>{member.username}</td>
-                <td className='report-row'>{member.emailAddress}</td>
-                <td className='report-row actions'>
-                    <Button bsStyle='primary' bsSize='small' title={this.props.i18n('users.open-tooltip')}
-                            onClick={() => this.props.onEditUser(member, this.props.institution)}>
-                        {this.props.i18n('open')}
-                    </Button>
-                    {Authentication.isAdmin() && <Button bsStyle='warning' bsSize='small' title={this.props.i18n('users.delete-tooltip')}
-                                onClick={() => this._onDelete(member)}>{this.props.i18n('delete')}</Button>}
-                </td>
-            </tr>);
+        const {institutionMembers, institution, currentUser, onAddNewUser, userDeleted} = this.props;
+        if(!institutionMembers.members && (!institutionMembers.status || institutionMembers.status === ACTION_STATUS.PENDING)) {
+            return <Loader />
+        } else if(institutionMembers.status === ACTION_STATUS.ERROR) {
+            return <AlertMessage type={ALERT_TYPES.DANGER}
+                                 message={this.props.formatMessage('institution.members.loading-error', {error: institutionMembers.error.message})}/>
         }
-
-        return <Panel header={<h3>{this.props.i18n('institution.members.panel-title')}</h3>} bsStyle='info'>
+        return <Panel header={<span>{this.props.i18n('institution.members.panel-title')}</span>} bsStyle='info'>
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
-                              show={this.state.showDialog} item={this.state.selectedItem}
+                              show={this.state.showDialog} item={this.state.selectedUser}
                               itemLabel={this._getDeleteLabel()}/>
-            {members.length > 0 &&
-                <Table striped bordered condensed hover>
+            {institutionMembers.members.length > 0 ?
+                <Table responsive striped bordered condensed hover>
                     <thead>
                     <tr>
                         <th className='col-xs-4 content-center'>{this.props.i18n('name')}</th>
@@ -70,27 +61,63 @@ class InstitutionMembers extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {rows}
+                    {this._renderRows()}
                     </tbody>
                 </Table>
+                :
+                <p className="font-italic">{this.props.i18n('institution.members.not-found')}</p>
             }
-            {Authentication.isAdmin() &&
+            {currentUser.role === ROLE.ADMIN &&
                 <div className="btn-toolbar">
-                    <Button bsStyle='primary' className="btn-sm" onClick={() => this.props.onAddNewUser(this.props.institution)}>
+                    <Button bsStyle='primary' className="btn-sm" onClick={() => onAddNewUser(institution)}>
                         {this.props.i18n('users.add-new-user')}
                     </Button>
                 </div>
             }
+            {this.state.showAlert && userDeleted.status === ACTION_STATUS.ERROR &&
+            <AlertMessage type={ALERT_TYPES.DANGER}
+                          message={this.props.formatMessage('user.delete-error', {error: this.props.userDeleted.error.message})}/>}
+            {this.state.showAlert && userDeleted.status === ACTION_STATUS.SUCCESS &&
+            <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('user.delete-success')}/>}
         </Panel>;
     };
+
+    _renderRows() {
+        const {institution, onEditUser, currentUser, userDeleted} = this.props;
+        let rows = [];
+        const members = this.props.institutionMembers.members;
+        for (let i = 0, len = members.length; i < len; i++) {
+            const deletionLoading = !!(userDeleted.status === ACTION_STATUS.PENDING && userDeleted.username === members[i].username);
+            const member = members[i];
+            rows.push(<tr key={member.username}>
+                <td className='report-row'>{member.firstName + ' ' + member.lastName}</td>
+                <td className='report-row'>{member.username}</td>
+                <td className='report-row'>{member.emailAddress}</td>
+                <td className='report-row actions'>
+                    <Button bsStyle='primary' bsSize='small' title={this.props.i18n('users.open-tooltip')}
+                            onClick={() => onEditUser(member, institution)}>
+                        {this.props.i18n('open')}
+                    </Button>
+                    {currentUser.role === ROLE.ADMIN &&
+                        <Button bsStyle='warning' bsSize='small' title={this.props.i18n('users.delete-tooltip')}
+                                onClick={() => this._onDelete(member)}>
+                            {this.props.i18n('delete')}{deletionLoading && <div className="loader"></div>}
+                        </Button>}
+                </td>
+            </tr>);
+        }
+        return rows;
+    }
 }
 
 InstitutionMembers.propTypes = {
-    members: React.PropTypes.array.isRequired,
+    institutionMembers: React.PropTypes.object.isRequired,
     institution: React.PropTypes.object.isRequired,
     onEditUser: React.PropTypes.func.isRequired,
     onAddNewUser: React.PropTypes.func.isRequired,
-    onDelete: React.PropTypes.func.isRequired
+    onDelete: React.PropTypes.func.isRequired,
+    currentUser: React.PropTypes.object.isRequired,
+    userDeleted: React.PropTypes.object
 };
 
 export default injectInl(I18nWrapper(InstitutionMembers));

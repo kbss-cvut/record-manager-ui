@@ -2,8 +2,7 @@
 
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
-
-import Utils from '../../utils/Utils';
+import {formatDate} from "../../utils/Utils";
 
 const RecordProvenance = (props) => {
     const record = props.record;
@@ -11,7 +10,7 @@ const RecordProvenance = (props) => {
         return null;
     }
     const author = record.author ? record.author.firstName + ' ' + record.author.lastName : '',
-        created = Utils.formatDate(new Date(record.dateCreated));
+        created = formatDate(new Date(record.dateCreated));
     if (!record.lastModified) {
         return <div className='notice-small'>
             <FormattedMessage id='record.created-by-msg'
@@ -19,11 +18,11 @@ const RecordProvenance = (props) => {
         </div>;
     }
     const lastEditor = record.lastModifiedBy ? record.lastModifiedBy.firstName + ' ' + record.lastModifiedBy.lastName : '',
-        lastModified = Utils.formatDate(new Date(record.lastModified));
+        lastModified = formatDate(new Date(record.lastModified));
     return <div className='notice-small'>
         <FormattedMessage id='record.created-by-msg'
                           values={{date: created, name: <b>{author}</b>}}/>
-        &nbsp;
+        <br/>
         <FormattedMessage id='record.last-edited-msg'
                           values={{date: lastModified, name: <b>{lastEditor}</b>}}/>
     </div>;

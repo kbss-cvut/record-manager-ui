@@ -5,9 +5,8 @@ import {Alert, Button, Form, Panel} from "react-bootstrap";
 import HorizontalInput from "../HorizontalInput";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
-import Mask from "../Mask";
-import Routing from "../../utils/Routing";
-import Routes from "../../utils/Routes";
+import {transitionTo} from "../../utils/Routing";
+import {Routes} from "../../utils/Routes";
 
 class PasswordReset extends React.Component {
     constructor(props) {
@@ -48,9 +47,7 @@ class PasswordReset extends React.Component {
     }
 
     render() {
-        const mask = this.state.mask ? (<Mask text={this.i18n('login.progress-mask')}/>) : null;
-        return(<Panel header={<h3>{this.i18n('login.forgot-your-password')}</h3>} bsStyle='info' className="login-panel">
-            {mask}
+        return(<Panel header={<span>{this.i18n('login.forgot-your-password')}</span>} bsStyle='info' className="login-panel">
             <Form horizontal>
                 {this.renderAlert()}
                 <HorizontalInput type='email' name='email' ref={(input) => { this.emailField = input; }}
@@ -61,7 +58,7 @@ class PasswordReset extends React.Component {
                     <Button bsStyle='success' onClick={this.resetPassword}
                             disabled={this.state.mask}>{this.i18n('login.reset-password')}</Button>
                     <Button bsStyle='link'
-                            onClick={() => Routing.transitionTo(Routes.login)}
+                            onClick={() => transitionTo(Routes.login)}
                             disabled={this.state.mask}>{this.i18n('login.back-to-login')}</Button>
                 </div>
             </Form>

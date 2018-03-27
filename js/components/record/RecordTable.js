@@ -1,19 +1,20 @@
 'use strict';
 
 import React from "react";
-import {Button, Table} from "react-bootstrap";
+import {Table} from "react-bootstrap";
 import DeleteItemDialog from "../DeleteItemDialog";
-import HelpIcon from "../HelpIcon";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
-import RecordValidator from "../../validation/RecordValidator";
-import Routes from "../../utils/Routes";
-import Utils from "../../utils/Utils";
+import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
+import RecordRow from "./RecordRow";
+import AlertMessage from "../AlertMessage";
+import Loader from "../Loader";
 
 class RecordTable extends React.Component {
     static propTypes = {
-        records: React.PropTypes.array.isRequired,
+        recordsLoaded: React.PropTypes.object.isRequired,
         handlers: React.PropTypes.object.isRequired,
+        recordDeleted: React.PropTypes.object,
         disableDelete: React.PropTypes.bool
     };
 
@@ -44,16 +45,27 @@ class RecordTable extends React.Component {
     };
 
     render() {
+        const {recordsLoaded} = this.props;
+        if(!recordsLoaded.records && (!recordsLoaded.status || recordsLoaded.status === ACTION_STATUS.PENDING)) {
+            return <Loader />
+        } else if(recordsLoaded.status === ACTION_STATUS.ERROR) {
+            return <AlertMessage type={ALERT_TYPES.DANGER}
+                                 message={this.props.formatMessage('records.loading-error', {error: recordsLoaded.error.message})}/>
+        }
         return <div>
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
                               show={this.state.showDialog} item={this.state.selectedRecord}
                               itemLabel={this._getDeleteLabel()}/>
-            <Table responsive striped bordered condensed hover>
-                {this._renderHeader()}
-                <tbody>
-                {this._renderRows()}
-                </tbody>
-            </Table>
+            {this.props.recordsLoaded.records.length > 0 ?
+                <Table responsive striped bordered condensed hover>
+                    {this._renderHeader()}
+                    <tbody>
+                    {this._renderRows()}
+                    </tbody>
+                </Table>
+                :
+                <p className="font-italic">{this.i18n('records.not-found')}</p>
+            }
         </div>;
     }
 
@@ -74,48 +86,17 @@ class RecordTable extends React.Component {
     }
 
     _renderRows() {
-        var records = this.props.records,
-            rows = [],
-            onEdit = this.props.handlers.onEdit;
-        for (var i = 0, len = records.length; i < len; i++) {
-            rows.push(<RecordRow key={records[i].key} record={records[i]} onEdit={onEdit} onDelete={this._onDelete}
-                                 disableDelete={this.props.disableDelete}/>);
+        const {recordsLoaded, handlers, recordDeleted} = this.props;
+        const records = recordsLoaded.records;
+        let rows = [];
+        for (let i = 0, len = records.length; i < len; i++) {
+            rows.push(<RecordRow key={records[i].key} record={records[i]} onEdit={handlers.onEdit} onDelete={this._onDelete}
+                                 disableDelete={this.props.disableDelete} deletionLoading={!this.props.disableDelete &&
+            !!(recordDeleted.status === ACTION_STATUS.PENDING
+                && recordDeleted.key === records[i].key)}/>);
         }
         return rows;
     }
 }
-
-var RecordRow = (props) => {
-    var record = props.record,
-        isComplete = RecordValidator.isComplete(record),
-        completionTooltip = props.i18n(isComplete ? 'records.completion-status-tooltip.complete' : 'records.completion-status-tooltip.incomplete'),
-        deleteButton = props.disableDelete ? null :
-            <Button bsStyle='warning' bsSize='small' title={props.i18n('records.delete-tooltip')}
-                    onClick={() => props.onDelete(record)}>{props.i18n('delete')}</Button>;
-    return <tr>
-        <td className='report-row'><a href={'#/' + Routes.records.path + '/' + record.key}>{record.key}</a></td>
-        <td className='report-row'><a href={'#/' + Routes.records.path + '/' + record.key}>{record.localName}</a></td>
-        <td className='report-row content-center'>
-            {Utils.formatDate(new Date(record.lastModified ? record.lastModified : record.dateCreated))}
-        </td>
-        <td className='report-row content-center'>
-            <HelpIcon text={completionTooltip} glyph={isComplete ? 'ok' : 'remove'}/>
-        </td>
-        <td className='report-row actions'>
-            <Button bsStyle='primary' bsSize='small' title={props.i18n('records.open-tooltip')}
-                    onClick={() => props.onEdit(record)}>{props.i18n('open')}</Button>
-            {deleteButton}
-        </td>
-    </tr>
-};
-
-RecordRow.propTypes = {
-    record: React.PropTypes.object.isRequired,
-    onEdit: React.PropTypes.func.isRequired,
-    onDelete: React.PropTypes.func.isRequired,
-    disableDelete: React.PropTypes.bool.isRequired
-};
-
-RecordRow = injectIntl(I18nWrapper(RecordRow));
 
 export default injectIntl(I18nWrapper(RecordTable));

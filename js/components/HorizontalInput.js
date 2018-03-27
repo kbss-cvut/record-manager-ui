@@ -2,7 +2,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import {Checkbox, Col, ControlLabel, FormGroup, FormControl, HelpBlock, Radio} from "react-bootstrap";
+import {Checkbox, Col, ControlLabel, FormGroup, FormControl, HelpBlock, Radio, InputGroup} from "react-bootstrap";
 import assign from "object-assign";
 
 export default class HorizontalInput extends React.Component {
@@ -15,15 +15,16 @@ export default class HorizontalInput extends React.Component {
         validation: React.PropTypes.oneOf(['success', 'warning', 'error']),
         labelWidth: React.PropTypes.number,     // Width of the label
         inputWidth: React.PropTypes.number,     // Width of the input component container
-        inputOffset: React.PropTypes.number     // Offset to put before the input component. Applicable only for
+        inputOffset: React.PropTypes.number, // Offset to put before the input component. Applicable only for
                                                 // checkboxes and radios
+        iconRight: React.PropTypes.object
     };
 
     static defaultProps = {
         type: 'text',
-        labelWidth: 3,
+        labelWidth: 4,
         inputWidth: 9,
-        inputOffset: 3
+        inputOffset: 4
     };
 
     constructor(props) {
@@ -54,18 +55,19 @@ export default class HorizontalInput extends React.Component {
     }
 
     _getInputProps() {
-        var props = assign({}, this.props);
+        let props = assign({}, this.props);
         delete props.inputOffset;
         delete props.inputWidth;
         delete props.labelWidth;
         delete props.help;
         delete props.validation;
+        delete props.iconRight;
         return props;
     }
 
     _renderCheckbox() {
         return <FormGroup>
-            <Col smOffset={this.props.inputOffset} sm={this.props.inputWidth}>
+            <Col lgOffset={this.props.inputOffset} lg={this.props.inputWidth}>
                 <Checkbox ref={c => this.input = c} {...this._getInputProps()}>{this.props.label}</Checkbox>
             </Col>
         </FormGroup>;
@@ -73,7 +75,7 @@ export default class HorizontalInput extends React.Component {
 
     _renderRadio() {
         return <FormGroup>
-            <Col smOffset={this.props.inputOffset} sm={this.props.inputWidth}>
+            <Col lgOffset={this.props.inputOffset} lg={this.props.inputWidth}>
                 <Radio ref={c => this.input = c} {...this._getInputProps()}>{this.props.label}</Radio>
             </Col>
         </FormGroup>;
@@ -82,7 +84,7 @@ export default class HorizontalInput extends React.Component {
     _renderSelect() {
         return <FormGroup validationState={this.props.validation}>
             {this._renderLabel()}
-            <Col sm={this.props.inputWidth}>
+            <Col lg={this.props.inputWidth}>
                 <FormControl componentClass='select' ref={c => this.input = c} {...this._getInputProps()}>
                     {this.props.children}
                 </FormControl>
@@ -94,13 +96,13 @@ export default class HorizontalInput extends React.Component {
 
     _renderLabel() {
         return this.props.label ?
-            <Col componentClass={ControlLabel} sm={this.props.labelWidth}>{this.props.label}</Col> : null;
+            <Col componentClass={ControlLabel} lg={this.props.labelWidth}>{this.props.label}</Col> : null;
     }
 
     _renderTextArea() {
         return <FormGroup validationState={this.props.validation}>
             {this._renderLabel()}
-            <Col sm={this.props.inputWidth}>
+            <Col lg={this.props.inputWidth}>
                 <FormControl componentClass='textarea' style={{height: 'auto'}}
                              ref={c => this.input = c} {...this._getInputProps()}/>
                 {this.props.validation && <FormControl.Feedback />}
@@ -114,12 +116,22 @@ export default class HorizontalInput extends React.Component {
     }
 
     _renderInput() {
+        const formControl = <FormControl ref={c => this.input = c} componentClass='input' {...this._getInputProps()}/>;
         return <FormGroup validationState={this.props.validation}>
             {this._renderLabel()}
-            <Col sm={this.props.inputWidth}>
-                <FormControl ref={c => this.input = c} componentClass='input' {...this._getInputProps()}/>
-                {this.props.validation && <FormControl.Feedback />}
-                {this._renderHelp()}
+            <Col lg={this.props.inputWidth}>
+                {this.props.iconRight ?
+                    <InputGroup>
+                        {formControl}
+                        <InputGroup.Addon>{this.props.iconRight}</InputGroup.Addon>
+                    </InputGroup>
+                    :
+                    <div>
+                        {formControl}
+                        {this.props.validation && <FormControl.Feedback />}
+                        {this._renderHelp()}
+                    </div>
+                }
             </Col>
         </FormGroup>;
     }

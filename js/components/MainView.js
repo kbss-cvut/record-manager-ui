@@ -1,56 +1,51 @@
 'use strict';
 
 import React from "react";
-import UserStore from '../stores/UserStore';
 import * as I18nStore from "../stores/I18nStore";
-import {MenuItem, Nav, Navbar, NavbarBrand, NavDropdown, NavItem} from "react-bootstrap";
+import {MenuItem, Nav, Navbar, NavDropdown, NavItem} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
-import * as Constants from "../constants/Constants";
-import * as Routes from "../utils/Routes";
-import * as Authentication from "../utils/Authentication";
+import {Routes} from "../utils/Routes";
 import {injectIntl} from "react-intl";
 import I18nWrapper from "../i18n/I18nWrapper";
-import Actions from "../actions/Actions";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {ACTION_STATUS, ROLE} from "../constants/DefaultConstants";
+import {loadUserProfile, logout} from "../actions/AuthActions";
+import * as Constants from "../constants/DefaultConstants";
+import {LoaderMask} from "./Loader";
 
 class MainView extends React.Component {
     constructor(props) {
         super(props);
         this.i18n = this.props.i18n;
-        this.state = {
-            loggedIn: UserStore.isLoaded()
-        };
     }
 
     componentWillMount() {
         I18nStore.setIntl(this.props.intl);
-        this.unsubscribe = UserStore.listen(this.onUserLoaded);
     }
 
-    onUserLoaded = (data) => {
-        if (data.action === Actions.loadCurrentUser) {
-            this.setState({loggedIn: true});
-        }
-    };
-
     _renderUsers() {
-        return Authentication.isAdmin() ?
+        return this.props.user.role === ROLE.ADMIN ?
                 <LinkContainer to='users'><NavItem>{this.i18n('main.users-nav')}</NavItem></LinkContainer>
             : null;
     }
 
     render() {
-        if (!this.state.loggedIn) {
+        if (this.props.status === ACTION_STATUS.PENDING) {
+            return <LoaderMask />;
+        } else if (!this.props.isLoaded) {
             return (<div>{this.props.children}</div>);
         }
-        const user = UserStore.getCurrentUser();
+        const user = this.props.user;
         const name = user.firstName.substr(0, 1) + '. ' + user.lastName;
         return (
             <div>
+                {this.props.location.pathname !== `/${Routes.login.path}` &&
                 <header>
-                    <Navbar>
+                    <Navbar collapseOnSelect>
                         <Navbar.Header>
                         <Navbar.Brand>
-                            <a href="/">{Constants.APP_NAME}</a>
+                            <a href={`/#/${Routes.dashboard.path}`}>{Constants.APP_NAME}</a>
                         </Navbar.Brand>
                         <Navbar.Toggle />
                         </Navbar.Header>
@@ -59,13 +54,15 @@ class MainView extends React.Component {
                             <LinkContainer
                                 to='dashboard'><NavItem>{this.i18n('main.dashboard-nav')}</NavItem></LinkContainer>
                         {this._renderUsers()}
-                            {Authentication.isAdmin() ?
+                            {user.role === ROLE.ADMIN ?
                                 <LinkContainer to='institutions'>
                                     <NavItem>{this.i18n('main.institutions-nav')}</NavItem>
                                 </LinkContainer>
-                                : <LinkContainer to={{ pathname: '/institutions/'+user.institution.key}}>
+                                : user.institution ?
+                                    <LinkContainer to={{ pathname: '/institutions/'+user.institution.key}}>
                                     <NavItem>{this.i18n('main.institution-nav')}</NavItem>
                                 </LinkContainer>
+                                    : null
                             }
                             <LinkContainer
                                 to='records'><NavItem>{this.i18n('main.records-nav')}</NavItem></LinkContainer>
@@ -75,13 +72,13 @@ class MainView extends React.Component {
                             <NavDropdown id='logout' title={name}>
                                 <MenuItem
                                     href={'#/' + Routes.users.path + '/' + user.username}>{this.i18n('main.my-profile')}</MenuItem>
-                                <MenuItem href='#' onClick={Authentication.logout}>{this.i18n('main.logout')}</MenuItem>
+                                <MenuItem href='#' onClick={this.props.logout}>{this.i18n('main.logout')}</MenuItem>
                             </NavDropdown>
 
                         </Nav>
                         </Navbar.Collapse>
                     </Navbar>
-                </header>
+                </header>}
                 <section className="container" style={{height: '100%'}}>
                     {this.props.children}
                 </section>
@@ -90,4 +87,19 @@ class MainView extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(MainView));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(MainView)));
+
+function mapStateToProps(state) {
+    return {
+        user: state.auth.user,
+        isLoaded: state.auth.isLoaded,
+        status: state.auth.status
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        loadUserProfile: bindActionCreators(loadUserProfile, dispatch),
+        logout: bindActionCreators(logout, dispatch)
+    }
+}

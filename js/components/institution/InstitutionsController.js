@@ -1,39 +1,31 @@
 'use strict';
 
 import React from "react";
-import Actions from "../../actions/Actions";
-import Routes from "../../utils/Routes";
-import Routing from "../../utils/Routing";
+import {Routes} from "../../utils/Routes";
+import {transitionToWithOpts} from "../../utils/Routing";
 import Institutions from "./Institutions";
-import InstitutionStore from "../../stores/InstitutionStore";
-import * as Authentication from "../../utils/Authentication";
+import injectIntl from "../../utils/injectIntl";
+import I18nWrapper from "../../i18n/I18nWrapper";
+import {connect} from "react-redux";
+import {ROLE} from "../../constants/DefaultConstants";
+import {loadInstitutions} from "../../actions/InstitutionsActions";
+import {bindActionCreators} from "redux";
+import {deleteInstitution} from "../../actions/InstitutionActions";
 
-export default class InstitutionsController extends React.Component {
+class InstitutionsController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            institutions: InstitutionStore.getInstitutions()
+            showAlert: false
         };
     }
 
     componentDidMount() {
-        Actions.loadAllInstitutions();
-        this.unsubscribe = InstitutionStore.listen(this._onInstitutionsLoaded);
-    }
-
-    _onInstitutionsLoaded = (data) => {
-        if (data.action !== Actions.loadAllInstitutions) {
-            return;
-        }
-        this.setState({institutions: data.data});
-    };
-
-    componentWillUnmount() {
-        this.unsubscribe();
+        this.props.loadInstitutions();
     }
 
     _onEditInstitution = (institution) => {
-        Routing.transitionTo(Routes.editInstitution, {
+        this.props.transitionToWithOpts(Routes.editInstitution, {
             params: {key: institution.key},
             handlers: {
                 onCancel: Routes.institutions
@@ -42,7 +34,7 @@ export default class InstitutionsController extends React.Component {
     };
 
     _onAddInstitution = () => {
-        Routing.transitionTo(Routes.createInstitution, {
+        this.props.transitionToWithOpts(Routes.createInstitution, {
             handlers: {
                 onSuccess: Routes.institutions,
                 onCancel: Routes.institutions
@@ -51,18 +43,39 @@ export default class InstitutionsController extends React.Component {
     };
 
     _onDeleteInstitution = (institution) => {
-        Actions.deleteInstitution(institution, Actions.loadAllInstitutions);
+        this.props.deleteInstitution(institution);
+        this.setState({showAlert: true});
     };
 
     render() {
-        if (!Authentication.isAdmin()) {
+        const {currentUser, institutionsLoaded, institutionDeleted} = this.props;
+        if (!currentUser || currentUser.role !== ROLE.ADMIN) {
             return null;
         }
-        var handlers = {
+        const handlers = {
             onEdit: this._onEditInstitution,
             onCreate: this._onAddInstitution,
             onDelete: this._onDeleteInstitution
         };
-        return <Institutions institutions={this.state.institutions} handlers={handlers}/>;
+        return <Institutions institutionsLoaded={institutionsLoaded} showAlert={this.state.showAlert}
+                             handlers={handlers} institutionDeleted={institutionDeleted}/>;
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(InstitutionsController)));
+
+function mapStateToProps(state) {
+    return {
+        institutionsLoaded: state.institutions.institutionsLoaded,
+        institutionDeleted: state.institution.institutionDeleted,
+        currentUser: state.auth.user
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        deleteInstitution: bindActionCreators(deleteInstitution, dispatch),
+        loadInstitutions: bindActionCreators(loadInstitutions, dispatch),
+        transitionToWithOpts:bindActionCreators(transitionToWithOpts, dispatch)
     }
 }

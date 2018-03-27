@@ -1,11 +1,12 @@
 'use strict';
 
+import * as Logger from "./Logger";
+
 var request = require('superagent');
 var Cookies = require('js-cookie');
 
 var Routes = require('./Routes');
 var Routing = require('./Routing');
-var Logger = require('./Logger');
 var Utils = require('./Utils');
 
 var csrfTokenHeader = 'X-CSRF-Token';

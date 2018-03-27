@@ -5,12 +5,15 @@ import {Button, Table} from "react-bootstrap";
 import DeleteItemDialog from "../DeleteItemDialog";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
-import Routes from "../../utils/Routes";
+import {Routes} from "../../utils/Routes";
+import UserRow from "./UserRow";
+import {ACTION_STATUS} from "../../constants/DefaultConstants";
 
 class UserTable extends React.Component {
     static propTypes = {
         users: React.PropTypes.array.isRequired,
-        handlers: React.PropTypes.object.isRequired
+        handlers: React.PropTypes.object.isRequired,
+        userDeleted: React.PropTypes.object
     };
 
     constructor(props) {
@@ -40,17 +43,21 @@ class UserTable extends React.Component {
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
                               show={this.state.showDialog} item={this.state.selectedUser}
                               itemLabel={this._getDeleteLabel()}/>
-            <Table responsive striped bordered condensed hover>
-                {this._renderHeader()}
-                <tbody>
-                {this._renderUsers()}
-                </tbody>
-            </Table>
+            {this.props.users.length > 0 ?
+                <Table responsive striped bordered condensed hover>
+                    {this._renderHeader()}
+                    <tbody>
+                    {this._renderUsers()}
+                    </tbody>
+                </Table>
+                :
+                <p className="font-italic">{this.i18n('users.not-found')}</p>
+            }
         </div>;
     }
 
     _getDeleteLabel() {
-        var user = this.state.selectedUser;
+        const user = this.state.selectedUser;
         return user ? user.firstName + ' ' + user.lastName : '';
     }
 
@@ -67,41 +74,16 @@ class UserTable extends React.Component {
     }
 
     _renderUsers() {
-        var users = this.props.users,
-            rows = [],
-            onEdit = this.props.handlers.onEdit;
-        for (var i = 0, len = users.length; i < len; i++) {
-            rows.push(<UserRow key={users[i].username} user={users[i]} onEdit={onEdit} onDelete={this._onDelete}/>);
+        const {users, userDeleted} = this.props;
+        const onEdit = this.props.handlers.onEdit;
+        let rows = [];
+        for (let i = 0, len = users.length; i < len; i++) {
+            rows.push(<UserRow key={users[i].username} user={users[i]} onEdit={onEdit} onDelete={this._onDelete}
+                               deletionLoading={!!(userDeleted.status === ACTION_STATUS.PENDING
+                                                && userDeleted.username === users[i].username)}/>);
         }
         return rows;
     }
 }
-
-var UserRow = (props) => {
-    var user = props.user;
-    return <tr>
-        <td className='report-row'>
-            <a href={'#/' + Routes.users.path + '/' + user.username}
-               title={props.i18n('users.open-tooltip')}>{user.firstName + ' ' + user.lastName}</a>
-        </td>
-        <td className='report-row'>{user.username}</td>
-        <td className='report-row'>{user.institution ? user.institution.name : ''}</td>
-        <td className='report-row'>{user.emailAddress}</td>
-        <td className='report-row actions'>
-            <Button bsStyle='primary' bsSize='small' title={props.i18n('users.open-tooltip')}
-                    onClick={() => props.onEdit(props.user)}>{props.i18n('open')}</Button>
-            <Button bsStyle='warning' bsSize='small' title={props.i18n('users.delete-tooltip')}
-                    onClick={() => props.onDelete(props.user)}>{props.i18n('delete')}</Button>
-        </td>
-    </tr>;
-};
-
-UserRow.propTypes = {
-    user: React.PropTypes.object.isRequired,
-    onEdit: React.PropTypes.func.isRequired,
-    onDelete: React.PropTypes.func.isRequired
-};
-
-UserRow = injectIntl(I18nWrapper(UserRow));
 
 export default injectIntl(I18nWrapper(UserTable));

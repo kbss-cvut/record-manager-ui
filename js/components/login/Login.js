@@ -1,14 +1,17 @@
 'use strict';
 
 import React from "react";
-import {Alert, Button, Form, Panel} from "react-bootstrap";
+import {Button, Form, Panel} from "react-bootstrap";
 import HorizontalInput from "../HorizontalInput";
-import Authentication from "../../utils/Authentication";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
-import Mask from "../Mask";
-import * as Routing from "../../utils/Routing";
-import * as Routes from "../../utils/Routes";
+import {Routes} from "../../utils/Routes";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {ALERT_TYPES} from "../../constants/DefaultConstants";
+import AlertMessage from "../AlertMessage";
+import {transitionTo} from "../../utils/Routing";
+import {login} from "../../actions/AuthActions";
 
 class Login extends React.Component {
     constructor(props) {
@@ -17,8 +20,7 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
-            alertVisible: false,
-            mask: false
+            showAlert: false
         }
     }
 
@@ -39,37 +41,25 @@ class Login extends React.Component {
         }
     };
 
-    onLoginError = () => {
-        this.setState({alertVisible: true, mask: false});
-    };
-
     login = () => {
-        Authentication.login(this.state.username, this.state.password, this.onLoginError);
-        this.setState({mask: true});
+        this.props.login(this.state.username, this.state.password);
+        this.setState({showAlert: true});
     };
 
     onForgotPassword = () => {
-        Routing.transitionTo(Routes.passwordReset)
+        transitionTo(Routes.passwordReset)
     };
 
-    /*
-    register() {
-        Routing.transitionTo(Routes.register);
-    }*/
-
-
-    renderAlert() {
-        return this.state.alertVisible ? <Alert bsStyle='danger' bsSize='small'>
-            <div>{this.i18n('login.error')}</div>
-        </Alert> : null;
-    }
-
     render() {
-        const mask = this.state.mask ? (<Mask text={this.i18n('login.progress-mask')}/>) : null;
-        return(<Panel header={<h3>{this.i18n('login.title')}</h3>} bsStyle='info' className="login-panel">
-            {mask}
+        return(
+            <Panel header={<span>{this.i18n('login.title')}</span>} bsStyle='info' className="login-panel">
+                {this.state.showAlert && this.props.error &&
+                    <div>
+                        <AlertMessage type={ALERT_TYPES.DANGER}
+                              message={this.i18n('login.error')}/>
+                        <br/>
+                    </div>}
             <Form horizontal>
-                {this.renderAlert()}
                 <HorizontalInput type='text' name='username' ref={(input) => { this.usernameField = input; }}
                        label={this.i18n('login.username')} value={this.state.username}
                        onChange={this.onChange} labelWidth={3} onKeyPress={this.onKeyPress}
@@ -84,8 +74,9 @@ class Login extends React.Component {
                 </div>
                 <div className="login-buttons">
                     <Button bsStyle='success' bsSize='large' onClick={this.login}
-                            disabled={this.state.mask}>{this.i18n('login.submit')}</Button>
-                    {/*TODO i18n forgot password, click*/}
+                            disabled={this.props.isLogging}>
+                        {this.i18n('login.submit')}{this.props.isLogging && <div className="loader"></div>}
+                        </Button>
                 </div>
             </Form>
         </Panel>
@@ -93,4 +84,18 @@ class Login extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(Login));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(Login)));
+
+function mapStateToProps(state) {
+    return {
+        isLogging: state.auth.isLogging,
+        status: state.auth.status,
+        error: state.auth.error
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        login: bindActionCreators(login, dispatch),
+    }
+}

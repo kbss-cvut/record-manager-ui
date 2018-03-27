@@ -2,7 +2,7 @@
  * Czech localization.
  */
 
-var Constants = require('../constants/Constants');
+import * as Constants from "../constants/DefaultConstants";
 
 module.exports = {
     'locale': 'cs',
@@ -56,7 +56,9 @@ module.exports = {
 
         'dashboard.welcome': 'Dobrý den, {name}, vítejte v ' + Constants.APP_NAME + '.',
         'dashboard.create-tile': 'Vytvořit záznam',
+        'dashboard.user-tile': 'Můj profil',
         'dashboard.users-tile': 'Uživatelé',
+        'dashboard.institutions-tile': 'Klinika',
         'dashboard.institutions-tile': 'Kliniky',
         'dashboard.records-tile': 'Záznamy pacientů',
 
@@ -71,6 +73,8 @@ module.exports = {
         'users.delete-tooltip': 'Smazat tohoto uživatele',
         'users.add-new-user': 'Přidat nového uživatele',
         'users.back-to-institution': 'Zpět do instituce',
+        'users.not-found': 'Žádný uživatel nebyl nalezen...',
+        'users.loading-error': 'Uživatele se nepodařilo načíst. Odpověď serveru: {error}.',
 
         'delete.dialog-title': 'Smazat položku?',
         'delete.dialog-content': 'Určitě chcete odstranit {itemLabel}?',
@@ -85,11 +89,22 @@ module.exports = {
         'user.is-admin': 'Administrátor?',
         'user.save-success': 'Uživatel úspěšně uložen',
         'user.save-error': 'Uživatele se nepodařilo uložit. Odpověď serveru: {error}',
+        'user.delete-success': 'Uživatel úspěšně odstraněn',
+        'user.delete-error': 'Uživatele se nepodařilo smazat. Odpověď serveru: {error}.',
+        'user.load-error': 'Uživatele se nepodařilo načíst. Odpověď serveru: {error}.',
+        'user.password-change': 'Změnit heslo',
+        'user.password-current': 'Staré heslo',
+        'user.password-new': 'Nové heslo',
+        'user.password-change-success': 'Heslo úspěšně změněno',
+        'user.password-change-error': 'Heslo se nepodařilo změnit. Odpověd serveru: {error}',
+        'user.password-non-valid': 'Nové a potvrzovací hesla se musí shodovat a musí být alespoň 4 znaky dlouhá.',
 
         'institutions.panel-title': 'Kliniky',
         'institutions.create-institution': 'Vytvořit kliniku',
         'institutions.open-tooltip': 'Zobrazit či upravit detaily o této klinice',
         'institutions.delete-tooltip': 'Smazat tuto kliniku',
+        'institutions.not-found': 'Žádná klinika nebyla nalezen...',
+        'institutions.loading-error': 'Kliniky se nepodařilo načíst. Odpověď serveru: {error}.',
 
         'institution.panel-title': 'Klinika',
         'institution.name': 'Název kliniky',
@@ -98,7 +113,10 @@ module.exports = {
         'institution.members.panel-title': 'Zaměstnanci kliniky',
         'institution.patients.panel-title': 'Pacienti kliniky',
         'institution.save-success': 'Klinika úspěšně uložena.',
-        'institution.save-error': 'Kliniku se nepodařilo uložit. Odpověď serveru: {}.',
+        'institution.save-error': 'Kliniku se nepodařilo uložit. Odpověď serveru: {error}.',
+        'institution.delete-success': 'Klinika úspěšně odstraněna',
+        'institution.delete-error': 'Kliniku se nepodařilo smazat. Odpověď serveru: {error}.',
+        'institution.load-error': 'Kliniku se nepodařilo načíst. Odpověď serveru: {error}.',
 
         'records.panel-title': 'Záznamy o pacientech',
         'records.local-name': 'Identifikátor pacienta',
@@ -108,6 +126,8 @@ module.exports = {
         'records.last-modified': 'Naposledy upraveno',
         'records.open-tooltip': 'Zobrazit či upravit záznam tohoto pacienta',
         'records.delete-tooltip': 'Smazat tento záznam',
+        'records.not-found': 'Žádný záznam o pacientovi nebyl nalezen...',
+        'records.loading-error': 'Záznamy o pacientech se nepodařilo načíst. Odpověď serveru: {error}.',
 
         'record.panel-title': 'Záznam o pacientovi {identifier}',
         'record.form-title': 'Details',
@@ -115,8 +135,11 @@ module.exports = {
         'record.created-by-msg': 'Vytvořil(a) {name} {date}.',
         'record.last-edited-msg': 'Naposledy upravil(a) {name} {date}.',
         'record.save-success': 'Záznam o pacientovi úspěšně uložen.',
-        'record.save-error': 'Záznam se nepodařilo uložit. Odpověď serveru: {}.',
+        'record.save-error': 'Záznam se nepodařilo uložit. Odpověď serveru: {error}.',
         'record.form.please-wait': 'Nahrávám formulář, prosím, čekejte...',
+        'record.delete-success': 'Záznam o pacientovi úspěšně odstraněn',
+        'record.delete-error': 'Záznam o pacientovi se nepodařilo smazat. Odpověď serveru: {error}.',
+        'record.load-error': 'Záznam o pacientovi se nepodařilo načíst. Odpověď serveru: {error}.',
 
         'help.local-name': 'Účelem tohoto atributu je pomoci vám identifikovat anonymizované pacienty. Můžete použít např. číslování pacientů ("pacient_1", "pacient_2") či iniciály pacientů ("M.E.")',
 
