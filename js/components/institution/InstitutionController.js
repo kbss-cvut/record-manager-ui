@@ -14,7 +14,7 @@ import {bindActionCreators} from "redux";
 import {
     unloadSavedInstitution} from "../../actions/InstitutionActions";
 import {canLoadInstitutionsPatients} from "../../utils/Utils";
-import {loadInstitutionMembers} from "../../actions/UserActions";
+import {deleteUser, loadInstitutionMembers} from "../../actions/UserActions";
 import {
     createInstitution, loadInstitution, unloadInstitution,
     updateInstitution
@@ -104,8 +104,8 @@ class InstitutionController extends React.Component {
         this.setState({institution: update});
     };
 
-    _onDeleteUser = (user, institutionKey) => {
-        Actions.deleteUser(user, () => Actions.loadInstitutionMembers(institutionKey));
+    _onDeleteUser = (user) => {
+        this.props.deleteUser(user, this.state.institution);
     };
 
     _onEditUser = (user, institution) => {
@@ -126,7 +126,7 @@ class InstitutionController extends React.Component {
     };
 
     render() {
-        const {currentUser, institutionLoaded, institutionSaved, institutionMembers, recordsLoaded} = this.props;
+        const {currentUser, institutionLoaded, institutionSaved, institutionMembers, recordsLoaded, userDeleted} = this.props;
         if (!currentUser) {
             return null;
         }
@@ -141,7 +141,7 @@ class InstitutionController extends React.Component {
         };
         return <Institution handlers={handlers} institution={this.state.institution} institutionMembers={institutionMembers}
                             recordsLoaded={recordsLoaded} showAlert={this.state.showAlert} currentUser={currentUser}
-                            institutionLoaded={institutionLoaded} institutionSaved={institutionSaved}
+                            institutionLoaded={institutionLoaded} institutionSaved={institutionSaved} userDeleted={userDeleted}
                             />;
     }
 }
@@ -156,7 +156,8 @@ function mapStateToProps(state) {
         institutionSaved: state.institution.institutionSaved,
         institutionMembers: state.user.institutionMembers,
         recordsLoaded: state.records.recordsLoaded,
-        viewHandlers: state.router.viewHandlers
+        viewHandlers: state.router.viewHandlers,
+        userDeleted: state.user.userDeleted
     };
 }
 
@@ -169,6 +170,7 @@ function mapDispatchToProps(dispatch) {
         updateInstitution: bindActionCreators(updateInstitution, dispatch),
         loadInstitutionMembers: bindActionCreators(loadInstitutionMembers, dispatch),
         loadRecords: bindActionCreators(loadRecords, dispatch),
+        deleteUser: bindActionCreators(deleteUser, dispatch),
         transitionToWithOpts:bindActionCreators(transitionToWithOpts, dispatch)
     }
 }

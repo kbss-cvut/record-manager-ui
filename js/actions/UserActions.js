@@ -65,14 +65,18 @@ export function unloadSavedUser() {
     }
 }
 
-export function deleteUser(user) {
+export function deleteUser(user, institution = null) {
     //console.log("Deleting user: ", user);
     return function (dispatch) {
         dispatch(deleteUserPending(user.username));
         axiosBackend.delete(`rest/users/${user.username}`, {
             ...user
         }).then(() => {
-            dispatch(loadUsers());
+            if (institution){
+                dispatch(loadInstitutionMembers(institution.key))
+            } else {
+                dispatch(loadUsers());
+            }
             dispatch(deleteUserSuccess(user));
         }).catch((error) => {
             dispatch(deleteUserError(error.response.data, user));

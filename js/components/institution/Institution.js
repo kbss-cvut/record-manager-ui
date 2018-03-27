@@ -26,6 +26,7 @@ class Institution extends React.Component {
         recordsLoaded: React.PropTypes.object,
         handlers: React.PropTypes.object.isRequired,
         currentUser: React.PropTypes.object.isRequired,
+        userDeleted: React.PropTypes.object,
         showAlert: React.PropTypes.bool
     };
 
@@ -110,9 +111,9 @@ class Institution extends React.Component {
     }
 
     _renderMembers() {
-        const { institution, handlers, currentUser, institutionMembers } = this.props;
+        const { institution, handlers, currentUser, institutionMembers, userDeleted } = this.props;
         return <InstitutionMembers institution={institution} institutionMembers={institutionMembers}
-                                   onDelete={handlers.onDelete} onEditUser={handlers.onEditUser}
+                                   onDelete={handlers.onDelete} onEditUser={handlers.onEditUser} userDeleted={userDeleted}
                                    onAddNewUser={handlers.onAddNewUser} currentUser={currentUser}/>
     }
 }

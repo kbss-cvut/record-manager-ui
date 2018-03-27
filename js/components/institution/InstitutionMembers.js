@@ -15,25 +15,25 @@ class InstitutionMembers extends React.Component {
         super(props);
         this.state = {
             showDialog: false,
-            selectedItem: null
+            selectedUser: null
         }
     }
 
-    _onDelete = (item) => {
-        this.setState({showDialog: true, selectedItem: item});
+    _onDelete = (user) => {
+        this.setState({showDialog: true, selectedUser: user});
     };
 
     _onCancelDelete = () => {
-        this.setState({showDialog: false, selectedItem: null});
+        this.setState({showDialog: false, selectedUser: null});
     };
 
     _onSubmitDelete = () => {
-        this.props.onDelete(this.state.selectedItem, this.props.institution.key);
-        this.setState({showDialog: false, selectedItem: null});
+        this.props.onDelete(this.state.selectedUser);
+        this.setState({showDialog: false, selectedUser: null});
     };
 
     _getDeleteLabel() {
-        const user = this.state.selectedItem;
+        const user = this.state.selectedUser;
         return user ? user.username : '';
     }
 
@@ -48,7 +48,7 @@ class InstitutionMembers extends React.Component {
 
         return <Panel header={<span>{this.props.i18n('institution.members.panel-title')}</span>} bsStyle='info'>
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
-                              show={this.state.showDialog} item={this.state.selectedItem}
+                              show={this.state.showDialog} item={this.state.selectedUser}
                               itemLabel={this._getDeleteLabel()}/>
             {institutionMembers.members.length > 0 ?
                 <Table responsive striped bordered condensed hover>
@@ -78,10 +78,11 @@ class InstitutionMembers extends React.Component {
     };
 
     _renderRows() {
-        const {institution, onEditUser, currentUser} = this.props;
+        const {institution, onEditUser, currentUser, userDeleted} = this.props;
         let rows = [];
         const members = this.props.institutionMembers.members;
         for (let i = 0, len = members.length; i < len; i++) {
+            const deletionLoading = !!(userDeleted.status === ACTION_STATUS.PENDING && userDeleted.username === members[i].username);
             const member = members[i];
             rows.push(<tr key={member.username}>
                 <td className='report-row'>{member.firstName + ' ' + member.lastName}</td>
@@ -92,8 +93,11 @@ class InstitutionMembers extends React.Component {
                             onClick={() => onEditUser(member, institution)}>
                         {this.props.i18n('open')}
                     </Button>
-                    {currentUser.role === ROLE.ADMIN && <Button bsStyle='warning' bsSize='small' title={this.props.i18n('users.delete-tooltip')}
-                                                                onClick={() => this._onDelete(member)}>{this.props.i18n('delete')}</Button>}
+                    {currentUser.role === ROLE.ADMIN &&
+                        <Button bsStyle='warning' bsSize='small' title={this.props.i18n('users.delete-tooltip')}
+                                onClick={() => this._onDelete(member)}>
+                            {this.props.i18n('delete')}{deletionLoading && <div className="loader"></div>}
+                        </Button>}
                 </td>
             </tr>);
         }
@@ -107,7 +111,8 @@ InstitutionMembers.propTypes = {
     onEditUser: React.PropTypes.func.isRequired,
     onAddNewUser: React.PropTypes.func.isRequired,
     onDelete: React.PropTypes.func.isRequired,
-    currentUser: React.PropTypes.object.isRequired
+    currentUser: React.PropTypes.object.isRequired,
+    userDeleted: React.PropTypes.object
 };
 
 export default injectInl(I18nWrapper(InstitutionMembers));

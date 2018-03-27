@@ -14,7 +14,8 @@ describe('InstitutionMembers', function () {
         onAddNewUser = jasmine.createSpy('onAddNewUser'),
         onDelete = jasmine.createSpy('onDelete'),
         user,
-        admin;
+        admin,
+        userDeleted;
 
     members = [
         {
@@ -50,6 +51,10 @@ describe('InstitutionMembers', function () {
         role: ROLE.ADMIN
     };
 
+    userDeleted = {
+        status: ACTION_STATUS.SUCCESS
+    };
+
     beforeEach(() => {
         institutionMembers = {
             status: ACTION_STATUS.SUCCESS,
@@ -65,7 +70,7 @@ describe('InstitutionMembers', function () {
             <IntlProvider locale="en" {...intlData}>
                 <InstitutionMembers institution={institution} institutionMembers={institutionMembers}
                                     onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
-                                    currentUser={admin}/>
+                                    currentUser={admin} userDeleted={userDeleted}/>
             </IntlProvider>);
         const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'loader-spin');
         expect(result).not.toBeNull();
@@ -82,7 +87,7 @@ describe('InstitutionMembers', function () {
             <IntlProvider locale="en" {...intlData}>
                 <InstitutionMembers institution={institution} institutionMembers={institutionMembers}
                                     onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
-                                    currentUser={admin}/>
+                                    currentUser={admin} userDeleted={userDeleted}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
         expect(alert).not.toBeNull();
@@ -93,7 +98,7 @@ describe('InstitutionMembers', function () {
             <IntlProvider locale="en" {...intlData}>
                 <InstitutionMembers institution={institution} institutionMembers={institutionMembers}
                                     onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
-                                    currentUser={admin}/>
+                                    currentUser={admin} userDeleted={userDeleted}/>
             </IntlProvider>);
         const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
         expect(panelHeading).not.toBeNull();
@@ -112,7 +117,7 @@ describe('InstitutionMembers', function () {
             <IntlProvider locale="en" {...intlData}>
                 <InstitutionMembers institution={institution} institutionMembers={institutionMembersEmpty}
                                     onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
-                                    currentUser={admin}/>
+                                    currentUser={admin} userDeleted={userDeleted}/>
             </IntlProvider>);
         const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
         expect(panelHeading).not.toBeNull();
@@ -127,7 +132,7 @@ describe('InstitutionMembers', function () {
             <IntlProvider locale="en" {...intlData}>
                 <InstitutionMembers institution={institution} institutionMembers={institutionMembersEmpty}
                                     onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
-                                    currentUser={admin}/>
+                                    currentUser={admin} userDeleted={userDeleted}/>
             </IntlProvider>);
         const button = TestUtils.findRenderedDOMComponentWithTag(tree, "Button");
         expect(button).not.toBeNull();
@@ -140,7 +145,7 @@ describe('InstitutionMembers', function () {
             <IntlProvider locale="en" {...intlData}>
                 <InstitutionMembers institution={institution} institutionMembers={institutionMembersEmpty}
                                     onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
-                                    currentUser={user}/>
+                                    currentUser={user} userDeleted={userDeleted}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
         expect(buttons.length).toEqual(0);
@@ -151,7 +156,7 @@ describe('InstitutionMembers', function () {
             <IntlProvider locale="en" {...intlData}>
                 <InstitutionMembers institution={institution} institutionMembers={institutionMembers}
                                     onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
-                                    currentUser={admin}/>
+                                    currentUser={admin} userDeleted={userDeleted}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
         expect(buttons.length).toEqual(5);
@@ -165,7 +170,7 @@ describe('InstitutionMembers', function () {
             <IntlProvider locale="en" {...intlData}>
                 <InstitutionMembers institution={institution} institutionMembers={institutionMembers}
                                     onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
-                                    currentUser={user}/>
+                                    currentUser={user} userDeleted={userDeleted}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
         expect(buttons.length).toEqual(2);
