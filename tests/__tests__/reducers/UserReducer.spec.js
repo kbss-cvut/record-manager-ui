@@ -363,6 +363,25 @@ describe('UserReducer', function () {
             });
     });
 
+    it('handles UNLOAD_INSTITUTION_MEMBERS action', () => {
+        const initialState = {
+            institutionMembers: {
+                status: ACTION_STATUS.PENDING
+            },
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.UNLOAD_INSTITUTION_MEMBERS
+            })
+        ).toEqual(
+            {
+                institutionMembers: {},
+                testEntry: initialState.testEntry
+            });
+    });
+
     it('handles PASSWORD_CHANGE_PENDING action', () => {
         const initialState = {
             passwordChange: {

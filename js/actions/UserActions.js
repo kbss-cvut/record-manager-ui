@@ -176,6 +176,12 @@ export function loadInstitutionMembersError(error) {
     }
 }
 
+export function unloadInstitutionMembers() {
+    return {
+        type: ActionConstants.UNLOAD_INSTITUTION_MEMBERS,
+    }
+}
+
 export function changePassword(username, password) {
     return function (dispatch) {
         dispatch(changePasswordPending());
@@ -210,9 +216,9 @@ export function changePasswordError(error) {
 
 export function generateUsername(usernamePrefix) {
     return function (dispatch) {
-        dispatch({type: ActionConstants.GENERATE_PASSWORD_PENDING});
+        dispatch({type: ActionConstants.GENERATE_USERNAME_PENDING});
         axiosBackend.get(`rest/users/generate-username/${usernamePrefix}`).then((response) => {
-            dispatch({type: ActionConstants.GENERATE_PASSWORD_SUCCESS, generatedUsername: response.data});
+            dispatch({type: ActionConstants.GENERATE_USERNAME_SUCCESS, generatedUsername: response.data});
         })
     }
 }

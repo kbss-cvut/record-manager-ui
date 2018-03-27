@@ -11,7 +11,7 @@ import {
     deleteUser,
     deleteUserError,
     deleteUserPending,
-    deleteUserSuccess,
+    deleteUserSuccess, generateUsername,
     loadInstitutionMembers,
     loadInstitutionMembersError,
     loadInstitutionMembersPending,
@@ -22,7 +22,7 @@ import {
     loadUserSuccess,
     saveUserError,
     saveUserPending,
-    saveUserSuccess,
+    saveUserSuccess, unloadInstitutionMembers,
     unloadSavedUser,
     unloadUser,
     updateUser
@@ -153,6 +153,13 @@ describe('User synchronize actions', function () {
         };
         expect(loadInstitutionMembersError(error)).toEqual(expectedAction)
     });
+
+    it('creates an action to unload institution members', () => {
+        const expectedAction = {
+            type: ActionConstants.UNLOAD_INSTITUTION_MEMBERS
+        };
+        expect(unloadInstitutionMembers()).toEqual(expectedAction)
+    });
 });
 
 const middlewares = [thunk.withExtraArgument(axiosBackend)];
@@ -178,7 +185,8 @@ describe('User asynchronize actions', function () {
         },
         currentUserAdmin = {
             role: ROLE.ADMIN
-        };
+        },
+        usernamePrefix = 'doctor';
 
     beforeEach(() => {
         MockApi = new MockAdapter(axiosBackend);
@@ -379,6 +387,22 @@ describe('User asynchronize actions', function () {
         MockApi.onPut(`rest/users/${username}/password-change`).reply(400, error);
 
         store.dispatch(changePassword(username, password));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it("creates GENERATE_USERNAME_SUCCESS action when changing password successfully is done", function (done) {
+        const expectedActions = [
+            { type: ActionConstants.GENERATE_USERNAME_PENDING},
+            { type: ActionConstants.GENERATE_USERNAME_SUCCESS, generatedUsername: `${usernamePrefix}1`}
+        ];
+
+        MockApi.onGet(`rest/users/generate-username/${usernamePrefix}`).reply(200, `${usernamePrefix}1`);
+
+        store.dispatch(generateUsername(usernamePrefix));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);

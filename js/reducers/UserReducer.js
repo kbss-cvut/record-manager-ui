@@ -106,6 +106,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 institutionMembers: {
+                    ...state.institutionMembers,
                     status: ACTION_STATUS.PENDING
                 }
             };
@@ -125,6 +126,11 @@ export default function (state = initialState, action) {
                     status: ACTION_STATUS.ERROR,
                     error: action.error
                 }
+            };
+        case ActionConstants.UNLOAD_INSTITUTION_MEMBERS:
+            return {
+                ...state,
+                institutionMembers: {}
             };
         case ActionConstants.PASSWORD_CHANGE_PENDING:
             return {
@@ -149,7 +155,7 @@ export default function (state = initialState, action) {
                     error: action.error
                 }
             };
-        case ActionConstants.GENERATE_PASSWORD_PENDING: {
+        case ActionConstants.GENERATE_USERNAME_PENDING: {
             return {
                 ...state,
                 generatedUsername: {
@@ -157,7 +163,7 @@ export default function (state = initialState, action) {
                 }
             };
         }
-        case ActionConstants.GENERATE_PASSWORD_SUCCESS: {
+        case ActionConstants.GENERATE_USERNAME_SUCCESS: {
             return {
                 ...state,
                 generatedUsername: {

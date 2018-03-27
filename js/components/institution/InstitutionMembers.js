@@ -15,6 +15,7 @@ class InstitutionMembers extends React.Component {
         super(props);
         this.state = {
             showDialog: false,
+            showAlert: false,
             selectedUser: null
         }
     }
@@ -29,7 +30,7 @@ class InstitutionMembers extends React.Component {
 
     _onSubmitDelete = () => {
         this.props.onDelete(this.state.selectedUser);
-        this.setState({showDialog: false, selectedUser: null});
+        this.setState({showDialog: false, selectedUser: null, showAlert: true});
     };
 
     _getDeleteLabel() {
@@ -38,14 +39,13 @@ class InstitutionMembers extends React.Component {
     }
 
     render(){
-        const {institutionMembers, institution, currentUser, onAddNewUser} = this.props;
-        if(!institutionMembers.status || institutionMembers.status === ACTION_STATUS.PENDING) {
+        const {institutionMembers, institution, currentUser, onAddNewUser, userDeleted} = this.props;
+        if(!institutionMembers.members && (!institutionMembers.status || institutionMembers.status === ACTION_STATUS.PENDING)) {
             return <Loader />
         } else if(institutionMembers.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('institution.members.loading-error', {error: institutionMembers.error.message})}/>
         }
-
         return <Panel header={<span>{this.props.i18n('institution.members.panel-title')}</span>} bsStyle='info'>
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
                               show={this.state.showDialog} item={this.state.selectedUser}
@@ -74,6 +74,11 @@ class InstitutionMembers extends React.Component {
                     </Button>
                 </div>
             }
+            {this.state.showAlert && userDeleted.status === ACTION_STATUS.ERROR &&
+            <AlertMessage type={ALERT_TYPES.DANGER}
+                          message={this.props.formatMessage('user.delete-error', {error: this.props.userDeleted.error.message})}/>}
+            {this.state.showAlert && userDeleted.status === ACTION_STATUS.SUCCESS &&
+            <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.props.i18n('user.delete-success')}/>}
         </Panel>;
     };
 

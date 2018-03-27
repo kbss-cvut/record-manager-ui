@@ -14,7 +14,7 @@ import {bindActionCreators} from "redux";
 import {
     unloadSavedInstitution} from "../../actions/InstitutionActions";
 import {canLoadInstitutionsPatients} from "../../utils/Utils";
-import {deleteUser, loadInstitutionMembers} from "../../actions/UserActions";
+import {deleteUser, loadInstitutionMembers, unloadInstitutionMembers} from "../../actions/UserActions";
 import {
     createInstitution, loadInstitution, unloadInstitution,
     updateInstitution
@@ -76,6 +76,7 @@ class InstitutionController extends React.Component {
 
     componentWillUnmount() {
         this.props.unloadInstitution();
+        this.props.unloadInstitutionMembers();
     }
 
     _onSave = () => {
@@ -171,6 +172,7 @@ function mapDispatchToProps(dispatch) {
         loadInstitutionMembers: bindActionCreators(loadInstitutionMembers, dispatch),
         loadRecords: bindActionCreators(loadRecords, dispatch),
         deleteUser: bindActionCreators(deleteUser, dispatch),
-        transitionToWithOpts:bindActionCreators(transitionToWithOpts, dispatch)
+        transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),
+        unloadInstitutionMembers: bindActionCreators(unloadInstitutionMembers, dispatch)
     }
 }
