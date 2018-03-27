@@ -6,7 +6,8 @@ const initialState = {
     userDeleted: {},
     userLoaded: {},
     institutionMembers: {},
-    passwordChange: {}
+    passwordChange: {},
+    generatedUsername: {}
 };
 
 export default function (state = initialState, action) {
@@ -148,6 +149,23 @@ export default function (state = initialState, action) {
                     error: action.error
                 }
             };
+        case ActionConstants.GENERATE_PASSWORD_PENDING: {
+            return {
+                ...state,
+                generatedUsername: {
+                    status: ACTION_STATUS.PENDING
+                }
+            };
+        }
+        case ActionConstants.GENERATE_PASSWORD_SUCCESS: {
+            return {
+                ...state,
+                generatedUsername: {
+                    status: ACTION_STATUS.SUCCESS,
+                    username: action.generatedUsername
+                }
+            };
+        }
         default:
             return state;
     }

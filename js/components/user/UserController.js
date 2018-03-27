@@ -13,10 +13,13 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
 import {setTransitionPayload} from "../../actions/RouterActions";
-import {createUser, loadUser, unloadSavedUser, unloadUser, updateUser} from "../../actions/UserActions";
+import {
+    createUser, generateUsername, loadUser, unloadSavedUser, unloadUser,
+    updateUser
+} from "../../actions/UserActions";
 import * as UserFactory from "../../utils/EntityFactory";
 import omit from 'lodash/omit';
-import {loadUsers} from "../../actions/UsersActions";
+import {getRole} from "../../utils/Utils";
 
 class UserController extends React.Component {
     constructor(props) {
@@ -36,9 +39,6 @@ class UserController extends React.Component {
     componentWillMount() {
         if (!this.state.user) {
             this.props.loadUser(this.props.params.username);
-        }
-        if (this.state.user && this.state.user.isNew) {
-            this.props.loadUsers()
         }
         if(this.state.user && this.state.user.isNew && this.institution) {
             this._onChange({institution: this.institution});
@@ -75,6 +75,9 @@ class UserController extends React.Component {
         if (this.props.userLoaded.status === ACTION_STATUS.PENDING && nextProps.userLoaded.status === ACTION_STATUS.SUCCESS) {
             this.setState({user: nextProps.userLoaded.user});
         }
+        if (this.props.generatedUsername.status === ACTION_STATUS.PENDING && nextProps.generatedUsername.status === ACTION_STATUS.SUCCESS) {
+            this._onChange({username: nextProps.generatedUsername.username});
+        }
     }
 
     _onSave = () => {
@@ -109,6 +112,10 @@ class UserController extends React.Component {
         });
     };
 
+    _generateUsername = () => {
+        this.props.generateUsername(getRole(this.state.user).toLowerCase());
+    };
+
     _getPayload() {
         let payload = this._isNew() ? this.props.transitionPayload[Routes.createUser.name] :
                                       this.props.transitionPayload[Routes.editUser.name];
@@ -118,7 +125,7 @@ class UserController extends React.Component {
     }
 
     render() {
-        const {currentUser, userSaved, userLoaded, institutionsLoaded, usersLoaded} = this.props;
+        const {currentUser, userSaved, userLoaded, institutionsLoaded} = this.props;
         if (!currentUser) {
             return null;
         }
@@ -126,12 +133,12 @@ class UserController extends React.Component {
             onSave: this._onSave,
             onCancel: this._onCancel,
             onChange: this._onChange,
-            onPasswordChange: this._onPasswordChange
+            onPasswordChange: this._onPasswordChange,
+            generateUsername: this._generateUsername
         };
         return <User user={this.state.user} handlers={handlers} backToInstitution={this.institution !== null}
                      userSaved={userSaved} showAlert={this.state.showAlert} userLoaded={userLoaded}
-                     currentUser={currentUser} institutions={institutionsLoaded.institutions || []}
-                     usersLoaded={usersLoaded}/>;
+                     currentUser={currentUser} institutions={institutionsLoaded.institutions || []}/>;
     }
 }
 
@@ -141,11 +148,11 @@ function mapStateToProps(state) {
     return {
         userSaved: state.user.userSaved,
         userLoaded: state.user.userLoaded,
-        usersLoaded: state.users.usersLoaded,
         currentUser: state.auth.user,
         institutionsLoaded: state.institutions.institutionsLoaded,
         transitionPayload: state.router.transitionPayload,
-        viewHandlers: state.router.viewHandlers
+        viewHandlers: state.router.viewHandlers,
+        generatedUsername: state.user.generatedUsername
     };
 }
 
@@ -154,11 +161,11 @@ function mapDispatchToProps(dispatch) {
         createUser: bindActionCreators(createUser, dispatch),
         updateUser: bindActionCreators(updateUser, dispatch),
         loadUser: bindActionCreators(loadUser, dispatch),
-        loadUsers: bindActionCreators(loadUsers, dispatch),
         unloadUser: bindActionCreators(unloadUser, dispatch),
         unloadSavedUser: bindActionCreators(unloadSavedUser, dispatch),
         loadInstitutions: bindActionCreators(loadInstitutions, dispatch),
         setTransitionPayload: bindActionCreators(setTransitionPayload, dispatch),
-        transitionToWithOpts:bindActionCreators(transitionToWithOpts, dispatch)
+        transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),
+        generateUsername: bindActionCreators(generateUsername, dispatch)
     }
 }

@@ -207,3 +207,12 @@ export function changePasswordError(error) {
         error
     }
 }
+
+export function generateUsername(usernamePrefix) {
+    return function (dispatch) {
+        dispatch({type: ActionConstants.GENERATE_PASSWORD_PENDING});
+        axiosBackend.get(`rest/users/generate-username/${usernamePrefix}`).then((response) => {
+            dispatch({type: ActionConstants.GENERATE_PASSWORD_SUCCESS, generatedUsername: response.data});
+        })
+    }
+}

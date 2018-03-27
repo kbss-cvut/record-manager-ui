@@ -22,7 +22,6 @@ class User extends React.Component {
         currentUser: React.PropTypes.object,
         showAlert: React.PropTypes.bool,
         institutions: React.PropTypes.array,
-        usersLoaded: React.PropTypes.object
     };
 
     constructor(props) {
@@ -78,13 +77,6 @@ class User extends React.Component {
         });
     };
 
-    _generateUsername = () => {
-        const change = {
-            username: `${getRole(this.props.user)}${this.props.usersLoaded.users.length}`.toLowerCase()
-        };
-        this.props.handlers.onChange(change);
-    };
-
     _passwordChange() {
         const {user, currentUser, handlers} = this.props;
         if (user.isNew || (currentUser.username !== user.username && currentUser.role !== ROLE.ADMIN)) {
@@ -96,7 +88,7 @@ class User extends React.Component {
     }
 
     render() {
-        const {userSaved, usersLoaded, userLoaded, currentUser, showAlert, user, handlers} = this.props;
+        const {userSaved, userLoaded, currentUser, showAlert, user, handlers} = this.props;
         if (!user && (!userLoaded.status || userLoaded.status === ACTION_STATUS.PENDING)) {
             return <LoaderPanel header={<span>{this.i18n('user.panel-title')}</span>} />;
         } else if (userLoaded.status === ACTION_STATUS.ERROR) {
@@ -104,9 +96,7 @@ class User extends React.Component {
                                  message={this.props.formatMessage('user.load-error', {error: userLoaded.error.message})}/>;
         }
         const generateButton = user.isNew &&
-            <Button bsStyle='link' bsSize='small' onClick={this._generateUsername}
-                    disabled={!usersLoaded.status || usersLoaded.status === ACTION_STATUS.PENDING ||
-                               usersLoaded.status === ACTION_STATUS.ERROR}>
+            <Button bsStyle='link' bsSize='small' onClick={handlers.generateUsername}>
                 <Glyphicon glyph="random" />
             </Button>;
 
