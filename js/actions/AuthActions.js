@@ -97,7 +97,7 @@ export function loadUserProfileError(error) {
 export function passwordReset(email) {
     return function (dispatch) {
         dispatch({type: ActionConstants.PASSWORD_RESET_PENDING});
-        axiosBackend.post('rest/users/forgotten-password', email, {headers: {"Content-Type": "text/plain"}})
+        axiosBackend.post('rest/users/password-reset', email, {headers: {"Content-Type": "text/plain"}})
             .then(() => {
             dispatch({type: ActionConstants.PASSWORD_RESET_SUCCESS});
         }).catch ((error) => {
