@@ -59,12 +59,11 @@ class PasswordReset extends React.Component {
                        inputWidth={9}/>
                 <div className="login-buttons">
                     <Button bsStyle='success' onClick={this.resetPassword}
-                            disabled={this.state.mask}>{this.i18n('login.reset-password')}
+                            disabled={this.props.status === ACTION_STATUS.PENDING}>{this.i18n('login.reset-password')}
                             {this.props.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
                             </Button>
                     <Button bsStyle='link'
-                            onClick={() => transitionTo(Routes.login)}
-                            disabled={this.state.mask}>{this.i18n('login.back-to-login')}</Button>
+                            onClick={() => transitionTo(Routes.login)}>{this.i18n('login.back-to-login')}</Button>
                 </div>
             </Form>
         </Panel>
