@@ -44,7 +44,7 @@ module.exports = {
         'login.reset-password': 'Reset password',
         'login.forgot-your-password': 'Forgot your password?',
         'login.back-to-login': 'Back to login',
-        'login.reset-password-alert': 'We have sent you an email with instructions on how to reset your password.',
+        'login.reset-password-alert': 'We have sent you an email with new password.',
 
         'main.dashboard-nav': 'Dashboard',
         'main.users-nav': 'Users',

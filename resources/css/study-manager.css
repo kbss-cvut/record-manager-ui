@@ -637,10 +637,20 @@ button.reset-filters {
         margin-bottom: 6px;
         margin-top: 18px;
     }
+
+    .login-panel .alert {
+        margin-bottom: 14px;
+        margin-top: 6px;
+    }
 }
 
 .alert {
     margin-top: 18px;
+}
+
+.login-panel .alert {
+    margin-bottom: 14px;
+    margin-top: 6px;
 }
 
 .loader-spin {
