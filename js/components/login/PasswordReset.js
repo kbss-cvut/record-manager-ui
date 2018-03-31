@@ -5,8 +5,11 @@ import {Alert, Button, Form, Panel} from "react-bootstrap";
 import HorizontalInput from "../HorizontalInput";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
-import {transitionTo} from "../../utils/Routing";
+import {transitionTo, transitionToWithOpts} from "../../utils/Routing";
 import {Routes} from "../../utils/Routes";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {passwordReset} from "../../actions/AuthActions";
 
 class PasswordReset extends React.Component {
     constructor(props) {
@@ -37,7 +40,7 @@ class PasswordReset extends React.Component {
 
     resetPassword = () => {
         this.setState({alertVisible: true});
-        {/*TODO logic*/}
+        this.props.passwordReset(this.state.email);
     };
 
     renderAlert() {
@@ -67,4 +70,17 @@ class PasswordReset extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(PasswordReset));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(PasswordReset)));
+
+function mapStateToProps(state) {
+    return {
+
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        passwordReset: bindActionCreators(passwordReset, dispatch)
+
+    }
+}

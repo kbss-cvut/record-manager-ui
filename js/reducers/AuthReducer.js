@@ -7,6 +7,7 @@ const initialState = {
     isLogging: false,
     isLoaded: false,
     user: {},
+    passwordResetStatus: null
 };
 
 export default function (state = initialState, action) {
@@ -56,6 +57,16 @@ export default function (state = initialState, action) {
                 user: {
                     error: action.error
                 }
+            };
+        case ActionConstants.PASSWORD_RESET_PENDING:
+            return {
+                ...state,
+                passwordResetStatus: ACTION_STATUS.PENDING
+            };
+        case ActionConstants.PASSWORD_RESET_SUCCESS:
+            return {
+                ...state,
+                passwordResetStatus: ACTION_STATUS.SUCCESS
             };
         default:
             return state;

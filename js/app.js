@@ -81,7 +81,7 @@ let App = React.createClass({
                 <Route path='/' component={MainView}>
                     <IndexRoute component={requireAuth(DashboardController)}/>
                     <Route path={Routes.login.path} onEnter={onRouteEnter} component={Login}/>
-                    <Route path={Routes.passwordReset.path} onEnter={onRouteEnter} component={requireAuth(PasswordReset)}/>
+                    <Route path={Routes.passwordReset.path} onEnter={onRouteEnter} component={PasswordReset}/>
                     <Route path={Routes.dashboard.path} onEnter={onRouteEnter} component={requireAuth(DashboardController)}/>
                     <Route path={Routes.users.path} onEnter={onRouteEnter} component={requireAuth(UsersController)}/>
                     <Route path={Routes.createUser.path} onEnter={onRouteEnter} component={requireAuth(UserController)}/>

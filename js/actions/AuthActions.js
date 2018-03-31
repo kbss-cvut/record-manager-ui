@@ -93,3 +93,15 @@ export function loadUserProfileError(error) {
         error
     }
 }
+
+export function passwordReset(email) {
+    return function (dispatch) {
+        dispatch({type: ActionConstants.PASSWORD_RESET_PENDING});
+        axiosBackend.post('rest/users/forgotten-password', email, {headers: {"Content-Type": "text/plain"}})
+            .then(() => {
+            dispatch({type: ActionConstants.PASSWORD_RESET_SUCCESS});
+        }).catch ((error) => {
+            console.log(error);
+        });
+    }
+}
