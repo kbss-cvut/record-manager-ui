@@ -10,6 +10,7 @@ import {Routes} from "../../utils/Routes";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {passwordReset} from "../../actions/AuthActions";
+import {ACTION_STATUS} from "../../constants/DefaultConstants";
 
 class PasswordReset extends React.Component {
     constructor(props) {
@@ -17,7 +18,7 @@ class PasswordReset extends React.Component {
         this.i18n = this.props.i18n;
         this.state = {
             email: '',
-            alertVisible: false
+            showAlert: false
         }
     }
 
@@ -28,7 +29,6 @@ class PasswordReset extends React.Component {
     onChange = (e) => {
         let state = this.state;
         state[e.target.name] = e.target.value;
-        state.alertVisible = false;
         this.setState(state);
     };
 
@@ -39,13 +39,13 @@ class PasswordReset extends React.Component {
     };
 
     resetPassword = () => {
-        this.setState({alertVisible: true});
+        this.setState({showAlert: true});
         this.props.passwordReset(this.state.email);
     };
 
     renderAlert() {
-        return this.state.alertVisible ? <Alert bsStyle='success' bsSize='small'>
-            <div>{this.i18n('login.reset-password-alert')}</div>
+        return this.state.showAlert && this.props.status === ACTION_STATUS.SUCCESS ?
+            <Alert bsStyle='success' bsSize='small'><div>{this.i18n('login.reset-password-alert')}</div>
         </Alert> : null;
     }
 
@@ -59,7 +59,9 @@ class PasswordReset extends React.Component {
                        inputWidth={9}/>
                 <div className="login-buttons">
                     <Button bsStyle='success' onClick={this.resetPassword}
-                            disabled={this.state.mask}>{this.i18n('login.reset-password')}</Button>
+                            disabled={this.state.mask}>{this.i18n('login.reset-password')}
+                            {this.props.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
+                            </Button>
                     <Button bsStyle='link'
                             onClick={() => transitionTo(Routes.login)}
                             disabled={this.state.mask}>{this.i18n('login.back-to-login')}</Button>
@@ -74,13 +76,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapp
 
 function mapStateToProps(state) {
     return {
-
+        status: state.auth.passwordResetStatus
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         passwordReset: bindActionCreators(passwordReset, dispatch)
-
     }
 }
