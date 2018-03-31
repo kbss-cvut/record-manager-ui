@@ -2,7 +2,6 @@ import * as ActionConstants from "../constants/ActionConstants";
 import {axiosBackend} from "./index";
 
 export function loadUsers() {
-    //console.log("Loading all users");
     return function (dispatch) {
         dispatch(loadUsersPending());
         axiosBackend.get('rest/users').then((response) => {

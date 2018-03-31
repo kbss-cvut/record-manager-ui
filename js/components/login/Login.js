@@ -57,7 +57,7 @@ class Login extends React.Component {
                     <div>
                         <AlertMessage type={ALERT_TYPES.DANGER}
                               message={this.i18n('login.error')}/>
-                        <br/>
+
                     </div>}
             <Form horizontal>
                 <HorizontalInput type='text' name='username' ref={(input) => { this.usernameField = input; }}

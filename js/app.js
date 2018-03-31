@@ -35,7 +35,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import {Router, Route, IndexRoute, Redirect} from "react-router";
 import {IntlProvider} from "react-intl";
-import {applyMiddleware, createStore} from "redux";
+import {applyMiddleware, compose, createStore} from "redux";
 import rootReducer from "./reducers";
 import {Provider} from "react-redux";
 import thunk from "redux-thunk";
@@ -61,9 +61,13 @@ function onRouteEnter() {
     execute(this.path);
 }
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const store = createStore(
     rootReducer,
-    applyMiddleware(thunk)
+    composeEnhancers(
+        applyMiddleware(thunk)
+    )
 );
 
 store.dispatch(loadUserProfile());

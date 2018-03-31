@@ -632,8 +632,14 @@ button.reset-filters {
     100% { transform: rotate(360deg); }
 }
 
+@media screen and (max-width: 1199px){
+    .alert {
+        margin-bottom: 6px;
+        margin-top: 18px;
+    }
+}
+
 .alert {
-    margin-bottom: 0px;
     margin-top: 18px;
 }
 

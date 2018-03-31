@@ -74,7 +74,7 @@ module.exports = {
         'users.add-new-user': 'Add new user',
         'users.back-to-institution': 'Back to institution',
         'users.not-found': 'No users were found...',
-        'users.loading-error': 'Unable to users. {error}',
+        'users.loading-error': 'Unable to load users. {error}',
 
         'delete.dialog-title': 'Delete item?',
         'delete.dialog-content': 'Are you sure you want to remove {itemLabel}?',
