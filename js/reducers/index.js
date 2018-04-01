@@ -7,6 +7,7 @@ import InstitutionReducer from "./InstitutionReducer";
 import RecordReducer from "./RecordReducer";
 import RecordsReducer from "./RecordsReducer";
 import RouterReducer from "./RouterReducer";
+import ActionHistoryReducer from "./ActionHistoryReducer";
 import * as ActionConstants from "../constants/ActionConstants";
 
 const rootReducer = (state, action) => {
@@ -23,6 +24,7 @@ const appReducer = combineReducers({
     record: RecordReducer,
     router: RouterReducer,
     records: RecordsReducer,
+    history: ActionHistoryReducer,
     institution: InstitutionReducer,
     institutions: InstitutionsReducer
 });

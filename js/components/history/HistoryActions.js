@@ -5,11 +5,17 @@ import {connect} from "react-redux";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import {Panel} from "react-bootstrap";
+import {loadActions} from "../../actions/HistoryActions";
+import {bindActionCreators} from "redux";
 
 class HistoryActions extends React.Component {
     constructor(props) {
         super(props);
         this.i18n = this.props.i18n;
+    }
+
+    componentDidMount() {
+        this.props.loadActions();
     }
 
     render() {
@@ -30,10 +36,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapp
 
 function mapStateToProps(state) {
     return {
+        actions: state.history.actions,
+        status: state.history.status
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
+        loadActions: bindActionCreators(loadActions, dispatch)
     }
 }

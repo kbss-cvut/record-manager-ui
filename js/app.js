@@ -58,17 +58,26 @@ import requireAuth from './components/misc/hoc/RequireAuth';
 import PasswordChangeController from "./components/user/PasswordChangeController";
 import HistoryActions from "./components/history/HistoryActions";
 import HistoryAction from "./components/history/HistoryAction";
+import {logAction} from "./actions/HistoryActions";
 
 function onRouteEnter() {
     execute(this.path);
 }
+
+const logger = store => next => action => {
+    const currentUser = store.getState().auth.user;
+    if (Object.keys(currentUser).length !== 0) {
+        logAction(action, currentUser, Date.now());
+    }
+    return next(action)
+};
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
     rootReducer,
     composeEnhancers(
-        applyMiddleware(thunk)
+        applyMiddleware(thunk, logger)
     )
 );
 
