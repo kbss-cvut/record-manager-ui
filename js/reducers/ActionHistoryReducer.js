@@ -2,7 +2,6 @@ import * as ActionConstants from "../constants/ActionConstants";
 import {ACTION_STATUS} from "../constants/DefaultConstants";
 
 const initialState = {
-    actions: {}
 };
 
 export default function (state = initialState, action) {
@@ -16,7 +15,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 status: ACTION_STATUS.SUCCESS,
-                actionsHistory: action.actionsHistory,
+                actions: action.actionsHistory,
                 error: ''
             };
         case ActionConstants.LOAD_ACTIONS_HISTORY_ERROR:

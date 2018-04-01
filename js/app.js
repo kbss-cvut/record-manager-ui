@@ -65,9 +65,8 @@ function onRouteEnter() {
 }
 
 const logger = store => next => action => {
-    const currentUser = store.getState().auth.user;
-    if (Object.keys(currentUser).length !== 0) {
-        logAction(action, currentUser, Date.now());
+    if (store.getState().auth.isLoaded) {
+        logAction(action, store.getState().auth.user, Date.now());
     }
     return next(action)
 };

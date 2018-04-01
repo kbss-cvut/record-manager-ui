@@ -16,6 +16,7 @@
     "jsonld-utils": "https://kbss.felk.cvut.cz/dist/jsonld-utils-0.0.7.tgz",
     "keymirror": "~0.1.0",
     "lodash": "^4.17.5",
+    "moment": "^2.22.0",
     "object-assign": "~4.0.1",
     "prop-types": "^15.5.8",
     "react": "~15.3.2",
