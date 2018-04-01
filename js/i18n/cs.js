@@ -61,6 +61,7 @@ module.exports = {
         'dashboard.institutions-tile': 'Klinika',
         'dashboard.institutions-tile': 'Kliniky',
         'dashboard.records-tile': 'Záznamy pacientů',
+        'dashboard.history': 'Historie',
 
         'notfound.title': 'Nenalezeno',
         'notfound.msg-with-id': 'Záznam \'{resource}\' s identifikátorem {identifier} nenalezen.',
@@ -146,6 +147,11 @@ module.exports = {
         'wizard.previous': 'Zpět',
         'wizard.next': 'Další',
         'wizard.finish': 'Dokončit',
+
+        'history.action-type': 'Typ akce',
+        'history.owner': 'Vlastník',
+        'history.time': 'Čas',
+        'history.open-tooltip': 'Otevřít detaily této akce',
 
         'User does not exist.': 'Uživatel neexistuje.',
         'Provided credentials don\'t match.': 'Zadané údaje nesouhlasí.',

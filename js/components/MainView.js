@@ -51,8 +51,6 @@ class MainView extends React.Component {
                         </Navbar.Header>
                         <Navbar.Collapse>
                         <Nav pullLeft>
-                            <LinkContainer
-                                to='dashboard'><NavItem>{this.i18n('main.dashboard-nav')}</NavItem></LinkContainer>
                         {this._renderUsers()}
                             {user.role === ROLE.ADMIN ?
                                 <LinkContainer to='institutions'>
@@ -66,6 +64,10 @@ class MainView extends React.Component {
                             }
                             <LinkContainer
                                 to='records'><NavItem>{this.i18n('main.records-nav')}</NavItem></LinkContainer>
+                            {user.role === ROLE.ADMIN &&
+                            <LinkContainer
+                                to='history'><NavItem>{this.i18n('dashboard.history')}</NavItem></LinkContainer>
+                            }
                         </Nav>
 
                             <Nav pullRight>
