@@ -9,7 +9,8 @@ import HistoryRow from "./HistoryRow";
 
 class HistoryTable extends React.Component {
     static propTypes = {
-        actions: React.PropTypes.array.isRequired
+        actions: React.PropTypes.array.isRequired,
+        onOpen: React.PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -47,7 +48,7 @@ class HistoryTable extends React.Component {
         const {actions} = this.props;
         let rows = [];
         for (let i = 0, len = actions.length; i < len; i++) {
-            rows.push(<HistoryRow key={actions[i].key} action={actions[i]} onOpen={() => console.log("ahoj")}/>);
+            rows.push(<HistoryRow key={actions[i].key} action={actions[i]} onOpen={this.props.onOpen}/>);
         }
         return rows;
     }

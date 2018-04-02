@@ -12,7 +12,7 @@ let HistoryRow = (props) => {
         <td className='report-row'>{moment.unix(action.timestamp / 1000).format('DD-MM-YYYY HH:mm:ss:SSS')}</td>
         <td className='report-row actions'>
             <Button bsStyle='primary' bsSize='small' title={props.i18n('history.open-tooltip')}
-                    onClick={() => props.onOpen()}>{props.i18n('open')}</Button>
+                    onClick={() => props.onOpen(action.key)}>{props.i18n('open')}</Button>
         </td>
     </tr>;
 };

@@ -11,6 +11,8 @@ import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import {LoaderPanel} from "../Loader";
 import AlertMessage from "../AlertMessage";
 import HistoryTable from "./HistoryTable";
+import {Routes} from "../../utils/Routes";
+import {transitionToWithOpts} from "../../utils/Routing";
 
 class HistoryActions extends React.Component {
     constructor(props) {
@@ -22,6 +24,12 @@ class HistoryActions extends React.Component {
         this.props.loadActions();
     }
 
+    _onOpen = (key) => {
+        this.props.transitionToWithOpts(Routes.historyAction, {
+            params: {key}
+        });
+    };
+
     render() {
         const {actions, status, error} = this.props;
         if(!actions && (!status || status === ACTION_STATUS.PENDING)) {
@@ -31,13 +39,13 @@ class HistoryActions extends React.Component {
                                  message={this.props.formatMessage('users.loading-error', {error: error.message})}/>
         }
         return <Panel header={this._renderHeader()} bsStyle='primary'>
-            <HistoryTable actions={actions}/>
+            <HistoryTable actions={actions} onOpen={this._onOpen}/>
         </Panel>
     }
 
     _renderHeader() {
         return <span>
-            {this.i18n('dashboard.history')}{/*this.props.historyLoaded.status === ACTION_STATUS.PENDING && <div className="loader"></div>*/}
+            {this.i18n('dashboard.history')}{this.props.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
         </span>;
 
     }
@@ -55,6 +63,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        loadActions: bindActionCreators(loadActions, dispatch)
+        loadActions: bindActionCreators(loadActions, dispatch),
+        transitionToWithOpts:bindActionCreators(transitionToWithOpts, dispatch)
     }
 }
