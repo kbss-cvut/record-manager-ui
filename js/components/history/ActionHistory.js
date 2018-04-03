@@ -61,7 +61,7 @@ class ActionHistory extends React.Component {
                                      value={action.author.username} labelWidth={3} inputWidth={8}/>
                 </div>
             </div>
-            {action.payload !== "{}" &&
+            {action.payload &&
                 <div className='row'>
                     <div className='col-xs-6'>
                         <HorizontalInput type='textarea' label={this.i18n('history.payload')}

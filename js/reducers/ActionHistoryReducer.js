@@ -12,7 +12,6 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 actionsLoaded: {
-                    ...state.actionsLoaded,
                     status: ACTION_STATUS.PENDING
                 }
             };
@@ -37,12 +36,10 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 actionLoaded: {
-                    ...state.actionLoaded,
                     status: ACTION_STATUS.PENDING
                 }
             };
         case ActionConstants.LOAD_ACTION_HISTORY_SUCCESS:
-            console.log(action.actionHistory);
             return {
                 ...state,
                 actionLoaded: {

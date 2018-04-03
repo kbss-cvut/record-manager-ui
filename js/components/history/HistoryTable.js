@@ -28,7 +28,7 @@ class HistoryTable extends React.Component {
                     </tbody>
                 </Table>
                 :
-                <p className="font-italic">{this.i18n('actions.not-found')}</p>
+                <p className="font-italic">{this.i18n('history.not-found')}</p>
             }
         </div>;
     }
@@ -37,7 +37,7 @@ class HistoryTable extends React.Component {
         return <thead>
         <tr>
             <th className='col-xs-4 col-sm-4 col-md-4 content-center'>{this.i18n('history.action-type')}</th>
-            <th className='col-xs-3 col-sm-3 col-md-3 content-center'>{this.i18n('history.owner')}</th>
+            <th className='col-xs-3 col-sm-3 col-md-3 content-center'>{this.i18n('history.author')}</th>
             <th className='col-xs-3 col-sm-3 col-md-3 content-center'>{this.i18n('history.time')}</th>
             <th className='col-xs-2 col-sm-3 col-md-2 content-center'>{this.i18n('actions')}</th>
         </tr>

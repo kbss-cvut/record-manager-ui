@@ -155,6 +155,9 @@ module.exports = {
         'history.panel-title': 'Historie akcí',
         'history.load-error': 'Nepodařilo se načíst akci historie. {error}',
         'history.payload': 'Obsah',
+        'history.search': 'Vyhledat...',
+        'history.loading-error': 'Nepodařilo se načíst akce historie. {error}',
+        'history.not-found': 'Žádné akce nebyly nalezeny..',
 
         'User does not exist.': 'Uživatel neexistuje.',
         'Provided credentials don\'t match.': 'Zadané údaje nesouhlasí.',
