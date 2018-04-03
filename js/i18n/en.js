@@ -152,10 +152,12 @@ module.exports = {
         'wizard.finish': 'Finish',
 
         'history.action-type': 'Action type',
-        'history.owner': 'Owner',
+        'history.author': 'Author',
         'history.time': 'Time',
         'history.open-tooltip': 'View details of this action',
         'history.panel-title': 'Action history',
+        'history.load-error': 'Unable to load action. {error}',
+        'history.payload': 'Content',
 
         'User does not exist.': 'User does not exist.',
         'Provided credentials don\'t match.': 'Provided credentials don\'t match.',

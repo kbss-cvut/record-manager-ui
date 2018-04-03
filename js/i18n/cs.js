@@ -149,9 +149,12 @@ module.exports = {
         'wizard.finish': 'Dokončit',
 
         'history.action-type': 'Typ akce',
-        'history.owner': 'Vlastník',
+        'history.author': 'Autor',
         'history.time': 'Čas',
         'history.open-tooltip': 'Otevřít detaily této akce',
+        'history.panel-title': 'Historie akcí',
+        'history.load-error': 'Nepodařilo se načíst akci historie. {error}',
+        'history.payload': 'Obsah',
 
         'User does not exist.': 'Uživatel neexistuje.',
         'Provided credentials don\'t match.': 'Zadané údaje nesouhlasí.',

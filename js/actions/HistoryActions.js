@@ -17,8 +17,18 @@ export function loadActions() {
         axiosBackend.get('rest/action-history').then((response) => {
             dispatch({type: ActionConstants.LOAD_ACTIONS_HISTORY_SUCCESS, actionsHistory: response.data});
         }).catch((error) => {
-            console.log(error);
             dispatch({type: ActionConstants.LOAD_ACTIONS_HISTORY_ERROR, error: error.response.data});
+        });
+    }
+}
+
+export function loadActionByKey(key) {
+    return function (dispatch) {
+        dispatch({type: ActionConstants.LOAD_ACTION_HISTORY_PENDING});
+        axiosBackend.get(`rest/action-history/${key}`).then((response) => {
+            dispatch({type: ActionConstants.LOAD_ACTION_HISTORY_SUCCESS, actionHistory: response.data});
+        }).catch((error) => {
+            dispatch({type: ActionConstants.LOAD_ACTION_HISTORY_ERROR, error: error.response.data});
         });
     }
 }

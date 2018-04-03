@@ -14,7 +14,7 @@ import HistoryTable from "./HistoryTable";
 import {Routes} from "../../utils/Routes";
 import {transitionToWithOpts} from "../../utils/Routing";
 
-class HistoryActions extends React.Component {
+class ActionsHistory extends React.Component {
     constructor(props) {
         super(props);
         this.i18n = this.props.i18n;
@@ -31,33 +31,31 @@ class HistoryActions extends React.Component {
     };
 
     render() {
-        const {actions, status, error} = this.props;
-        if(!actions && (!status || status === ACTION_STATUS.PENDING)) {
+        const {actionsLoaded} = this.props;
+        if(!actionsLoaded.actions && (!actionsLoaded.status || actionsLoaded.status === ACTION_STATUS.PENDING)) {
             return <LoaderPanel header={this._renderHeader()}/>;
-        } else if(status === ACTION_STATUS.ERROR) {
+        } else if(actionsLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
-                                 message={this.props.formatMessage('users.loading-error', {error: error.message})}/>
+                                 message={this.props.formatMessage('users.loading-error', {error: actionsLoaded.error.message})}/>
         }
         return <Panel header={this._renderHeader()} bsStyle='primary'>
-            <HistoryTable actions={actions} onOpen={this._onOpen}/>
+            <HistoryTable actions={actionsLoaded.actions} onOpen={this._onOpen}/>
         </Panel>
     }
 
     _renderHeader() {
         return <span>
-            {this.i18n('dashboard.history')}{this.props.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
+            {this.i18n('dashboard.history')}{this.props.actionsLoaded.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
         </span>;
 
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(HistoryActions)));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(ActionsHistory)));
 
 function mapStateToProps(state) {
     return {
-        actions: state.history.actions,
-        error: state.history.error,
-        status: state.history.status
+        actionsLoaded: state.history.actionsLoaded
     };
 }
 

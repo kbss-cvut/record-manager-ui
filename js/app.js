@@ -56,8 +56,8 @@ import PasswordReset from "./components/login/PasswordReset";
 import MainView from "./components/MainView";
 import requireAuth from './components/misc/hoc/RequireAuth';
 import PasswordChangeController from "./components/user/PasswordChangeController";
-import HistoryActions from "./components/history/HistoryActions";
-import HistoryAction from "./components/history/HistoryAction";
+import HistoryActions from "./components/history/ActionsHistory";
+import HistoryAction from "./components/history/ActionHistory";
 import {logAction} from "./actions/HistoryActions";
 
 function onRouteEnter() {
