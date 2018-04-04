@@ -93,14 +93,15 @@ export const ROLE = {
 };
 
 export const SEARCH_TYPE = {
-  ALL: 'ALL',
-  AUTHOR: 'AUTHOR',
-  ACTION: 'ACTION'
+    ALL: 'ALL',
+    AUTHOR: 'AUTHOR',
+    ACTION: 'ACTION',
+    RESET: 'RESET'
 };
 
 export const PAGINATION_DIRECTION = {
-  PREVIOUS: -1,
-  NEXT: 1
+    PREVIOUS: -1,
+    NEXT: 1
 };
 
 // Number of history actions on one page. Needs to be changes also in back-end
