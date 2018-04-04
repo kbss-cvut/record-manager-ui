@@ -851,3 +851,7 @@ button.reset-filters {
         margin: 0 auto 15px;
     }
 }
+
+.pagination .pointer{
+    cursor: pointer
+}

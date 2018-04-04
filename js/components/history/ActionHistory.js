@@ -42,40 +42,42 @@ class ActionHistory extends React.Component {
         console.log(actionLoaded);
         const action = actionLoaded.action;
         return <Panel header={this._renderHeader()} bsStyle='primary'>
-            <div className='row'>
-                <div className='col-xs-6'>
-                    <HorizontalInput type='text' label={this.i18n('history.action-type')}
-                                     disabled={true}
-                                     value={action.type} labelWidth={3} inputWidth={8}/>
-                </div>
-                <div className='col-xs-6'>
-                    <HorizontalInput type='text' label={this.i18n('history.time')}
-                                     disabled={true} value={moment.unix(action.timestamp / 1000).format('DD-MM-YYYY HH:mm:ss:SSS')}
-                                     labelWidth={3} inputWidth={8}/>
-                </div>
-            </div>
-            <div className='row'>
-                <div className='col-xs-6'>
-                    <HorizontalInput type='text' label={this.i18n('history.author')}
-                                     disabled={true}
-                                     value={action.author.username} labelWidth={3} inputWidth={8}/>
-                </div>
-            </div>
-            {action.payload &&
+            <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
                 <div className='row'>
                     <div className='col-xs-6'>
-                        <HorizontalInput type='textarea' label={this.i18n('history.payload')}
-                                         disabled={true} rows={6}
-                                         value={JSON.stringify(JSON.parse(action.payload), undefined, 2)} labelWidth={3}
-                                         inputWidth={8}/>
+                        <HorizontalInput type='text' label={this.i18n('history.action-type')}
+                                         disabled={true}
+                                         value={action.type} labelWidth={3} inputWidth={8}/>
+                    </div>
+                    <div className='col-xs-6'>
+                        <HorizontalInput type='text' label={this.i18n('history.time')}
+                                         disabled={true} value={moment.unix(action.timestamp / 1000).format('DD-MM-YYYY HH:mm:ss:SSS')}
+                                         labelWidth={3} inputWidth={8}/>
                     </div>
                 </div>
-            }
-            <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
-                <Button bsStyle='link' bsSize='small' onClick={this._onCancel}>
-                    {this.i18n('cancel')}
-                </Button>
-            </div>
+                <div className='row'>
+                    <div className='col-xs-6'>
+                        <HorizontalInput type='text' label={this.i18n('history.author')}
+                                         disabled={true}
+                                         value={action.author.username} labelWidth={3} inputWidth={8}/>
+                    </div>
+                </div>
+                {action.payload &&
+                    <div className='row'>
+                        <div className='col-xs-6'>
+                            <HorizontalInput type='textarea' label={this.i18n('history.payload')}
+                                             disabled={true} rows={6}
+                                             value={JSON.stringify(JSON.parse(action.payload), undefined, 2)} labelWidth={3}
+                                             inputWidth={8}/>
+                        </div>
+                    </div>
+                }
+                <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
+                    <Button bsStyle='link' bsSize='small' onClick={this._onCancel}>
+                        {this.i18n('cancel')}
+                    </Button>
+                </div>
+            </form>
         </Panel>
     }
 

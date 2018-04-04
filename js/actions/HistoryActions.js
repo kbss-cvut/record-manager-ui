@@ -12,12 +12,15 @@ export function logAction(action, author, timestamp) {
     }
 }
 
-export function loadActions(authorUsername = null, actionType = null) {
+export function loadActions(authorUsername = null, actionType = null, pageNumber) {
+    const page = `?page=${pageNumber}`;
     let urlSuffix = '';
     if (authorUsername){
-        urlSuffix = `?author=${authorUsername}`;
+        urlSuffix = `${page}&author=${authorUsername}`;
     } else if (actionType) {
-        urlSuffix = `?type=${actionType}`;
+        urlSuffix = `${page}&type=${actionType}`;
+    } else {
+        urlSuffix = page;
     }
     return function (dispatch) {
         dispatch({type: ActionConstants.LOAD_ACTIONS_HISTORY_PENDING});

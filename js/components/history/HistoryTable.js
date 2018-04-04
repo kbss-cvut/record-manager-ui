@@ -6,6 +6,7 @@ import {Table} from "react-bootstrap";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import HistoryRow from "./HistoryRow";
+import {NUMBER_OF_SEARCH_RESULTS} from "../../constants/DefaultConstants";
 
 class HistoryTable extends React.Component {
     static propTypes = {
@@ -46,8 +47,9 @@ class HistoryTable extends React.Component {
 
     _renderRows() {
         const {actions} = this.props;
+        let len = actions.length > NUMBER_OF_SEARCH_RESULTS ? actions.length - 1 : actions.length;
         let rows = [];
-        for (let i = 0, len = actions.length; i < len; i++) {
+        for (let i = 0; i < len; i++) {
             rows.push(<HistoryRow key={actions[i].key} action={actions[i]} onOpen={this.props.onOpen}/>);
         }
         return rows;

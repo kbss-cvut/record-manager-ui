@@ -153,6 +153,11 @@ module.exports = {
 
         'history.action-type': 'Action type',
         'history.author': 'Author',
+        'history.action': 'Action',
+        'history.reset': 'Reset',
+        'history.search-results': 'Search results',
+        'history.previous': 'Previous',
+        'history.next': 'Next',
         'history.time': 'Time',
         'history.open-tooltip': 'View details of this action',
         'history.panel-title': 'Action history',

@@ -150,6 +150,11 @@ module.exports = {
 
         'history.action-type': 'Typ akce',
         'history.author': 'Autor',
+        'history.action': 'Akce',
+        'history.reset': 'Reset',
+        'history.search-results': 'Výsledky vyhledávání',
+        'history.previous': 'Předchozí',
+        'history.next': 'Další',
         'history.time': 'Čas',
         'history.open-tooltip': 'Otevřít detaily této akce',
         'history.panel-title': 'Historie akcí',

@@ -92,3 +92,16 @@ export const ROLE = {
     DOCTOR: 'Doctor'
 };
 
+export const SEARCH_TYPE = {
+  ALL: 'all',
+  AUTHOR: 'author',
+  ACTION: 'action'
+};
+
+export const PAGINATION_DIRECTION = {
+  PREVIOUS: -1,
+  NEXT: 1
+};
+
+export const NUMBER_OF_SEARCH_RESULTS = 2;
+
