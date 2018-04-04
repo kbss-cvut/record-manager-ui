@@ -13,7 +13,7 @@ import WizardStore from "../../stores/WizardStore";
 import {FormUtils} from "semforms";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
-import {LoaderPanel} from "../Loader";
+import {LoaderPanel, LoaderSmall} from "../Loader";
 
 class Record extends React.Component {
     static propTypes = {
@@ -83,7 +83,7 @@ class Record extends React.Component {
             <Button bsStyle='success' bsSize='small'
                     disabled={this.props.recordSaved.status === ACTION_STATUS.PENDING || this._isFormInvalid() || !record.state.isComplete()}
                     onClick={this.props.handlers.onSave}>
-                {this.i18n('save')}{recordSaved.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
+                {this.i18n('save')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
             </Button>
             <Button bsStyle='link' bsSize='small'
                     onClick={this.props.handlers.onCancel}>{this.i18n('cancel')}</Button>

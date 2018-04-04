@@ -7,7 +7,7 @@ import I18nWrapper from '../../i18n/I18nWrapper';
 import UserTable from './UserTable';
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
-import {LoaderPanel} from "../Loader";
+import {LoaderPanel, LoaderSmall} from "../Loader";
 
 class Users extends React.Component {
     static propTypes = {
@@ -46,7 +46,7 @@ class Users extends React.Component {
 
     _renderHeader() {
         return <span>
-            {this.i18n('users.panel-title')}{this.props.usersLoaded.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
+            {this.i18n('users.panel-title')}{this.props.usersLoaded.status === ACTION_STATUS.PENDING && <LoaderSmall />}
         </span>;
     }
 }

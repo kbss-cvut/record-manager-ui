@@ -12,7 +12,7 @@ import HorizontalInput from "../HorizontalInput";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import {formatDate} from "../../utils/Utils";
 import AlertMessage from "../AlertMessage";
-import {LoaderPanel} from "../Loader";
+import {LoaderPanel, LoaderSmall} from "../Loader";
 
 /**
  * Institution detail. Editable only for admins.
@@ -104,7 +104,7 @@ class Institution extends React.Component {
                 <Button bsStyle='success' bsSize='small' ref='submit'
                         disabled={this.props.institutionSaved.status === ACTION_STATUS.PENDING}
                         onClick={handlers.onSave}>{this.i18n('save')}
-                        {institutionSaved.status === ACTION_STATUS.PENDING && <div className="loader"></div>}</Button>
+                        {institutionSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}</Button>
                 <Button bsStyle='link' bsSize='small' onClick={handlers.onCancel}>{this.i18n('cancel')}</Button>
             </div>;
         }

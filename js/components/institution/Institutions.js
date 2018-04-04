@@ -8,7 +8,7 @@ import I18nWrapper from '../../i18n/I18nWrapper';
 import InstitutionTable from './InstitutionTable';
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
-import {LoaderPanel} from "../Loader";
+import {LoaderPanel, LoaderSmall} from "../Loader";
 
 class Institutions extends React.Component {
     static propTypes = {
@@ -47,7 +47,7 @@ class Institutions extends React.Component {
 
     _renderHeader() {
         return <span>
-            {this.i18n('institutions.panel-title')}{this.props.institutionsLoaded.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
+            {this.i18n('institutions.panel-title')}{this.props.institutionsLoaded.status === ACTION_STATUS.PENDING && <LoaderSmall />}
         </span>;
     }
 }

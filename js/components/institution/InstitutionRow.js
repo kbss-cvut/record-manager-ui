@@ -3,6 +3,7 @@ import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import {Routes} from "../../utils/Routes";
 import {Button} from "react-bootstrap";
+import {LoaderSmall} from "../Loader";
 
 let InstitutionRow = (props) => {
     const institution = props.institution;
@@ -17,7 +18,7 @@ let InstitutionRow = (props) => {
                     onClick={() => props.onEdit(props.institution)}>{props.i18n('open')}</Button>
             <Button bsStyle='warning' bsSize='small' title={props.i18n('institutions.delete-tooltip')}
                     onClick={() => props.onDelete(props.institution)}>{props.i18n('delete')}
-                    {props.deletionLoading && <div className="loader"></div>}</Button>
+                    {props.deletionLoading && <LoaderSmall />}</Button>
         </td>
     </tr>;
 };

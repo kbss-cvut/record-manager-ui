@@ -7,7 +7,7 @@ import injectInl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
 import DeleteItemDialog from "../DeleteItemDialog";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
-import Loader from "../Loader";
+import Loader, {LoaderSmall} from "../Loader";
 import AlertMessage from "../AlertMessage";
 
 class InstitutionMembers extends React.Component {
@@ -102,7 +102,7 @@ class InstitutionMembers extends React.Component {
                     {currentUser.role === ROLE.ADMIN &&
                         <Button bsStyle='warning' bsSize='small' title={this.i18n('users.delete-tooltip')}
                                 onClick={() => this._onDelete(member)}>
-                            {this.i18n('delete')}{deletionLoading && <div className="loader"></div>}
+                            {this.i18n('delete')}{deletionLoading && <LoaderSmall />}
                         </Button>}
                 </td>
             </tr>);

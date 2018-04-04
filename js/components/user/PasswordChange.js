@@ -8,6 +8,7 @@ import HorizontalInput from "../HorizontalInput";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import UserValidator from "../../validation/UserValidator";
+import {LoaderSmall} from "../Loader";
 
 class PasswordChange extends React.Component {
     static propTypes = {
@@ -58,7 +59,7 @@ class PasswordChange extends React.Component {
                 <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
                     <Button bsStyle='success' bsSize='small' ref='submit' onClick={handlers.onSave}
                             disabled={!UserValidator.isPasswordValid(password) || passwordChange.status === ACTION_STATUS.PENDING}>
-                        {this.i18n('save')}{passwordChange.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
+                        {this.i18n('save')}{passwordChange.status === ACTION_STATUS.PENDING && <LoaderSmall />}
                     </Button>
                     <Button bsStyle='link' bsSize='small' onClick={handlers.onCancel} >
                         {this.i18n('cancel')}

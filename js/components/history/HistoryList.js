@@ -7,9 +7,8 @@ import I18nWrapper from "../../i18n/I18nWrapper";
 import {Panel} from "react-bootstrap";
 import {loadActions} from "../../actions/HistoryActions";
 import {bindActionCreators} from "redux";
-import {ACTION_STATUS, ALERT_TYPES, ACTIONS_PER_PAGE,
-        PAGINATION_DIRECTION, SEARCH_TYPE} from "../../constants/DefaultConstants";
-import {LoaderPanel} from "../Loader";
+import {ACTION_STATUS, ALERT_TYPES, ACTIONS_PER_PAGE, SEARCH_TYPE} from "../../constants/DefaultConstants";
+import {LoaderPanel, LoaderSmall} from "../Loader";
 import AlertMessage from "../AlertMessage";
 import HistoryTable from "./HistoryTable";
 import {Routes} from "../../utils/Routes";
@@ -123,7 +122,7 @@ class ActionsHistory extends React.Component {
 
     _renderHeader() {
         return <span>
-            {this.i18n('dashboard.history')}{this.props.actionsLoaded.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
+            {this.i18n('dashboard.history')}{this.props.actionsLoaded.status === ACTION_STATUS.PENDING && <LoaderSmall />}
         </span>;
 
     }

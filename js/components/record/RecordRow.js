@@ -6,6 +6,7 @@ import {Button} from "react-bootstrap";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import RecordValidator from "../../validation/RecordValidator";
+import {LoaderSmall} from "../Loader";
 
 let RecordRow = (props) => {
     const record = props.record,
@@ -13,7 +14,7 @@ let RecordRow = (props) => {
         completionTooltip = props.i18n(isComplete ? 'records.completion-status-tooltip.complete' : 'records.completion-status-tooltip.incomplete'),
         deleteButton = props.disableDelete ? null :
             <Button bsStyle='warning' bsSize='small' title={props.i18n('records.delete-tooltip')}
-                    onClick={() => props.onDelete(record)}>{props.i18n('delete')}{props.deletionLoading && <div className="loader"></div>}</Button>;
+                    onClick={() => props.onDelete(record)}>{props.i18n('delete')}{props.deletionLoading && <LoaderSmall />}</Button>;
     return <tr>
         <td className='report-row'><a href={'#/' + Routes.records.path + '/' + record.key}>{record.key}</a></td>
         <td className='report-row'><a href={'#/' + Routes.records.path + '/' + record.key}>{record.localName}</a></td>
