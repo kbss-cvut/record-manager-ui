@@ -8,7 +8,7 @@ import {Panel} from "react-bootstrap";
 import {loadActions} from "../../actions/HistoryActions";
 import {bindActionCreators} from "redux";
 import {
-    ACTION_STATUS, ALERT_TYPES, NUMBER_OF_SEARCH_RESULTS,
+    ACTION_STATUS, ALERT_TYPES, ACTIONS_PER_PAGE,
     PAGINATION_DIRECTION, SEARCH_TYPE
 } from "../../constants/DefaultConstants";
 import {LoaderPanel} from "../Loader";
@@ -31,7 +31,7 @@ class ActionsHistory extends React.Component {
     }
 
     componentDidMount() {
-        this.props.loadActions(null, null, 1);
+        this.props.loadActions(1);
     }
 
     _onOpen = (key) => {
@@ -45,7 +45,7 @@ class ActionsHistory extends React.Component {
     };
 
     _handlePagination = (direction) => {
-        if (this.props.actionsLoaded.actions.length <= NUMBER_OF_SEARCH_RESULTS && direction === 1 ||
+        if (this.props.actionsLoaded.actions.length <= ACTIONS_PER_PAGE && direction === 1 ||
             this.state.pageNumber === 1 && direction === -1) {
             return;
         }
@@ -65,7 +65,7 @@ class ActionsHistory extends React.Component {
     };
 
     _onActionSearch = (searchValue, newPageNumber = 1) => {
-        this.props.loadActions(null, searchValue, newPageNumber);
+        this.props.loadActions(newPageNumber, null, searchValue);
         if (this.state.searchType === SEARCH_TYPE.ACTION) {
             this.setState({hasSearched: true});
         } else {
@@ -74,7 +74,7 @@ class ActionsHistory extends React.Component {
     };
 
     _onAuthorSearch = (searchValue, newPageNumber = 1) => {
-        this.props.loadActions(searchValue, null, newPageNumber);
+        this.props.loadActions(newPageNumber, searchValue, null);
         if (this.state.searchType === SEARCH_TYPE.AUTHOR) {
             this.setState({hasSearched: true});
         } else {
@@ -83,12 +83,12 @@ class ActionsHistory extends React.Component {
     };
 
     _onReset = () => {
-        this.props.loadActions(null, null, 1);
+        this.props.loadActions(1);
         this.setState({hasSearched: false, pageNumber: 1, lastSearchedValue: '', searchType: SEARCH_TYPE.ALL});
     };
 
     _onAllSearch = (newPageNumber = 1) => {
-        this.props.loadActions(null, null, newPageNumber);
+        this.props.loadActions(newPageNumber);
         if (this.state.searchType === SEARCH_TYPE.ALL) {
             this.setState({hasSearched: false});
         } else {
@@ -127,7 +127,7 @@ class ActionsHistory extends React.Component {
                             {this.i18n('history.previous')}</span>
                     </li>
                     <li className="page-item disabled"><span className="page-link">{this.state.pageNumber}</span></li>
-                    <li className={`page-item ${actionsLoaded.actions.length <= NUMBER_OF_SEARCH_RESULTS && "disabled"}`}>
+                    <li className={`page-item ${actionsLoaded.actions.length <= ACTIONS_PER_PAGE && "disabled"}`}>
                         <span className="page-link pointer" onClick={() => this._handlePagination(PAGINATION_DIRECTION.NEXT)}>
                             {this.i18n('history.next')}</span>
                     </li>

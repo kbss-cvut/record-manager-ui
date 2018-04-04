@@ -39,7 +39,6 @@ class ActionHistory extends React.Component {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('history.load-error', {error: actionLoaded.error.message})}/>;
         }
-        console.log(actionLoaded);
         const action = actionLoaded.action;
         return <Panel header={this._renderHeader()} bsStyle='primary'>
             <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
@@ -66,7 +65,7 @@ class ActionHistory extends React.Component {
                     <div className='row'>
                         <div className='col-xs-6'>
                             <HorizontalInput type='textarea' label={this.i18n('history.payload')}
-                                             disabled={true} rows={6}
+                                             disabled={true} rows={8}
                                              value={JSON.stringify(JSON.parse(action.payload), undefined, 2)} labelWidth={3}
                                              inputWidth={8}/>
                         </div>

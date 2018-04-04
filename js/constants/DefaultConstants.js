@@ -93,9 +93,9 @@ export const ROLE = {
 };
 
 export const SEARCH_TYPE = {
-  ALL: 'all',
-  AUTHOR: 'author',
-  ACTION: 'action'
+  ALL: 'ALL',
+  AUTHOR: 'AUTHOR',
+  ACTION: 'ACTION'
 };
 
 export const PAGINATION_DIRECTION = {
@@ -103,5 +103,6 @@ export const PAGINATION_DIRECTION = {
   NEXT: 1
 };
 
-export const NUMBER_OF_SEARCH_RESULTS = 2;
+// Number of history actions on one page. Needs to be changes also in back-end
+export const ACTIONS_PER_PAGE = 5;
 

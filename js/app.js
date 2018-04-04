@@ -56,27 +56,20 @@ import PasswordReset from "./components/login/PasswordReset";
 import MainView from "./components/MainView";
 import requireAuth from './components/misc/hoc/RequireAuth';
 import PasswordChangeController from "./components/user/PasswordChangeController";
-import HistoryActions from "./components/history/ActionsHistory";
-import HistoryAction from "./components/history/ActionHistory";
-import {logAction} from "./actions/HistoryActions";
+import HistoryActions from "./components/history/HistoryList";
+import HistoryAction from "./components/history/HistoryDetail";
+import {historyLogger} from "./utils/HistoryLogger";
 
 function onRouteEnter() {
     execute(this.path);
 }
-
-const logger = store => next => action => {
-    if (store.getState().auth.isLoaded) {
-        logAction(action, store.getState().auth.user, Date.now());
-    }
-    return next(action)
-};
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
     rootReducer,
     composeEnhancers(
-        applyMiddleware(thunk, logger)
+        applyMiddleware(thunk, historyLogger)
     )
 );
 
