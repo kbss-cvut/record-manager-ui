@@ -6,10 +6,12 @@ import {Button} from "react-bootstrap";
 let HistorySearch = (props) => (
     <tr>
         <td className='report-row'>
-            <input className="form-control" name="action" type="text" value={props.searchData.action || ""} onChange={props.handlers.handleChange}/>
+            <input className="form-control" name="action" type="text" value={props.searchData.action || ""}
+                   onChange={props.handlers.handleChange} onKeyPress={props.handlers.onKeyPress}/>
         </td>
         <td className='report-row'>
-            <input className="form-control" name="author" type="text" value={props.searchData.author || ""} onChange={props.handlers.handleChange}/>
+            <input className="form-control" name="author" type="text" value={props.searchData.author || ""}
+                   onChange={props.handlers.handleChange} onKeyPress={props.handlers.onKeyPress}/>
         </td>
         <td className='report-row'>
             <input className="form-control" type="text" disabled={true}/>

@@ -152,7 +152,6 @@ module.exports = {
         'history.author': 'Autor',
         'history.action': 'Akce',
         'history.reset': 'Reset',
-        'history.search-results': 'Výsledky vyhledávání',
         'history.previous': 'Předchozí',
         'history.next': 'Další',
         'history.time': 'Čas',

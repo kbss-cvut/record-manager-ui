@@ -13,7 +13,6 @@ import AlertMessage from "../AlertMessage";
 import HistoryTable from "./HistoryTable";
 import {Routes} from "../../utils/Routes";
 import {transitionToWithOpts} from "../../utils/Routing";
-import HistorySearch from "./HistorySearch";
 import HistoryPagination from "./HistoryPagination";
 import assign from "object-assign";
 
@@ -43,13 +42,18 @@ class ActionsHistory extends React.Component {
         this.setState({searchData: assign({}, this.state.searchData, change), pageNumber: 1});
     };
 
+    _onKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            this._handleSearch();
+        }
+    };
+
     _handleSearch = (newPageNumber = 1) => {
-        this.setState({hasSearched: true});
         this.props.loadActions(newPageNumber, this.state.searchData);
     };
 
     _handleReset = () => {
-        this.setState({searchData: {}, pageNumber: 1, hasSearched: false});
+        this.setState({searchData: {}, pageNumber: 1});
         this.props.loadActions(1, {});
     };
 
@@ -75,6 +79,7 @@ class ActionsHistory extends React.Component {
             handleSearch: this._handleSearch,
             handleReset: this._handleReset,
             handleChange: this._handleChange,
+            onKeyPress: this._onKeyPress,
             onOpen: this._onOpen
         };
         return <Panel header={this._renderHeader()} bsStyle='primary'>

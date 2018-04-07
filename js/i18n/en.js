@@ -155,7 +155,6 @@ module.exports = {
         'history.author': 'Author',
         'history.action': 'Action',
         'history.reset': 'Reset',
-        'history.search-results': 'Search results:',
         'history.previous': 'Previous',
         'history.next': 'Next',
         'history.time': 'Time',
