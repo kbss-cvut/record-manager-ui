@@ -160,7 +160,7 @@ module.exports = {
         'history.panel-title': 'Historie akcí',
         'history.load-error': 'Nepodařilo se načíst akci historie. {error}',
         'history.payload': 'Obsah',
-        'history.search': 'Vyhledat...',
+        'history.search': 'Vyhledat',
         'history.loading-error': 'Nepodařilo se načíst akce historie. {error}',
         'history.not-found': 'Žádné akce nebyly nalezeny..',
 

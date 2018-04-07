@@ -15,17 +15,15 @@ import {Routes} from "../../utils/Routes";
 import {transitionToWithOpts} from "../../utils/Routing";
 import HistorySearch from "./HistorySearch";
 import HistoryPagination from "./HistoryPagination";
+import assign from "object-assign";
 
 class ActionsHistory extends React.Component {
     constructor(props) {
         super(props);
         this.i18n = this.props.i18n;
         this.state = {
-            searchValue: '',
-            lastSearchedValue: '',
-            hasSearched: false,
-            pageNumber: 1,
-            searchType: SEARCH_TYPE.ALL
+            searchData: {},
+            pageNumber: 1
         }
     }
 
@@ -40,7 +38,19 @@ class ActionsHistory extends React.Component {
     };
 
     _handleChange = (e) => {
-        this.setState({searchValue: e.target.value});
+        let change = {};
+        change[e.target.name] = e.target.value;
+        this.setState({searchData: assign({}, this.state.searchData, change), pageNumber: 1});
+    };
+
+    _handleSearch = (newPageNumber = 1) => {
+        this.setState({hasSearched: true});
+        this.props.loadActions(newPageNumber, this.state.searchData);
+    };
+
+    _handleReset = () => {
+        this.setState({searchData: {}, pageNumber: 1, hasSearched: false});
+        this.props.loadActions(1, {});
     };
 
     _handlePagination = (direction) => {
@@ -50,52 +60,7 @@ class ActionsHistory extends React.Component {
         }
         const newPageNumber = this.state.pageNumber + direction;
         this.setState({pageNumber: newPageNumber});
-        switch(this.state.searchType){
-            case SEARCH_TYPE.ALL:
-                this._handleSearch(SEARCH_TYPE.ALL, null, newPageNumber);
-                break;
-            case SEARCH_TYPE.AUTHOR:
-                this._handleSearch(SEARCH_TYPE.AUTHOR, this.state.lastSearchedValue, newPageNumber);
-                break;
-            case SEARCH_TYPE.ACTION:
-                this._handleSearch(SEARCH_TYPE.ACTION, this.state.lastSearchedValue, newPageNumber);
-                break;
-        }
-    };
-
-    _handleSearch = (searchType, searchValue = null, newPageNumber = 1) => {
-        switch(searchType){
-            case SEARCH_TYPE.AUTHOR:
-                this.props.loadActions(newPageNumber, searchValue, null);
-                break;
-            case SEARCH_TYPE.ACTION:
-                this.props.loadActions(newPageNumber, null, searchValue);
-                break;
-            case SEARCH_TYPE.ALL:
-                this.props.loadActions(newPageNumber);
-                break;
-            case SEARCH_TYPE.RESET:
-                this.props.loadActions(1);
-                this.setState({hasSearched: false, pageNumber: 1, lastSearchedValue: '', searchType: SEARCH_TYPE.ALL});
-                return;
-        }
-        if (this.state.lastSearchedValue === this.state.searchValue) {
-            switch(this.state.searchType){
-                case SEARCH_TYPE.AUTHOR:
-                case SEARCH_TYPE.ACTION:
-                    this.setState({hasSearched: true});
-                    return;
-                case SEARCH_TYPE.ALL:
-                    this.setState({hasSearched: false});
-                    return;
-            }
-        }
-        this.setState({
-            hasSearched: true,
-            pageNumber: 1,
-            lastSearchedValue: searchType === SEARCH_TYPE.ALL ? '' : this.state.searchValue,
-            searchType: searchType
-        });
+        this._handleSearch(newPageNumber);
     };
 
     render() {
@@ -108,12 +73,13 @@ class ActionsHistory extends React.Component {
         }
         const handlers = {
             handleSearch: this._handleSearch,
-            handleChange: this._handleChange
+            handleReset: this._handleReset,
+            handleChange: this._handleChange,
+            onOpen: this._onOpen
         };
         return <Panel header={this._renderHeader()} bsStyle='primary'>
-            <HistorySearch handlers={handlers} searchValue={this.state.searchValue}/>
-            {this.state.hasSearched && <h4>{this.i18n('history.search-results')}</h4>}
-            <HistoryTable actions={actionsLoaded.actions} onOpen={this._onOpen} i18n={this.i18n}/>
+            <HistoryTable handlers={handlers} searchData={this.state.searchData}
+                          actions={actionsLoaded.actions} i18n={this.i18n}/>
             <HistoryPagination pageNumber={this.state.pageNumber}
                                numberOfActions={actionsLoaded.actions.length}
                                handlePagination={this._handlePagination}/>

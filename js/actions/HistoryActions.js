@@ -11,12 +11,14 @@ export function logAction(action, author, timestamp) {
     }
 }
 
-export function loadActions(pageNumber, authorUsername = null, actionType = null) {
+export function loadActions(pageNumber, searchData) {
     let urlSuffix = `?page=${pageNumber}`;
-    if (authorUsername){
-        urlSuffix = `${urlSuffix}&author=${authorUsername}`;
-    } else if (actionType) {
-        urlSuffix = `${urlSuffix}&type=${actionType}`;
+    if (searchData && searchData.author && searchData.action) {
+        urlSuffix = `${urlSuffix}&author=${searchData.author}&type=${searchData.action}`;
+    } else if (searchData && searchData.author){
+        urlSuffix = `${urlSuffix}&author=${searchData.author}`;
+    } else if (searchData && searchData.action) {
+        urlSuffix = `${urlSuffix}&type=${searchData.action}`;
     }
     return function (dispatch) {
         dispatch({type: ActionConstants.LOAD_ACTIONS_HISTORY_PENDING});

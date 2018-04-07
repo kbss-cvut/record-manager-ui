@@ -163,7 +163,7 @@ module.exports = {
         'history.panel-title': 'Action history',
         'history.load-error': 'Unable to load action. {error}',
         'history.payload': 'Content',
-        'history.search': 'Search...',
+        'history.search': 'Search',
         'history.loading-error': 'Unable to load actions. {error}',
         'history.not-found': 'No actions were found...',
 
