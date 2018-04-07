@@ -56,6 +56,9 @@ import PasswordReset from "./components/login/PasswordReset";
 import MainView from "./components/MainView";
 import requireAuth from './components/misc/hoc/RequireAuth';
 import PasswordChangeController from "./components/user/PasswordChangeController";
+import HistoryActions from "./components/history/HistoryList";
+import HistoryAction from "./components/history/HistoryDetail";
+import {historyLogger} from "./utils/HistoryLogger";
 
 function onRouteEnter() {
     execute(this.path);
@@ -66,7 +69,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
     rootReducer,
     composeEnhancers(
-        applyMiddleware(thunk)
+        applyMiddleware(thunk, historyLogger)
     )
 );
 
@@ -93,6 +96,8 @@ let App = React.createClass({
                     <Route path={Routes.records.path} onEnter={onRouteEnter} component={requireAuth(RecordsController)}/>
                     <Route path={Routes.createRecord.path} onEnter={onRouteEnter} component={requireAuth(RecordController)}/>
                     <Route path={Routes.editRecord.path} onEnter={onRouteEnter} component={requireAuth(RecordController)}/>
+                    <Route path={Routes.historyActions.path} onEnter={onRouteEnter} component={requireAuth(HistoryActions)}/>
+                    <Route path={Routes.historyAction.path} onEnter={onRouteEnter} component={requireAuth(HistoryAction)}/>
                     <Redirect from="*" to={Routes.dashboard.path} />
                 </Route>
             </Router>

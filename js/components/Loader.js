@@ -27,3 +27,7 @@ export const LoaderPanel = (props) => (
         <Loader/>
     </Panel>
 );
+
+export const LoaderSmall = () => (
+    <div className="loader"></div>
+);

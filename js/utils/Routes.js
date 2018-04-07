@@ -13,6 +13,8 @@ export const Routes = {
     editInstitution: {name: 'editInstitution', path: 'institutions/:key'},
     records: {name: 'records', path: 'records'},
     createRecord: {name: 'createRecord', path: 'records/create'},
-    editRecord: {name: 'editRecord', path: 'records/:key'}
+    editRecord: {name: 'editRecord', path: 'records/:key'},
+    historyActions: {name: 'historyActions', path: 'history'},
+    historyAction: {name: 'historyAction', path: 'history/:key'}
 };
 

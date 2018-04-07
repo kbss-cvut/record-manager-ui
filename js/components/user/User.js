@@ -10,7 +10,7 @@ import AlertMessage from "../AlertMessage";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import {getRole, processInstitutions} from "../../utils/Utils";
 import * as Vocabulary from "../../constants/Vocabulary";
-import {LoaderPanel} from "../Loader";
+import {LoaderPanel, LoaderSmall} from "../Loader";
 
 class User extends React.Component {
     static propTypes = {
@@ -168,7 +168,7 @@ class User extends React.Component {
                                 disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
                                 onClick={handlers.onSave}>
                             {this.i18n('save')}{userSaved.status === ACTION_STATUS.PENDING &&
-                        <div className="loader"></div>}
+                        <LoaderSmall />}
                         </Button>
                     }
                     <Button bsStyle='link' bsSize='small' onClick={handlers.onCancel}>

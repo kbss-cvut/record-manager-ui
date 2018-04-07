@@ -3,6 +3,7 @@ import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import {Button} from "react-bootstrap";
 import {Routes} from "../../utils/Routes";
+import {LoaderSmall} from "../Loader";
 
 let UserRow = (props) => {
     const user = props.user;
@@ -19,7 +20,7 @@ let UserRow = (props) => {
                     onClick={() => props.onEdit(props.user)}>{props.i18n('open')}</Button>
             <Button bsStyle='warning' bsSize='small' title={props.i18n('users.delete-tooltip')}
                     onClick={() => props.onDelete(props.user)}>{props.i18n('delete')}
-                    {props.deletionLoading && <div className="loader"></div>}</Button>
+                    {props.deletionLoading && <LoaderSmall />}</Button>
         </td>
     </tr>;
 };

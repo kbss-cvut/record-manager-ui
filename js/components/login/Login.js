@@ -12,6 +12,7 @@ import {ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {transitionTo} from "../../utils/Routing";
 import {login} from "../../actions/AuthActions";
+import {LoaderSmall} from "../Loader";
 
 class Login extends React.Component {
     constructor(props) {
@@ -75,7 +76,7 @@ class Login extends React.Component {
                 <div className="login-buttons">
                     <Button bsStyle='success' bsSize='large' onClick={this.login}
                             disabled={this.props.isLogging}>
-                        {this.i18n('login.submit')}{this.props.isLogging && <div className="loader"></div>}
+                        {this.i18n('login.submit')}{this.props.isLogging && <LoaderSmall />}
                         </Button>
                 </div>
             </Form>

@@ -7,6 +7,7 @@ import I18nWrapper from "../../i18n/I18nWrapper";
 import RecordTable from "./RecordTable";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
+import {LoaderSmall} from "../Loader";
 
 class Records extends React.Component {
     static propTypes = {
@@ -40,7 +41,7 @@ class Records extends React.Component {
     _renderHeader() {
         return <span>
             {this.i18n('records.panel-title')}
-            {this.props.recordsLoaded.records && this.props.recordsLoaded.status === ACTION_STATUS.PENDING && <div className="loader"></div>}
+            {this.props.recordsLoaded.records && this.props.recordsLoaded.status === ACTION_STATUS.PENDING && <LoaderSmall />}
         </span>;
     }
 }

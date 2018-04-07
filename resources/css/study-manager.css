@@ -839,3 +839,19 @@ button.reset-filters {
 .input-group-addon {
     padding: 0;
 }
+
+.history-search {
+    width: 400px;
+    margin: 0 auto 15px;
+}
+
+@media screen and (max-width: 600px){
+    .history-search {
+        width: 300px;
+        margin: 0 auto 15px;
+    }
+}
+
+.pagination .pointer{
+    cursor: pointer
+}
