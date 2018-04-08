@@ -49,8 +49,8 @@ class Statistics extends React.Component {
         const { data } = this.props;
         return Object.keys(data).map((key, index) => {
             return <tr key={index}>
-                <th className='content-center'>{this.i18n(key)}</th>
-                <td className='content-center'>{data[key]}</td>
+                <th className='col-xs-6 content-center'>{this.i18n(`statistics.${key}`)}</th>
+                <td className='col-xs-6 content-center'>{data[key]}</td>
             </tr>;
         });
     }
