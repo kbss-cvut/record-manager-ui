@@ -2,6 +2,7 @@
 
 import * as Utils from "./Utils";
 import * as RecordState from "../model/RecordState";
+import * as Vocabulary from "../constants/Vocabulary";
 
 export function initNewUser() {
     return {
@@ -10,7 +11,7 @@ export function initNewUser() {
         username: '',
         emailAddress: '',
         password: Utils.generatePassword(),
-        types: [],
+        types: [Vocabulary.DOCTOR_TYPE],
         isAdmin: false,
         isNew: true
     };
