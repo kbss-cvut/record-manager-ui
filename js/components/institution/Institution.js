@@ -67,7 +67,7 @@ class Institution extends React.Component {
                 {this._renderButtons()}
                 {showAlert && institutionSaved.status === ACTION_STATUS.ERROR &&
                 <AlertMessage type={ALERT_TYPES.DANGER}
-                              message={this.props.formatMessage('institution.save-error', {error: this.i18n(institutionSaved.error.message)})}/>}
+                              message={this.props.formatMessage('institution.save-error', {error: institutionSaved.error.message})}/>}
                 {showAlert && institutionSaved.status === ACTION_STATUS.SUCCESS &&
                 <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('institution.save-success')}/>}
             </form>
