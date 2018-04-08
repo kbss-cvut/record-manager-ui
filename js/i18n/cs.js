@@ -53,15 +53,16 @@ module.exports = {
         'main.records-nav': 'Záznamy pacientů',
         'main.logout': 'Odhlásit se',
         'main.my-profile': 'Můj profil',
+        'main.history': 'Historie',
 
         'dashboard.welcome': 'Dobrý den, {name}, vítejte v ' + Constants.APP_NAME + '.',
         'dashboard.create-tile': 'Vytvořit záznam',
         'dashboard.user-tile': 'Můj profil',
         'dashboard.users-tile': 'Uživatelé',
-        'dashboard.institutions-tile': 'Klinika',
+        'dashboard.institution-tile': 'Klinika',
         'dashboard.institutions-tile': 'Kliniky',
         'dashboard.records-tile': 'Záznamy pacientů',
-        'dashboard.history': 'Historie',
+        'dashboard.statistics-tile': 'Statistika',
 
         'notfound.title': 'Nenalezeno',
         'notfound.msg-with-id': 'Záznam \'{resource}\' s identifikátorem {identifier} nenalezen.',
@@ -162,6 +163,11 @@ module.exports = {
         'history.search': 'Vyhledat',
         'history.loading-error': 'Nepodařilo se načíst akce historie. {error}',
         'history.not-found': 'Žádné akce nebyly nalezeny..',
+
+        'statistics.panel-title': 'Statistika',
+        'statistics.number-of-investigators': 'Počet doktorů',
+        'statistics.number-of-processed-records': 'Počet zpracovaných záznamů',
+        'statistics.loading-error': 'Nepodařilo se načíst statistiky. {error}',
 
         'User does not exist.': 'Uživatel neexistuje.',
         'Provided credentials don\'t match.': 'Zadané údaje nesouhlasí.',

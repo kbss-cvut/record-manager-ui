@@ -31,6 +31,7 @@ class Dashboard extends React.Component {
                 <Col xs={12} sm={3} className='dashboard-sector'>
                     <DashboardTile onClick={this.props.handlers.showRecords}>{this.i18n('dashboard.records-tile')}</DashboardTile>
                 </Col>
+                {this._renderStatisticsTile()}
             </div>
         </Grid>;
     }
@@ -55,6 +56,13 @@ class Dashboard extends React.Component {
                     <DashboardTile onClick={this.props.handlers.showMyInstitution}>{this.i18n('dashboard.institution-tile')}</DashboardTile>
                 </Col>
                 : null;
+    }
+
+    _renderStatisticsTile() {
+        return this.props.currentUser.role === ROLE.ADMIN ?
+            <Col xs={12} sm={3} className='dashboard-sector'>
+                <DashboardTile onClick={this.props.handlers.showStatistics}>{this.i18n('dashboard.statistics-tile')}</DashboardTile>
+            </Col> : null;
     }
 
     render() {

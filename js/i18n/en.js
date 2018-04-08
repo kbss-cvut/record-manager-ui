@@ -46,13 +46,13 @@ module.exports = {
         'login.back-to-login': 'Back to login',
         'login.reset-password-alert': 'We have sent you an email with new password.',
 
-        'main.dashboard-nav': 'Dashboard',
         'main.users-nav': 'Users',
         'main.institutions-nav': 'Institutions',
         'main.institution-nav': 'My institution',
         'main.records-nav': 'Patient records',
         'main.logout': 'Logout',
         'main.my-profile': 'My profile',
+        'main.history': 'History',
 
         'dashboard.welcome': 'Hello {name}, Welcome to ' + Constants.APP_NAME + '.',
         'dashboard.create-tile': 'Create record',
@@ -61,7 +61,7 @@ module.exports = {
         'dashboard.institution-tile': 'View my institution',
         'dashboard.institutions-tile': 'View institutions',
         'dashboard.records-tile': 'View patient records',
-        'dashboard.history': 'History',
+        'dashboard.statistics-tile': 'View statistics',
 
         'notfound.title': 'Not found',
         'notfound.msg-with-id': '{resource} with id {identifier} not found.',
@@ -165,6 +165,11 @@ module.exports = {
         'history.search': 'Search',
         'history.loading-error': 'Unable to load actions. {error}',
         'history.not-found': 'No actions were found...',
+
+        'statistics.panel-title': 'Statistics',
+        'statistics.number-of-investigators': 'Number of investigators',
+        'statistics.number-of-processed-records': 'Number of processed patients',
+        'statistics.loading-error': 'Unable to load statistics. {error}',
 
         'User does not exist.': 'User does not exist.',
         'Provided credentials don\'t match.': 'Provided credentials don\'t match.',

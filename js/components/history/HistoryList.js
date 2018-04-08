@@ -7,7 +7,7 @@ import I18nWrapper from "../../i18n/I18nWrapper";
 import {Panel} from "react-bootstrap";
 import {loadActions} from "../../actions/HistoryActions";
 import {bindActionCreators} from "redux";
-import {ACTION_STATUS, ALERT_TYPES, ACTIONS_PER_PAGE, SEARCH_TYPE} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ALERT_TYPES, ACTIONS_PER_PAGE} from "../../constants/DefaultConstants";
 import {LoaderPanel, LoaderSmall} from "../Loader";
 import AlertMessage from "../AlertMessage";
 import HistoryTable from "./HistoryTable";
@@ -16,7 +16,7 @@ import {transitionToWithOpts} from "../../utils/Routing";
 import HistoryPagination from "./HistoryPagination";
 import assign from "object-assign";
 
-class ActionsHistory extends React.Component {
+class HistoryList extends React.Component {
     constructor(props) {
         super(props);
         this.i18n = this.props.i18n;
@@ -93,13 +93,13 @@ class ActionsHistory extends React.Component {
 
     _renderHeader() {
         return <span>
-            {this.i18n('dashboard.history')}{this.props.actionsLoaded.status === ACTION_STATUS.PENDING && <LoaderSmall />}
+            {this.i18n('main.history')}{this.props.actionsLoaded.status === ACTION_STATUS.PENDING && <LoaderSmall />}
         </span>;
 
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(ActionsHistory)));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(HistoryList)));
 
 function mapStateToProps(state) {
     return {

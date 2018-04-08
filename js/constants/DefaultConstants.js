@@ -100,3 +100,7 @@ export const PAGINATION_DIRECTION = {
 // Number of history actions on one page. Needs to be changes also in back-end
 export const ACTIONS_PER_PAGE = 25;
 
+export const STATISTICS_TYPE = {
+    NUMBER_OF_INVESTIGATORS: 'statistics.number-of-investigators',
+    NUMBER_OF_PROCESSED_RECORDS: 'statistics.number-of-processed-records'
+};

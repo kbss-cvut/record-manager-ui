@@ -59,6 +59,7 @@ import PasswordChangeController from "./components/user/PasswordChangeController
 import HistoryActions from "./components/history/HistoryList";
 import HistoryAction from "./components/history/HistoryDetail";
 import {historyLogger} from "./utils/HistoryLogger";
+import Statistics from "./components/statistics/Statistics";
 
 function onRouteEnter() {
     execute(this.path);
@@ -90,6 +91,7 @@ let App = React.createClass({
                     <Route path={Routes.createUser.path} onEnter={onRouteEnter} component={requireAuth(UserController)}/>
                     <Route path={Routes.editUser.path} onEnter={onRouteEnter} component={requireAuth(UserController)}/>
                     <Route path={Routes.passwordChange.path} onEnter={onRouteEnter} component={requireAuth(PasswordChangeController)}/>
+                    <Route path={Routes.statistics.path} onEnter={onRouteEnter} component={requireAuth(Statistics)}/>
                     <Route path={Routes.institutions.path} onEnter={onRouteEnter} component={requireAuth(InstitutionsController)}/>
                     <Route path={Routes.createInstitution.path} onEnter={onRouteEnter} component={requireAuth(InstitutionController)}/>
                     <Route path={Routes.editInstitution.path} onEnter={onRouteEnter} component={requireAuth(InstitutionController)}/>
