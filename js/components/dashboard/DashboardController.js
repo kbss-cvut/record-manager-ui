@@ -38,6 +38,10 @@ class DashboardController extends React.Component {
         transitionTo(Routes.records);
     };
 
+    _showStatistics = () => {
+        transitionTo(Routes.statistics);
+    };
+
     _createRecord = () => {
         {/*TODO bug on cancel it doesnt return to dashboard but to patient records */}
         this.props.transitionToWithOpts(Routes.createRecord, {
@@ -55,7 +59,8 @@ class DashboardController extends React.Component {
             showRecords: this._showRecords,
             createRecord: this._createRecord,
             showMyInstitution: this._showMyInstitution,
-            showMyProfile: this._showMyProfile
+            showMyProfile: this._showMyProfile,
+            showStatistics: this._showStatistics
         };
         return (
         <div>
@@ -75,6 +80,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        transitionToWithOpts:bindActionCreators(transitionToWithOpts, dispatch)
+        transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch)
     }
 }

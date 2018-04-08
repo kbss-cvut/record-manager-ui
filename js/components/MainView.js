@@ -66,7 +66,7 @@ class MainView extends React.Component {
                                 to='records'><NavItem>{this.i18n('main.records-nav')}</NavItem></LinkContainer>
                             {user.role === ROLE.ADMIN &&
                             <LinkContainer
-                                to='history'><NavItem>{this.i18n('dashboard.history')}</NavItem></LinkContainer>
+                                to='history'><NavItem>{this.i18n('main.history')}</NavItem></LinkContainer>
                             }
                         </Nav>
 

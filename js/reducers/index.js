@@ -9,6 +9,7 @@ import RecordsReducer from "./RecordsReducer";
 import RouterReducer from "./RouterReducer";
 import HistoryReducer from "./HistoryReducer";
 import * as ActionConstants from "../constants/ActionConstants";
+import StatisticsReducer from "./StatisticsReducer";
 
 const rootReducer = (state, action) => {
     if (action.type === ActionConstants.UNAUTH_USER) {
@@ -25,6 +26,7 @@ const appReducer = combineReducers({
     router: RouterReducer,
     records: RecordsReducer,
     history: HistoryReducer,
+    statistics: StatisticsReducer,
     institution: InstitutionReducer,
     institutions: InstitutionsReducer
 });
