@@ -45,6 +45,7 @@ module.exports = {
         'login.forgot-your-password': 'Forgot your password?',
         'login.back-to-login': 'Back to login',
         'login.reset-password-alert': 'We have sent you an email with new password.',
+        'login.token-password-success': 'Your password has been set.',
 
         'main.users-nav': 'Users',
         'main.institutions-nav': 'Institutions',

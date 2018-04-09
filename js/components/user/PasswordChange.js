@@ -69,7 +69,7 @@ class PasswordChange extends React.Component {
                 <AlertMessage type={ALERT_TYPES.DANGER} message={this.i18n('user.password-non-valid')}/>}
                 {showAlert && passwordChange.status === ACTION_STATUS.ERROR &&
                 <AlertMessage type={ALERT_TYPES.DANGER}
-                              message={this.props.formatMessage('user.password-change-error', {error: this.i18n(this.props.passwordChange.error.message)})}/>}
+                              message={this.props.formatMessage('user.password-change-error', {error: this.i18n(passwordChange.error.message)})}/>}
                 {showAlert && passwordChange.status === ACTION_STATUS.SUCCESS &&
                 <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.password-change-success')}/>}
             </form>
