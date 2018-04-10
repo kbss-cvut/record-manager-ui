@@ -100,6 +100,10 @@ module.exports = {
         'user.password-change-success': 'Password changed successfully',
         'user.password-change-error': 'Unable to change password. {error}',
         'user.password-non-valid': 'New password and confirm password must match and be at least 4 characters long.',
+        'user.send-invitation-success': 'User invited to study successfully',
+        'user.send-invitation-error': 'Unable to invite user to study. {error}',
+        'user.invite-to-study-text': 'User has not yet been invited to study. ',
+        'user.invite-to-study': 'Send an invitation now',
 
         'institutions.panel-title': 'Institutions',
         'institutions.create-institution': 'Create institution',

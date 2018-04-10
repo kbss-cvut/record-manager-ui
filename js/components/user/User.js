@@ -87,6 +87,21 @@ class User extends React.Component {
         }
     }
 
+    _sendInvitationButton() {
+        const {user, userSaved, handlers, currentUser} = this.props;
+        if (user.isInvited === "false" && currentUser.role === ROLE.ADMIN) {
+            return <h4 className="content-center" style={{margin: '0 0 15px 0'}}>{this.i18n('user.invite-to-study-text')}
+                <Button bsStyle='warning' bsSize='small' ref='submit'
+                        disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
+                        onClick={handlers.onSave}>
+                {this.i18n('user.invite-to-study')}{userSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
+                </Button>
+            </h4>;
+        } else {
+            return null;
+        }
+    }
+
     render() {
         const {userSaved, userLoaded, currentUser, showAlert, user, handlers} = this.props;
         if (!user && (!userLoaded.status || userLoaded.status === ACTION_STATUS.PENDING)) {
@@ -102,6 +117,7 @@ class User extends React.Component {
 
         return <Panel header={<span>{this.i18n('user.panel-title')}</span>} bsStyle='primary'>
             <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
+                {this._sendInvitationButton()}
                 <div className='row'>
                     <div className='col-xs-6'>
                         <HorizontalInput type='text' name='firstName' label={this.i18n('user.first-name')}
