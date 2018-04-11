@@ -632,25 +632,15 @@ button.reset-filters {
     100% { transform: rotate(360deg); }
 }
 
-@media screen and (max-width: 1199px){
-    .alert {
-        margin-bottom: 6px;
-        margin-top: 18px;
-    }
-
-    .login-panel .alert {
-        margin-bottom: 14px;
-        margin-top: 6px;
-    }
-}
-
-.alert {
+.alert-position-down {
     margin-top: 18px;
+    margin-bottom: 4px;
 }
 
-.login-panel .alert {
-    margin-bottom: 14px;
-    margin-top: 6px;
+@media screen and (max-width: 1199px) {
+    .alert-position-top {
+        margin-bottom: 0px;
+    }
 }
 
 .loader-spin {

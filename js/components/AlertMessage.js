@@ -3,7 +3,7 @@ import {Alert} from "react-bootstrap";
 
 const AlertMessage = (props) => (
     <div className='message-container'>
-        <Alert bsStyle={props.type}>
+        <Alert className={`alert-position-${props.alertPosition || 'down'}`} bsStyle={props.type}>
             <p>{props.message}</p>
         </Alert>
     </div>

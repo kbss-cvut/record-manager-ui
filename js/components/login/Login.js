@@ -56,7 +56,7 @@ class Login extends React.Component {
             <Panel header={<span>{this.i18n('login.title')}</span>} bsStyle='info' className="login-panel">
                 {this.state.showAlert && this.props.error &&
                     <div>
-                        <AlertMessage type={ALERT_TYPES.DANGER}
+                        <AlertMessage type={ALERT_TYPES.DANGER} alertPosition={'top'}
                               message={this.i18n('login.error')}/>
 
                     </div>}

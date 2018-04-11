@@ -47,7 +47,7 @@ class PasswordReset extends React.Component {
 
     renderAlert() {
         return this.state.showAlert && this.props.status === ACTION_STATUS.SUCCESS ?
-            <Alert bsStyle='success' bsSize='small'><div>{this.i18n('login.reset-password-alert')}</div>
+            <Alert bsStyle='success' alertPosition={'top'} bsSize='small'><div>{this.i18n('login.reset-password-alert')}</div>
         </Alert> : null;
     }
 

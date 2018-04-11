@@ -73,12 +73,13 @@ class PasswordReset extends React.Component {
         return <Panel header={<span>{this.i18n('login.reset-password')}</span>} bsStyle='info' className="login-panel">
                 <Form horizontal>
                     {!this.state.valid &&
-                    <AlertMessage type={ALERT_TYPES.DANGER} message={this.i18n('user.password-non-valid')}/>}
+                    <AlertMessage type={ALERT_TYPES.DANGER} alertPosition={'top'}
+                                  message={this.i18n('user.password-non-valid')}/>}
                     {this.state.showAlert && passwordChange.status === ACTION_STATUS.ERROR &&
-                    <AlertMessage type={ALERT_TYPES.DANGER}
+                    <AlertMessage type={ALERT_TYPES.DANGER} alertPosition={'top'}
                                   message={this.props.formatMessage('user.password-change-error', {error: this.i18n(passwordChange.error.message)})}/>}
                     {this.state.showAlert && passwordChange.status === ACTION_STATUS.SUCCESS &&
-                    <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('login.token-password-success')}/>}
+                    <AlertMessage type={ALERT_TYPES.SUCCESS} alertPosition={'top'} message={this.i18n('login.token-password-success')}/>}
                     <HorizontalInput type='password' name='newPassword' label={this.i18n('user.password-new')}
                                      onChange={this.onChange} labelWidth={3} onKeyPress={this.onKeyPress}
                                      inputWidth={9} value={this.state.newPassword}/>
