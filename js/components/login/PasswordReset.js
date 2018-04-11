@@ -12,6 +12,7 @@ import {bindActionCreators} from "redux";
 import {passwordReset} from "../../actions/AuthActions";
 import {ACTION_STATUS} from "../../constants/DefaultConstants";
 import {LoaderSmall} from "../Loader";
+import * as Utils from "../../utils/Utils";
 
 class PasswordReset extends React.Component {
     constructor(props) {
@@ -60,9 +61,9 @@ class PasswordReset extends React.Component {
                        inputWidth={9}/>
                 <div className="login-buttons">
                     <Button bsStyle='success' onClick={this.resetPassword}
-                            disabled={this.props.status === ACTION_STATUS.PENDING}>{this.i18n('login.reset-password')}
-                            {this.props.status === ACTION_STATUS.PENDING && <LoaderSmall />}
-                            </Button>
+                            disabled={this.props.status === ACTION_STATUS.PENDING || !Utils.validateEmail(this.state.email)}>
+                        {this.i18n('login.reset-password')}{this.props.status === ACTION_STATUS.PENDING && <LoaderSmall />}
+                    </Button>
                     <Button bsStyle='link'
                             onClick={() => transitionTo(Routes.login)}>{this.i18n('login.back-to-login')}</Button>
                 </div>
