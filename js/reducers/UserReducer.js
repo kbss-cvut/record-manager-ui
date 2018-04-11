@@ -7,7 +7,8 @@ const initialState = {
     userLoaded: {},
     institutionMembers: {},
     passwordChange: {},
-    generatedUsername: {}
+    generatedUsername: {},
+    invitationSent: {}
 };
 
 export default function (state = initialState, action) {
@@ -169,6 +170,34 @@ export default function (state = initialState, action) {
                 generatedUsername: {
                     status: ACTION_STATUS.SUCCESS,
                     username: action.generatedUsername
+                }
+            };
+        }
+        case ActionConstants.SEND_INVITATION_PENDING: {
+            return {
+                ...state,
+                invitationSent: {
+                    status: ACTION_STATUS.PENDING,
+                    username: action.username
+                }
+            };
+        }
+        case ActionConstants.SEND_INVITATION_SUCCESS: {
+            return {
+                ...state,
+                invitationSent: {
+                    status: ACTION_STATUS.SUCCESS,
+                    username: action.username,
+                    error: ''
+                }
+            };
+        }
+        case ActionConstants.SEND_INVITATION_ERROR: {
+            return {
+                ...state,
+                invitationSent: {
+                    status: ACTION_STATUS.ERROR,
+                    error: action.error
                 }
             };
         }

@@ -45,6 +45,7 @@ module.exports = {
         'login.forgot-your-password': 'Zapomněl jsi své heslo?',
         'login.back-to-login': 'Zpět na přihlášení',
         'login.reset-password-alert': 'Email s novým heslem byl odeslán.',
+        'login.token-password-success': 'Heslo bylo nastaveno.',
 
         'main.dashboard-nav': 'Hlavní strana',
         'main.users-nav': 'Uživatelé',
@@ -98,8 +99,12 @@ module.exports = {
         'user.password-current': 'Staré heslo',
         'user.password-new': 'Nové heslo',
         'user.password-change-success': 'Heslo úspěšně změněno',
-        'user.password-change-error': 'Heslo se nepodařilo změnit. Odpověd serveru: {error}',
+        'user.password-change-error': 'Heslo se nepodařilo změnit. {error}',
         'user.password-non-valid': 'Nové a potvrzovací hesla se musí shodovat a musí být alespoň 4 znaky dlouhá.',
+        'user.send-invitation-success': 'Uživatel úspěšně pozván do studie',
+        'user.send-invitation-error': 'Uživatele se nepodařilo pozvat do studie. {error}',
+        'user.invite-to-study-text': 'Uživatel zatím nebyl pozván do studie. ',
+        'user.invite-to-study': 'Poslat pozvánku nyní',
 
         'institutions.panel-title': 'Kliniky',
         'institutions.create-institution': 'Vytvořit kliniku',

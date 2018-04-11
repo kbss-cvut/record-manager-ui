@@ -22,6 +22,8 @@ class User extends React.Component {
         currentUser: React.PropTypes.object,
         showAlert: React.PropTypes.bool,
         institutions: React.PropTypes.array,
+        invitationSent: React.PropTypes.object,
+        invited: React.PropTypes.bool,
     };
 
     constructor(props) {
@@ -87,8 +89,23 @@ class User extends React.Component {
         }
     }
 
+    _sendInvitationButton() {
+        const {user, handlers, currentUser, invitationSent} = this.props;
+        if (user.isInvited === "false" && currentUser.role === ROLE.ADMIN) {
+            return <h4 className="content-center" style={{margin: '0 0 15px 0'}}>{this.i18n('user.invite-to-study-text')}
+                <Button bsStyle='warning' bsSize='small' ref='submit'
+                        disabled={invitationSent.status === ACTION_STATUS.PENDING}
+                        onClick={() => handlers.sendInvitation()}>
+                {this.i18n('user.invite-to-study')}{invitationSent.status === ACTION_STATUS.PENDING && <LoaderSmall />}
+                </Button>
+            </h4>;
+        } else {
+            return null;
+        }
+    }
+
     render() {
-        const {userSaved, userLoaded, currentUser, showAlert, user, handlers} = this.props;
+        const {userSaved, userLoaded, currentUser, showAlert, user, handlers, invitationSent, invited} = this.props;
         if (!user && (!userLoaded.status || userLoaded.status === ACTION_STATUS.PENDING)) {
             return <LoaderPanel header={<span>{this.i18n('user.panel-title')}</span>} />;
         } else if (userLoaded.status === ACTION_STATUS.ERROR) {
@@ -102,6 +119,7 @@ class User extends React.Component {
 
         return <Panel header={<span>{this.i18n('user.panel-title')}</span>} bsStyle='primary'>
             <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
+                {this._sendInvitationButton()}
                 <div className='row'>
                     <div className='col-xs-6'>
                         <HorizontalInput type='text' name='firstName' label={this.i18n('user.first-name')}
@@ -180,6 +198,11 @@ class User extends React.Component {
                               message={this.props.formatMessage('user.save-error', {error: this.props.userSaved.error.message})}/>}
                 {showAlert && userSaved.status === ACTION_STATUS.SUCCESS &&
                 <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.save-success')}/>}
+                {invitationSent.status === ACTION_STATUS.SUCCESS && invited &&
+                <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.send-invitation-success')}/>}
+                {invitationSent.status === ACTION_STATUS.ERROR && invited &&
+                <AlertMessage type={ALERT_TYPES.DANGER}
+                    message={this.props.formatMessage('user.send-invitation-error', {error: invitationSent.error.message})}/>}
             </form>
         </Panel>;
     }

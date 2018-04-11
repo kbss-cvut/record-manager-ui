@@ -7,7 +7,9 @@ const initialState = {
     isLogging: false,
     isLoaded: false,
     user: {},
-    passwordResetStatus: null
+    passwordResetStatus: null,
+    validTokenStatus: null,
+    passwordChange: {}
 };
 
 export default function (state = initialState, action) {
@@ -67,6 +69,43 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 passwordResetStatus: ACTION_STATUS.SUCCESS
+            };
+        case ActionConstants.VALIDATE_TOKEN_PENDING:
+            return {
+                ...state,
+                validTokenStatus: ACTION_STATUS.PENDING
+            };
+        case ActionConstants.VALIDATE_TOKEN_SUCCESS:
+            return {
+                ...state,
+                validTokenStatus: ACTION_STATUS.SUCCESS
+            };
+        case ActionConstants.VALIDATE_TOKEN_ERROR:
+            return {
+                ...state,
+                validTokenStatus: ACTION_STATUS.ERROR
+            };
+        case ActionConstants.PASSWORD_CHANGE_TOKEN_PENDING:
+            return {
+                ...state,
+                passwordChange: {
+                    status: ACTION_STATUS.PENDING
+                }
+            };
+        case ActionConstants.PASSWORD_CHANGE_TOKEN_SUCCESS:
+            return {
+                ...state,
+                passwordChange: {
+                    status: ACTION_STATUS.SUCCESS
+                }
+            };
+        case ActionConstants.PASSWORD_CHANGE_TOKEN_ERROR:
+            return {
+                ...state,
+                passwordChange: {
+                    status: ACTION_STATUS.ERROR,
+                    error: action.error
+                }
             };
         default:
             return state;

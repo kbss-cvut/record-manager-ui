@@ -10,7 +10,9 @@ axiosBackend.interceptors.response.use(
     error => {
         const {status} = error.response;
         if (status === 401) { // non-logged
-            transitionTo(Routes.login);
+            if (!window.location.hash.includes('login')) {
+                transitionTo(Routes.login);
+            }
         }
         if (status === 403) { // non-authorized
             transitionTo(Routes.dashboard);

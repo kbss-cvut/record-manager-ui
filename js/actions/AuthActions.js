@@ -101,7 +101,29 @@ export function passwordReset(email) {
             .then(() => {
             dispatch({type: ActionConstants.PASSWORD_RESET_SUCCESS});
         }).catch ((error) => {
-            console.log(error);
+        });
+    }
+}
+
+export function validateToken(token) {
+    return function (dispatch) {
+        dispatch({type: ActionConstants.VALIDATE_TOKEN_PENDING});
+        axiosBackend.post('rest/users/validate-token', token, {headers: {"Content-Type": "text/plain"}})
+            .then(() => {
+                dispatch({type: ActionConstants.VALIDATE_TOKEN_SUCCESS});
+            }).catch (() => {
+                dispatch({type: ActionConstants.VALIDATE_TOKEN_ERROR});
+        });
+    }
+}
+
+export function changePasswordToken(password, token) {
+    return function (dispatch) {
+        dispatch({type: ActionConstants.PASSWORD_CHANGE_TOKEN_PENDING});
+        axiosBackend.put('rest/users/password-change-token', {token, password}).then(() => {
+            dispatch({type: ActionConstants.PASSWORD_CHANGE_TOKEN_SUCCESS});
+        }).catch (() => {
+            dispatch({type: ActionConstants.PASSWORD_CHANGE_TOKEN_ERROR});
         });
     }
 }

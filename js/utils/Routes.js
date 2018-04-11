@@ -2,6 +2,8 @@
 
 export const Routes = {
     login: {name: 'login', path: 'login'},
+    logout: {name: 'logout', path: 'logout'},
+    passwordToken: {name: 'passwordToken', path: 'login/password-reset/:token'},
     passwordReset: {name: 'passwordReset', path: 'login/password-reset'},
     dashboard: {name: 'dashboard', path: 'dashboard'},
     users: {name: 'users', path: 'users'},

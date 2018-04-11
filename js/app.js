@@ -60,6 +60,8 @@ import HistoryActions from "./components/history/HistoryList";
 import HistoryAction from "./components/history/HistoryDetail";
 import {historyLogger} from "./utils/HistoryLogger";
 import Statistics from "./components/statistics/Statistics";
+import PasswordToken from "./components/login/PasswordToken";
+import Logout from "./components/login/Logout";
 
 function onRouteEnter() {
     execute(this.path);
@@ -85,7 +87,9 @@ let App = React.createClass({
                 <Route path='/' component={MainView}>
                     <IndexRoute component={requireAuth(DashboardController)}/>
                     <Route path={Routes.login.path} onEnter={onRouteEnter} component={Login}/>
+                    <Route path={Routes.logout.path} onEnter={onRouteEnter} component={Logout}/>
                     <Route path={Routes.passwordReset.path} onEnter={onRouteEnter} component={PasswordReset}/>
+                    <Route path={Routes.passwordToken.path} onEnter={onRouteEnter} component={PasswordToken}/>
                     <Route path={Routes.dashboard.path} onEnter={onRouteEnter} component={requireAuth(DashboardController)}/>
                     <Route path={Routes.users.path} onEnter={onRouteEnter} component={requireAuth(UsersController)}/>
                     <Route path={Routes.createUser.path} onEnter={onRouteEnter} component={requireAuth(UserController)}/>

@@ -74,7 +74,7 @@ class MainView extends React.Component {
                             <NavDropdown id='logout' title={name}>
                                 <MenuItem
                                     href={'#/' + Routes.users.path + '/' + user.username}>{this.i18n('main.my-profile')}</MenuItem>
-                                <MenuItem href='#' onClick={this.props.logout}>{this.i18n('main.logout')}</MenuItem>
+                                <MenuItem href={'#/' + Routes.logout.path}>{this.i18n('main.logout')}</MenuItem>
                             </NavDropdown>
 
                         </Nav>
