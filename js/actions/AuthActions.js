@@ -14,7 +14,7 @@ export function login(username, password) {
                 dispatch(userAuthError(response.data));
                 return;
             }
-            dispatch(userAuthSuccess());
+            dispatch(userAuthSuccess(username));
             dispatch(loadUserProfile());
             transitionToHome();
         }).catch((error) => {
@@ -29,9 +29,10 @@ export function userAuthPending() {
     }
 }
 
-export function userAuthSuccess() {
+export function userAuthSuccess(username) {
     return {
-        type: ActionConstants.AUTH_USER_SUCCESS
+        type: ActionConstants.AUTH_USER_SUCCESS,
+        username
     }
 }
 
@@ -48,9 +49,7 @@ export function logout() {
         axiosBackend.post('j_spring_security_logout').then(() => {
             dispatch(unauthUser());
             //Logger.log('User successfully logged out.');
-            transitionTo(Routes.login);
         }).catch((error) => {
-            /* TODO maybe action error */
             //Logger.error('Logout failed. Status: ' + error.status);
         });
     }
@@ -99,7 +98,7 @@ export function passwordReset(email) {
         dispatch({type: ActionConstants.PASSWORD_RESET_PENDING});
         axiosBackend.post('rest/users/password-reset', email, {headers: {"Content-Type": "text/plain"}})
             .then(() => {
-            dispatch({type: ActionConstants.PASSWORD_RESET_SUCCESS});
+            dispatch({type: ActionConstants.PASSWORD_RESET_SUCCESS, email});
         }).catch ((error) => {
         });
     }

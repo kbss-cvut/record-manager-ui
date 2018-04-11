@@ -168,6 +168,7 @@ module.exports = {
         'history.search': 'Vyhledat',
         'history.loading-error': 'Nepodařilo se načíst akce historie. {error}',
         'history.not-found': 'Žádné akce nebyly nalezeny..',
+        'history.non-logged': 'Nepřihlášený uživatel',
 
         'statistics.panel-title': 'Statistika',
         'statistics.number-of-investigators': 'Počet doktorů',

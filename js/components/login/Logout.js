@@ -6,10 +6,13 @@ import injectIntl from "../../utils/injectIntl";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {logout} from "../../actions/AuthActions";
+import {transitionTo} from "../../utils/Routing";
+import {Routes} from "../../utils/Routes";
 
 class Logout extends React.Component {
-    componentWillMount() {
+    componentDidMount() {
         this.props.logout();
+        transitionTo(Routes.login);
     }
 
     render() {

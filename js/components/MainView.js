@@ -10,7 +10,7 @@ import I18nWrapper from "../i18n/I18nWrapper";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {ACTION_STATUS, ROLE} from "../constants/DefaultConstants";
-import {loadUserProfile, logout} from "../actions/AuthActions";
+import {loadUserProfile} from "../actions/AuthActions";
 import * as Constants from "../constants/DefaultConstants";
 import {LoaderMask} from "./Loader";
 
@@ -101,7 +101,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        loadUserProfile: bindActionCreators(loadUserProfile, dispatch),
-        logout: bindActionCreators(logout, dispatch)
+        loadUserProfile: bindActionCreators(loadUserProfile, dispatch)
     }
 }

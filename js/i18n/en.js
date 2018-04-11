@@ -170,6 +170,7 @@ module.exports = {
         'history.search': 'Search',
         'history.loading-error': 'Unable to load actions. {error}',
         'history.not-found': 'No actions were found...',
+        'history.non-logged': 'Non-logged user',
 
         'statistics.panel-title': 'Statistics',
         'statistics.number-of-investigators': 'Number of investigators',
