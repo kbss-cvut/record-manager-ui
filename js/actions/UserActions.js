@@ -222,3 +222,16 @@ export function generateUsername(usernamePrefix) {
         })
     }
 }
+
+export function sendInvitation(username) {
+    return function (dispatch) {
+        dispatch({type: ActionConstants.SEND_INVITATION_PENDING, username});
+        axiosBackend.put(`rest/users/send-invitation/${username}`).then(() => {
+            dispatch({type: ActionConstants.SEND_INVITATION_SUCCESS, username});
+            dispatch(loadUser(username));
+        }).catch((error) => {
+            dispatch({type: ActionConstants.SEND_INVITATION_ERROR, error: error.response.data});
+            dispatch(loadUser(username));
+        });
+    }
+}

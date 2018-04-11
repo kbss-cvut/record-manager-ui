@@ -14,7 +14,7 @@ import {bindActionCreators} from "redux";
 import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
 import {setTransitionPayload} from "../../actions/RouterActions";
 import {
-    createUser, generateUsername, loadUser, unloadSavedUser, unloadUser,
+    createUser, generateUsername, loadUser, sendInvitation, unloadSavedUser, unloadUser,
     updateUser
 } from "../../actions/UserActions";
 import * as UserFactory from "../../utils/EntityFactory";
@@ -82,7 +82,7 @@ class UserController extends React.Component {
 
     _onSave = () => {
         let user = this.state.user;
-        this.setState({saved: true, showAlert: true});
+        this.setState({saved: true, showAlert: true, invited: false});
         if (user.isNew || (this._isNew() && this.props.userSaved.status === ACTION_STATUS.ERROR)) {
             this.props.createUser(omit(user, 'isNew'));
         } else {
@@ -124,8 +124,13 @@ class UserController extends React.Component {
         return payload ? payload.institution : null;
     }
 
+    _sendInvitation = () => {
+        this.setState({invited: true, showAlert: false});
+        this.props.sendInvitation(this.state.user.username);
+    };
+
     render() {
-        const {currentUser, userSaved, userLoaded, institutionsLoaded} = this.props;
+        const {currentUser, userSaved, userLoaded, institutionsLoaded, invitationSent} = this.props;
         if (!currentUser) {
             return null;
         }
@@ -134,11 +139,13 @@ class UserController extends React.Component {
             onCancel: this._onCancel,
             onChange: this._onChange,
             onPasswordChange: this._onPasswordChange,
-            generateUsername: this._generateUsername
+            generateUsername: this._generateUsername,
+            sendInvitation: this._sendInvitation
         };
         return <User user={this.state.user} handlers={handlers} backToInstitution={this.institution !== null}
                      userSaved={userSaved} showAlert={this.state.showAlert} userLoaded={userLoaded}
-                     currentUser={currentUser} institutions={institutionsLoaded.institutions || []}/>;
+                     currentUser={currentUser} institutions={institutionsLoaded.institutions || []}
+                     invitationSent={invitationSent} invited={this.state.invited}/>;
     }
 }
 
@@ -152,7 +159,8 @@ function mapStateToProps(state) {
         institutionsLoaded: state.institutions.institutionsLoaded,
         transitionPayload: state.router.transitionPayload,
         viewHandlers: state.router.viewHandlers,
-        generatedUsername: state.user.generatedUsername
+        generatedUsername: state.user.generatedUsername,
+        invitationSent: state.user.invitationSent
     };
 }
 
@@ -166,6 +174,7 @@ function mapDispatchToProps(dispatch) {
         loadInstitutions: bindActionCreators(loadInstitutions, dispatch),
         setTransitionPayload: bindActionCreators(setTransitionPayload, dispatch),
         transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),
-        generateUsername: bindActionCreators(generateUsername, dispatch)
+        generateUsername: bindActionCreators(generateUsername, dispatch),
+        sendInvitation: bindActionCreators(sendInvitation, dispatch)
     }
 }

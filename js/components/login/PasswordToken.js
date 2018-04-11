@@ -78,7 +78,7 @@ class PasswordReset extends React.Component {
                     <AlertMessage type={ALERT_TYPES.DANGER}
                                   message={this.props.formatMessage('user.password-change-error', {error: this.i18n(passwordChange.error.message)})}/>}
                     {this.state.showAlert && passwordChange.status === ACTION_STATUS.SUCCESS &&
-                    <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.login.token-password-success')}/>}
+                    <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('login.token-password-success')}/>}
                     <HorizontalInput type='password' name='newPassword' label={this.i18n('user.password-new')}
                                      onChange={this.onChange} labelWidth={3} onKeyPress={this.onKeyPress}
                                      inputWidth={9} value={this.state.newPassword}/>

@@ -22,6 +22,8 @@ class User extends React.Component {
         currentUser: React.PropTypes.object,
         showAlert: React.PropTypes.bool,
         institutions: React.PropTypes.array,
+        invitationSent: React.PropTypes.object,
+        invited: React.PropTypes.bool,
     };
 
     constructor(props) {
@@ -88,13 +90,19 @@ class User extends React.Component {
     }
 
     _sendInvitationButton() {
-        const {user, userSaved, handlers, currentUser} = this.props;
+        const {user, handlers, currentUser, invitationSent, invited} = this.props;
+        if (invitationSent.status === ACTION_STATUS.SUCCESS && invited) {
+            return <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.send-invitation-success')}/>
+        } else if (invitationSent.status === ACTION_STATUS.ERROR && invited){
+            return <AlertMessage type={ALERT_TYPES.DANGER}
+                          message={this.props.formatMessage('user.send-invitation-error', {error: this.props.invitationSent.error.message})}/>
+        }
         if (user.isInvited === "false" && currentUser.role === ROLE.ADMIN) {
             return <h4 className="content-center" style={{margin: '0 0 15px 0'}}>{this.i18n('user.invite-to-study-text')}
                 <Button bsStyle='warning' bsSize='small' ref='submit'
-                        disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
-                        onClick={handlers.onSave}>
-                {this.i18n('user.invite-to-study')}{userSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
+                        disabled={invitationSent.status === ACTION_STATUS.PENDING}
+                        onClick={() => handlers.sendInvitation()}>
+                {this.i18n('user.invite-to-study')}{invitationSent.status === ACTION_STATUS.PENDING && <LoaderSmall />}
                 </Button>
             </h4>;
         } else {
