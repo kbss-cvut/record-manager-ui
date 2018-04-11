@@ -29,7 +29,7 @@ class UserController extends React.Component {
             saved: false,
             showAlert: false
         };
-        this.institution = this._getPayload()
+        this.institution = this._getPayload();
     }
 
     _isNew() {

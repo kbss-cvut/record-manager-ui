@@ -90,13 +90,7 @@ class User extends React.Component {
     }
 
     _sendInvitationButton() {
-        const {user, handlers, currentUser, invitationSent, invited} = this.props;
-        if (invitationSent.status === ACTION_STATUS.SUCCESS && invited) {
-            return <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.send-invitation-success')}/>
-        } else if (invitationSent.status === ACTION_STATUS.ERROR && invited){
-            return <AlertMessage type={ALERT_TYPES.DANGER}
-                          message={this.props.formatMessage('user.send-invitation-error', {error: this.props.invitationSent.error.message})}/>
-        }
+        const {user, handlers, currentUser, invitationSent} = this.props;
         if (user.isInvited === "false" && currentUser.role === ROLE.ADMIN) {
             return <h4 className="content-center" style={{margin: '0 0 15px 0'}}>{this.i18n('user.invite-to-study-text')}
                 <Button bsStyle='warning' bsSize='small' ref='submit'
@@ -111,7 +105,7 @@ class User extends React.Component {
     }
 
     render() {
-        const {userSaved, userLoaded, currentUser, showAlert, user, handlers} = this.props;
+        const {userSaved, userLoaded, currentUser, showAlert, user, handlers, invitationSent, invited} = this.props;
         if (!user && (!userLoaded.status || userLoaded.status === ACTION_STATUS.PENDING)) {
             return <LoaderPanel header={<span>{this.i18n('user.panel-title')}</span>} />;
         } else if (userLoaded.status === ACTION_STATUS.ERROR) {
@@ -204,6 +198,11 @@ class User extends React.Component {
                               message={this.props.formatMessage('user.save-error', {error: this.props.userSaved.error.message})}/>}
                 {showAlert && userSaved.status === ACTION_STATUS.SUCCESS &&
                 <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.save-success')}/>}
+                {invitationSent.status === ACTION_STATUS.SUCCESS && invited &&
+                <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.send-invitation-success')}/>}
+                {invitationSent.status === ACTION_STATUS.ERROR && invited &&
+                <AlertMessage type={ALERT_TYPES.DANGER}
+                    message={this.props.formatMessage('user.send-invitation-error', {error: invitationSent.error.message})}/>}
             </form>
         </Panel>;
     }
