@@ -45,7 +45,7 @@ class MainView extends React.Component {
                     <Navbar collapseOnSelect>
                         <Navbar.Header>
                         <Navbar.Brand>
-                            <a href={`/#/${Routes.dashboard.path}`}>{Constants.APP_NAME}</a>
+                            <a href={`#/${Routes.dashboard.path}`}>{Constants.APP_NAME}</a>
                         </Navbar.Brand>
                         <Navbar.Toggle />
                         </Navbar.Header>
