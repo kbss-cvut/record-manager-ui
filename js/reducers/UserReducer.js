@@ -8,7 +8,8 @@ const initialState = {
     institutionMembers: {},
     passwordChange: {},
     generatedUsername: {},
-    invitationSent: {}
+    invitationSent: {},
+    impersonateObj: {}
 };
 
 export default function (state = initialState, action) {
@@ -156,15 +157,14 @@ export default function (state = initialState, action) {
                     error: action.error
                 }
             };
-        case ActionConstants.GENERATE_USERNAME_PENDING: {
+        case ActionConstants.GENERATE_USERNAME_PENDING:
             return {
                 ...state,
                 generatedUsername: {
                     status: ACTION_STATUS.PENDING
                 }
             };
-        }
-        case ActionConstants.GENERATE_USERNAME_SUCCESS: {
+        case ActionConstants.GENERATE_USERNAME_SUCCESS:
             return {
                 ...state,
                 generatedUsername: {
@@ -172,8 +172,7 @@ export default function (state = initialState, action) {
                     username: action.generatedUsername
                 }
             };
-        }
-        case ActionConstants.SEND_INVITATION_PENDING: {
+        case ActionConstants.SEND_INVITATION_PENDING:
             return {
                 ...state,
                 invitationSent: {
@@ -181,8 +180,7 @@ export default function (state = initialState, action) {
                     username: action.username
                 }
             };
-        }
-        case ActionConstants.SEND_INVITATION_SUCCESS: {
+        case ActionConstants.SEND_INVITATION_SUCCESS:
             return {
                 ...state,
                 invitationSent: {
@@ -191,8 +189,7 @@ export default function (state = initialState, action) {
                     error: ''
                 }
             };
-        }
-        case ActionConstants.SEND_INVITATION_ERROR: {
+        case ActionConstants.SEND_INVITATION_ERROR:
             return {
                 ...state,
                 invitationSent: {
@@ -200,7 +197,28 @@ export default function (state = initialState, action) {
                     error: action.error
                 }
             };
-        }
+        case ActionConstants.IMPERSONATE_PENDING:
+            return {
+                ...state,
+                impersonateObj: {
+                    status: ACTION_STATUS.PENDING
+                }
+            };
+        case ActionConstants.IMPERSONATE_SUCCESS:
+            return {
+                ...state,
+                impersonateObj: {
+                    status: ACTION_STATUS.SUCCESS
+                }
+            };
+        case ActionConstants.IMPERSONATE_ERROR:
+            return {
+                ...state,
+                impersonateObj: {
+                    status: ACTION_STATUS.ERROR,
+                    error: action.error
+                }
+            };
         default:
             return state;
     }

@@ -24,6 +24,8 @@ class User extends React.Component {
         institutions: React.PropTypes.array,
         invitationSent: React.PropTypes.object,
         invited: React.PropTypes.bool,
+        impersonateObj: React.PropTypes.object,
+        impersonated: React.PropTypes.bool
     };
 
     constructor(props) {
@@ -104,8 +106,21 @@ class User extends React.Component {
         }
     }
 
+    _impersonateButton() {
+        const {user, currentUser, handlers, impersonateObj} = this.props;
+        console.log(impersonateObj)
+        return currentUser.role === ROLE.ADMIN && getRole(user) !== ROLE.ADMIN ?
+            <Button style={{margin: '0 0.3em 0 0'}} bsStyle='danger' bsSize='small' ref='submit'
+                    disabled={impersonateObj.status === ACTION_STATUS.PENDING}
+                    onClick={handlers.impersonate}>
+                {this.i18n('user.impersonate')}{impersonateObj.status === ACTION_STATUS.PENDING &&
+            <LoaderSmall />}
+            </Button> :
+            null
+    }
+
     render() {
-        const {userSaved, userLoaded, currentUser, showAlert, user, handlers, invitationSent, invited} = this.props;
+        const {userSaved, userLoaded, currentUser, showAlert, user, handlers, invitationSent, invited, impersonateObj, impersonated} = this.props;
         if (!user && (!userLoaded.status || userLoaded.status === ACTION_STATUS.PENDING)) {
             return <LoaderPanel header={<span>{this.i18n('user.panel-title')}</span>} />;
         } else if (userLoaded.status === ACTION_STATUS.ERROR) {
@@ -180,6 +195,7 @@ class User extends React.Component {
                 </div>
                 }
                 <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
+                    {this._impersonateButton()}
                     {this._passwordChange()}
                     {(currentUser.role === ROLE.ADMIN || currentUser.username === user.username) &&
                         <Button bsStyle='success' bsSize='small' ref='submit'
@@ -203,6 +219,9 @@ class User extends React.Component {
                 {invitationSent.status === ACTION_STATUS.ERROR && invited &&
                 <AlertMessage type={ALERT_TYPES.DANGER}
                     message={this.props.formatMessage('user.send-invitation-error', {error: invitationSent.error.message})}/>}
+                {impersonateObj.status === ACTION_STATUS.ERROR && impersonated &&
+                <AlertMessage type={ALERT_TYPES.DANGER}
+                              message={this.props.formatMessage('user.impersonate-error', {error: impersonateObj.error.message})}/>}
             </form>
         </Panel>;
     }

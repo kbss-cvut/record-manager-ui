@@ -104,6 +104,8 @@ module.exports = {
         'user.send-invitation-error': 'Unable to invite user to study. {error}',
         'user.invite-to-study-text': 'User has not yet been invited to study. ',
         'user.invite-to-study': 'Send an invitation now',
+        'user.impersonate': 'Impersonate',
+        'user.impersonate-error': 'Unable to impersonate. {error}',
 
         'institutions.panel-title': 'Institutions',
         'institutions.create-institution': 'Create institution',
