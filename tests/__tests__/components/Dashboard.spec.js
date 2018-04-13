@@ -27,6 +27,7 @@ describe('Dashboard', function () {
             createRecord: jasmine.createSpy('createRecord'),
             showMyInstitution: jasmine.createSpy('showMyInstitution'),
             showMyProfile: jasmine.createSpy('showMyProfile'),
+            showStatistics: jasmine.createSpy('showStatistics')
         };
 
     it('renders dashboard with title and four buttons', function () {
@@ -47,7 +48,7 @@ describe('Dashboard', function () {
         expect(jumbotron).not.toBeNull();
 
         const cols = TestUtils.scryRenderedDOMComponentsWithClass(tree, "dashboard-sector");
-        expect(cols.length).toEqual(4);
+        expect(cols.length).toEqual(5);
     });
 
     it('renders four buttons to admin and click on them', function () {
@@ -56,7 +57,7 @@ describe('Dashboard', function () {
                 <Dashboard currentUser={currentUserAdmin} handlers={handlers}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "button");
-        expect(buttons.length).toEqual(4);
+        expect(buttons.length).toEqual(5);
 
         TestUtils.Simulate.click(buttons[0]); // Create record
         expect(handlers.createRecord).toHaveBeenCalled();
@@ -69,6 +70,9 @@ describe('Dashboard', function () {
 
         TestUtils.Simulate.click(buttons[3]); // View patients records
         expect(handlers.showRecords).toHaveBeenCalled();
+
+        TestUtils.Simulate.click(buttons[4]); // View statistics
+        expect(handlers.showStatistics).toHaveBeenCalled();
     });
 
     it('renders four buttons to doctor with institution and click on them', function () {

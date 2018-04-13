@@ -229,7 +229,7 @@ describe('User', function () {
             <IntlProvider locale="en" {...intlData}>
                 <User user={user} handlers={handlers} backToInstitution={backToInstitution}
                       userSaved={userSaved} showAlert={showAlert} userLoaded={userLoaded} 
-                      currentUser={currentUserAdmin} institutions={institutions} />
+                      currentUser={currentUserAdmin} institutions={institutions} impersonation={{}}/>
             </IntlProvider>);
         const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'input');
         expect(result.length).toEqual(4);
