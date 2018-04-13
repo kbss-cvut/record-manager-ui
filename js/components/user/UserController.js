@@ -135,7 +135,7 @@ class UserController extends React.Component {
     };
 
     render() {
-        const {currentUser, userSaved, userLoaded, institutionsLoaded, invitationSent, impersonateObj} = this.props;
+        const {currentUser, userSaved, userLoaded, institutionsLoaded, invitationSent, impersonation} = this.props;
         if (!currentUser) {
             return null;
         }
@@ -151,7 +151,7 @@ class UserController extends React.Component {
         return <User user={this.state.user} handlers={handlers} backToInstitution={this.institution !== null}
                      userSaved={userSaved} showAlert={this.state.showAlert} userLoaded={userLoaded}
                      currentUser={currentUser} institutions={institutionsLoaded.institutions || []}
-                     invitationSent={invitationSent} invited={this.state.invited} impersonateObj={impersonateObj}
+                     invitationSent={invitationSent} invited={this.state.invited} impersonation={impersonation}
                      impersonated={this.state.impersonated}/>;
     }
 }
@@ -168,7 +168,7 @@ function mapStateToProps(state) {
         viewHandlers: state.router.viewHandlers,
         generatedUsername: state.user.generatedUsername,
         invitationSent: state.user.invitationSent,
-        impersonateObj: state.user.impersonateObj
+        impersonation: state.user.impersonation
     };
 }
 

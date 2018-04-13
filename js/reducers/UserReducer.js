@@ -9,7 +9,7 @@ const initialState = {
     passwordChange: {},
     generatedUsername: {},
     invitationSent: {},
-    impersonateObj: {}
+    impersonation: {}
 };
 
 export default function (state = initialState, action) {
@@ -200,21 +200,22 @@ export default function (state = initialState, action) {
         case ActionConstants.IMPERSONATE_PENDING:
             return {
                 ...state,
-                impersonateObj: {
+                impersonation: {
                     status: ACTION_STATUS.PENDING
                 }
             };
         case ActionConstants.IMPERSONATE_SUCCESS:
             return {
                 ...state,
-                impersonateObj: {
-                    status: ACTION_STATUS.SUCCESS
+                impersonation: {
+                    status: ACTION_STATUS.SUCCESS,
+                    username: action.username
                 }
             };
         case ActionConstants.IMPERSONATE_ERROR:
             return {
                 ...state,
-                impersonateObj: {
+                impersonation: {
                     status: ACTION_STATUS.ERROR,
                     error: action.error
                 }

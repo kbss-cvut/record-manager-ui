@@ -242,8 +242,8 @@ export function impersonate(username) {
         axiosBackend.post(`rest/users/impersonate/`, username, {headers: {"Content-Type": "text/plain"}}).then(() => {
             dispatch({type: ActionConstants.IMPERSONATE_SUCCESS, username});
             window.location.reload();
-        }).catch (() => {
-            dispatch({type: ActionConstants.IMPERSONATE_ERROR});
+        }).catch ((error) => {
+            dispatch({type: ActionConstants.IMPERSONATE_ERROR, error: error.response.data});
         });
     }
 }

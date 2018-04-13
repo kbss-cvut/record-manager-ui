@@ -24,7 +24,7 @@ class User extends React.Component {
         institutions: React.PropTypes.array,
         invitationSent: React.PropTypes.object,
         invited: React.PropTypes.bool,
-        impersonateObj: React.PropTypes.object,
+        impersonation: React.PropTypes.object,
         impersonated: React.PropTypes.bool
     };
 
@@ -107,20 +107,21 @@ class User extends React.Component {
     }
 
     _impersonateButton() {
-        const {user, currentUser, handlers, impersonateObj} = this.props;
-        console.log(impersonateObj)
-        return currentUser.role === ROLE.ADMIN && getRole(user) !== ROLE.ADMIN ?
-            <Button style={{margin: '0 0.3em 0 0'}} bsStyle='danger' bsSize='small' ref='submit'
-                    disabled={impersonateObj.status === ACTION_STATUS.PENDING}
-                    onClick={handlers.impersonate}>
-                {this.i18n('user.impersonate')}{impersonateObj.status === ACTION_STATUS.PENDING &&
-            <LoaderSmall />}
-            </Button> :
-            null
+        const {user, currentUser, handlers, impersonation} = this.props;
+        if (!user.isNew && currentUser.role === ROLE.ADMIN && getRole(user) !== ROLE.ADMIN) {
+            return <Button style={{margin: '0 0.3em 0 0'}} bsStyle='danger' bsSize='small' ref='submit'
+                           disabled={impersonation.status === ACTION_STATUS.PENDING}
+                           onClick={handlers.impersonate}>
+                {this.i18n('user.impersonate')}{impersonation.status === ACTION_STATUS.PENDING &&
+            <LoaderSmall/>}
+            </Button>;
+        } else {
+            return null;
+        }
     }
 
     render() {
-        const {userSaved, userLoaded, currentUser, showAlert, user, handlers, invitationSent, invited, impersonateObj, impersonated} = this.props;
+        const {userSaved, userLoaded, currentUser, showAlert, user, handlers, invitationSent, invited, impersonation, impersonated} = this.props;
         if (!user && (!userLoaded.status || userLoaded.status === ACTION_STATUS.PENDING)) {
             return <LoaderPanel header={<span>{this.i18n('user.panel-title')}</span>} />;
         } else if (userLoaded.status === ACTION_STATUS.ERROR) {
@@ -214,14 +215,14 @@ class User extends React.Component {
                               message={this.props.formatMessage('user.save-error', {error: this.props.userSaved.error.message})}/>}
                 {showAlert && userSaved.status === ACTION_STATUS.SUCCESS &&
                 <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.save-success')}/>}
-                {invitationSent.status === ACTION_STATUS.SUCCESS && invited &&
+                {invited && invitationSent.status === ACTION_STATUS.SUCCESS  &&
                 <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.send-invitation-success')}/>}
-                {invitationSent.status === ACTION_STATUS.ERROR && invited &&
+                {invited && invitationSent.status === ACTION_STATUS.ERROR &&
                 <AlertMessage type={ALERT_TYPES.DANGER}
                     message={this.props.formatMessage('user.send-invitation-error', {error: invitationSent.error.message})}/>}
-                {impersonateObj.status === ACTION_STATUS.ERROR && impersonated &&
+                {impersonated && impersonation.status === ACTION_STATUS.ERROR &&
                 <AlertMessage type={ALERT_TYPES.DANGER}
-                              message={this.props.formatMessage('user.impersonate-error', {error: impersonateObj.error.message})}/>}
+                              message={this.props.formatMessage('user.impersonate-error', {error: impersonation.error.message})}/>}
             </form>
         </Panel>;
     }
