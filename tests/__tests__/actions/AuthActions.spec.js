@@ -19,9 +19,10 @@ describe('Auth synchronize actions', function () {
 
     it('creates an action that user was authenticated', () => {
         const expectedAction = {
-            type: ActionConstants.AUTH_USER_SUCCESS
+            type: ActionConstants.AUTH_USER_SUCCESS,
+            username: user.username
         };
-        expect(actions.userAuthSuccess()).toEqual(expectedAction)
+        expect(actions.userAuthSuccess(user.username)).toEqual(expectedAction)
     });
 
     it('creates an action that there was error during authentication', () => {
@@ -91,7 +92,7 @@ describe('Auth asynchronize actions', function () {
         };
         const expectedActions = [
             { type: ActionConstants.AUTH_USER_PENDING },
-            { type: ActionConstants.AUTH_USER_SUCCESS },
+            { type: ActionConstants.AUTH_USER_SUCCESS, username: user.username },
             { type: ActionConstants.LOAD_USER_PROFILE_PENDING },
             { type: ActionConstants.LOAD_USER_PROFILE_SUCCESS, user}
         ];

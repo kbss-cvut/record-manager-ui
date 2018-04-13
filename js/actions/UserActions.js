@@ -235,3 +235,15 @@ export function sendInvitation(username) {
         });
     }
 }
+
+export function impersonate(username) {
+    return function (dispatch) {
+        dispatch({type: ActionConstants.IMPERSONATE_PENDING});
+        axiosBackend.post(`rest/users/impersonate/`, username, {headers: {"Content-Type": "text/plain"}}).then(() => {
+            dispatch({type: ActionConstants.IMPERSONATE_SUCCESS, username});
+            window.location.reload();
+        }).catch ((error) => {
+            dispatch({type: ActionConstants.IMPERSONATE_ERROR, error: error.response.data});
+        });
+    }
+}

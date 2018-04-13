@@ -105,6 +105,8 @@ module.exports = {
         'user.send-invitation-error': 'Uživatele se nepodařilo pozvat do studie. {error}',
         'user.invite-to-study-text': 'Uživatel zatím nebyl pozván do studie. ',
         'user.invite-to-study': 'Poslat pozvánku nyní',
+        'user.impersonate': 'Impersonace',
+        'user.impersonate-error': 'Impersonace se nepodařila. {error}',
 
         'institutions.panel-title': 'Kliniky',
         'institutions.create-institution': 'Vytvořit kliniku',

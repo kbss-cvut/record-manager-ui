@@ -17,6 +17,7 @@ axiosBackend.interceptors.response.use(
         if (status === 403) { // non-authorized
             transitionTo(Routes.dashboard);
         }
+        /*
         if (status === 500) { // server error
             error = {
                 response: {
@@ -25,7 +26,7 @@ axiosBackend.interceptors.response.use(
                     }
                 }
             }
-        }
+        }*/
         return Promise.reject(error);
     }
 );

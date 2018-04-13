@@ -14,7 +14,7 @@ import {bindActionCreators} from "redux";
 import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
 import {setTransitionPayload} from "../../actions/RouterActions";
 import {
-    createUser, generateUsername, loadUser, sendInvitation, unloadSavedUser, unloadUser,
+    createUser, generateUsername, impersonate, loadUser, sendInvitation, unloadSavedUser, unloadUser,
     updateUser
 } from "../../actions/UserActions";
 import * as UserFactory from "../../utils/EntityFactory";
@@ -129,8 +129,13 @@ class UserController extends React.Component {
         this.props.sendInvitation(this.state.user.username);
     };
 
+    _impersonate = () => {
+        this.setState({impersonated: true, showAlert: false});
+        this.props.impersonate(this.state.user.username);
+    };
+
     render() {
-        const {currentUser, userSaved, userLoaded, institutionsLoaded, invitationSent} = this.props;
+        const {currentUser, userSaved, userLoaded, institutionsLoaded, invitationSent, impersonation} = this.props;
         if (!currentUser) {
             return null;
         }
@@ -140,12 +145,14 @@ class UserController extends React.Component {
             onChange: this._onChange,
             onPasswordChange: this._onPasswordChange,
             generateUsername: this._generateUsername,
-            sendInvitation: this._sendInvitation
+            sendInvitation: this._sendInvitation,
+            impersonate: this._impersonate,
         };
         return <User user={this.state.user} handlers={handlers} backToInstitution={this.institution !== null}
                      userSaved={userSaved} showAlert={this.state.showAlert} userLoaded={userLoaded}
                      currentUser={currentUser} institutions={institutionsLoaded.institutions || []}
-                     invitationSent={invitationSent} invited={this.state.invited}/>;
+                     invitationSent={invitationSent} invited={this.state.invited} impersonation={impersonation}
+                     impersonated={this.state.impersonated}/>;
     }
 }
 
@@ -160,7 +167,8 @@ function mapStateToProps(state) {
         transitionPayload: state.router.transitionPayload,
         viewHandlers: state.router.viewHandlers,
         generatedUsername: state.user.generatedUsername,
-        invitationSent: state.user.invitationSent
+        invitationSent: state.user.invitationSent,
+        impersonation: state.user.impersonation
     };
 }
 
@@ -175,6 +183,7 @@ function mapDispatchToProps(dispatch) {
         setTransitionPayload: bindActionCreators(setTransitionPayload, dispatch),
         transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),
         generateUsername: bindActionCreators(generateUsername, dispatch),
-        sendInvitation: bindActionCreators(sendInvitation, dispatch)
+        sendInvitation: bindActionCreators(sendInvitation, dispatch),
+        impersonate: bindActionCreators(impersonate, dispatch)
     }
 }
