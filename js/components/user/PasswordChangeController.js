@@ -28,10 +28,10 @@ class PasswordChangeController extends React.Component {
         this.setState({password: update});
     };
 
-    _onSave = () => {
+    _onSave = (sendEmail = true) => {
         if(this._passwordValid()){
             delete this.state.password.confirmPassword;
-            this.props.changePassword(this.props.params.username, this.state.password);
+            this.props.changePassword(this.props.params.username, this.state.password, sendEmail);
             this.setState({showAlert: true, password: UserFactory.initNewPassword()});
         }
     };

@@ -90,7 +90,6 @@ export function createRecord(record, currentUser) {
             dispatch(saveRecordSuccess(record, key, ACTION_FLAG.CREATE_ENTITY));
             dispatch(loadRecords(currentUser));
         }).catch((error) => {
-            console.log(error);
             dispatch(saveRecordError(error.response.data, record, ACTION_FLAG.CREATE_ENTITY));
         });
     }
