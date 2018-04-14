@@ -18,11 +18,11 @@ export function createUser(user) {
     }
 }
 
-export function updateUser(user, currentUser) {
+export function updateUser(user, currentUser, sendEmail = true) {
     //console.log("Updating user: ", user);
     return function (dispatch) {
         dispatch(saveUserPending(ACTION_FLAG.UPDATE_ENTITY));
-        axiosBackend.put(`rest/users/${user.username}`, {
+        axiosBackend.put(`rest/users/${user.username}${!sendEmail ? '?email=false' : ''}`, {
             ...user
         }).then(() => {
             dispatch(saveUserSuccess(user, ACTION_FLAG.UPDATE_ENTITY));
@@ -182,10 +182,10 @@ export function unloadInstitutionMembers() {
     }
 }
 
-export function changePassword(username, password) {
+export function changePassword(username, password, sendEmail = true) {
     return function (dispatch) {
         dispatch(changePasswordPending());
-        axiosBackend.put(`rest/users/${username}/password-change`, {
+        axiosBackend.put(`rest/users/${username}/password-change${!sendEmail ? '?email=false' : ''}`, {
             ...password
         }).then(() => {
             dispatch(changePasswordSuccess());

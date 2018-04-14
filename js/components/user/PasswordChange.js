@@ -5,7 +5,7 @@ import {Button, Panel} from "react-bootstrap";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import HorizontalInput from "../HorizontalInput";
-import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import UserValidator from "../../validation/UserValidator";
 import {LoaderSmall} from "../Loader";
@@ -57,7 +57,16 @@ class PasswordChange extends React.Component {
                     </div>
                 </div>
                 <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
-                    <Button bsStyle='success' bsSize='small' ref='submit' onClick={handlers.onSave}
+                    {currentUser.role === ROLE.ADMIN &&
+                    <Button style={{margin: '0 0.3em 0 0'}} bsStyle='success' bsSize='small' ref='submit'
+                            onClick={() => handlers.onSave()}
+                            disabled={!UserValidator.isPasswordValid(password) || passwordChange.status === ACTION_STATUS.PENDING}>
+                        {this.i18n('save-and-send-email')}{passwordChange.status === ACTION_STATUS.PENDING &&
+                    <LoaderSmall/>}
+                    </Button>
+                    }
+                    <Button bsStyle='success' bsSize='small' ref='submit'
+                            onClick={() => handlers.onSave(currentUser.username === params.username)}
                             disabled={!UserValidator.isPasswordValid(password) || passwordChange.status === ACTION_STATUS.PENDING}>
                         {this.i18n('save')}{passwordChange.status === ACTION_STATUS.PENDING && <LoaderSmall />}
                     </Button>

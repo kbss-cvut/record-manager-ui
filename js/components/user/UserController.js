@@ -80,13 +80,13 @@ class UserController extends React.Component {
         }
     }
 
-    _onSave = () => {
+    _onSave = (sendEmail = true) => {
         let user = this.state.user;
         this.setState({saved: true, showAlert: true, invited: false});
         if (user.isNew || (this._isNew() && this.props.userSaved.status === ACTION_STATUS.ERROR)) {
             this.props.createUser(omit(user, 'isNew'));
         } else {
-            this.props.updateUser(user, this.props.currentUser);
+            this.props.updateUser(user, this.props.currentUser, sendEmail);
         }
     };
 

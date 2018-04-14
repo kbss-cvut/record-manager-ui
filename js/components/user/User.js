@@ -120,6 +120,19 @@ class User extends React.Component {
         }
     }
 
+    _saveAndSendEmailButton() {
+        const {user, currentUser, handlers, userSaved, params} = this.props;
+        if (!user.isNew && currentUser.role === ROLE.ADMIN && currentUser.username !== user.username) {
+            return <Button style={{margin: '0 0.3em 0 0'}} bsStyle='success' bsSize='small' ref='submit'
+                           disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
+                           onClick={() => handlers.onSave()}>{this.i18n('save-and-send-email')}
+                           {userSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
+            </Button>
+        } else {
+            return null;
+        }
+    }
+
     render() {
         const {userSaved, userLoaded, currentUser, showAlert, user, handlers, invitationSent, invited, impersonation, impersonated} = this.props;
         if (!user && (!userLoaded.status || userLoaded.status === ACTION_STATUS.PENDING)) {
@@ -198,10 +211,11 @@ class User extends React.Component {
                 <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
                     {this._impersonateButton()}
                     {this._passwordChange()}
+                    {this._saveAndSendEmailButton()}
                     {(currentUser.role === ROLE.ADMIN || currentUser.username === user.username) &&
                         <Button bsStyle='success' bsSize='small' ref='submit'
                                 disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
-                                onClick={handlers.onSave}>
+                                onClick={() => handlers.onSave(currentUser.username === user.username)}>
                             {this.i18n('save')}{userSaved.status === ACTION_STATUS.PENDING &&
                         <LoaderSmall />}
                         </Button>
