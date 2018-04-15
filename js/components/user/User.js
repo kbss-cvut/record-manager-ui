@@ -93,7 +93,7 @@ class User extends React.Component {
 
     _sendInvitationButton() {
         const {user, handlers, currentUser, invitationSent} = this.props;
-        if (user.isInvited === "false" && currentUser.role === ROLE.ADMIN) {
+        if (user.isInvited === false && currentUser.role === ROLE.ADMIN) {
             return <h4 className="content-center" style={{margin: '0 0 15px 0'}}>{this.i18n('user.invite-to-study-text')}
                 <Button bsStyle='warning' bsSize='small' ref='submit'
                         disabled={invitationSent.status === ACTION_STATUS.PENDING}
