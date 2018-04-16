@@ -49,7 +49,7 @@ class PasswordReset extends React.Component {
     };
 
     onSave = () => {
-        if(this._passwordValid) {
+        if(this._passwordValid()) {
             this.setState({showAlert: true, newPassword: '', confirmPassword: ''});
             this.props.changePasswordToken(this.state.newPassword, this.props.params.token);
         }
