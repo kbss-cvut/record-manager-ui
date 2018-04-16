@@ -91,6 +91,8 @@ class PasswordReset extends React.Component {
                                 disabled={this.props.passwordChange.status === ACTION_STATUS.PENDING || this.props.passwordChange.status === ACTION_STATUS.SUCCESS}>{this.i18n('login.reset-password')}
                             {this.props.passwordChange.status === ACTION_STATUS.PENDING && <LoaderSmall />}
                         </Button>
+                        <Button bsStyle='link'
+                                onClick={() => transitionTo(Routes.login)}>{this.i18n('login.back-to-login')}</Button>
                     </div>
                 </Form>
             </Panel>
