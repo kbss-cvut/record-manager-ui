@@ -78,6 +78,10 @@ class UserController extends React.Component {
         if (this.props.generatedUsername.status === ACTION_STATUS.PENDING && nextProps.generatedUsername.status === ACTION_STATUS.SUCCESS) {
             this._onChange({username: nextProps.generatedUsername.username});
         }
+        if (this.props.params.username !== nextProps.params.username) {
+            this.props.loadUser(nextProps.params.username);
+            this.setState({saved: false, showAlert: false, invited: false, impersonated: false});
+        }
     }
 
     _onSave = (sendEmail = true) => {
