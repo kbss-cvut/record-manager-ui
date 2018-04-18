@@ -125,12 +125,22 @@ class User extends React.Component {
         if (!user.isNew && currentUser.role === ROLE.ADMIN && currentUser.username !== user.username) {
             return <Button style={{margin: '0 0.3em 0 0'}} bsStyle='success' bsSize='small' ref='submit'
                            disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
-                           onClick={() => handlers.onSave()}>{this.i18n('save-and-send-email')}
+                           onClick={() => this._onSaveAndSendEmail()}>{this.i18n('save-and-send-email')}
                            {userSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
             </Button>
         } else {
             return null;
         }
+    }
+
+    _onSaveAndSendEmail() {
+        this.props.handlers.onSave();
+        this.setState({savedWithEmail: true});
+    }
+
+    _onSave() {
+        this.props.handlers.onSave(this.props.currentUser.username === this.props.user.username);
+        this.setState({savedWithEmail: false});
     }
 
     render() {
@@ -215,7 +225,7 @@ class User extends React.Component {
                     {(currentUser.role === ROLE.ADMIN || currentUser.username === user.username) &&
                         <Button bsStyle='success' bsSize='small' ref='submit'
                                 disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
-                                onClick={() => handlers.onSave(currentUser.username === user.username)}>
+                                onClick={() => this._onSave()}>
                             {this.i18n('save')}{userSaved.status === ACTION_STATUS.PENDING &&
                         <LoaderSmall />}
                         </Button>
@@ -228,7 +238,8 @@ class User extends React.Component {
                 <AlertMessage type={ALERT_TYPES.DANGER}
                               message={this.props.formatMessage('user.save-error', {error: this.props.userSaved.error.message})}/>}
                 {showAlert && userSaved.status === ACTION_STATUS.SUCCESS &&
-                <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.save-success')}/>}
+                <AlertMessage type={ALERT_TYPES.SUCCESS}
+                              message={this.i18n(this.state.savedWithEmail ? 'user.save-success-with-email' : 'user.save-success')}/>}
                 {invited && invitationSent.status === ACTION_STATUS.SUCCESS  &&
                 <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.send-invitation-success')}/>}
                 {invited && invitationSent.status === ACTION_STATUS.ERROR &&

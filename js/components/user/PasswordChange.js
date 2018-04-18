@@ -32,6 +32,16 @@ class PasswordChange extends React.Component {
         this.props.handlers.onChange(change);
     };
 
+    _onSave() {
+        this.props.handlers.onSave(this.props.currentUser.username === this.props.params.username);
+        this.setState({savedWithEmail: false});
+    }
+
+    _onSaveWithEmail() {
+        this.props.handlers.onSave();
+        this.setState({savedWithEmail: true});
+    }
+
     render() {
         const { handlers, currentUser, showAlert, valid, passwordChange, params, password} = this.props;
         return <Panel header={<span>{this.i18n('user.password-change')}</span>} bsStyle='primary'>
@@ -59,14 +69,14 @@ class PasswordChange extends React.Component {
                 <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
                     {currentUser.role === ROLE.ADMIN &&
                     <Button style={{margin: '0 0.3em 0 0'}} bsStyle='success' bsSize='small' ref='submit'
-                            onClick={() => handlers.onSave()}
+                            onClick={() => this._onSaveWithEmail()}
                             disabled={!UserValidator.isPasswordValid(password) || passwordChange.status === ACTION_STATUS.PENDING}>
                         {this.i18n('save-and-send-email')}{passwordChange.status === ACTION_STATUS.PENDING &&
                     <LoaderSmall/>}
                     </Button>
                     }
                     <Button bsStyle='success' bsSize='small' ref='submit'
-                            onClick={() => handlers.onSave(currentUser.username === params.username)}
+                            onClick={() => this._onSave()}
                             disabled={!UserValidator.isPasswordValid(password) || passwordChange.status === ACTION_STATUS.PENDING}>
                         {this.i18n('save')}{passwordChange.status === ACTION_STATUS.PENDING && <LoaderSmall />}
                     </Button>
@@ -80,7 +90,8 @@ class PasswordChange extends React.Component {
                 <AlertMessage type={ALERT_TYPES.DANGER}
                               message={this.props.formatMessage('user.password-change-error', {error: this.i18n(passwordChange.error.message)})}/>}
                 {showAlert && passwordChange.status === ACTION_STATUS.SUCCESS &&
-                <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.password-change-success')}/>}
+                <AlertMessage type={ALERT_TYPES.SUCCESS}
+                              message={this.i18n(this.state.savedWithEmail ? 'user.password-change-success-with-email' : 'user.password-change-success')}/>}
             </form>
         </Panel>;
     }
