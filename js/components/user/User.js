@@ -32,6 +32,7 @@ class User extends React.Component {
         super(props);
         this.i18n = this.props.i18n;
         this.formatMessage = this.props.formatMessage;
+        this.state = {savedWithEmail: false};
     }
 
     _onChange = (e) => {
