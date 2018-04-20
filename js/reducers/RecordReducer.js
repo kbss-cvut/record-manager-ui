@@ -1,11 +1,13 @@
 import * as ActionConstants from "../constants/ActionConstants";
 import {ACTION_STATUS} from "../constants/DefaultConstants";
+import without from 'lodash/without';
 
 const initialState = {
     institutionPatients: {},
     recordDeleted: {},
     recordLoaded: {},
-    recordSaved: {}
+    recordSaved: {},
+    recordsDeleting: [],
 };
 
 export default function (state = initialState, action) {
@@ -78,12 +80,13 @@ export default function (state = initialState, action) {
                 recordLoaded: {}
             };
         case ActionConstants.DELETE_RECORD_PENDING:
+            state.recordsDeleting.push(action.key);
             return {
                 ...state,
                 recordDeleted: {
                     status: ACTION_STATUS.PENDING,
                     key: action.key
-                }
+                },
             };
         case ActionConstants.DELETE_RECORD_SUCCESS:
             return {
@@ -92,7 +95,8 @@ export default function (state = initialState, action) {
                     status: ACTION_STATUS.SUCCESS,
                     record: action.record,
                     error: ''
-                }
+                },
+                recordsDeleting: without(state.recordsDeleting, action.key)
             };
         case ActionConstants.DELETE_RECORD_ERROR:
             return {
@@ -101,7 +105,8 @@ export default function (state = initialState, action) {
                     status: ACTION_STATUS.ERROR,
                     record: action.record,
                     error: action.error
-                }
+                },
+                recordsDeleting: without(state.recordsDeleting, action.key)
             };
         default:
             return state;

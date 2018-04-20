@@ -12,9 +12,9 @@ export function deleteRecord(record, currentUser) {
             ...record
         }).then(() => {
             dispatch(loadRecords(currentUser));
-            dispatch(deleteRecordSuccess(record));
+            dispatch(deleteRecordSuccess(record, record.key));
         }).catch((error) => {
-            dispatch(deleteRecordError(error.response.data, record));
+            dispatch(deleteRecordError(error.response.data, record, record.key));
         });
     }
 }
@@ -26,18 +26,20 @@ export function deleteRecordPending(key) {
     }
 }
 
-export function deleteRecordSuccess(record) {
+export function deleteRecordSuccess(record, key) {
     return {
         type: ActionConstants.DELETE_RECORD_SUCCESS,
-        record
+        record,
+        key
     }
 }
 
-export function deleteRecordError(error, record) {
+export function deleteRecordError(error, record, key) {
     return {
         type: ActionConstants.DELETE_RECORD_ERROR,
         error,
         record,
+        key
     }
 }
 

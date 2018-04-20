@@ -48,7 +48,7 @@ class RecordsController extends React.Component {
     };
 
     render() {
-        const {recordsLoaded, recordDeleted, currentUser} = this.props;
+        const {recordsLoaded, recordDeleted, recordsDeleting, currentUser} = this.props;
         if (!currentUser) {
             return null;
         }
@@ -58,7 +58,7 @@ class RecordsController extends React.Component {
             onDelete: this._onDeleteRecord
         };
         return <Records recordsLoaded={recordsLoaded} showAlert={this.state.showAlert} handlers={handlers}
-                        recordDeleted={recordDeleted}/>;
+                        recordDeleted={recordDeleted} recordsDeleting={recordsDeleting}/>;
     }
 }
 
@@ -68,6 +68,7 @@ function mapStateToProps(state) {
     return {
         recordDeleted: state.record.recordDeleted,
         recordsLoaded: state.records.recordsLoaded,
+        recordsDeleting: state.record.recordsDeleting,
         currentUser: state.auth.user
     };
 }

@@ -13,6 +13,7 @@ class Records extends React.Component {
     static propTypes = {
         recordsLoaded: React.PropTypes.object,
         recordDeleted: React.PropTypes.object,
+        recordsDeleting: React.PropTypes.array,
         showAlert: React.PropTypes.bool.isRequired,
         handlers: React.PropTypes.object.isRequired
     };

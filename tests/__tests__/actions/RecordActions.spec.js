@@ -77,18 +77,20 @@ describe('Record synchronize actions', function () {
     it('creates an action to announce successful delete of record', () => {
         const expectedAction = {
             type: ActionConstants.DELETE_RECORD_SUCCESS,
-            record
+            record,
+            key
         };
-        expect(deleteRecordSuccess(record)).toEqual(expectedAction)
+        expect(deleteRecordSuccess(record, key)).toEqual(expectedAction)
     });
 
     it('creates an action to announce unsuccessful delete of record', () => {
         const expectedAction = {
             type: ActionConstants.DELETE_RECORD_ERROR,
             error,
-            record
+            record,
+            key
         };
-        expect(deleteRecordError(error, record)).toEqual(expectedAction)
+        expect(deleteRecordError(error, record, key)).toEqual(expectedAction)
     });
 
     it('creates an action to fetch record', () => {
@@ -206,7 +208,7 @@ describe('Record asynchronize actions', function () {
         const expectedActions = [
             { type: ActionConstants.DELETE_RECORD_PENDING, key: record.key},
             { type: ActionConstants.LOAD_RECORDS_PENDING},
-            { type: ActionConstants.DELETE_RECORD_SUCCESS, record},
+            { type: ActionConstants.DELETE_RECORD_SUCCESS, record, key: record.key},
             { type: ActionConstants.LOAD_RECORDS_SUCCESS, records},
         ];
 
@@ -224,7 +226,7 @@ describe('Record asynchronize actions', function () {
     it('creates SAVE_RECORD_ERROR action if an error occurred during updating record', function (done) {
         const expectedActions = [
             { type: ActionConstants.DELETE_RECORD_PENDING, key: record.key},
-            { type: ActionConstants.DELETE_RECORD_ERROR, error, record}
+            { type: ActionConstants.DELETE_RECORD_ERROR, error, record, key: record.key}
         ];
 
         MockApi.onDelete(`rest/records/${record.key}`).reply(400, error);

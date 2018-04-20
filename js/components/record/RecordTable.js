@@ -15,7 +15,8 @@ class RecordTable extends React.Component {
         recordsLoaded: React.PropTypes.object.isRequired,
         handlers: React.PropTypes.object.isRequired,
         recordDeleted: React.PropTypes.object,
-        disableDelete: React.PropTypes.bool
+        disableDelete: React.PropTypes.bool,
+        recordsDeleting: React.PropTypes.array
     };
 
     static defaultProps = {
@@ -86,14 +87,13 @@ class RecordTable extends React.Component {
     }
 
     _renderRows() {
-        const {recordsLoaded, handlers, recordDeleted} = this.props;
+        const {recordsLoaded, handlers, recordsDeleting} = this.props;
         const records = recordsLoaded.records;
         let rows = [];
         for (let i = 0, len = records.length; i < len; i++) {
             rows.push(<RecordRow key={records[i].key} record={records[i]} onEdit={handlers.onEdit} onDelete={this._onDelete}
                                  disableDelete={this.props.disableDelete} deletionLoading={!this.props.disableDelete &&
-            !!(recordDeleted.status === ACTION_STATUS.PENDING
-                && recordDeleted.key === records[i].key)}/>);
+            !!(recordsDeleting.includes(records[i].key))}/>);
         }
         return rows;
     }

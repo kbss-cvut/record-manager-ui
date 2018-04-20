@@ -11,6 +11,7 @@ describe('Records', function () {
     let records,
         recordsLoaded,
         recordDeleted,
+        recordsDeleting = [],
         showAlert,
         handlers;
     
@@ -51,7 +52,8 @@ describe('Records', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
-                         recordDeleted={recordDeleted} handlers={handlers}/>
+                         recordDeleted={recordDeleted} handlers={handlers}
+                         recordsDeleting={recordsDeleting}/>
             </IntlProvider>);
         const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
         expect(panelHeading).not.toBeNull();
@@ -67,7 +69,8 @@ describe('Records', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
-                         recordDeleted={recordDeleted} handlers={handlers}/>
+                         recordDeleted={recordDeleted} handlers={handlers}
+                         recordsDeleting={recordsDeleting}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
         expect(buttons.length).toEqual(5);
@@ -84,7 +87,8 @@ describe('Records', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
-                         recordDeleted={recordDeleted} handlers={handlers}/>
+                         recordDeleted={recordDeleted} handlers={handlers}
+                         recordsDeleting={recordsDeleting}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-success");
         expect(alert).not.toBeNull();
@@ -101,7 +105,8 @@ describe('Records', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
-                         recordDeleted={recordDeleted} handlers={handlers}/>
+                         recordDeleted={recordDeleted} handlers={handlers}
+                         recordsDeleting={recordsDeleting}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
         expect(alert).not.toBeNull();

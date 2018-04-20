@@ -130,6 +130,7 @@ describe('RecordReducer', function () {
     it('handles DELETE_RECORD_PENDING', () => {
         const initialState = {
             recordDeleted: {},
+            recordsDeleting: [],
             testEntry: "should not touch"
         };
 
@@ -144,6 +145,7 @@ describe('RecordReducer', function () {
                     status: ACTION_STATUS.PENDING,
                     key
                 },
+                recordsDeleting: [key],
                 testEntry: initialState.testEntry
             });
     });
@@ -153,13 +155,15 @@ describe('RecordReducer', function () {
             recordDeleted: {
                 status: ACTION_STATUS.PENDING
             },
+            recordsDeleting: [],
             testEntry: "should not touch"
         };
 
         expect(
             RecordReducer(initialState, {
                 type: ActionConstants.DELETE_RECORD_SUCCESS,
-                record
+                record,
+                key
             })
         ).toEqual(
             {
@@ -168,6 +172,7 @@ describe('RecordReducer', function () {
                     record,
                     error: ''
                 },
+                recordsDeleting: [],
                 testEntry: initialState.testEntry
             });
     });
@@ -177,6 +182,7 @@ describe('RecordReducer', function () {
             recordDeleted: {
                 status: ACTION_STATUS.PENDING
             },
+            recordsDeleting: [],
             testEntry: "should not touch"
         };
 
@@ -184,7 +190,8 @@ describe('RecordReducer', function () {
             RecordReducer(initialState, {
                 type: ActionConstants.DELETE_RECORD_ERROR,
                 record,
-                error
+                error,
+                key
             })
         ).toEqual(
             {
@@ -193,6 +200,7 @@ describe('RecordReducer', function () {
                     record,
                     error
                 },
+                recordsDeleting: [],
                 testEntry: initialState.testEntry
             });
     });
