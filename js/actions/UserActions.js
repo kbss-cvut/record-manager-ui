@@ -236,6 +236,19 @@ export function sendInvitation(username) {
     }
 }
 
+export function deleteInvitationOption(username) {
+    return function (dispatch) {
+        dispatch({type: ActionConstants.INVITATION_OPTION_DELETE_PENDING, username});
+        axiosBackend.post(`rest/users/send-invitation/delete`, username, {headers: {"Content-Type": "text/plain"}}).then(() => {
+            dispatch({type: ActionConstants.INVITATION_OPTION_DELETE_SUCCESS, username});
+            dispatch(loadUser(username));
+        }).catch((error) => {
+            dispatch({type: ActionConstants.INVITATION_OPTION_DELETE_ERROR, error: error.response.data});
+            dispatch(loadUser(username));
+        });
+    }
+}
+
 export function impersonate(username) {
     return function (dispatch) {
         dispatch({type: ActionConstants.IMPERSONATE_PENDING});

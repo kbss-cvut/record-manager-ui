@@ -23,9 +23,11 @@ class User extends React.Component {
         showAlert: React.PropTypes.bool,
         institutions: React.PropTypes.array,
         invitationSent: React.PropTypes.object,
+        invitationDelete: React.PropTypes.object,
         invited: React.PropTypes.bool,
         impersonation: React.PropTypes.object,
-        impersonated: React.PropTypes.bool
+        impersonated: React.PropTypes.bool,
+        deletedInvitation: React.PropTypes.bool
     };
 
     constructor(props) {
@@ -93,13 +95,22 @@ class User extends React.Component {
     }
 
     _sendInvitationButton() {
-        const {user, handlers, currentUser, invitationSent} = this.props;
+        const {user, handlers, currentUser, invitationSent, invitationDelete} = this.props;
         if (user.isInvited === false && currentUser.role === ROLE.ADMIN) {
-            return <h4 className="content-center" style={{margin: '0 0 15px 0'}}>{this.i18n('user.invite-to-study-text')}
+            return <h4 className="content-center"
+                       style={{margin: '0 0 15px 0'}}>{this.i18n('user.invite-to-study-text')}
                 <Button bsStyle='warning' bsSize='small' ref='submit'
-                        disabled={invitationSent.status === ACTION_STATUS.PENDING}
+                        disabled={invitationSent.status === ACTION_STATUS.PENDING
+                        || invitationDelete.status === ACTION_STATUS.PENDING}
                         onClick={() => handlers.sendInvitation()}>
-                {this.i18n('user.invite-to-study')}{invitationSent.status === ACTION_STATUS.PENDING && <LoaderSmall />}
+                    {this.i18n('user.invite-to-study')}{invitationSent.status === ACTION_STATUS.PENDING &&
+                <LoaderSmall/>}
+                </Button>
+                <Button bsStyle='link' bsSize='small' onClick={handlers.deleteInvitationOption}
+                        disabled={invitationSent.status === ACTION_STATUS.PENDING
+                        || invitationDelete.status === ACTION_STATUS.PENDING}>
+                    {this.i18n('user.delete-invitation-option')}{invitationDelete.status === ACTION_STATUS.PENDING &&
+                <LoaderSmall/>}
                 </Button>
             </h4>;
         } else {
@@ -111,18 +122,18 @@ class User extends React.Component {
         const {user, currentUser, handlers, impersonation} = this.props;
         if (!user.isNew && currentUser.role === ROLE.ADMIN && getRole(user) !== ROLE.ADMIN) {
             return <Button style={{margin: '0 0.3em 0 0'}} bsStyle='danger' bsSize='small' ref='submit'
-                           disabled={impersonation.status === ACTION_STATUS.PENDING}
-                           onClick={handlers.impersonate}>
-                {this.i18n('user.impersonate')}{impersonation.status === ACTION_STATUS.PENDING &&
-            <LoaderSmall/>}
-            </Button>;
+                        disabled={impersonation.status === ACTION_STATUS.PENDING}
+                        onClick={handlers.impersonate}>
+                    {this.i18n('user.impersonate')}{impersonation.status === ACTION_STATUS.PENDING &&
+                <LoaderSmall/>}
+                </Button>;
         } else {
             return null;
         }
     }
 
     _saveAndSendEmailButton() {
-        const {user, currentUser, handlers, userSaved, params} = this.props;
+        const {user, currentUser, userSaved} = this.props;
         if (!user.isNew && currentUser.role === ROLE.ADMIN && currentUser.username !== user.username) {
             return <Button style={{margin: '0 0.3em 0 0'}} bsStyle='success' bsSize='small' ref='submit'
                            disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
@@ -145,7 +156,8 @@ class User extends React.Component {
     }
 
     render() {
-        const {userSaved, userLoaded, currentUser, showAlert, user, handlers, invitationSent, invited, impersonation, impersonated} = this.props;
+        const {userSaved, userLoaded, currentUser, showAlert, user, handlers,
+            invitationSent, invited, invitationDelete, impersonation, impersonated, deletedInvitation} = this.props;
         if (!user && (!userLoaded.status || userLoaded.status === ACTION_STATUS.PENDING)) {
             return <LoaderPanel header={<span>{this.i18n('user.panel-title')}</span>} />;
         } else if (userLoaded.status === ACTION_STATUS.ERROR) {
@@ -246,6 +258,11 @@ class User extends React.Component {
                 {invited && invitationSent.status === ACTION_STATUS.ERROR &&
                 <AlertMessage type={ALERT_TYPES.DANGER}
                     message={this.props.formatMessage('user.send-invitation-error', {error: invitationSent.error.message})}/>}
+                {deletedInvitation && invitationDelete.status === ACTION_STATUS.SUCCESS  &&
+                <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.delete-invitation-option-success')}/>}
+                {deletedInvitation && invitationDelete.status === ACTION_STATUS.ERROR &&
+                <AlertMessage type={ALERT_TYPES.DANGER}
+                              message={this.props.formatMessage('user.delete-invitation-option-error', {error: invitationDelete.error.message})}/>}
                 {impersonated && impersonation.status === ACTION_STATUS.ERROR &&
                 <AlertMessage type={ALERT_TYPES.DANGER}
                               message={this.props.formatMessage('user.impersonate-error', {error: impersonation.error.message})}/>}

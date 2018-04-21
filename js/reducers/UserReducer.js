@@ -9,7 +9,8 @@ const initialState = {
     passwordChange: {},
     generatedUsername: {},
     invitationSent: {},
-    impersonation: {}
+    impersonation: {},
+    invitationDelete: {}
 };
 
 export default function (state = initialState, action) {
@@ -193,6 +194,31 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 invitationSent: {
+                    status: ACTION_STATUS.ERROR,
+                    error: action.error
+                }
+            };
+        case ActionConstants.INVITATION_OPTION_DELETE_PENDING:
+            return {
+                ...state,
+                invitationDelete: {
+                    status: ACTION_STATUS.PENDING,
+                    username: action.username
+                }
+            };
+        case ActionConstants.INVITATION_OPTION_DELETE_SUCCESS:
+            return {
+                ...state,
+                invitationDelete: {
+                    status: ACTION_STATUS.SUCCESS,
+                    username: action.username,
+                    error: ''
+                }
+            };
+        case ActionConstants.INVITATION_OPTION_DELETE_ERROR:
+            return {
+                ...state,
+                invitationDelete: {
                     status: ACTION_STATUS.ERROR,
                     error: action.error
                 }

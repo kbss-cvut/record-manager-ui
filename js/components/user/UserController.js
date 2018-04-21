@@ -14,6 +14,7 @@ import {bindActionCreators} from "redux";
 import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
 import {setTransitionPayload} from "../../actions/RouterActions";
 import {
+    deleteInvitationOption,
     createUser, generateUsername, impersonate, loadUser, sendInvitation, unloadSavedUser, unloadUser,
     updateUser
 } from "../../actions/UserActions";
@@ -129,8 +130,13 @@ class UserController extends React.Component {
     }
 
     _sendInvitation = () => {
-        this.setState({invited: true, showAlert: false});
+        this.setState({deletedInvitation: false, invited: true, showAlert: false});
         this.props.sendInvitation(this.state.user.username);
+    };
+
+    _deleteInvitationOption = () => {
+        this.setState({deletedInvitation: true, invited: false, showAlert: false});
+        this.props.deleteInvitationOption(this.state.user.username);
     };
 
     _impersonate = () => {
@@ -139,7 +145,8 @@ class UserController extends React.Component {
     };
 
     render() {
-        const {currentUser, userSaved, userLoaded, institutionsLoaded, invitationSent, impersonation} = this.props;
+        const {currentUser, userSaved, userLoaded, institutionsLoaded,
+            invitationSent, impersonation, invitationDelete} = this.props;
         if (!currentUser) {
             return null;
         }
@@ -151,12 +158,14 @@ class UserController extends React.Component {
             generateUsername: this._generateUsername,
             sendInvitation: this._sendInvitation,
             impersonate: this._impersonate,
+            deleteInvitationOption: this._deleteInvitationOption
         };
         return <User user={this.state.user} handlers={handlers} backToInstitution={this.institution !== null}
                      userSaved={userSaved} showAlert={this.state.showAlert} userLoaded={userLoaded}
                      currentUser={currentUser} institutions={institutionsLoaded.institutions || []}
                      invitationSent={invitationSent} invited={this.state.invited} impersonation={impersonation}
-                     impersonated={this.state.impersonated}/>;
+                     invitationDelete={invitationDelete} impersonated={this.state.impersonated}
+                     deletedInvitation={this.state.deletedInvitation}/>;
     }
 }
 
@@ -172,6 +181,7 @@ function mapStateToProps(state) {
         viewHandlers: state.router.viewHandlers,
         generatedUsername: state.user.generatedUsername,
         invitationSent: state.user.invitationSent,
+        invitationDelete: state.user.invitationDelete,
         impersonation: state.user.impersonation
     };
 }
@@ -188,6 +198,7 @@ function mapDispatchToProps(dispatch) {
         transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),
         generateUsername: bindActionCreators(generateUsername, dispatch),
         sendInvitation: bindActionCreators(sendInvitation, dispatch),
+        deleteInvitationOption: bindActionCreators(deleteInvitationOption, dispatch),
         impersonate: bindActionCreators(impersonate, dispatch)
     }
 }

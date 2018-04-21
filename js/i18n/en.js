@@ -107,6 +107,9 @@ module.exports = {
         'user.send-invitation-error': 'Unable to invite user to study. {error}',
         'user.invite-to-study-text': 'User has not yet been invited to study. ',
         'user.invite-to-study': 'Send an invitation now',
+        'user.delete-invitation-option': 'Delete invitation option',
+        'user.delete-invitation-option-success': 'Option to invite user to study has been deleted.',
+        'user.delete-invitation-option-error': 'Unable to delete option to invite user to study. {error}',
         'user.impersonate': 'Impersonate',
         'user.impersonate-error': 'Unable to impersonate. {error}',
 

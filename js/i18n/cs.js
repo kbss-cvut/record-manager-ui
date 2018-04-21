@@ -108,6 +108,9 @@ module.exports = {
         'user.send-invitation-error': 'Uživatele se nepodařilo pozvat do studie. {error}',
         'user.invite-to-study-text': 'Uživatel zatím nebyl pozván do studie. ',
         'user.invite-to-study': 'Poslat pozvánku nyní',
+        'user.delete-invitation-option': 'Smazat možnost pozvání',
+        'user.delete-invitation-option-success': 'Možnost pozvání uživatele do studie byla odstraněna.',
+        'user.delete-invitation-option-error': 'Nepodařilo se smazat možnost pozvání uživatele do studie. {error}',
         'user.impersonate': 'Impersonace',
         'user.impersonate-error': 'Impersonace se nepodařila. {error}',
 
