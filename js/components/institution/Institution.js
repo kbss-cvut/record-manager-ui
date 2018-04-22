@@ -13,6 +13,8 @@ import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants
 import {formatDate} from "../../utils/Utils";
 import AlertMessage from "../AlertMessage";
 import {LoaderPanel, LoaderSmall} from "../Loader";
+import InstitutionValidator from "../../validation/InstitutionValidator";
+import HelpIcon from "../HelpIcon";
 
 /**
  * Institution detail. Editable only for admins.
@@ -53,7 +55,7 @@ class Institution extends React.Component {
             <form className='form-horizontal' style={{margin: '0.5em 0 1.5em 0'}}>
                 <div className='row'>
                     <div className='col-xs-6'>
-                        <HorizontalInput type='text' name='name' label={this.i18n('institution.name')}
+                        <HorizontalInput type='text' name='name' label={`${this.i18n('institution.name')}*`}
                                          value={institution.name} readOnly={currentUser.role !== ROLE.ADMIN}
                                          labelWidth={3} inputWidth={8} onChange={this._onChange}/>
                     </div>
@@ -102,9 +104,10 @@ class Institution extends React.Component {
         } else {
             return <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
                 <Button bsStyle='success' bsSize='small' ref='submit'
-                        disabled={this.props.institutionSaved.status === ACTION_STATUS.PENDING}
+                        disabled={!InstitutionValidator.isValid(this.props.institution) || this.props.institutionSaved.status === ACTION_STATUS.PENDING}
                         onClick={handlers.onSave}>{this.i18n('save')}
-                        {institutionSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}</Button>
+                    {!InstitutionValidator.isValid(this.props.institution) && <HelpIcon text={this.i18n('required')}/>}
+                    {institutionSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}</Button>
                 <Button bsStyle='link' bsSize='small' onClick={handlers.onCancel}>{this.i18n('cancel')}</Button>
             </div>;
         }
