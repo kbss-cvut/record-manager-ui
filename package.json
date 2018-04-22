@@ -1,6 +1,6 @@
 {
   "name": "study-manager",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "description": "Study Manager UI",
   "main": "js/app.js",
   "dependencies": {
@@ -65,7 +65,7 @@
     "webpack": "^1.12.15"
   },
   "scripts": {
-    "start": "watchify -o ../../../target/study-manager-0.0.1/js/bundle.js -v -d js/app.js",
+    "start": "watchify -o ../../../target/study-manager-0.2.0/js/bundle.js -v -d js/app.js",
     "browserify": "browserify . -g [envify --NODE_ENV 'production'] -t -o js/bundle.js",
     "build-js": "browserify . -g [envify --NODE_ENV 'production'] -t | uglifyjs -cm > ../../../profiles/production/js/bundle.min.js",
     "build-css": "cleancss --skip-rebase -d -o ../../../profiles/production/resources/css/study-manager.min.css resources/css/study-manager.css",
