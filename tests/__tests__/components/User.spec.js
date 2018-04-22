@@ -63,6 +63,9 @@ describe('User', function () {
         "username":"testman2",
         "password": "test",
         "emailAddress":"test@man.io",
+        "institution": {
+            "key": 18691
+        },
         "types":[
             "http://vfn.cz/ontologies/study-manager/doctor"
         ]
@@ -162,8 +165,8 @@ describe('User', function () {
         expect(selects.length).toEqual(2);
         expect(selects[1].value).toEqual(ROLE.DOCTOR);
 
-        const randomButton = TestUtils.findRenderedDOMComponentWithClass(tree,'glyphicon');
-        expect(randomButton).not.toBeNull();
+        const randomButton = TestUtils.scryRenderedDOMComponentsWithClass(tree,'glyphicon');
+        expect(randomButton.length).toEqual(2);
     });
 
     it('renders clickable "Save" button and click on it', function () {
@@ -172,7 +175,8 @@ describe('User', function () {
             username: 'test',
             firstName: 'test1',
             lastName: 'test2',
-            emailAddress: 'test@test.cz'
+            emailAddress: 'test@test.cz',
+            institution: {}
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
