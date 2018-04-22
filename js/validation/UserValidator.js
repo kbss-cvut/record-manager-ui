@@ -2,7 +2,7 @@
 
 export default class UserValidator {
     static isValid(user) {
-        return user.firstName && user.lastName && user.username && user.emailAddress;
+        return user.firstName && user.lastName && user.username && user.emailAddress && user.institution;
     }
 
     static isPasswordValid(password) {

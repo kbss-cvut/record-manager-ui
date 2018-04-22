@@ -32,6 +32,7 @@ module.exports = {
         'unknown': 'Neznámé',
         'please-wait': 'Prosím, čekejte...',
         'actions': 'Akce',
+        'required': 'Políčka označená * jsou povinná',
 
         'login.title': Constants.APP_NAME + ' - Přihlášení',
         'login.username': 'Uživatelské jméno',
@@ -90,7 +91,7 @@ module.exports = {
         'user.password': 'Heslo',
         'user.password-confirm': 'Potvrzení hesla',
         'user.passwords-not-matching-tooltip': 'Hesla se neshodují',
-        'user.is-admin': 'Administrátor?',
+        'user.role': 'Role',
         'user.save-success': 'Uživatel úspěšně uložen',
         'user.save-success-with-email': 'Uživatel úspěšně uložen a informován emailem.',
         'user.save-error': 'Uživatele se nepodařilo uložit. {error}',

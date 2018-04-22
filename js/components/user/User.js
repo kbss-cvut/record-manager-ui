@@ -11,6 +11,7 @@ import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants
 import {getRole, processInstitutions} from "../../utils/Utils";
 import * as Vocabulary from "../../constants/Vocabulary";
 import {LoaderPanel, LoaderSmall} from "../Loader";
+import HelpIcon from "../HelpIcon";
 
 class User extends React.Component {
     static propTypes = {
@@ -137,8 +138,10 @@ class User extends React.Component {
         if (!user.isNew && currentUser.role === ROLE.ADMIN && currentUser.username !== user.username) {
             return <Button style={{margin: '0 0.3em 0 0'}} bsStyle='success' bsSize='small' ref='submit'
                            disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
-                           onClick={() => this._onSaveAndSendEmail()}>{this.i18n('save-and-send-email')}
-                           {userSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
+                           onClick={() => this._onSaveAndSendEmail()}
+                           title={this.i18n('required')}>{this.i18n('save-and-send-email')}
+                {!UserValidator.isValid(user) && <HelpIcon text={this.i18n('required')}/>}
+                {userSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
             </Button>
         } else {
             return null;
@@ -174,13 +177,13 @@ class User extends React.Component {
                 {this._sendInvitationButton()}
                 <div className='row'>
                     <div className='col-xs-6'>
-                        <HorizontalInput type='text' name='firstName' label={this.i18n('user.first-name')}
+                        <HorizontalInput type='text' name='firstName' label={`${this.i18n('user.first-name')}*`}
                                          disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username}
                                          value={user.firstName}
                                          labelWidth={3} inputWidth={8} onChange={this._onChange}/>
                     </div>
                     <div className='col-xs-6'>
-                        <HorizontalInput type='text' name='lastName' label={this.i18n('user.last-name')}
+                        <HorizontalInput type='text' name='lastName' label={`${this.i18n('user.last-name')}*`}
                                          disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username}
                                          value={user.lastName}
                                          labelWidth={3} inputWidth={8} onChange={this._onChange}/>
@@ -188,13 +191,13 @@ class User extends React.Component {
                 </div>
                 <div className='row'>
                     <div className='col-xs-6'>
-                        <HorizontalInput type='text' name='username' label={this.i18n('user.username')}
+                        <HorizontalInput type='text' name='username' label={`${this.i18n('user.username')}*`}
                                          disabled={!user.isNew}
                                          value={user.username} labelWidth={3} inputWidth={8} onChange={this._onChange}
                                          iconRight={user.isNew ? generateButton : null} />
                     </div>
                     <div className='col-xs-6'>
-                        <HorizontalInput type='email' name='emailAddress' label={this.i18n('users.email')}
+                        <HorizontalInput type='email' name='emailAddress' label={`${this.i18n('users.email')}*`}
                                          disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username}
                                          value={user.emailAddress}
                                          labelWidth={3} inputWidth={8} onChange={this._onChange}/>
@@ -203,7 +206,7 @@ class User extends React.Component {
                 <div className='row'>
                     {currentUser.role === ROLE.ADMIN &&
                         <div className='col-xs-6'>
-                            <HorizontalInput type='select' name='institution' label={this.i18n('institution.panel-title')}
+                            <HorizontalInput type='select' name='institution' label={`${this.i18n('institution.panel-title')}*`}
                                              onChange={this._onInstitutionSelected}
                                              disabled={currentUser.role !== ROLE.ADMIN}
                                              value={user.institution ? user.institution.uri : ''}
@@ -213,7 +216,7 @@ class User extends React.Component {
                         </div>
                     }
                     <div className='col-xs-6'>
-                        <HorizontalInput type='select' name='role' label="Role"
+                        <HorizontalInput type='select' name='role' label={`${this.i18n('user.role')}*`}
                                          onChange={this._onAdminStatusChange}
                                          disabled={currentUser.role !== ROLE.ADMIN}
                                          value={user.types && getRole(user)}
@@ -237,9 +240,12 @@ class User extends React.Component {
                     {this._saveAndSendEmailButton()}
                     {(currentUser.role === ROLE.ADMIN || currentUser.username === user.username) &&
                         <Button bsStyle='success' bsSize='small' ref='submit'
-                                disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
-                                onClick={() => this._onSave()}>
-                            {this.i18n('save')}{userSaved.status === ACTION_STATUS.PENDING &&
+                            disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
+                            onClick={() => this._onSave()}
+                            title={this.i18n('required')}>
+                        {this.i18n('save')}
+                        {!UserValidator.isValid(user) && <HelpIcon text={this.i18n('required')}/>}
+                        {userSaved.status === ACTION_STATUS.PENDING &&
                         <LoaderSmall />}
                         </Button>
                     }

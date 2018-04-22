@@ -32,6 +32,7 @@ module.exports = {
         'unknown': 'Unknown',
         'please-wait': 'Please wait...',
         'actions': 'Actions',
+        'required': 'Fields marked with * are required',
 
         'login.title': Constants.APP_NAME + ' - Login',
         'login.username': 'Username',
@@ -89,7 +90,7 @@ module.exports = {
         'user.password': 'Password',
         'user.password-confirm': 'Confirm password',
         'user.passwords-not-matching-tooltip': 'Passwords don\'t match',
-        'user.is-admin': 'Is administrator?',
+        'user.role': 'Role',
         'user.save-success': 'User saved successfully',
         'user.save-success-with-email': 'User saved successfully and informed by email.',
         'user.save-error': 'Unable to save user. {error}',
