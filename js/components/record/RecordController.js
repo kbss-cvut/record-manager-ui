@@ -101,7 +101,7 @@ class RecordController extends React.Component {
 
     render() {
         const {recordLoaded, recordSaved, currentUser} = this.props;
-        if (!currentUser || !this.state.record) {
+        if (!currentUser) {
             return null;
         }
         const handlers = {
