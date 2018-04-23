@@ -11,6 +11,7 @@ export function login(username, password) {
             }).then((response) => {
             const data = response.data;
             if (!data.success || !data.loggedIn) {
+                response.data.username = username;
                 dispatch(userAuthError(response.data));
                 return;
             }
