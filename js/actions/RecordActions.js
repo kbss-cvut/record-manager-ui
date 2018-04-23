@@ -142,3 +142,10 @@ export function unloadSavedRecord() {
         type: ActionConstants.UNLOAD_SAVED_RECORD
     }
 }
+
+export function loadFormgenStatus(status) {
+    return {
+        type: ActionConstants.LOAD_FORMGEN_STATUS,
+        status
+    }
+}

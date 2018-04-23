@@ -108,6 +108,11 @@ export default function (state = initialState, action) {
                 },
                 recordsDeleting: without(state.recordsDeleting, action.key)
             };
+        case ActionConstants.LOAD_FORMGEN_STATUS:
+            return {
+                ...state,
+                formgenStatus: action.status
+            };
         default:
             return state;
     }

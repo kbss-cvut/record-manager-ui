@@ -10,10 +10,12 @@ import Wizard from '../wizard/Wizard';
 import WizardBuilder from '../wizard/generator/WizardBuilder';
 import WizardStore from '../../stores/WizardStore';
 import Loader from "../Loader";
+import {ACTION_STATUS} from "../../constants/DefaultConstants";
 
 class RecordForm extends React.Component {
     static propTypes = {
-        record: React.PropTypes.object.isRequired
+        record: React.PropTypes.object.isRequired,
+        loadFormgenStatus: React.PropTypes.func
     };
 
     constructor(props) {
@@ -25,6 +27,7 @@ class RecordForm extends React.Component {
     }
 
     componentDidMount() {
+        this.props.loadFormgenStatus(ACTION_STATUS.PENDING);
         WizardBuilder.generateWizard(this.props.record, this.onWizardReady);
     }
 
@@ -36,6 +39,7 @@ class RecordForm extends React.Component {
     }
 
     onWizardReady = (wizardProperties) => {
+        this.props.loadFormgenStatus(ACTION_STATUS.SUCCESS);
         this.setState({wizardProperties: wizardProperties});
     };
 

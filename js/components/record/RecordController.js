@@ -8,7 +8,7 @@ import Record from './Record';
 import {Routes} from '../../utils/Routes';
 import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
 import {ACTION_FLAG, ACTION_STATUS} from "../../constants/DefaultConstants";
-import {unloadSavedRecord} from "../../actions/RecordActions";
+import {loadFormgenStatus, unloadSavedRecord} from "../../actions/RecordActions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {createRecord, loadRecord, unloadRecord, updateRecord} from "../../actions/RecordActions";
@@ -100,7 +100,7 @@ class RecordController extends React.Component {
     };
 
     render() {
-        const {recordLoaded, recordSaved, currentUser} = this.props;
+        const {recordLoaded, recordSaved, currentUser, formgenStatus, loadFormgenStatus} = this.props;
         if (!currentUser) {
             return null;
         }
@@ -110,7 +110,8 @@ class RecordController extends React.Component {
             onChange: this._onChange
         };
         return <Record ref={(c) => this.recordComponent = c} handlers={handlers} record={this.state.record}
-                       recordLoaded={recordLoaded} recordSaved={recordSaved} showAlert={this.state.showAlert}/>;
+                       recordLoaded={recordLoaded} recordSaved={recordSaved} showAlert={this.state.showAlert}
+                       formgenStatus={formgenStatus} loadFormgenStatus={loadFormgenStatus}/>;
     }
 }
 
@@ -122,7 +123,8 @@ function mapStateToProps(state) {
         currentUser: state.auth.user,
         recordLoaded: state.record.recordLoaded,
         recordSaved: state.record.recordSaved,
-        viewHandlers: state.router.viewHandlers
+        viewHandlers: state.router.viewHandlers,
+        formgenStatus: state.record.formgenStatus
     };
 }
 
@@ -133,6 +135,7 @@ function mapDispatchToProps(dispatch) {
         createRecord: bindActionCreators(createRecord, dispatch),
         updateRecord: bindActionCreators(updateRecord, dispatch),
         unloadSavedRecord: bindActionCreators(unloadSavedRecord, dispatch),
+        loadFormgenStatus: bindActionCreators(loadFormgenStatus, dispatch),
         transitionToWithOpts:bindActionCreators(transitionToWithOpts, dispatch)
     }
 }
