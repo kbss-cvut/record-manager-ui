@@ -104,3 +104,5 @@ export const STATISTICS_TYPE = {
     NUMBER_OF_INVESTIGATORS: 'statistics.number-of-investigators',
     NUMBER_OF_PROCESSED_RECORDS: 'statistics.number-of-processed-records'
 };
+
+export const SCRIPT_ERROR = 'SCRIPT_ERROR';

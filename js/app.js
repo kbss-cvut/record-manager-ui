@@ -58,7 +58,7 @@ import requireAuth from './components/misc/hoc/RequireAuth';
 import PasswordChangeController from "./components/user/PasswordChangeController";
 import HistoryActions from "./components/history/HistoryList";
 import HistoryAction from "./components/history/HistoryDetail";
-import {historyLogger} from "./utils/HistoryLogger";
+import {errorLogger, historyLogger} from "./utils/HistoryLogger";
 import Statistics from "./components/statistics/Statistics";
 import PasswordToken from "./components/login/PasswordToken";
 import Logout from "./components/login/Logout";
@@ -75,6 +75,11 @@ const store = createStore(
         applyMiddleware(thunk, historyLogger)
     )
 );
+
+window.onerror = (msg, source, line) => {
+    errorLogger(msg, line, store);
+    return false;
+};
 
 store.dispatch(loadUserProfile());
 
