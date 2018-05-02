@@ -14,6 +14,7 @@ describe('Record', function () {
         recordSaved,
         showAlert,
         recordLoaded,
+        formgen = {},
         handlers = {
             onSave: jasmine.createSpy('onSave'),
             onCancel: jasmine.createSpy('onCancel'),
@@ -58,7 +59,7 @@ describe('Record', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Record ref={null} handlers={handlers} record={null} recordLoaded={recordLoaded}
-                        recordSaved={recordSaved} showAlert={showAlert}/>
+                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
             </IntlProvider>);
         const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'loader-spin');
         expect(result).not.toBeNull();
@@ -75,7 +76,7 @@ describe('Record', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Record ref={null} handlers={handlers} record={record} recordLoaded={recordLoaded}
-                        recordSaved={recordSaved} showAlert={showAlert}/>
+                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
         expect(alert).not.toBeNull();
@@ -85,7 +86,7 @@ describe('Record', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
-                        recordSaved={recordSaved} showAlert={showAlert}/>
+                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
             </IntlProvider>);
         const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'input');
         expect(result.length).toEqual(1);
@@ -103,7 +104,7 @@ describe('Record', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
-                        recordSaved={recordSaved} showAlert={showAlert}/>
+                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
             </IntlProvider>);
         let buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
         expect(buttons.length).toEqual(2);
@@ -118,7 +119,7 @@ describe('Record', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
-                        recordSaved={recordSaved} showAlert={showAlert}/>
+                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-success");
         expect(alert).not.toBeNull();
@@ -136,7 +137,7 @@ describe('Record', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
-                        recordSaved={recordSaved} showAlert={showAlert}/>
+                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
         expect(alert).not.toBeNull();
@@ -150,7 +151,7 @@ describe('Record', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
-                        recordSaved={recordSaved} showAlert={showAlert}/>
+                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
             </IntlProvider>);
         const loader = TestUtils.findRenderedDOMComponentWithClass(tree, "loader");
         expect(loader).not.toBeNull();
