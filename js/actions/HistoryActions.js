@@ -5,7 +5,7 @@ import {omit, startsWith, endsWith} from 'lodash';
 const URL_PREFIX = 'rest/history';
 
 export function logAction(action, author, timestamp) {
-    if (startsWith(action.type, 'LOAD') ||
+    if ((startsWith(action.type, 'LOAD') && !endsWith(action.type, 'ERROR')) ||
         endsWith(action.type, 'PENDING') ||
         startsWith(action.type, 'SET') ||
         startsWith(action.type, 'UNLOAD') ||
