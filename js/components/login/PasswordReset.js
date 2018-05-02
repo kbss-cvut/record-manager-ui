@@ -1,18 +1,19 @@
 'use strict';
 
 import React from "react";
-import {Alert, Button, Form, Panel} from "react-bootstrap";
+import {Button, Form, Panel} from "react-bootstrap";
 import HorizontalInput from "../HorizontalInput";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
-import {transitionTo, transitionToWithOpts} from "../../utils/Routing";
+import {transitionTo} from "../../utils/Routing";
 import {Routes} from "../../utils/Routes";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {passwordReset} from "../../actions/AuthActions";
-import {ACTION_STATUS} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import {LoaderSmall} from "../Loader";
 import * as Utils from "../../utils/Utils";
+import AlertMessage from "../AlertMessage";
 
 class PasswordReset extends React.Component {
     constructor(props) {
@@ -47,8 +48,8 @@ class PasswordReset extends React.Component {
 
     renderAlert() {
         return this.state.showAlert && this.props.status === ACTION_STATUS.SUCCESS ?
-            <Alert bsStyle='success' alertPosition={'top'} bsSize='small'><div>{this.i18n('login.reset-password-alert')}</div>
-        </Alert> : null;
+            <AlertMessage type={ALERT_TYPES.SUCCESS} alertPosition={'top'}
+                          message={this.i18n('login.reset-password-alert')}/> : null;
     }
 
     render() {

@@ -11,7 +11,8 @@ const AlertMessage = (props) => (
 
 AlertMessage.propTypes = {
     type: React.PropTypes.string.isRequired,
-    message: React.PropTypes.string.isRequired
+    message: React.PropTypes.string.isRequired,
+    alertPosition: React.PropTypes.string
 };
 
 export default AlertMessage;
