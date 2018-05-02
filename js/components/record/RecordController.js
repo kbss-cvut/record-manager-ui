@@ -8,7 +8,7 @@ import Record from './Record';
 import {Routes} from '../../utils/Routes';
 import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
 import {ACTION_FLAG, ACTION_STATUS} from "../../constants/DefaultConstants";
-import {loadFormgenStatus, unloadSavedRecord} from "../../actions/RecordActions";
+import {loadFormgen, unloadSavedRecord} from "../../actions/RecordActions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {createRecord, loadRecord, unloadRecord, updateRecord} from "../../actions/RecordActions";
@@ -100,7 +100,7 @@ class RecordController extends React.Component {
     };
 
     render() {
-        const {recordLoaded, recordSaved, currentUser, formgenStatus, loadFormgenStatus} = this.props;
+        const {recordLoaded, recordSaved, currentUser, formgen, loadFormgen} = this.props;
         if (!currentUser) {
             return null;
         }
@@ -111,7 +111,7 @@ class RecordController extends React.Component {
         };
         return <Record ref={(c) => this.recordComponent = c} handlers={handlers} record={this.state.record}
                        recordLoaded={recordLoaded} recordSaved={recordSaved} showAlert={this.state.showAlert}
-                       formgenStatus={formgenStatus} loadFormgenStatus={loadFormgenStatus}/>;
+                       formgen={formgen} loadFormgen={loadFormgen}/>;
     }
 }
 
@@ -124,7 +124,7 @@ function mapStateToProps(state) {
         recordLoaded: state.record.recordLoaded,
         recordSaved: state.record.recordSaved,
         viewHandlers: state.router.viewHandlers,
-        formgenStatus: state.record.formgenStatus
+        formgen: state.record.formgen
     };
 }
 
@@ -135,7 +135,7 @@ function mapDispatchToProps(dispatch) {
         createRecord: bindActionCreators(createRecord, dispatch),
         updateRecord: bindActionCreators(updateRecord, dispatch),
         unloadSavedRecord: bindActionCreators(unloadSavedRecord, dispatch),
-        loadFormgenStatus: bindActionCreators(loadFormgenStatus, dispatch),
+        loadFormgen: bindActionCreators(loadFormgen, dispatch),
         transitionToWithOpts:bindActionCreators(transitionToWithOpts, dispatch)
     }
 }

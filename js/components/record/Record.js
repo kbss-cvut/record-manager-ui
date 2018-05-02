@@ -21,8 +21,8 @@ class Record extends React.Component {
         handlers: React.PropTypes.object.isRequired,
         recordSaved: React.PropTypes.object,
         recordLoaded: React.PropTypes.object,
-        formgenStatus: React.PropTypes.string,
-        loadFormgenStatus: React.PropTypes.func,
+        formgen: React.PropTypes.object,
+        loadFormgen: React.PropTypes.func,
         showAlert: React.PropTypes.bool
     };
 
@@ -77,14 +77,15 @@ class Record extends React.Component {
         const record = this.props.record;
         return !record.state.isInitial() ?
             <RecordForm ref={(c) => this.form = c} record={this.props.record}
-                        loadFormgenStatus={this.props.loadFormgenStatus}/> : null;
+                        loadFormgen={this.props.loadFormgen}
+                        formgen={this.props.formgen}/> : null;
     }
 
     _renderButtons() {
-        const {record, recordSaved, formgenStatus} = this.props;
+        const {record, recordSaved, formgen} = this.props;
         return <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
             <Button bsStyle='success' bsSize='small'
-                    disabled={formgenStatus === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
+                    disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
                     || this._isFormInvalid() || !record.state.isComplete()}
                     onClick={this.props.handlers.onSave}>
                 {this.i18n('save')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}

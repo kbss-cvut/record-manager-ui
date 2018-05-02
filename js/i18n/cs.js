@@ -156,6 +156,7 @@ module.exports = {
         'record.delete-success': 'Záznam o pacientovi úspěšně odstraněn',
         'record.delete-error': 'Záznam o pacientovi se nepodařilo smazat. {error}',
         'record.load-error': 'Záznam o pacientovi se nepodařilo načíst. {error}',
+        'record.load-form-error': 'Formulář se nepodařilo načíst. {error}',
 
         'help.local-name': 'Účelem tohoto atributu je pomoci vám identifikovat anonymizované pacienty. Můžete použít např. číslování pacientů ("pacient_1", "pacient_2") či iniciály pacientů ("M.E.")',
 
