@@ -81,13 +81,13 @@ export default function (state = initialState, action) {
                 recordLoaded: {}
             };
         case ActionConstants.DELETE_RECORD_PENDING:
-            state.recordsDeleting.push(action.key);
             return {
                 ...state,
                 recordDeleted: {
                     status: ACTION_STATUS.PENDING,
                     key: action.key
                 },
+                recordsDeleting: state.recordsDeleting.concat(action.key)
             };
         case ActionConstants.DELETE_RECORD_SUCCESS:
             return {
