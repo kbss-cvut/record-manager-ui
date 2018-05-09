@@ -98,7 +98,7 @@ class User extends React.Component {
     _sendInvitationButton() {
         const {user, handlers, currentUser, invitationSent, invitationDelete} = this.props;
         if (user.isInvited === false && currentUser.role === ROLE.ADMIN) {
-            return <h4 className="content-center"
+            return <h4 className="invite-to-study-text content-center"
                        style={{margin: '0 0 15px 0'}}>{this.i18n('user.invite-to-study-text')}
                 <Button bsStyle='warning' bsSize='small' ref='submit'
                         disabled={invitationSent.status === ACTION_STATUS.PENDING
@@ -234,7 +234,7 @@ class User extends React.Component {
                     </div>
                 </div>
                 }
-                <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
+                <div className="buttons-line-height" style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
                     {this._impersonateButton()}
                     {this._passwordChange()}
                     {this._saveAndSendEmailButton()}
