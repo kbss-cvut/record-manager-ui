@@ -848,3 +848,7 @@ button .help-icon {
 .pagination .pointer{
     cursor: pointer
 }
+
+.alert-browser-support {
+    margin-bottom: 10px;
+}

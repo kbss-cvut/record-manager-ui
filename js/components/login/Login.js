@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import {Button, Form, Panel} from "react-bootstrap";
+import {Alert, Button, Form, Panel} from "react-bootstrap";
 import HorizontalInput from "../HorizontalInput";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
@@ -13,6 +13,8 @@ import AlertMessage from "../AlertMessage";
 import {transitionTo} from "../../utils/Routing";
 import {login} from "../../actions/AuthActions";
 import {LoaderSmall} from "../Loader";
+import {deviceIsMobile, deviceIsSupported} from "../../utils/Utils";
+import * as Constants from "../../constants/DefaultConstants";
 
 class Login extends React.Component {
     constructor(props) {
@@ -24,6 +26,10 @@ class Login extends React.Component {
             showAlert: false
         }
     }
+
+    componentWillMount() {
+        this.setState({deviceSupported: deviceIsSupported()});
+    };
 
     componentDidMount() {
         this.usernameField.focus();
@@ -51,9 +57,30 @@ class Login extends React.Component {
         transitionTo(Routes.passwordReset)
     };
 
+    getSupportedBrowsersLinks() {
+        return Constants.SUPPORTED_BROWSERS.map((browser, index) => {
+            return <span key={browser.name}>
+        {browser.linkMobile && browser.linkDesktop ?
+            <a href={deviceIsMobile() ? browser.linkMobile : browser.linkDesktop} target="_blank"
+               key="0">{browser.name}</a> : <span>{browser.name}</span>}
+                {index <= Constants.SUPPORTED_BROWSERS.length - 3 && <span>, </span>}
+                {index === Constants.SUPPORTED_BROWSERS.length - 2 && <span>{this.i18n('or')} </span>}
+                {index === Constants.SUPPORTED_BROWSERS.length - 1 && <span>.</span>}
+      </span>
+        });
+    }
+
     render() {
         return(
             <Panel header={<span>{this.i18n('login.title')}</span>} bsStyle='info' className="login-panel">
+                {!this.state.deviceSupported &&
+                <div className='message-container'>
+                    <Alert className={`alert-browser-support`} bsStyle="warning">
+                        {this.i18n('Your browser is not fully supported! Some parts of web may not work properly.')}<br/>
+                        {this.i18n('We recommend using the latest version of ')}
+                        {this.getSupportedBrowsersLinks()}
+                    </Alert>
+                </div>}
                 {this.state.showAlert && this.props.error &&
                     <div>
                         <AlertMessage type={ALERT_TYPES.DANGER} alertPosition={'top'}

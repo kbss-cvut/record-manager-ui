@@ -106,3 +106,60 @@ export const STATISTICS_TYPE = {
 };
 
 export const SCRIPT_ERROR = 'SCRIPT_ERROR';
+
+export const SUPPORTED_DEVICES = [
+    {
+        browser: [
+            'Edge', 'Microsoft Edge', 'IE', 'MSIE'
+        ],
+        version: '11'
+    }, {
+        browser: [
+            'Edge', 'Microsoft Edge'
+        ],
+        version: '12'
+    }, {
+        browser: ['Chrome'],
+        version: '51'
+    }, {
+        browser: [
+            'Chrome', 'Chrome Mobile'
+        ],
+        version: '30'
+    }, {
+        browser: ['Firefox'],
+        version: '48'
+    }, {
+        browser: [
+            'Firefox', 'Firefox Mobile'
+        ],
+        version: '30'
+    }, {
+        browser: ['Opera'],
+        version: '15'
+    }, {
+        browser: ['Safari'],
+        version: '9'
+    }, {
+        browser: [
+            'Safari', 'Safari Mobile'
+        ],
+        version: '8'
+    }
+];
+
+export const SUPPORTED_BROWSERS = [
+    {
+        name: "Google Chrome",
+        linkMobile: "https://www.google.com/chrome/browser/mobile/",
+        linkDesktop: "https://www.google.com/chrome/"
+    }, {
+        name: "Mozilla Firefox",
+        linkMobile: "https://www.mozilla.org/en-US/firefox/mobile/",
+        linkDesktop: "https://www.mozilla.org/en-US/firefox/"
+    }, {
+        name: "Safari"
+    }, {
+        name: "Edge"
+    }
+];
