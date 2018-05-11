@@ -7,11 +7,11 @@ import {TEST_TIMEOUT} from "../../constants/DefaultTestConstants";
 import {axiosBackend} from "../../../js/actions";
 import {
     changePassword,
-    createUser,
+    createUser, deleteInvitationOption,
     deleteUser,
     deleteUserError,
     deleteUserPending,
-    deleteUserSuccess, generateUsername,
+    deleteUserSuccess, generateUsername, impersonate,
     loadInstitutionMembers,
     loadInstitutionMembersError,
     loadInstitutionMembersPending,
@@ -22,7 +22,7 @@ import {
     loadUserSuccess,
     saveUserError,
     saveUserPending,
-    saveUserSuccess, unloadInstitutionMembers,
+    saveUserSuccess, sendInvitation, unloadInstitutionMembers,
     unloadSavedUser,
     unloadUser,
     updateUser
@@ -378,7 +378,7 @@ describe('User asynchronize actions', function () {
         }, TEST_TIMEOUT);
     });
 
-    it("creates PASSWORD_CHANGE_ERROR action if an error occurred during chaning password", function (done) {
+    it("creates PASSWORD_CHANGE_ERROR action if an error occurred during changing password", function (done) {
         const expectedActions = [
             { type: ActionConstants.PASSWORD_CHANGE_PENDING},
             { type: ActionConstants.PASSWORD_CHANGE_ERROR, error}
@@ -403,6 +403,114 @@ describe('User asynchronize actions', function () {
         MockApi.onGet(`rest/users/generate-username/${usernamePrefix}`).reply(200, `${usernamePrefix}1`);
 
         store.dispatch(generateUsername(usernamePrefix));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it("creates SEND_INVITATION_SUCCESS action when user is invited successfully", function (done) {
+        const expectedActions = [
+            { type: ActionConstants.SEND_INVITATION_PENDING, username},
+            { type: ActionConstants.SEND_INVITATION_SUCCESS, username},
+            { type: ActionConstants.LOAD_USER_PENDING},
+            { type: ActionConstants.LOAD_USER_SUCCESS, user}
+        ];
+
+        MockApi.onGet(`rest/users/${user.username}`).reply(200, {username});
+        MockApi.onPut(`rest/users/send-invitation/${username}`).reply(200);
+
+        store.dispatch(sendInvitation(username));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it("creates SEND_INVITATION_ERROR action if an error occurred during user invitation", function (done) {
+        const expectedActions = [
+            { type: ActionConstants.SEND_INVITATION_PENDING, username},
+            { type: ActionConstants.SEND_INVITATION_ERROR, error},
+            { type: ActionConstants.LOAD_USER_PENDING},
+            { type: ActionConstants.LOAD_USER_SUCCESS, user}
+        ];
+
+        MockApi.onGet(`rest/users/${user.username}`).reply(200, {username});
+        MockApi.onPut(`rest/users/send-invitation/${username}`).reply(400, error);
+
+        store.dispatch(sendInvitation(username));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it("creates INVITATION_OPTION_DELETE_SUCCESS action when option to invite user is deleted successfully", function (done) {
+        const expectedActions = [
+            { type: ActionConstants.INVITATION_OPTION_DELETE_PENDING, username},
+            { type: ActionConstants.INVITATION_OPTION_DELETE_SUCCESS, username},
+            { type: ActionConstants.LOAD_USER_PENDING},
+            { type: ActionConstants.LOAD_USER_SUCCESS, user}
+        ];
+
+        MockApi.onGet(`rest/users/${user.username}`).reply(200, {username});
+        MockApi.onPost(`rest/users/send-invitation/delete`).reply(200);
+
+        store.dispatch(deleteInvitationOption(username));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it("creates INVITATION_OPTION_DELETE_ERROR action if an error occurred during deleting option to invite user", function (done) {
+        const expectedActions = [
+            { type: ActionConstants.INVITATION_OPTION_DELETE_PENDING, username},
+            { type: ActionConstants.INVITATION_OPTION_DELETE_ERROR, error},
+            { type: ActionConstants.LOAD_USER_PENDING},
+            { type: ActionConstants.LOAD_USER_SUCCESS, user}
+        ];
+
+        MockApi.onGet(`rest/users/${user.username}`).reply(200, {username});
+        MockApi.onPost(`rest/users/send-invitation/delete`).reply(400, error);
+
+        store.dispatch(deleteInvitationOption(username));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it("creates IMPERSONATE_SUCCESS action when user is successfully impersonated", function (done) {
+        const expectedActions = [
+            { type: ActionConstants.IMPERSONATE_PENDING},
+            { type: ActionConstants.IMPERSONATE_SUCCESS, username}
+        ];
+
+        MockApi.onPost(`rest/users/impersonate`).reply(200);
+
+        store.dispatch(impersonate(username));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it("creates IMPERSONATE_ERROR action if an error occurred during impersonating user", function (done) {
+        const expectedActions = [
+            { type: ActionConstants.IMPERSONATE_PENDING},
+            { type: ActionConstants.IMPERSONATE_ERROR, error}
+        ];
+
+        MockApi.onPost(`rest/users/impersonate`).reply(400, error);
+
+        store.dispatch(impersonate(username));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);

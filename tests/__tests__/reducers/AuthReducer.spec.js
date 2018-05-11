@@ -4,6 +4,7 @@ import * as ActionConstants from "../../../js/constants/ActionConstants";
 import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
 import {getRole} from "../../../js/utils/Utils";
 import AuthReducer from "../../../js/reducers/AuthReducer";
+import UserReducer from "../../../js/reducers/UserReducer";
 
 describe('AuthReducer', function () {
     const user = {
@@ -155,5 +156,145 @@ describe('AuthReducer', function () {
             testEntry: initialState.testEntry
         };
         expect(newState).toEqual(expectedState);
+    });
+
+    it('handles PASSWORD_RESET_PENDING action', () => {
+        const initialState = {
+            testEntry: "should not touch"
+        };
+
+        expect(
+            AuthReducer(initialState, {
+                type: ActionConstants.PASSWORD_RESET_PENDING
+            })
+        ).toEqual(
+            {
+                passwordResetStatus: ACTION_STATUS.PENDING,
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles PASSWORD_RESET_SUCCESS action', () => {
+        const initialState = {
+            testEntry: "should not touch"
+        };
+
+        expect(
+            AuthReducer(initialState, {
+                type: ActionConstants.PASSWORD_RESET_SUCCESS
+            })
+        ).toEqual(
+            {
+                passwordResetStatus: ACTION_STATUS.SUCCESS,
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles VALIDATE_TOKEN_PENDING action', () => {
+        const initialState = {
+            testEntry: "should not touch"
+        };
+
+        expect(
+            AuthReducer(initialState, {
+                type: ActionConstants.VALIDATE_TOKEN_PENDING
+            })
+        ).toEqual(
+            {
+                validTokenStatus: ACTION_STATUS.PENDING,
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles VALIDATE_TOKEN_SUCCESS action', () => {
+        const initialState = {
+            testEntry: "should not touch"
+        };
+
+        expect(
+            AuthReducer(initialState, {
+                type: ActionConstants.VALIDATE_TOKEN_SUCCESS
+            })
+        ).toEqual(
+            {
+                validTokenStatus: ACTION_STATUS.SUCCESS,
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles VALIDATE_TOKEN_ERROR action', () => {
+        const initialState = {
+            testEntry: "should not touch"
+        };
+
+        expect(
+            AuthReducer(initialState, {
+                type: ActionConstants.VALIDATE_TOKEN_ERROR,
+                error
+            })
+        ).toEqual(
+            {
+                validTokenStatus: ACTION_STATUS.ERROR,
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles PASSWORD_CHANGE_TOKEN_PENDING action', () => {
+        const initialState = {
+            passwordChange: {},
+            testEntry: "should not touch"
+        };
+
+        expect(
+            AuthReducer(initialState, {
+                type: ActionConstants.PASSWORD_CHANGE_TOKEN_PENDING
+            })
+        ).toEqual(
+            {
+                passwordChange: {
+                    status: ACTION_STATUS.PENDING
+                },
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles PASSWORD_CHANGE_TOKEN_SUCCESS action', () => {
+        const initialState = {
+            passwordChange: {},
+            testEntry: "should not touch"
+        };
+
+        expect(
+            AuthReducer(initialState, {
+                type: ActionConstants.PASSWORD_CHANGE_TOKEN_SUCCESS
+            })
+        ).toEqual(
+            {
+                passwordChange: {
+                    status: ACTION_STATUS.SUCCESS
+                },
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles PASSWORD_CHANGE_TOKEN_ERROR action', () => {
+        const initialState = {
+            passwordChange: {},
+            testEntry: "should not touch"
+        };
+
+        expect(
+            AuthReducer(initialState, {
+                type: ActionConstants.PASSWORD_CHANGE_TOKEN_ERROR,
+                error
+            })
+        ).toEqual(
+            {
+                passwordChange: {
+                    status: ACTION_STATUS.ERROR,
+                    error
+                },
+                testEntry: initialState.testEntry
+            });
     });
 });

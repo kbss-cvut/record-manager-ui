@@ -8,6 +8,7 @@ import InstitutionReducer from "../../../js/reducers/InstitutionReducer";
 
 describe('UserReducer', function () {
     const user = {username: 'test'},
+          username = user.username,
           members = [
             {username: 'record1'},
             {username: 'record2'}
@@ -440,6 +441,236 @@ describe('UserReducer', function () {
         ).toEqual(
             {
                 passwordChange: {
+                    status: ACTION_STATUS.ERROR,
+                    error
+                },
+                testEntry: initialState.testEntry
+            });
+    });
+
+
+    it('handles GENERATE_USERNAME_PENDING action', () => {
+        const initialState = {
+            generatedUsername: {},
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.GENERATE_USERNAME_PENDING
+            })
+        ).toEqual(
+            {
+                generatedUsername: {
+                    status: ACTION_STATUS.PENDING
+                },
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles GENERATE_USERNAME_SUCCESS action', () => {
+        const initialState = {
+            generatedUsername: {},
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.GENERATE_USERNAME_SUCCESS,
+                generatedUsername: username
+            })
+        ).toEqual(
+            {
+                generatedUsername: {
+                    status: ACTION_STATUS.SUCCESS,
+                    username
+                },
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles SEND_INVITATION_PENDING action', () => {
+        const initialState = {
+            invitationSent: {},
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.SEND_INVITATION_PENDING,
+                username
+            })
+        ).toEqual(
+            {
+                invitationSent: {
+                    status: ACTION_STATUS.PENDING,
+                    username
+                },
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles SEND_INVITATION_SUCCESS action', () => {
+        const initialState = {
+            invitationSent: {},
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.SEND_INVITATION_SUCCESS,
+                username
+            })
+        ).toEqual(
+            {
+                invitationSent: {
+                    status: ACTION_STATUS.SUCCESS,
+                    username,
+                    error: ''
+                },
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles SEND_INVITATION_ERROR action', () => {
+        const initialState = {
+            invitationSent: {},
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.SEND_INVITATION_ERROR,
+                error
+            })
+        ).toEqual(
+            {
+                invitationSent: {
+                    status: ACTION_STATUS.ERROR,
+                    error
+                },
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles INVITATION_OPTION_DELETE_PENDING action', () => {
+        const initialState = {
+            invitationDelete: {},
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.INVITATION_OPTION_DELETE_PENDING,
+                username
+            })
+        ).toEqual(
+            {
+                invitationDelete: {
+                    status: ACTION_STATUS.PENDING,
+                    username
+                },
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles INVITATION_OPTION_DELETE_SUCCESS action', () => {
+        const initialState = {
+            invitationDelete: {},
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.INVITATION_OPTION_DELETE_SUCCESS,
+                username
+            })
+        ).toEqual(
+            {
+                invitationDelete: {
+                    status: ACTION_STATUS.SUCCESS,
+                    username,
+                    error: ''
+                },
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles INVITATION_OPTION_DELETE_ERROR action', () => {
+        const initialState = {
+            invitationDelete: {},
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.INVITATION_OPTION_DELETE_ERROR,
+                error
+            })
+        ).toEqual(
+            {
+                invitationDelete: {
+                    status: ACTION_STATUS.ERROR,
+                    error
+                },
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles IMPERSONATE_PENDING action', () => {
+        const initialState = {
+            impersonation: {},
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.IMPERSONATE_PENDING
+            })
+        ).toEqual(
+            {
+                impersonation: {
+                    status: ACTION_STATUS.PENDING
+                },
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles IMPERSONATE_SUCCESS action', () => {
+        const initialState = {
+            impersonation: {},
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.IMPERSONATE_SUCCESS,
+                username
+            })
+        ).toEqual(
+            {
+                impersonation: {
+                    status: ACTION_STATUS.SUCCESS,
+                    username,
+                },
+                testEntry: initialState.testEntry
+            });
+    });
+
+    it('handles IMPERSONATE_ERROR action', () => {
+        const initialState = {
+            impersonation: {},
+            testEntry: "should not touch"
+        };
+
+        expect(
+            UserReducer(initialState, {
+                type: ActionConstants.IMPERSONATE_ERROR,
+                error
+            })
+        ).toEqual(
+            {
+                impersonation: {
                     status: ACTION_STATUS.ERROR,
                     error
                 },

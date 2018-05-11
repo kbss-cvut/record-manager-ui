@@ -176,4 +176,91 @@ describe('Auth asynchronize actions', function () {
             done();
         }, TEST_TIMEOUT);
     });
+
+    it('creates PASSWORD_RESET_SUCCESS action when password is successfully reset', function (done) {
+        const email = "admin@gmail.com";
+        const expectedActions = [
+            { type: ActionConstants.PASSWORD_RESET_PENDING },
+            { type: ActionConstants.PASSWORD_RESET_SUCCESS, email}
+        ];
+
+        MockApi.onPost('rest/users/password-reset').reply(200);
+
+        store.dispatch(actions.passwordReset(email));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it('creates VALIDATE_TOKEN_SUCCESS action when token exists', function (done) {
+        const token = "12345";
+        const expectedActions = [
+            { type: ActionConstants.VALIDATE_TOKEN_PENDING },
+            { type: ActionConstants.VALIDATE_TOKEN_SUCCESS}
+        ];
+
+        MockApi.onPost('rest/users/validate-token').reply(200);
+
+        store.dispatch(actions.validateToken(token));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it('creates VALIDATE_TOKEN_ERROR action when token does not exist', function (done) {
+        const token = "12345";
+        const expectedActions = [
+            { type: ActionConstants.VALIDATE_TOKEN_PENDING },
+            { type: ActionConstants.VALIDATE_TOKEN_ERROR}
+        ];
+
+        MockApi.onPost('rest/users/validate-token').reply(400);
+
+        store.dispatch(actions.validateToken(token));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it('creates PASSWORD_CHANGE_TOKEN_SUCCESS action when token exists', function (done) {
+        const token = "12345";
+        const password = "12345";
+        const expectedActions = [
+            { type: ActionConstants.PASSWORD_CHANGE_TOKEN_PENDING },
+            { type: ActionConstants.PASSWORD_CHANGE_TOKEN_SUCCESS }
+        ];
+
+        MockApi.onPut('rest/users/password-change-token').reply(200);
+
+        store.dispatch(actions.changePasswordToken(password, token));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
+
+    it('creates PASSWORD_CHANGE_TOKEN_ERROR action when token does not exist', function (done) {
+        const token = "12345";
+        const password = "12345";
+        const expectedActions = [
+            { type: ActionConstants.PASSWORD_CHANGE_TOKEN_PENDING },
+            { type: ActionConstants.PASSWORD_CHANGE_TOKEN_ERROR }
+        ];
+
+        MockApi.onPut('rest/users/password-change-token').reply(400);
+
+        store.dispatch(actions.changePasswordToken(password, token));
+
+        setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+        }, TEST_TIMEOUT);
+    });
 });
