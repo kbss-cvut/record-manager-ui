@@ -1,0 +1,43 @@
+'use strict';
+
+import React from 'react';
+import {IntlProvider} from 'react-intl';
+import TestUtils from 'react-addons-test-utils';
+import HistoryRow from "../../../js/components/history/HistoryRow";
+
+describe('HistoryRow', function () {
+    const intlData = require('../../../js/i18n/en');
+    let action = {key: "12345", type: "TEST", author: {username: "test"}, timestamp: 1526074842 },
+        onOpen = jasmine.createSpy('onOpen');
+
+    it('renders one row of table with 4 columns and 1 button', function () {
+        const tree = TestUtils.renderIntoDocument(
+            <IntlProvider locale="en" {...intlData}>
+                <table>
+                    <tbody>
+                    <HistoryRow key={action.key} action={action} onOpen={onOpen}/>
+                    </tbody>
+                </table>
+            </IntlProvider>);
+        const td = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'td');
+        expect(td.length).toEqual(4);
+        const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'Button');
+        expect(buttons.length).toEqual(1);
+    });
+
+    it('renders "Open" button and click on it', function () {
+        const tree = TestUtils.renderIntoDocument(
+            <IntlProvider locale="en" {...intlData}>
+                <table>
+                    <tbody>
+                    <HistoryRow key={action.key} action={action} onOpen={onOpen}/>
+                    </tbody>
+                </table>
+            </IntlProvider>);
+        const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
+        expect(buttons.length).toEqual(1);
+
+        TestUtils.Simulate.click(buttons[0]); // Open Action
+        expect(onOpen).toHaveBeenCalled();
+    });
+});
