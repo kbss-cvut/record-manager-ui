@@ -10,7 +10,7 @@ import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
 import RequiredAttributes from "./RequiredAttributes";
 import WizardStore from "../../stores/WizardStore";
-import {FormUtils} from "semforms";
+import {FormUtils} from "s-forms";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderPanel, LoaderSmall} from "../Loader";

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {Panel} from 'react-bootstrap';
-import {QuestionAnswerProcessor} from 'semforms';
+import {QuestionAnswerProcessor} from 's-forms';
 
 import I18nWrapper from '../../i18n/I18nWrapper';
 import injectIntl from '../../utils/injectIntl';

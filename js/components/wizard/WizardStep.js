@@ -5,8 +5,8 @@ var Alert = require('react-bootstrap').Alert;
 var Button = require('react-bootstrap').Button;
 var ButtonToolbar = require('react-bootstrap').ButtonToolbar;
 var Panel = require('react-bootstrap').Panel;
-var Constants = require('semforms').Constants;
-var HelpIcon = require('semforms').HelpIcon;
+var Constants = require('s-forms').Constants;
+var HelpIcon = require('s-forms').HelpIcon;
 var JsonLdUtils = require('jsonld-utils').default;
 
 var injectIntl = require('../../utils/injectIntl');
