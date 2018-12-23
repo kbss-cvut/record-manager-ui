@@ -46,7 +46,8 @@ module.exports = {
         'login.reset-password': 'Resetovat heslo',
         'login.forgot-your-password': 'Zapomněl jsi své heslo?',
         'login.back-to-login': 'Zpět na přihlášení',
-        'login.reset-password-alert': 'Email s novým heslem byl odeslán.',
+        'login.reset-password-success': 'Odkaz na obnovení hesla byl odeslán na zadaný e-mail.',
+        'login.reset-password-error': 'Resetování hesla se nezdařilo. Pokud je zadaný e-mail správný, kontaktujte administrátora.',
         'login.token-password-success': 'Heslo bylo nastaveno.',
 
         'main.dashboard-nav': 'Hlavní strana',

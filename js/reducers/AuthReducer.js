@@ -70,6 +70,11 @@ export default function (state = initialState, action) {
                 ...state,
                 passwordResetStatus: ACTION_STATUS.SUCCESS
             };
+        case ActionConstants.PASSWORD_RESET_ERROR:
+            return {
+                ...state,
+                passwordResetStatus: ACTION_STATUS.ERROR
+            };
         case ActionConstants.VALIDATE_TOKEN_PENDING:
             return {
                 ...state,

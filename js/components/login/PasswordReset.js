@@ -47,9 +47,17 @@ class PasswordReset extends React.Component {
     };
 
     renderAlert() {
-        return this.state.showAlert && this.props.status === ACTION_STATUS.SUCCESS ?
-            <AlertMessage type={ALERT_TYPES.SUCCESS} alertPosition={'top'}
-                          message={this.i18n('login.reset-password-alert')}/> : null;
+        if (this.state.showAlert) {
+            switch (this.props.status) {
+                case ACTION_STATUS.SUCCESS:
+                    return <AlertMessage type={ALERT_TYPES.SUCCESS} alertPosition={'top'}
+                                         message={this.i18n('login.reset-password-success')}/>;
+                case ACTION_STATUS.ERROR:
+                    return <AlertMessage type={ALERT_TYPES.DANGER} alertPosition={'top'}
+                                         message={this.i18n('login.reset-password-error')}/>;
+            }
+        }
+        return null;
     }
 
     render() {

@@ -100,6 +100,7 @@ export function passwordReset(email) {
             .then(() => {
             dispatch({type: ActionConstants.PASSWORD_RESET_SUCCESS, email});
         }).catch ((error) => {
+            dispatch({type: ActionConstants.PASSWORD_RESET_ERROR});
         });
     }
 }
