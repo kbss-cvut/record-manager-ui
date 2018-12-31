@@ -159,7 +159,7 @@ module.exports = {
         'record.delete-success': 'Patient record deleted successfully',
         'record.delete-error': 'Unable to delete patient record. {error}',
         'record.load-error': 'Unable to load patient record. {error}',
-        'record.load-form-error': 'Unable to form. {error}',
+        'record.load-form-error': 'Unable to load form. {error}',
 
         'help.local-name': 'Purpose of this entry is to help you reference anonymized patients. Use identifiers such as patient ordering number (e.g. "patient_1", "patient_2"), patient\'s initials (e.g. "M.E."), etc.',
 
