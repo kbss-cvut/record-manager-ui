@@ -41,7 +41,7 @@ module.exports = {
         'login.register': 'Register',
         'login.error': 'Authentication failed.',
         'login.progress-mask': 'Logging in...',
-        'login.forgot-password': 'Forgot password',
+        'login.forgot-password': 'Forgot password?',
         'login.email': 'Email',
         'login.reset-password': 'Reset password',
         'login.forgot-your-password': 'Forgot your password?',
