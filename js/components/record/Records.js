@@ -5,9 +5,11 @@ import {Button, Panel} from "react-bootstrap";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import RecordTable from "./RecordTable";
-import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderSmall} from "../Loader";
+
+const STUDY_CLOSED_FOR_ADDITION = false;
 
 class Records extends React.Component {
     static propTypes = {
@@ -15,7 +17,8 @@ class Records extends React.Component {
         recordDeleted: React.PropTypes.object,
         recordsDeleting: React.PropTypes.array,
         showAlert: React.PropTypes.bool.isRequired,
-        handlers: React.PropTypes.object.isRequired
+        handlers: React.PropTypes.object.isRequired,
+        currentUser: React.PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -25,11 +28,21 @@ class Records extends React.Component {
 
     render() {
         const {showAlert, recordDeleted} = this.props;
+        const createRecordDisabled =
+            STUDY_CLOSED_FOR_ADDITION
+            && (this.props.currentUser.role !== ROLE.ADMIN);
+        const createRecordTooltip= this.i18n(
+            createRecordDisabled
+                ?'records.closed-study.create-tooltip'
+                :'records.opened-study.create-tooltip'
+        );
         return <Panel header={this._renderHeader()} bsStyle='primary'>
             <RecordTable {...this.props}/>
             <div>
                 <Button bsStyle='primary'
-                        onClick={this.props.handlers.onCreate}>{this.i18n('dashboard.create-tile')}</Button>
+                        disabled={createRecordDisabled}
+                        title={createRecordTooltip}
+                        onClick={this.props.handlers.onCreate}>{this.i18n('records.create-tile')}</Button>
             </div>
             {showAlert && recordDeleted.status === ACTION_STATUS.ERROR &&
             <AlertMessage type={ALERT_TYPES.DANGER}

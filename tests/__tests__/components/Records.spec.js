@@ -4,17 +4,21 @@ import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
 import Records from "../../../js/components/record/Records";
-import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
+import {ACTION_STATUS, ROLE} from "../../../js/constants/DefaultConstants";
 
 describe('Records', function () {
     const intlData = require('../../../js/i18n/en');
-    let records,
+    let admin,
+        records,
         recordsLoaded,
         recordDeleted,
         recordsDeleting = [],
         showAlert,
         handlers;
-    
+    admin = {
+        username: 'admin',
+        role: ROLE.ADMIN
+    };
     records = [{
         "uri":"http://vfn.cz/ontologies/study-manager/patient-record#instance456619209",
         "key":"159968282553298774",
@@ -53,7 +57,7 @@ describe('Records', function () {
             <IntlProvider locale="en" {...intlData}>
                 <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
                          recordDeleted={recordDeleted} handlers={handlers}
-                         recordsDeleting={recordsDeleting}/>
+                         recordsDeleting={recordsDeleting} currentUser={admin}/>
             </IntlProvider>);
         const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
         expect(panelHeading).not.toBeNull();
@@ -70,7 +74,7 @@ describe('Records', function () {
             <IntlProvider locale="en" {...intlData}>
                 <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
                          recordDeleted={recordDeleted} handlers={handlers}
-                         recordsDeleting={recordsDeleting}/>
+                         recordsDeleting={recordsDeleting} currentUser={admin}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
         expect(buttons.length).toEqual(5);
@@ -88,7 +92,7 @@ describe('Records', function () {
             <IntlProvider locale="en" {...intlData}>
                 <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
                          recordDeleted={recordDeleted} handlers={handlers}
-                         recordsDeleting={recordsDeleting}/>
+                         recordsDeleting={recordsDeleting} currentUser={admin}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-success");
         expect(alert).not.toBeNull();
@@ -106,7 +110,7 @@ describe('Records', function () {
             <IntlProvider locale="en" {...intlData}>
                 <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
                          recordDeleted={recordDeleted} handlers={handlers}
-                         recordsDeleting={recordsDeleting}/>
+                         recordsDeleting={recordsDeleting} currentUser={admin}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
         expect(alert).not.toBeNull();

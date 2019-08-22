@@ -145,6 +145,9 @@ module.exports = {
         'records.delete-tooltip': 'Smazat tento záznam',
         'records.not-found': 'Žádný záznam o pacientovi nebyl nalezen...',
         'records.loading-error': 'Záznamy o pacientech se nepodařilo načíst. {error}',
+        'records.create-tile': 'Vytvořit záznam',
+        'records.opened-study.create-tooltip': 'Vytvořit nový záznam pacienta',
+        'records.closed-study.create-tooltip': 'Studie je uzavřená na přidávání pacientů. Prosím, kontaktujte studijního koordinátora v připadě, že potřebujete přidat nový záznam pacienta.',
 
         'record.panel-title': 'Záznam o pacientovi {identifier}',
         'record.form-title': 'Details',

@@ -58,7 +58,7 @@ class RecordsController extends React.Component {
             onDelete: this._onDeleteRecord
         };
         return <Records recordsLoaded={recordsLoaded} showAlert={this.state.showAlert} handlers={handlers}
-                        recordDeleted={recordDeleted} recordsDeleting={recordsDeleting}/>;
+                        recordDeleted={recordDeleted} recordsDeleting={recordsDeleting} currentUser={currentUser}/>;
     }
 }
 

@@ -147,6 +147,9 @@ module.exports = {
         'records.delete-tooltip': 'Delete this record',
         'records.not-found': 'No patient records were found...',
         'records.loading-error': 'Unable to load patient records. {error}',
+        'records.create-tile': 'Create record',
+        'records.opened-study.create-tooltip': 'Create new patient record',
+        'records.closed-study.create-tooltip': 'Study is closed for addition of patient records. Please, contact a study coordinator in case you need to add new patient record.',
 
         'record.panel-title': 'Record of patient {identifier}',
         'record.form-title': 'Details',
