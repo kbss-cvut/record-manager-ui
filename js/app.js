@@ -5,7 +5,7 @@
 'use strict';
 
 import {loadUserProfile} from "./actions/AuthActions";
-import I18nStore from './stores/I18nStore';
+import * as I18nStore from './stores/I18nStore';
 import {addLocaleData} from 'react-intl';
 
 let intlData = null;

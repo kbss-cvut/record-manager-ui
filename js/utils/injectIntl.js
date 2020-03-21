@@ -1,6 +1,6 @@
 'use strict';
 
-var injectIntl = require('react-intl').injectIntl;
+import {injectIntl} from 'react-intl';
 
 /**
  * Our version of react-intl's injectIntl.
@@ -8,14 +8,14 @@ var injectIntl = require('react-intl').injectIntl;
  * Decorates the basic instance returned by injectIntl with accessors to the wrapped component or element (needed by
  * tests).
  */
-module.exports = function (component, props) {
+export default function (component, props) {
     if (!props) {
         props = {};
     }
     // Store this only for development purposes
     if (process.env.NODE_ENV !== 'production') {
         props.withRef = true;
-        var comp = injectIntl(component, props);
+        const comp = injectIntl(component, props);
         comp.wrappedComponent = comp;
         return comp;
     } else {

@@ -2,8 +2,8 @@
 
 import Reflux from 'reflux';
 import jsonld from 'jsonld';
+import axios from 'axios';
 import Actions from '../actions/Actions';
-import Ajax from '../utils/Ajax';
 import * as Logger from "../utils/Logger";
 
 class FormGenStore extends Reflux.Store {
@@ -18,18 +18,19 @@ class FormGenStore extends Reflux.Store {
             this.trigger(id, options[id]);
             return;
         }
-        Ajax.get('rest/formGen/possibleValues?query=' + encodeURIComponent(query)).end(function (data) {
-            if (data.length > 0) {
-                jsonld.frame(data, {}, null, (err, framed) => {
-                    this.options[id] = framed['@graph'];
-                    this.trigger(id, this.options[id]);
-                });
-            } else {
-                Logger.warn('No data received when loading options using query' + query + '.');
-                this.trigger(id, this.getOptions(id));
-            }
 
-        }, () => {
+        axios.get('rest/formGen/possibleValues?query=' + encodeURIComponent(query))
+            .then((request) => {
+                if (request.data.length > 0) {
+                    jsonld.frame(data, {}, null, (err, framed) => {
+                        this.options[id] = framed['@graph'];
+                        this.trigger(id, this.options[id]);
+                    });
+                } else {
+                    Logger.warn('No data received when loading options using query' + query + '.');
+                    this.trigger(id, this.getOptions(id));
+                }
+            }).catch(() => {
             this.trigger(id, this.getOptions(id));
         });
     };
