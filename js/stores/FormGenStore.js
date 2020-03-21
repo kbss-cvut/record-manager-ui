@@ -19,19 +19,17 @@ class FormGenStore extends Reflux.Store {
             return;
         }
 
-        axios.get('rest/formGen/possibleValues?query=' + encodeURIComponent(query))
-            .then((request) => {
-                if (request.data.length > 0) {
-                    jsonld.frame(data, {}, null, (err, framed) => {
-                        this.options[id] = framed['@graph'];
-                        this.trigger(id, this.options[id]);
-                    });
-                } else {
-                    Logger.warn('No data received when loading options using query' + query + '.');
-                    this.trigger(id, this.getOptions(id));
-                }
-            }).catch(() => {
-            this.trigger(id, this.getOptions(id));
+        axios.get('rest/formGen/possibleValues?query=' + encodeURIComponent(query)).then((response) => {
+            const data = response.data;
+            if (data.length > 0) {
+                jsonld.frame(data, {}, null, (err, framed) => {
+                    this.options[id] = framed['@graph'];
+                    this.trigger(id, this.options[id]);
+                });
+            } else {
+                Logger.warn('No data received when loading options using query' + query + '.');
+                this.trigger(id, this.getOptions(id));
+            }
         });
     };
 

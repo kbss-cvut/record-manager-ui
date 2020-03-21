@@ -22,7 +22,7 @@ export const generateWizard = (record, renderCallback, errorCallback) => {
         Configuration.typeaheadResultList = TypeaheadResultList;
         WizardGenerator.createWizard(response.data, record.question, null, renderCallback);
     }).catch((error) => {
-        errorCallback(error.response.data);
+        errorCallback(error);
         Logger.error('Received no valid wizard.');
     });
 };

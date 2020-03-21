@@ -12,7 +12,7 @@ class TypeaheadResultList extends React.Component {
         }
     };
 
-    onClick = (option, event) => {
+    onClick = (event, option) => {
         event.preventDefault();
         this.props.onOptionSelected(option, event);
     };
@@ -30,7 +30,7 @@ class TypeaheadResultList extends React.Component {
                     (option, index) =>
                         <li className='btn-link item' key={'typeahead-result-' + index}
                             title={option.description}
-                            onClick={() => this.onClick(option)}>{this.getOptionLabel(option)}</li>)
+                            onClick={(e) => this.onClick(e, option)}>{this.getOptionLabel(option)}</li>)
                 }
             </ul>
         )
