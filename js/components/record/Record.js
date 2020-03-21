@@ -9,7 +9,7 @@ import HorizontalInput from "../HorizontalInput";
 import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
 import RequiredAttributes from "./RequiredAttributes";
-import WizardStore from "../../stores/WizardStore";
+import {WizardStoreInstance} from '../wizard/generator/WizardBuilder';
 import {FormUtils} from "s-forms";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
@@ -44,7 +44,7 @@ class Record extends React.Component {
     render() {
         const {recordLoaded, recordSaved, showAlert, record} = this.props;
         if (!record && (!recordLoaded.status || recordLoaded.status === ACTION_STATUS.PENDING)) {
-            return <LoaderPanel header={this._renderHeader()} bsStyle='primary' />;
+            return <LoaderPanel header={this._renderHeader()} bsStyle='primary'/>;
         } else if (recordLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('record.load-error', {error: this.props.recordLoaded.error.message})}/>;
@@ -88,7 +88,7 @@ class Record extends React.Component {
                     disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
                     || this._isFormInvalid() || !record.state.isComplete()}
                     onClick={this.props.handlers.onSave}>
-                {this.i18n('save')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
+                {this.i18n('save')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
             </Button>
             <Button bsStyle='link' bsSize='small'
                     onClick={this.props.handlers.onCancel}>{this.i18n('cancel')}</Button>
@@ -109,7 +109,7 @@ class Record extends React.Component {
     }
 
     _isFormInvalid() {
-        return WizardStore.data ? FormUtils.isValid(WizardStore.data) : false;
+        return WizardStoreInstance.data ? FormUtils.isValid(WizardStoreInstance.data) : false;
     }
 }
 

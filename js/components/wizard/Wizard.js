@@ -1,101 +1,87 @@
 'use strict';
 
-var React = require('react');
-const Reflux = require('reflux');
-var classNames = require('classnames');
-
-var WizardStep = require('./WizardStep');
-var WizardStore = require('../../stores/WizardStore');
-
-var HorizontalWizardNav = require('./HorizontalWizardNav').default;
-var VerticalWizardNav = require('./VerticalWizardNav').default;
+import React from 'react';
+import classNames from 'classnames';
+import WizardStep from './WizardStep';
+import {WizardStoreInstance} from '../wizard/generator/WizardBuilder';
+import HorizontalWizardNav from './HorizontalWizardNav';
+import VerticalWizardNav from './VerticalWizardNav';
 
 const IS_HORIZONTAL = true;
 
-var Wizard = React.createClass({
-    mixins: [Reflux.listenTo(WizardStore, '_onWizardDataChange')],
-
-    propTypes: {
-        start: React.PropTypes.number,
-        steps: React.PropTypes.array,
-        onFinish: React.PropTypes.func,
-        onClose: React.PropTypes.func,
-        enableForwardSkip: React.PropTypes.bool     // Whether to allow forward step skipping
-    },
-
-    getInitialState: function () {
-        // First step is visited as soon as the wizard opens
-        if (this.props.steps.length > 0) {
-            this.props.steps[0].visited = true;
-        }
-        return {
+class Wizard extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             currentStep: this.props.start || 0,
             nextDisabled: false,
             previousDisabled: false
         };
-    },
+    }
 
-    getDefaultProps: function () {
-        return {
-            steps: []
-        };
-    },
-
-    _onWizardDataChange: function() {
+    _onWizardDataChange = () => {
         this.forceUpdate();
-    },
+    };
 
-    onAdvance: function () {
-        var change = {};
+    componentDidMount() {
+        this.unsubscribe = WizardStoreInstance.listen(this._onWizardDataChange)
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
+
+    onAdvance = () => {
+        const change = {};
         if (this.state.currentStep !== this.props.steps.length - 1) {
             this.props.steps[this.state.currentStep + 1].visited = true;
             change.currentStep = this.state.currentStep + 1;
         }
         this.setState(change);
-    },
+    };
 
-    onRetreat: function () {
+    onRetreat = () => {
         if (this.state.currentStep === 0) {
             return;
         }
         this.setState({
             currentStep: this.state.currentStep - 1
         });
-    },
+    };
 
-    onFinish: function (errCallback) {
-        var data = {
-            data: WizardStore.getData(),
-            stepData: WizardStore.getStepData()
+    onFinish = (errCallback) => {
+        const data = {
+            data: WizardStoreInstance.getData(),
+            stepData: WizardStoreInstance.getStepData()
         };
-        WizardStore.reset();
+        WizardStoreInstance.reset();
         this.props.onFinish(data, this.props.onClose, errCallback);
-    },
+    };
 
     /**
      * Insert the specified step after the current one.
      * @param step The step to insert
      */
-    onInsertStepAfterCurrent: function (step) {
+    onInsertStepAfterCurrent = (step) => {
         this.props.steps.splice(this.state.currentStep + 1, 0, step);
-        WizardStore.insertStep(this.state.currentStep + 1, step.data);
-    },
+        WizardStoreInstance.insertStep(this.state.currentStep + 1, step.data);
+    };
 
     /**
      * Adds the specified step to the end of this wizard.
      * @param step The step to add
      */
-    onAddStep: function (step) {
+    onAddStep = (step) => {
         this.props.steps.push(step);
-        WizardStore.insertStep(this.props.steps.length - 1, step.data);
-    },
+        WizardStoreInstance.insertStep(this.props.steps.length - 1, step.data);
+    };
 
-    onRemoveStep: function (stepId) {
-        var stateUpdate = {};
-        for (var i = 0, len = this.props.steps.length; i < len; i++) {
+    onRemoveStep = (stepId) => {
+        const stateUpdate = {};
+        for (let i = 0, len = this.props.steps.length; i < len; i++) {
             if (this.props.steps[i].id === stepId) {
                 this.props.steps.splice(i, 1);
-                WizardStore.removeStep(i);
+                WizardStoreInstance.removeStep(i);
                 if (i === this.state.currentStep && i !== 0) {
                     stateUpdate.currentStep = this.state.currentStep - 1;
                 }
@@ -103,33 +89,25 @@ var Wizard = React.createClass({
             }
         }
         this.setState(stateUpdate);
-    },
+    };
 
-
-    render: function () {
-        var component = this.initComponent();
-
-        var navMenu,
-            componentClass = classNames('wizard-content', {'col-xs-10': !IS_HORIZONTAL});
-
-        if (IS_HORIZONTAL) {
-            navMenu = <HorizontalWizardNav currentStep={this.state.currentStep} steps={this.props.steps}
-                                           onNavigate={this.navigate}/>;
-        } else {
-            navMenu = <VerticalWizardNav currentStep={this.state.currentStep} steps={this.props.steps}
-                                         onNavigate={this.navigate}/>
-        }
-
+    render() {
         return <div className="wizard">
-            {navMenu}
-            <div className={componentClass}>
-                {component}
+            {IS_HORIZONTAL ?
+                <HorizontalWizardNav
+                    currentStep={this.state.currentStep} steps={this.props.steps}
+                    onNavigate={this.navigate}/> :
+                <VerticalWizardNav
+                    currentStep={this.state.currentStep} steps={this.props.steps}
+                    onNavigate={this.navigate}/>
+            }
+            <div className={classNames('wizard-content', {'col-xs-10': !IS_HORIZONTAL})}>
+                {this.initComponent()}
             </div>
         </div>;
-    },
+    };
 
-    navigate: function (stepIndex) {
-
+    navigate = (stepIndex) => {
         if (stepIndex === this.state.currentStep || stepIndex >= this.props.steps.length) {
             return;
         }
@@ -140,33 +118,41 @@ var Wizard = React.createClass({
         this.setState({
             currentStep: stepIndex
         });
-    },
+    };
 
-    initComponent: function () {
+    initComponent = () => {
         if (this.props.steps.length === 0) {
             return <div className='italics'>There are no steps in this wizard.</div>;
         }
-        var step = this.props.steps[this.state.currentStep];
+        const step = this.props.steps[this.state.currentStep];
 
-        return React.createElement(WizardStep, {
-            key: 'step' + this.state.currentStep,
-            onClose: this.props.onClose,
-            onFinish: this.onFinish,
-            onAdvance: this.onAdvance,
-            onRetreat: this.onRetreat,
-            onNext: step.onNext,
-            onPrevious: step.onPrevious,
-            onInsertStepAfterCurrent: this.onInsertStepAfterCurrent,
-            onAddStep: this.onAddStep,
-            onRemoveStep: this.onRemoveStep,
-            component: step.component,
-            title: step.name,
-            stepIndex: this.state.currentStep,
-            isFirstStep: this.state.currentStep === 0,
-            isLastStep: this.state.currentStep === this.props.steps.length - 1,
-            defaultNextDisabled: step.defaultNextDisabled
-        });
+        return <WizardStep
+            key={'step' + this.state.currentStep}
+            onClose={this.props.onClose}
+            onFinish={this.onFinish}
+            onAdvance={this.onAdvance}
+            onRetreat={this.onRetreat}
+            onNext={step.onNext}
+            onPrevious={step.onPrevious}
+            onInsertStepAfterCurrent={this.onInsertStepAfterCurrent}
+            onAddStep={this.onAddStep}
+            onRemoveStep={this.onRemoveStep}
+            component={step.component}
+            title={step.name}
+            stepIndex={this.state.currentStep}
+            isFirstStep={this.state.currentStep === 0}
+            isLastStep={this.state.currentStep === this.props.steps.length - 1}
+            defaultNextDisabled={step.defaultNextDisabled}
+        />
     }
-});
+}
 
-module.exports = Wizard;
+Wizard.propTypes = {
+    start: React.PropTypes.number,
+    steps: React.PropTypes.array,
+    onFinish: React.PropTypes.func,
+    onClose: React.PropTypes.func,
+    enableForwardSkip: React.PropTypes.bool // Whether to allow forward step skipping
+};
+
+export default Wizard;

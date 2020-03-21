@@ -8,23 +8,22 @@ import I18nStore from "../../../stores/I18nStore";
 import TypeaheadResultList from "../../typeahead/TypeaheadResultList";
 import WizardStore from "../../../stores/WizardStore";
 import * as Logger from "../../../utils/Logger";
-import {errorLogger} from "../../../utils/HistoryLogger";
 
 const FORM_GEN_URL = 'rest/formGen';
 
-export default class WizardBuilder {
+export const WizardStoreInstance = new WizardStore();
 
-    static generateWizard(record, renderCallback, errorCallback) {
-        Ajax.post(FORM_GEN_URL, record).end((data) => {
-            Configuration.actions = Actions;
-            Configuration.wizardStore = WizardStore;
-            Configuration.optionsStore = FormGenStore;
-            Configuration.intl = I18nStore.getIntl();
-            Configuration.typeaheadResultList = TypeaheadResultList;
-            WizardGenerator.createWizard(data, record.question, null, renderCallback);
-        }, (error) => {
-            errorCallback(error);
-            Logger.error('Received no valid wizard.');
-        });
-    }
+export const generateWizard = (record, renderCallback, errorCallback) => {
+    Ajax.post(FORM_GEN_URL, record).end((data) => {
+        Configuration.actions = Actions;
+        Configuration.wizardStore = WizardStoreInstance;
+        Configuration.optionsStore = new FormGenStore();
+        Configuration.intl = I18nStore.getIntl();
+        Configuration.typeaheadResultList = TypeaheadResultList;
+        WizardGenerator.createWizard(data, record.question, null, renderCallback);
+    }, (error) => {
+        errorCallback(error);
+        Logger.error('Received no valid wizard.');
+    });
 };
+
