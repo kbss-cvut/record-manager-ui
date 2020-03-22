@@ -4,9 +4,10 @@ import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
 import HistoryRow from "../../../js/components/history/HistoryRow";
+import enLang from '../../../js/i18n/en';
 
 describe('HistoryRow', function () {
-    const intlData = require('../../../js/i18n/en');
+    const intlData = enLang;
     let action = {key: "12345", type: "TEST", author: {username: "test"}, timestamp: 1526074842 },
         onOpen = jasmine.createSpy('onOpen');
 

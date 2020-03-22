@@ -4,9 +4,10 @@ import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
 import HistoryPagination from "../../../js/components/history/HistoryPagination";
+import enLang from '../../../js/i18n/en';
 
 describe('HistoryPagination', function () {
-    const intlData = require('../../../js/i18n/en');
+    const intlData = enLang;
     let handlePagination = jasmine.createSpy('handlePagination');
 
     it('renders pagination with previous and next button', function () {

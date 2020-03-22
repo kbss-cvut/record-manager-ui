@@ -4,9 +4,10 @@ import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
 import RecordRow from "../../../js/components/record/RecordRow";
+import enLang from '../../../js/i18n/en';
 
 describe('RecordRow', function () {
-    const intlData = require('../../../js/i18n/en');
+    const intlData = enLang;
     let record,
         disableDelete = false,
         deletionLoading = false,

@@ -5,9 +5,10 @@ import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
 import InstitutionTable from "../../../js/components/institution/InstitutionTable";
 import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
+import enLang from '../../../js/i18n/en';
 
 describe('InstitutionTable', function () {
-    const intlData = require('../../../js/i18n/en');
+    const intlData = enLang;
     let institutions,
         institutionDeleted = {
             status: ACTION_STATUS.SUCCESS

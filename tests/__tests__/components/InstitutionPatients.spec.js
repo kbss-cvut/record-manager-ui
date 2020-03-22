@@ -2,9 +2,10 @@ import TestUtils from "react-addons-test-utils";
 import React from "react";
 import {IntlProvider} from "react-intl";
 import InstitutionPatients from "../../../js/components/institution/InstitutionPatients";
+import enLang from '../../../js/i18n/en';
 
 describe('InstitutionPatients', function () {
-    const intlData = require('../../../js/i18n/en');
+    const intlData = enLang;
     let recordsLoaded,
         records,
         onEdit = jasmine.createSpy('onEdit');

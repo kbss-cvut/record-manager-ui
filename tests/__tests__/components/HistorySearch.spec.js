@@ -4,9 +4,10 @@ import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
 import HistorySearch from "../../../js/components/history/HistorySearch";
+import enLang from '../../../js/i18n/en';
 
 describe('HistorySearch', function () {
-    const intlData = require('../../../js/i18n/en');
+    const intlData = enLang;
     let searchData = {},
         handlers = {
             handleChange: jasmine.createSpy('handleChange'),

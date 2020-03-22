@@ -7,9 +7,10 @@ import User from "../../../js/components/user/User";
 import {ACTION_STATUS, ROLE} from "../../../js/constants/DefaultConstants";
 import PasswordChange from "../../../js/components/user/PasswordChange";
 import * as UserFactory from "../../../js/utils/EntityFactory";
+import enLang from '../../../js/i18n/en';
 
 describe('PasswordChange', function () {
-    const intlData = require('../../../js/i18n/en');
+    const intlData = enLang;
     let valid,
         paramsUser,
         passwordChange,

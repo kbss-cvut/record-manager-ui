@@ -5,9 +5,10 @@ import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
 import Users from "../../../js/components/user/Users";
 import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
+import enLang from '../../../js/i18n/en';
 
 describe('Users', function () {
-    const intlData = require('../../../js/i18n/en');
+    const intlData = enLang;
     let users,
         usersLoaded,
         usersLoadedEmpty,
@@ -16,9 +17,9 @@ describe('Users', function () {
         handlers;
 
     users = [{
-        "username":"testman1"
+        "username": "testman1"
     }, {
-        "username":"testman2"
+        "username": "testman2"
     }];
 
     beforeEach(() => {
@@ -80,7 +81,7 @@ describe('Users', function () {
         expect(panelHeading).not.toBeNull();
         const panelBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel-body');
         expect(panelBody).not.toBeNull();
-        const text = TestUtils.scryRenderedDOMComponentsWithTag(tree,'p');
+        const text = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'p');
         expect(text.length).toEqual(1);
     });
 
@@ -94,24 +95,24 @@ describe('Users', function () {
         expect(panelHeading).not.toBeNull();
         const panelBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel-body');
         expect(panelBody).not.toBeNull();
-        const table = TestUtils.scryRenderedDOMComponentsWithTag(tree,'table');
+        const table = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'table');
         expect(table).not.toBeNull();
-        const th = TestUtils.scryRenderedDOMComponentsWithTag(tree,'th');
+        const th = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'th');
         expect(th.length).toEqual(5);
     });
 
-   it('renders "Create user" button and click on it', function () {
-       const tree = TestUtils.renderIntoDocument(
-           <IntlProvider locale="en" {...intlData}>
-               <Users usersLoaded={usersLoaded} showAlert={showAlert}
-                      userDeleted={userDeleted} handlers={handlers}/>
-           </IntlProvider>);
-       const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-       expect(buttons.length).toEqual(5);
+    it('renders "Create user" button and click on it', function () {
+        const tree = TestUtils.renderIntoDocument(
+            <IntlProvider locale="en" {...intlData}>
+                <Users usersLoaded={usersLoaded} showAlert={showAlert}
+                       userDeleted={userDeleted} handlers={handlers}/>
+            </IntlProvider>);
+        const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
+        expect(buttons.length).toEqual(5);
 
-       TestUtils.Simulate.click(buttons[4]); // Create User
-       expect(handlers.onCreate).toHaveBeenCalled();
-   });
+        TestUtils.Simulate.click(buttons[4]); // Create User
+        expect(handlers.onCreate).toHaveBeenCalled();
+    });
 
     it('shows successful alert that user was successfully deleted', function () {
         showAlert = true;

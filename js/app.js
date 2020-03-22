@@ -7,6 +7,8 @@
 import {loadUserProfile} from "./actions/AuthActions";
 import * as I18nStore from './stores/I18nStore';
 import {addLocaleData} from 'react-intl';
+import enLang from './i18n/en';
+import csLang from './i18n/cs';
 
 let intlData = null;
 
@@ -19,11 +21,11 @@ function selectLocalization() {
     }
     const lang = navigator.language;
     // if (lang && lang === 'cs' || lang === 'cs-CZ' || lang === 'sk' || lang === 'sk-SK') {
-    //     intlData = require('./i18n/cs');
+    //     intlData = csLang;
     // } else {
-    //     intlData = require('./i18n/en');
+    //     intlData = enLang;
     // }
-    intlData = require('./i18n/en');
+    intlData = enLang;
 }
 
 selectLocalization();

@@ -6,9 +6,10 @@ import TestUtils from 'react-addons-test-utils';
 import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
 import Record from "../../../js/components/record/Record";
 import * as RecordState from "../../../js/model/RecordState";
+import enLang from '../../../js/i18n/en';
 
 describe('Record', function () {
-    const intlData = require('../../../js/i18n/en');
+    const intlData = enLang;
     let record,
         newRecord,
         recordSaved,

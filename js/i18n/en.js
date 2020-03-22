@@ -4,7 +4,7 @@
 
 import * as Constants from "../constants/DefaultConstants";
 
-module.exports = {
+export default {
     'locale': 'en',
 
     'messages': {

@@ -6,9 +6,10 @@ import TestUtils from 'react-addons-test-utils';
 import User from "../../../js/components/user/User";
 import {ACTION_STATUS, ROLE} from "../../../js/constants/DefaultConstants";
 import * as EntityFactory from "../../../js/utils/EntityFactory";
+import enLang from '../../../js/i18n/en';
 
 describe('User', function () {
-    const intlData = require('../../../js/i18n/en');
+    const intlData = enLang;
     let user,
         admin,
         newUser = EntityFactory.initNewUser(),

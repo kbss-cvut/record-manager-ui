@@ -5,9 +5,10 @@ import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
 import RequiredAttributes from "../../../js/components/record/RequiredAttributes";
 import * as RecordState from "../../../js/model/RecordState";
+import enLang from '../../../js/i18n/en';
 
 describe('RequiredAttributes', function () {
-    const intlData = require('../../../js/i18n/en');
+    const intlData = enLang;
     let record,
         completed = true,
         onChange = jasmine.createSpy('onChange');

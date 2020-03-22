@@ -3,9 +3,10 @@ import {ACTION_STATUS, ROLE} from "../../../js/constants/DefaultConstants";
 import React from "react";
 import {IntlProvider} from "react-intl";
 import InstitutionMembers from "../../../js/components/institution/InstitutionMembers";
+import enLang from '../../../js/i18n/en';
 
 describe('InstitutionMembers', function () {
-    const intlData = require('../../../js/i18n/en');
+    const intlData = enLang;
     let institutionMembers,
         institutionMembersEmpty,
         members,

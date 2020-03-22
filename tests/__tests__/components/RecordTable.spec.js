@@ -3,9 +3,10 @@ import React from "react";
 import {IntlProvider} from "react-intl";
 import RecordTable from "../../../js/components/record/RecordTable";
 import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
+import enLang from '../../../js/i18n/en';
 
 describe('RecordTable', function () {
-    const intlData = require('../../../js/i18n/en');
+    const intlData = enLang;
     let records,
         recordsLoaded,
         recordDeleted = {status: ACTION_STATUS.SUCCESS},
@@ -63,11 +64,11 @@ describe('RecordTable', function () {
                 <RecordTable recordsLoaded={recordsLoaded} handlers={handlers} disableDelete={disableDelete}
                              recordDeleted={recordDeleted}/>
             </IntlProvider>);
-        const table = TestUtils.scryRenderedDOMComponentsWithTag(tree,'table');
+        const table = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'table');
         expect(table).not.toBeNull();
-        const th = TestUtils.scryRenderedDOMComponentsWithTag(tree,'th');
+        const th = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'th');
         expect(th.length).toEqual(5);
-        const td = TestUtils.scryRenderedDOMComponentsWithTag(tree,'td');
+        const td = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'td');
         expect(td.length).toEqual(10);
     });
 

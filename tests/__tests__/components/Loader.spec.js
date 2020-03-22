@@ -2,9 +2,10 @@ import React from 'react';
 import TestUtils from "react-addons-test-utils";
 import Loader, {LoaderMask, LoaderPanel} from "../../../js/components/Loader";
 import {IntlProvider} from "react-intl";
+import enLang from '../../../js/i18n/en';
 
 describe('Loader', function () {
-    const intlData = require('../../../js/i18n/en');
+    const intlData = enLang;
 
     it('renders loader', function () {
         const tree = TestUtils.renderIntoDocument(

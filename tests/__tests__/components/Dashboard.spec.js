@@ -3,9 +3,10 @@ import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
 import {ROLE} from "../../../js/constants/DefaultConstants";
 import Dashboard from "../../../js/components/dashboard/Dashboard";
+import enLang from '../../../js/i18n/en';
 
 describe('Dashboard', function () {
-    const intlData = require('../../../js/i18n/en');
+    const intlData = enLang;
     let currentUserAdmin = {
             username: 'test',
             role: ROLE.ADMIN,

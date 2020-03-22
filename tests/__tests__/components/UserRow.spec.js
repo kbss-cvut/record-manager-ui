@@ -4,9 +4,10 @@ import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
 import UserRow from "../../../js/components/user/UserRow";
+import enLang from '../../../js/i18n/en';
 
 describe('UserRow', function () {
-    const intlData = require('../../../js/i18n/en');
+    const intlData = enLang;
     let user,
         deletionLoading = false,
         onEdit = jasmine.createSpy('onEdit'),

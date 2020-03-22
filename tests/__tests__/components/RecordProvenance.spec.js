@@ -5,9 +5,10 @@ import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
 import RecordProvenance from "../../../js/components/record/RecordProvenance";
 import * as RecordState from "../../../js/model/RecordState";
+import enLang from '../../../js/i18n/en';
 
 describe('RequiredProvenance', function () {
-    const intlData = require('../../../js/i18n/en');
+    const intlData = enLang;
     let createdRecord,
         modifiedRecord,
         newRecord;

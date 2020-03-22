@@ -4,9 +4,10 @@ import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-addons-test-utils';
 import InstitutionRow from "../../../js/components/institution/InstitutionRow";
+import enLang from '../../../js/i18n/en';
 
 describe('InstitutionRow', function () {
-    const intlData = require('../../../js/i18n/en');
+    const intlData = enLang;
     let institution,
         deletionLoading = false,
         onEdit = jasmine.createSpy('onEdit'),
