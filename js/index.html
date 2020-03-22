@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" href="../resources/images/favicon.ico"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0"/>
     <script type="text/javascript" src="../resources/locale/cs.js"></script>
-    <title>Fertility Study Manager</title>
+    <title><%=htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
 <div id="wrap">
@@ -19,10 +19,10 @@
     <div class="container-fluid">
         <p class="text-muted" style="float: left">
             &copy; <a href="https://kbss.felk.cvut.cz" target="_blank" title="KBSS at FEL ČVUT">KBSS FEL ČVUT v
-            Praze</a>, 2016
+            Praze</a>, <%=htmlWebpackPlugin.options.year %>
         </p>
         <p class="text-muted" style="float: right">
-            Version: Dev
+            Version: <%=htmlWebpackPlugin.options.version %>
         </p>
     </div>
 </footer>

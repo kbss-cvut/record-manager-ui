@@ -3,7 +3,9 @@ import {Routes} from "../utils/Routes";
 import {transitionTo} from "../utils/Routing";
 
 // Axios instance for communicating with Backend
-export let axiosBackend = axios.create();
+export let axiosBackend = axios.create({
+    withCredentials: true
+});
 
 axiosBackend.interceptors.response.use(
     response => response,
