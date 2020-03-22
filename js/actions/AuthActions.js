@@ -5,8 +5,9 @@ import * as ActionConstants from "../constants/ActionConstants";
 export function login(username, password) {
     return function (dispatch) {
         dispatch(userAuthPending());
-        axiosBackend.post('j_spring_security_check', `username=${username}&password=${password}`,
-            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        axiosBackend.post('http://localhost:8080/study_manager_war_exploded/j_spring_security_check', `username=${username}&password=${password}`,
+            {
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).then((response) => {
             const data = response.data;
             if (!data.success || !data.loggedIn) {
@@ -16,7 +17,10 @@ export function login(username, password) {
             }
             dispatch(userAuthSuccess(username));
             dispatch(loadUserProfile());
-            try { transitionToHome(); } catch (e) {/* caused test warning */}
+            try {
+                transitionToHome();
+            } catch (e) {/* caused test warning */
+            }
         }).catch((error) => {
             dispatch(userAuthError(error.response.data));
         });
@@ -65,9 +69,9 @@ export function loadUserProfile() {
     //console.log("Loading user profile");
     return function (dispatch) {
         dispatch(loadUserProfilePending());
-        axiosBackend.get('rest/users/current').then((response) => {
+        axiosBackend.get('http://localhost:8080/study_manager_war_exploded/rest/users/current').then((response) => {
             dispatch(loadUserProfileSuccess(response.data));
-        }).catch ((error) => {
+        }).catch((error) => {
             dispatch(loadUserProfileError(error.response.data));
         });
     }
@@ -98,8 +102,8 @@ export function passwordReset(email) {
         dispatch({type: ActionConstants.PASSWORD_RESET_PENDING});
         axiosBackend.post('rest/users/password-reset', email, {headers: {"Content-Type": "text/plain"}})
             .then(() => {
-            dispatch({type: ActionConstants.PASSWORD_RESET_SUCCESS, email});
-        }).catch ((error) => {
+                dispatch({type: ActionConstants.PASSWORD_RESET_SUCCESS, email});
+            }).catch((error) => {
             dispatch({type: ActionConstants.PASSWORD_RESET_ERROR});
         });
     }
@@ -111,8 +115,8 @@ export function validateToken(token) {
         axiosBackend.post('rest/users/validate-token', token, {headers: {"Content-Type": "text/plain"}})
             .then(() => {
                 dispatch({type: ActionConstants.VALIDATE_TOKEN_SUCCESS});
-            }).catch (() => {
-                dispatch({type: ActionConstants.VALIDATE_TOKEN_ERROR});
+            }).catch(() => {
+            dispatch({type: ActionConstants.VALIDATE_TOKEN_ERROR});
         });
     }
 }
@@ -122,7 +126,7 @@ export function changePasswordToken(password, token) {
         dispatch({type: ActionConstants.PASSWORD_CHANGE_TOKEN_PENDING});
         axiosBackend.put('rest/users/password-change-token', {token, password}).then(() => {
             dispatch({type: ActionConstants.PASSWORD_CHANGE_TOKEN_SUCCESS});
-        }).catch (() => {
+        }).catch(() => {
             dispatch({type: ActionConstants.PASSWORD_CHANGE_TOKEN_ERROR});
         });
     }
