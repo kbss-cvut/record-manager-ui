@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import assign from 'object-assign';
 import injectIntl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
 import Record from './Record';
@@ -90,7 +89,7 @@ class RecordController extends React.Component {
     };
 
     _onChange = (change) => {
-        const update = assign({}, this.state.record, change);
+        const update = {...this.state.record, ...change};
         if (RecordValidator.isComplete(update)) {
             update.state.recordComplete();
         } else {

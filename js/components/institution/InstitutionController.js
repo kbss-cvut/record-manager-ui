@@ -1,7 +1,6 @@
 'use strict';
 
 import React from "react";
-import assign from "object-assign";
 import Institution from "./Institution";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
@@ -11,7 +10,8 @@ import {connect} from "react-redux";
 import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
 import {bindActionCreators} from "redux";
 import {
-    unloadSavedInstitution} from "../../actions/InstitutionActions";
+    unloadSavedInstitution
+} from "../../actions/InstitutionActions";
 import {canLoadInstitutionsPatients} from "../../utils/Utils";
 import {deleteUser, loadInstitutionMembers, unloadInstitutionMembers} from "../../actions/UserActions";
 import {
@@ -47,7 +47,7 @@ class InstitutionController extends React.Component {
                 this.props.loadRecords(null, institutionKey);
             }
         }
-        if(this.props.institutionSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY && this.props.institutionSaved.status === ACTION_STATUS.SUCCESS) {
+        if (this.props.institutionSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY && this.props.institutionSaved.status === ACTION_STATUS.SUCCESS) {
             this.setState({showAlert: true});
             this.props.unloadSavedInstitution();
         }
@@ -92,7 +92,7 @@ class InstitutionController extends React.Component {
         const handlers = this.props.viewHandlers[Routes.editInstitution.name];
         if (handlers) {
             transitionTo(handlers.onCancel);
-        } else if (this.props.currentUser.role === ROLE.ADMIN){
+        } else if (this.props.currentUser.role === ROLE.ADMIN) {
             transitionTo(Routes.institutions);
         } else {
             transitionTo(Routes.dashboard);
@@ -100,7 +100,7 @@ class InstitutionController extends React.Component {
     };
 
     _onChange = (change) => {
-        const update = assign({}, this.state.institution, change);
+        const update = {...this.state.institution, ...change};
         this.setState({institution: update});
     };
 
@@ -139,10 +139,12 @@ class InstitutionController extends React.Component {
             onEditPatient: this._onEditPatient,
             onDelete: this._onDeleteUser
         };
-        return <Institution handlers={handlers} institution={this.state.institution} institutionMembers={institutionMembers}
+        return <Institution handlers={handlers} institution={this.state.institution}
+                            institutionMembers={institutionMembers}
                             recordsLoaded={recordsLoaded} showAlert={this.state.showAlert} currentUser={currentUser}
-                            institutionLoaded={institutionLoaded} institutionSaved={institutionSaved} userDeleted={userDeleted}
-                            />;
+                            institutionLoaded={institutionLoaded} institutionSaved={institutionSaved}
+                            userDeleted={userDeleted}
+        />;
     }
 }
 

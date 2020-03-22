@@ -123,11 +123,11 @@ class User extends React.Component {
         const {user, currentUser, handlers, impersonation} = this.props;
         if (!user.isNew && currentUser.role === ROLE.ADMIN && getRole(user) !== ROLE.ADMIN) {
             return <Button style={{margin: '0 0.3em 0 0'}} bsStyle='danger' bsSize='small' ref='submit'
-                        disabled={impersonation.status === ACTION_STATUS.PENDING}
-                        onClick={handlers.impersonate}>
-                    {this.i18n('user.impersonate')}{impersonation.status === ACTION_STATUS.PENDING &&
-                <LoaderSmall/>}
-                </Button>;
+                           disabled={impersonation.status === ACTION_STATUS.PENDING}
+                           onClick={handlers.impersonate}>
+                {this.i18n('user.impersonate')}{impersonation.status === ACTION_STATUS.PENDING &&
+            <LoaderSmall/>}
+            </Button>;
         } else {
             return null;
         }
@@ -141,7 +141,7 @@ class User extends React.Component {
                            onClick={() => this._onSaveAndSendEmail()}
                            title={this.i18n('required')}>{this.i18n('save-and-send-email')}
                 {!UserValidator.isValid(user) && <HelpIcon text={this.i18n('required')}/>}
-                {userSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
+                {userSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
             </Button>
         } else {
             return null;
@@ -159,17 +159,19 @@ class User extends React.Component {
     }
 
     render() {
-        const {userSaved, userLoaded, currentUser, showAlert, user, handlers,
-            invitationSent, invited, invitationDelete, impersonation, impersonated, deletedInvitation} = this.props;
+        const {
+            userSaved, userLoaded, currentUser, showAlert, user, handlers,
+            invitationSent, invited, invitationDelete, impersonation, impersonated, deletedInvitation
+        } = this.props;
         if (!user && (!userLoaded.status || userLoaded.status === ACTION_STATUS.PENDING)) {
-            return <LoaderPanel header={<span>{this.i18n('user.panel-title')}</span>} />;
+            return <LoaderPanel header={<span>{this.i18n('user.panel-title')}</span>}/>;
         } else if (userLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('user.load-error', {error: userLoaded.error.message})}/>;
         }
         const generateButton = user.isNew &&
             <Button bsStyle='link' bsSize='small' onClick={handlers.generateUsername}>
-                <Glyphicon glyph="random" />
+                <Glyphicon glyph="random"/>
             </Button>;
 
         return <Panel header={<span>{this.i18n('user.panel-title')}</span>} bsStyle='primary'>
@@ -194,7 +196,7 @@ class User extends React.Component {
                         <HorizontalInput type='text' name='username' label={`${this.i18n('user.username')}*`}
                                          disabled={!user.isNew}
                                          value={user.username} labelWidth={3} inputWidth={8} onChange={this._onChange}
-                                         iconRight={user.isNew ? generateButton : null} />
+                                         iconRight={user.isNew ? generateButton : null}/>
                     </div>
                     <div className='col-xs-6'>
                         <HorizontalInput type='email' name='emailAddress' label={`${this.i18n('users.email')}*`}
@@ -205,15 +207,16 @@ class User extends React.Component {
                 </div>
                 <div className='row'>
                     {currentUser.role === ROLE.ADMIN &&
-                        <div className='col-xs-6'>
-                            <HorizontalInput type='select' name='institution' label={`${this.i18n('institution.panel-title')}*`}
-                                             onChange={this._onInstitutionSelected}
-                                             disabled={currentUser.role !== ROLE.ADMIN}
-                                             value={user.institution ? user.institution.uri : ''}
-                                             labelWidth={3} inputWidth={8}>
-                                {this._generateInstitutionsOptions()}
-                            </HorizontalInput>
-                        </div>
+                    <div className='col-xs-6'>
+                        <HorizontalInput type='select' name='institution'
+                                         label={`${this.i18n('institution.panel-title')}*`}
+                                         onChange={this._onInstitutionSelected}
+                                         disabled={currentUser.role !== ROLE.ADMIN}
+                                         value={user.institution ? user.institution.uri : ''}
+                                         labelWidth={3} inputWidth={8}>
+                            {this._generateInstitutionsOptions()}
+                        </HorizontalInput>
+                    </div>
                     }
                     <div className='col-xs-6'>
                         <HorizontalInput type='select' name='role' label={`${this.i18n('user.role')}*`}
@@ -239,15 +242,15 @@ class User extends React.Component {
                     {this._passwordChange()}
                     {this._saveAndSendEmailButton()}
                     {(currentUser.role === ROLE.ADMIN || currentUser.username === user.username) &&
-                        <Button bsStyle='success' bsSize='small' ref='submit'
+                    <Button bsStyle='success' bsSize='small' ref='submit'
                             disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
                             onClick={() => this._onSave()}
                             title={this.i18n('required')}>
                         {this.i18n('save')}
                         {!UserValidator.isValid(user) && <HelpIcon text={this.i18n('required')}/>}
                         {userSaved.status === ACTION_STATUS.PENDING &&
-                        <LoaderSmall />}
-                        </Button>
+                        <LoaderSmall/>}
+                    </Button>
                     }
                     <Button bsStyle='link' bsSize='small' onClick={handlers.onCancel}>
                         {this.i18n(this.props.backToInstitution ? 'users.back-to-institution' : 'cancel')}
@@ -259,12 +262,12 @@ class User extends React.Component {
                 {showAlert && userSaved.status === ACTION_STATUS.SUCCESS &&
                 <AlertMessage type={ALERT_TYPES.SUCCESS}
                               message={this.i18n(this.state.savedWithEmail ? 'user.save-success-with-email' : 'user.save-success')}/>}
-                {invited && invitationSent.status === ACTION_STATUS.SUCCESS  &&
+                {invited && invitationSent.status === ACTION_STATUS.SUCCESS &&
                 <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.send-invitation-success')}/>}
                 {invited && invitationSent.status === ACTION_STATUS.ERROR &&
                 <AlertMessage type={ALERT_TYPES.DANGER}
-                    message={this.props.formatMessage('user.send-invitation-error', {error: invitationSent.error.message})}/>}
-                {deletedInvitation && invitationDelete.status === ACTION_STATUS.SUCCESS  &&
+                              message={this.props.formatMessage('user.send-invitation-error', {error: invitationSent.error.message})}/>}
+                {deletedInvitation && invitationDelete.status === ACTION_STATUS.SUCCESS &&
                 <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.delete-invitation-option-success')}/>}
                 {deletedInvitation && invitationDelete.status === ACTION_STATUS.ERROR &&
                 <AlertMessage type={ALERT_TYPES.DANGER}

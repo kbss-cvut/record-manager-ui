@@ -1,8 +1,6 @@
 'use strict';
 
 import React from 'react';
-import assign from 'object-assign';
-
 import injectIntl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
 import User from './User';
@@ -41,10 +39,10 @@ class UserController extends React.Component {
         if (!this.state.user) {
             this.props.loadUser(this.props.params.username);
         }
-        if(this.state.user && this.state.user.isNew && this.institution) {
+        if (this.state.user && this.state.user.isNew && this.institution) {
             this._onChange({institution: this.institution});
         }
-        if(this.props.userSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY && this.props.userSaved.status === ACTION_STATUS.SUCCESS) {
+        if (this.props.userSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY && this.props.userSaved.status === ACTION_STATUS.SUCCESS) {
             this.setState({showAlert: true});
             this.props.unloadSavedUser();
         }
@@ -55,7 +53,7 @@ class UserController extends React.Component {
     }
 
     componentDidMount() {
-        if(this.props.currentUser.role === ROLE.ADMIN && !this.props.institutionsLoaded.institutions) {
+        if (this.props.currentUser.role === ROLE.ADMIN && !this.props.institutionsLoaded.institutions) {
             this.props.loadInstitutions();
         }
     }
@@ -107,7 +105,7 @@ class UserController extends React.Component {
     };
 
     _onChange = (change) => {
-        const update = assign({}, this.state.user, change);
+        const update = {...this.state.user, ...change};
         this.setState({user: update});
     };
 
@@ -123,9 +121,9 @@ class UserController extends React.Component {
 
     _getPayload() {
         let payload = this._isNew() ? this.props.transitionPayload[Routes.createUser.name] :
-                                      this.props.transitionPayload[Routes.editUser.name];
+            this.props.transitionPayload[Routes.editUser.name];
         this._isNew() ? this.props.setTransitionPayload(Routes.createUser.name, null) :
-                        this.props.setTransitionPayload(Routes.editUser.name, null);
+            this.props.setTransitionPayload(Routes.editUser.name, null);
         return payload ? payload.institution : null;
     }
 
@@ -145,8 +143,10 @@ class UserController extends React.Component {
     };
 
     render() {
-        const {currentUser, userSaved, userLoaded, institutionsLoaded,
-            invitationSent, impersonation, invitationDelete} = this.props;
+        const {
+            currentUser, userSaved, userLoaded, institutionsLoaded,
+            invitationSent, impersonation, invitationDelete
+        } = this.props;
         if (!currentUser) {
             return null;
         }

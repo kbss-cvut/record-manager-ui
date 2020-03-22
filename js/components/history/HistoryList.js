@@ -14,7 +14,6 @@ import HistoryTable from "./HistoryTable";
 import {Routes} from "../../utils/Routes";
 import {transitionToWithOpts} from "../../utils/Routing";
 import HistoryPagination from "./HistoryPagination";
-import assign from "object-assign";
 
 class HistoryList extends React.Component {
     constructor(props) {
@@ -39,7 +38,7 @@ class HistoryList extends React.Component {
     _handleChange = (e) => {
         let change = {};
         change[e.target.name] = e.target.value;
-        this.setState({searchData: assign({}, this.state.searchData, change), pageNumber: 1});
+        this.setState({searchData: {...this.state.searchData, ...change}, pageNumber: 1});
     };
 
     _onKeyPress = (e) => {

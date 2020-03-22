@@ -5,7 +5,6 @@ import injectIntl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
 import {connect} from "react-redux";
 import PasswordChange from "./PasswordChange";
-import assign from "object-assign";
 import {Routes} from "../../utils/Routes";
 import {transitionToWithOpts} from "../../utils/Routing";
 import {bindActionCreators} from "redux";
@@ -24,7 +23,7 @@ class PasswordChangeController extends React.Component {
     }
 
     _onChange = (change) => {
-        const update = assign({}, this.state.password, change);
+        const update = {...this.state.password, ...change};
         this.setState({password: update});
     };
 

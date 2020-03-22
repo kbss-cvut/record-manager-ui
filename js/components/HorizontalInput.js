@@ -3,7 +3,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {Checkbox, Col, ControlLabel, FormGroup, FormControl, HelpBlock, Radio, InputGroup} from "react-bootstrap";
-import assign from "object-assign";
 
 export default class HorizontalInput extends React.Component {
     static propTypes = {
@@ -55,13 +54,14 @@ export default class HorizontalInput extends React.Component {
     }
 
     _getInputProps() {
-        let props = assign({}, this.props);
+        let props = {...this.props};
         delete props.inputOffset;
         delete props.inputWidth;
         delete props.labelWidth;
         delete props.help;
         delete props.validation;
         delete props.iconRight;
+
         return props;
     }
 
@@ -88,7 +88,7 @@ export default class HorizontalInput extends React.Component {
                 <FormControl componentClass='select' ref={c => this.input = c} {...this._getInputProps()}>
                     {this.props.children}
                 </FormControl>
-                {this.props.validation && <FormControl.Feedback />}
+                {this.props.validation && <FormControl.Feedback/>}
                 {this._renderHelp()}
             </Col>
         </FormGroup>;
@@ -105,7 +105,7 @@ export default class HorizontalInput extends React.Component {
             <Col lg={this.props.inputWidth}>
                 <FormControl componentClass='textarea' style={{height: 'auto'}}
                              ref={c => this.input = c} {...this._getInputProps()}/>
-                {this.props.validation && <FormControl.Feedback />}
+                {this.props.validation && <FormControl.Feedback/>}
                 {this._renderHelp()}
             </Col>
         </FormGroup>;
@@ -128,7 +128,7 @@ export default class HorizontalInput extends React.Component {
                     :
                     <div>
                         {formControl}
-                        {this.props.validation && <FormControl.Feedback />}
+                        {this.props.validation && <FormControl.Feedback/>}
                         {this._renderHelp()}
                     </div>
                 }
