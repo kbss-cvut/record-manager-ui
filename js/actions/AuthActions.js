@@ -1,11 +1,12 @@
 import {axiosBackend} from "./index";
 import {transitionToHome} from "../utils/Routing";
 import * as ActionConstants from "../constants/ActionConstants";
+import {API_URL} from '../../config';
 
 export function login(username, password) {
     return function (dispatch) {
         dispatch(userAuthPending());
-        axiosBackend.post('http://localhost:8080/study_manager_war_exploded/j_spring_security_check', `username=${username}&password=${password}`,
+        axiosBackend.post(`${API_URL}/j_spring_security_check`, `username=${username}&password=${password}`,
             {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).then((response) => {
@@ -50,7 +51,7 @@ export function userAuthError(error) {
 export function logout() {
     //console.log("Logouting user");
     return function (dispatch) {
-        axiosBackend.post('j_spring_security_logout').then(() => {
+        axiosBackend.post(`${API_URL}/j_spring_security_logout`).then(() => {
             dispatch(unauthUser());
             //Logger.log('User successfully logged out.');
         }).catch((error) => {
@@ -69,10 +70,10 @@ export function loadUserProfile() {
     //console.log("Loading user profile");
     return function (dispatch) {
         dispatch(loadUserProfilePending());
-        axiosBackend.get('http://localhost:8080/study_manager_war_exploded/rest/users/current').then((response) => {
+        axiosBackend.get(`${API_URL}/rest/users/current`).then((response) => {
             dispatch(loadUserProfileSuccess(response.data));
         }).catch((error) => {
-            dispatch(loadUserProfileError(error.response.data));
+            dispatch(loadUserProfileError(error && error.response ? error.response.data : error));
         });
     }
 }
@@ -100,7 +101,7 @@ export function loadUserProfileError(error) {
 export function passwordReset(email) {
     return function (dispatch) {
         dispatch({type: ActionConstants.PASSWORD_RESET_PENDING});
-        axiosBackend.post('rest/users/password-reset', email, {headers: {"Content-Type": "text/plain"}})
+        axiosBackend.post(`${API_URL}/rest/users/password-reset`, email, {headers: {"Content-Type": "text/plain"}})
             .then(() => {
                 dispatch({type: ActionConstants.PASSWORD_RESET_SUCCESS, email});
             }).catch((error) => {
@@ -112,7 +113,7 @@ export function passwordReset(email) {
 export function validateToken(token) {
     return function (dispatch) {
         dispatch({type: ActionConstants.VALIDATE_TOKEN_PENDING});
-        axiosBackend.post('rest/users/validate-token', token, {headers: {"Content-Type": "text/plain"}})
+        axiosBackend.post(`${API_URL}/rest/users/validate-token`, token, {headers: {"Content-Type": "text/plain"}})
             .then(() => {
                 dispatch({type: ActionConstants.VALIDATE_TOKEN_SUCCESS});
             }).catch(() => {
@@ -124,7 +125,7 @@ export function validateToken(token) {
 export function changePasswordToken(password, token) {
     return function (dispatch) {
         dispatch({type: ActionConstants.PASSWORD_CHANGE_TOKEN_PENDING});
-        axiosBackend.put('rest/users/password-change-token', {token, password}).then(() => {
+        axiosBackend.put(`${API_URL}/rest/users/password-change-token`, {token, password}).then(() => {
             dispatch({type: ActionConstants.PASSWORD_CHANGE_TOKEN_SUCCESS});
         }).catch(() => {
             dispatch({type: ActionConstants.PASSWORD_CHANGE_TOKEN_ERROR});

@@ -25,7 +25,12 @@ function selectLocalization() {
     // } else {
     //     intlData = enLang;
     // }
-    intlData = enLang;
+
+    if (LANGUAGE === 'cs') {
+        intlData = csLang;
+    } else {
+        intlData = enLang;
+    }
 }
 
 selectLocalization();
@@ -63,6 +68,7 @@ import {errorLogger, historyLogger} from "./utils/HistoryLogger";
 import Statistics from "./components/statistics/Statistics";
 import PasswordToken from "./components/login/PasswordToken";
 import Logout from "./components/login/Logout";
+import {LANGUAGE} from '../config';
 
 function onRouteEnter() {
     execute(this.path);

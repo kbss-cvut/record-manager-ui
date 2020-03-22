@@ -1,6 +1,7 @@
 import {axiosBackend} from "./index";
 import * as ActionConstants from "../constants/ActionConstants";
 import {omit, startsWith, endsWith} from 'lodash';
+import {API_URL} from '../../config';
 
 const URL_PREFIX = 'rest/history';
 
@@ -13,21 +14,26 @@ export function logAction(action, author, timestamp) {
         return;
     }
     const payload = JSON.stringify(omit(action, 'type'));
-    axiosBackend.post(URL_PREFIX, {author, timestamp, type: action.type, payload: payload !== '{}' ? payload : null});
+    axiosBackend.post(`${API_URL}/${URL_PREFIX}`, {
+        author,
+        timestamp,
+        type: action.type,
+        payload: payload !== '{}' ? payload : null
+    });
 }
 
 export function loadActions(pageNumber, searchData) {
     let urlSuffix = `?page=${pageNumber}`;
     if (searchData && searchData.author && searchData.action) {
         urlSuffix = `${urlSuffix}&author=${searchData.author}&type=${searchData.action}`;
-    } else if (searchData && searchData.author){
+    } else if (searchData && searchData.author) {
         urlSuffix = `${urlSuffix}&author=${searchData.author}`;
     } else if (searchData && searchData.action) {
         urlSuffix = `${urlSuffix}&type=${searchData.action}`;
     }
     return function (dispatch) {
         dispatch({type: ActionConstants.LOAD_ACTIONS_HISTORY_PENDING});
-        axiosBackend.get(`${URL_PREFIX}${urlSuffix}`).then((response) => {
+        axiosBackend.get(`${API_URL}/${URL_PREFIX}${urlSuffix}`).then((response) => {
             dispatch({type: ActionConstants.LOAD_ACTIONS_HISTORY_SUCCESS, actionsHistory: response.data});
         }).catch((error) => {
             dispatch({type: ActionConstants.LOAD_ACTIONS_HISTORY_ERROR, error: error.response.data});
@@ -38,7 +44,7 @@ export function loadActions(pageNumber, searchData) {
 export function loadActionByKey(key) {
     return function (dispatch) {
         dispatch({type: ActionConstants.LOAD_ACTION_HISTORY_PENDING});
-        axiosBackend.get(`${URL_PREFIX}/${key}`).then((response) => {
+        axiosBackend.get(`${API_URL}/${URL_PREFIX}/${key}`).then((response) => {
             dispatch({type: ActionConstants.LOAD_ACTION_HISTORY_SUCCESS, actionHistory: response.data});
         }).catch((error) => {
             dispatch({type: ActionConstants.LOAD_ACTION_HISTORY_ERROR, error: error.response.data});

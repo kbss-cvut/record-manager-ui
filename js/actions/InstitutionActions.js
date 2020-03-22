@@ -3,12 +3,13 @@ import {axiosBackend} from "./index";
 import {ACTION_FLAG} from "../constants/DefaultConstants";
 import * as Utils from "../utils/Utils";
 import {loadInstitutions} from "./InstitutionsActions";
+import {API_URL} from '../../config';
 
 export function deleteInstitution(institution) {
     //console.log("Deleting institution: ", institution);
     return function (dispatch) {
         dispatch(deleteInstitutionPending(institution.key));
-        axiosBackend.delete(`rest/institutions/${institution.key}`, {
+        axiosBackend.delete(`${API_URL}/rest/institutions/${institution.key}`, {
             ...institution
         }).then(() => {
             dispatch(loadInstitutions());
@@ -45,7 +46,7 @@ export function loadInstitution(key) {
     //console.log("Loading institution with key: ", key);
     return function (dispatch) {
         dispatch(loadInstitutionPending());
-        axiosBackend.get(`rest/institutions/${key}`).then((response) => {
+        axiosBackend.get(`${API_URL}/rest/institutions/${key}`).then((response) => {
             dispatch(loadInstitutionSuccess(response.data));
         }).catch((error) => {
             dispatch(loadInstitutionError(error.response.data));
@@ -83,7 +84,7 @@ export function createInstitution(institution) {
     //console.log("Creating institution: ", institution);
     return function (dispatch) {
         dispatch(saveInstitutionPending(ACTION_FLAG.CREATE_ENTITY));
-        axiosBackend.post('rest/institutions', {
+        axiosBackend.post(`${API_URL}/rest/institutions`, {
             ...institution
         }).then((response) => {
             const key = Utils.extractKeyFromLocationHeader(response);
@@ -99,7 +100,7 @@ export function updateInstitution(institution) {
     //console.log("Updating institution: ", institution);
     return function (dispatch) {
         dispatch(saveInstitutionPending(ACTION_FLAG.UPDATE_ENTITY));
-        axiosBackend.put(`rest/institutions/${institution.key}`, {
+        axiosBackend.put(`${API_URL}/rest/institutions/${institution.key}`, {
             ...institution
         }).then((response) => {
             dispatch(saveInstitutionSuccess(institution, null, ACTION_FLAG.UPDATE_ENTITY));

@@ -3,12 +3,13 @@ import {ACTION_FLAG, ACTION_STATUS} from "../constants/DefaultConstants";
 import {axiosBackend} from "./index";
 import * as Utils from "../utils/Utils";
 import {loadRecords} from "./RecordsActions";
+import {API_URL} from '../../config';
 
 export function deleteRecord(record, currentUser) {
     //console.log("Deleting record: ", record);
     return function (dispatch) {
         dispatch(deleteRecordPending(record.key));
-        axiosBackend.delete(`rest/records/${record.key}`, {
+        axiosBackend.delete(`${API_URL}/rest/records/${record.key}`, {
             ...record
         }).then(() => {
             dispatch(loadRecords(currentUser));
@@ -47,7 +48,7 @@ export function loadRecord(key) {
     //console.log("Loading record with key: ", key);
     return function (dispatch) {
         dispatch(loadRecordPending());
-        axiosBackend.get(`rest/records/${key}`).then((response) => {
+        axiosBackend.get(`${API_URL}/rest/records/${key}`).then((response) => {
             dispatch(loadRecordSuccess(response.data));
         }).catch((error) => {
             dispatch(loadRecordError(error.response.data));
@@ -85,7 +86,7 @@ export function createRecord(record, currentUser) {
     //console.log("Creating record: ", record);
     return function (dispatch) {
         dispatch(saveRecordPending(ACTION_FLAG.CREATE_ENTITY));
-        axiosBackend.post('rest/records', {
+        axiosBackend.post(`${API_URL}/rest/records`, {
             ...record
         }).then((response) => {
             const key = Utils.extractKeyFromLocationHeader(response);
@@ -101,7 +102,7 @@ export function updateRecord(record, currentUser) {
     //console.log("Updating record: ", record);
     return function (dispatch) {
         dispatch(saveRecordPending(ACTION_FLAG.UPDATE_ENTITY));
-        axiosBackend.put(`rest/records/${record.key}`, {
+        axiosBackend.put(`${API_URL}/rest/records/${record.key}`, {
             ...record
         }).then((response) => {
             dispatch(saveRecordSuccess(record, null, ACTION_FLAG.UPDATE_ENTITY));

@@ -1,11 +1,22 @@
-const {resolve} = require('path');
+const dotenvConfig = require('dotenv-safe').config({
+    allowEmptyValues: false,
+    sample: './.env.example',
+});
 
+
+const {resolve} = require('path');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {getIfUtils, removeEmpty} = require('webpack-config-utils');
 const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
+
+const apiUrl = process.env.STUDY_MANAGER_API_URL;
+const appTitle = process.env.STUDY_MANAGER_APP_TITLE;
+const devServerPort = process.env.STUDY_MANAGER_DEV_SERVER_PORT;
+
+console.log('STUDY_MANAGER_API_URL =', apiUrl);
 
 module.exports = (
     env = {
@@ -29,7 +40,7 @@ module.exports = (
         },
         devServer: {
             inline: true,
-            port: 8080
+            port: devServerPort || 8080
         },
         optimization: {
             runtimeChunk: 'single',
@@ -87,12 +98,22 @@ module.exports = (
             new HtmlWebpackPlugin({
                 version: ifProd(process.env.npm_package_version, "Dev"),
                 year: new Date().getFullYear(),
-                title: 'Fertility Study Manager',
+                title: appTitle,
                 template: 'index.html',
                 inject: true,
                 minify: true,
             }),
             new InlineManifestWebpackPlugin(),
+
+            new webpack.DefinePlugin({
+                'process.env': {
+                    NODE_ENV: ifProd('"production"', '"development"'),
+                    NPM_PACKAGE_VERSION: JSON.stringify(process.env.npm_package_version),
+                    ...Object.keys(dotenvConfig.parsed).reduce((acc, key) => {
+                        return {...acc, [key]: JSON.stringify(dotenvConfig.parsed[key])};
+                    }, {}),
+                },
+            }),
 
         ])
     };

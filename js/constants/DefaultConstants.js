@@ -1,14 +1,15 @@
 import {Routes} from "../utils/Routes";
+import {APP_TITLE} from '../../config';
 
 export const WEB_LANG = 'en';
 
-export const APP_NAME = 'Fertility Saving Study Manager';
+export const APP_NAME = APP_TITLE;
 export const HOME_ROUTE = Routes.dashboard;
 
 /**
  * Types of message published by the MessageStore
  */
-export const MESSAGE_TYPE= {
+export const MESSAGE_TYPE = {
     SUCCESS: 'success',
     INFO: 'info',
     WARNING: 'warning',
@@ -36,15 +37,15 @@ export const FILTER_DEFAULT = 'all';
 export const DASHBOARDS = {
     MAIN: {
         id: 'main',
-            title: 'dashboard.welcome'
+        title: 'dashboard.welcome'
     },
     CREATE_REPORT: {
         id: 'createReport',
-            title: 'dashboard.create-tile'
+        title: 'dashboard.create-tile'
     },
     IMPORT_REPORT: {
         id: 'importReport',
-            title: 'dashboard.create-import-tile'
+        title: 'dashboard.create-import-tile'
     }
 };
 

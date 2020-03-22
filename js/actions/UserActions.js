@@ -1,13 +1,14 @@
 import {ACTION_FLAG, ROLE} from "../constants/DefaultConstants";
-import {axiosBackend} from "./index";
+import { axiosBackend} from "./index";
 import * as ActionConstants from "../constants/ActionConstants";
 import {loadUsers} from "./UsersActions";
+import {API_URL} from '../../config';
 
 export function createUser(user) {
     //console.log("Creating user: ", user);
     return function (dispatch) {
         dispatch(saveUserPending(ACTION_FLAG.CREATE_ENTITY));
-        axiosBackend.post('rest/users', {
+        axiosBackend.post(`${API_URL}/rest/users`, {
             ...user
         }).then(() => {
             dispatch(saveUserSuccess(user, ACTION_FLAG.CREATE_ENTITY));
@@ -22,7 +23,7 @@ export function updateUser(user, currentUser, sendEmail = true) {
     //console.log("Updating user: ", user);
     return function (dispatch) {
         dispatch(saveUserPending(ACTION_FLAG.UPDATE_ENTITY));
-        axiosBackend.put(`rest/users/${user.username}${!sendEmail ? '?email=false' : ''}`, {
+        axiosBackend.put(`${API_URL}/rest/users/${user.username}${!sendEmail ? '?email=false' : ''}`, {
             ...user
         }).then(() => {
             dispatch(saveUserSuccess(user, ACTION_FLAG.UPDATE_ENTITY));
@@ -69,7 +70,7 @@ export function deleteUser(user, institution = null) {
     //console.log("Deleting user: ", user);
     return function (dispatch) {
         dispatch(deleteUserPending(user.username));
-        axiosBackend.delete(`rest/users/${user.username}`, {
+        axiosBackend.delete(`${API_URL}/rest/users/${user.username}`, {
             ...user
         }).then(() => {
             if (institution){
@@ -110,7 +111,7 @@ export function loadUser(username) {
     //console.log("Loading user with username: ", username);
     return function (dispatch) {
         dispatch(loadUserPending());
-        axiosBackend.get(`rest/users/${username}`).then((response) => {
+        axiosBackend.get(`${API_URL}/rest/users/${username}`).then((response) => {
             dispatch(loadUserSuccess(response.data));
         }).catch((error) => {
             dispatch(loadUserError(error.response.data));
@@ -148,7 +149,7 @@ export function loadInstitutionMembers(key) {
     //console.log("Loading members of institution", key);
     return function (dispatch) {
         dispatch(loadInstitutionMembersPending());
-        axiosBackend.get(`rest/users?institution=${key}`).then((response) => {
+        axiosBackend.get(`${API_URL}/rest/users?institution=${key}`).then((response) => {
             dispatch(loadInstitutionMembersSuccess(response.data));
         }).catch((error) => {
             dispatch(loadInstitutionMembersError(error.response.data));
@@ -185,7 +186,7 @@ export function unloadInstitutionMembers() {
 export function changePassword(username, password, sendEmail = true) {
     return function (dispatch) {
         dispatch(changePasswordPending());
-        axiosBackend.put(`rest/users/${username}/password-change${!sendEmail ? '?email=false' : ''}`, {
+        axiosBackend.put(`${API_URL}/rest/users/${username}/password-change${!sendEmail ? '?email=false' : ''}`, {
             ...password
         }).then(() => {
             dispatch(changePasswordSuccess());
@@ -217,7 +218,7 @@ export function changePasswordError(error) {
 export function generateUsername(usernamePrefix) {
     return function (dispatch) {
         dispatch({type: ActionConstants.GENERATE_USERNAME_PENDING});
-        axiosBackend.get(`rest/users/generate-username/${usernamePrefix}`).then((response) => {
+        axiosBackend.get(`${API_URL}/rest/users/generate-username/${usernamePrefix}`).then((response) => {
             dispatch({type: ActionConstants.GENERATE_USERNAME_SUCCESS, generatedUsername: response.data});
         })
     }
@@ -226,7 +227,7 @@ export function generateUsername(usernamePrefix) {
 export function sendInvitation(username) {
     return function (dispatch) {
         dispatch({type: ActionConstants.SEND_INVITATION_PENDING, username});
-        axiosBackend.put(`rest/users/send-invitation/${username}`).then(() => {
+        axiosBackend.put(`${API_URL}/rest/users/send-invitation/${username}`).then(() => {
             dispatch({type: ActionConstants.SEND_INVITATION_SUCCESS, username});
             dispatch(loadUser(username));
         }).catch((error) => {
@@ -239,7 +240,7 @@ export function sendInvitation(username) {
 export function deleteInvitationOption(username) {
     return function (dispatch) {
         dispatch({type: ActionConstants.INVITATION_OPTION_DELETE_PENDING, username});
-        axiosBackend.post(`rest/users/send-invitation/delete`, username, {headers: {"Content-Type": "text/plain"}}).then(() => {
+        axiosBackend.post(`${API_URL}/rest/users/send-invitation/delete`, username, {headers: {"Content-Type": "text/plain"}}).then(() => {
             dispatch({type: ActionConstants.INVITATION_OPTION_DELETE_SUCCESS, username});
             dispatch(loadUser(username));
         }).catch((error) => {
@@ -252,7 +253,7 @@ export function deleteInvitationOption(username) {
 export function impersonate(username) {
     return function (dispatch) {
         dispatch({type: ActionConstants.IMPERSONATE_PENDING});
-        axiosBackend.post(`rest/users/impersonate`, username, {headers: {"Content-Type": "text/plain"}}).then(() => {
+        axiosBackend.post(`${API_URL}/rest/users/impersonate`, username, {headers: {"Content-Type": "text/plain"}}).then(() => {
             dispatch({type: ActionConstants.IMPERSONATE_SUCCESS, username});
             window.location.reload();
         }).catch ((error) => {
