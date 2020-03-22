@@ -3,10 +3,10 @@
 export default class JsonLdUtils {
 
     static getLocalized(data, intl) {
-        var locale = intl.locale,
-            defaultLocale = intl.defaultLocale,
-            defaultValue,
-            i, len;
+        const locale = intl.locale;
+        const defaultLocale = intl.defaultLocale;
+        let defaultValue;
+
         if (!data) {
             return null;
         }
@@ -16,7 +16,7 @@ export default class JsonLdUtils {
         if (!Array.isArray(data)) {
             return data['@value'];
         }
-        for (i = 0, len = data.length; i < len; i++) {
+        for (let i = 0; i < data.length; i++) {
             if (data[i]['@language']) {
                 if (data[i]['@language'] === locale) {
                     return data[i]['@value'];

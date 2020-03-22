@@ -1,43 +1,24 @@
 'use strict';
 
-var React = require('react');
-var Alert = require('react-bootstrap').Alert;
-var Button = require('react-bootstrap').Button;
-var ButtonToolbar = require('react-bootstrap').ButtonToolbar;
-var Panel = require('react-bootstrap').Panel;
-var Constants = require('s-forms').Constants;
-var HelpIcon = require('s-forms').HelpIcon;
-var JsonLdUtils = require('jsonld-utils').default;
+import React from 'react';
+import {Alert, Button, ButtonToolbar, Panel} from 'react-bootstrap';
+import {Constants, HelpIcon} from 's-forms';
+import JsonLdUtils from 'jsonld-utils';
+import injectIntl from '../../utils/injectIntl';
+import {WizardStoreInstance} from '../wizard/generator/WizardBuilder';
+import I18nWrapper from '../../i18n/I18nWrapper';
 
-var injectIntl = require('../../utils/injectIntl');
-var I18nMixin = require('../../i18n/I18nMixin');
-var WizardStore = require('../../stores/WizardStore');
-
-var WizardStep = React.createClass({
-    mixins: [I18nMixin],
-
-    propTypes: {
-        onClose: React.PropTypes.func,
-        onFinish: React.PropTypes.func.isRequired,
-        onAdvance: React.PropTypes.func,
-        onRetreat: React.PropTypes.func,
-        onNext: React.PropTypes.func,
-        onPrevious: React.PropTypes.func,
-        title: React.PropTypes.string,
-        stepIndex: React.PropTypes.number.isRequired,
-        isFirstStep: React.PropTypes.bool,
-        isLastStep: React.PropTypes.bool,
-        defaultNextDisabled: React.PropTypes.bool
-    },
-
-    getInitialState: function () {
-        return {
+class WizardStep extends React.Component {
+    constructor(props) {
+        super(props);
+        this.i18n = this.props.i18n;
+        this.state = {
             advanceDisabled: this.props.defaultNextDisabled != null ? this.props.defaultNextDisabled : false,
             retreatDisabled: false
-        };
-    },
+        }
+    }
 
-    onAdvance: function (err) {
+    onAdvance = (err) => {
         if (err) {
             this.setState({
                 advanceDisabled: false,
@@ -45,108 +26,122 @@ var WizardStep = React.createClass({
                 currentError: err
             });
         } else {
-            WizardStore.updateStepData(this.props.stepIndex, this.getStepData());
+            WizardStoreInstanceZ.updateStepData(this.props.stepIndex, this.getStepData());
             this.props.onAdvance();
         }
-    },
+    };
 
-    getStepData: function () {
+    getStepData = () => {
         return this.refs.component.getData ? this.refs.component.getData() : null;
-    },
+    };
 
-    onNext: function () {
+    onNext = () => {
         this.setState({
             advanceDisabled: true,
             retreatDisabled: true
         });
+
         if (this.props.onNext) {
             this.props.onNext.apply(this, [this.onAdvance]);
         } else {
-            WizardStore.updateStepData(this.props.stepIndex, this.getStepData());
+            WizardStoreInstance.updateStepData(this.props.stepIndex, this.getStepData());
             this.props.onAdvance();
         }
-    },
+    };
 
-    onPrevious: function () {
+    onPrevious = () => {
         if (this.props.onPrevious) {
             this.props.onPrevious.apply(this, [this.props.onRetreat]);
         } else {
             this.props.onRetreat();
         }
-    },
+    };
 
-    onFinish: function () {
-        WizardStore.updateStepData(this.props.stepIndex, this.getStepData());
+    onFinish = () => {
+        WizardStoreInstance.updateStepData(this.props.stepIndex, this.getStepData());
         this.props.onFinish();
-    },
+    };
 
-    enableNext: function () {
-        this.setState({advanceDisabled: false});
-    },
+    enableNext = () => this.setState({advanceDisabled: false});
 
-    disableNext: function () {
-        this.setState({advanceDisabled: true});
-    },
+    disableNext = () => {
+        this.setState({advanceDisabled: true})
+    };
 
+    render() {
 
-    render: function () {
-        var previousButton;
-        if (!this.props.isFirstStep) {
-            previousButton = (<Button onClick={this.onPrevious} disabled={this.state.retreatDisabled} bsStyle='primary'
-                                      bsSize='small'>{this.i18n('wizard.previous')}</Button>);
-        }
-        var advanceButton = this.renderAdvanceButton();
-        var error = null;
-        if (this.state.currentError) {
-            error = (<Alert bsStyle='danger'><p>{this.state.currentError.message}</p></Alert>);
-        }
-        var title = (<h4>{this.props.title}{this._renderHelpIcon()}</h4>);
         return (
             <div className='wizard-step'>
-                <Panel header={title} bsStyle='primary' className='wizard-step-content'>
+                <Panel
+                    header={<h4>{this.props.title}{this._renderHelpIcon()}</h4>}
+                    bsStyle='primary'
+                    className='wizard-step-content'
+                >
                     {this.renderComponent()}
                 </Panel>
+
                 <ButtonToolbar style={{float: 'right'}}>
-                    {previousButton}
-                    {advanceButton}
+                    {!this.props.isFirstStep &&
+                    <Button onClick={this.onPrevious} disabled={this.state.retreatDisabled} bsStyle='primary'
+                            bsSize='small'>{this.i18n('wizard.previous')}</Button>}
+                    {this.renderAdvanceButton()}
                 </ButtonToolbar>
-                {error}
+                {this.state.currentError &&
+                <Alert bsStyle='danger'><p>{this.state.currentError.message}</p></Alert>}
             </div>
         );
-    },
+    };
 
-    _renderHelpIcon: function() {
-        const question = WizardStore.getStepData([this.props.stepIndex]);
+    _renderHelpIcon = () => {
+        const question = WizardStoreInstance.getStepData([this.props.stepIndex]);
+
         return question[Constants.HELP_DESCRIPTION] ?
             <HelpIcon text={JsonLdUtils.getLocalized(question[Constants.HELP_DESCRIPTION], this.props.intl)}
                       iconClass='help-icon-section'/> : null;
-    },
+    };
 
-    renderAdvanceButton: function () {
-        var disabledTitle = this.state.advanceDisabled ? this.i18n('wizard.advance-disabled-tooltip') : null;
-        var button = null;
+    renderAdvanceButton = () => {
+        const disabledTitle = this.state.advanceDisabled ? this.i18n('wizard.advance-disabled-tooltip') : null;
+
         if (!this.props.isLastStep) {
-            button =
-                <Button onClick={this.onNext} disabled={this.state.advanceDisabled} bsStyle='primary' bsSize='small'
-                        title={disabledTitle}>{this.i18n('wizard.next')}</Button>;
+            return <Button
+                onClick={this.onNext} disabled={this.state.advanceDisabled} bsStyle='primary'
+                bsSize='small'
+                title={disabledTitle}>{this.i18n('wizard.next')}</Button>;
         }
-        return button;
-    },
+        return null;
+    };
 
-    renderComponent: function () {
-        return React.createElement(this.props.component, {
-            ref: 'component',
-            stepIndex: this.props.stepIndex,
-            enableNext: this.enableNext,
-            disableNext: this.disableNext,
-            next: this.onNext,
-            previous: this.onPrevious,
-            finish: this.onFinish,
-            insertStepAfterCurrent: this.props.onInsertStepAfterCurrent,
-            addStep: this.props.onAddStep,
-            removeStep: this.props.onRemoveStep
-        });
+    renderComponent = () => {
+        const PropsComponent = this.props.component;
+
+        return <PropsComponent
+            ref='component'
+            stepIndex={this.props.stepIndex}
+            enableNext={this.enableNext}
+            disableNext={this.disableNext}
+            next={this.onNext}
+            previous={this.onPrevious}
+            finish={this.onFinish}
+            insertStepAfterCurrent={this.props.onInsertStepAfterCurrent}
+            addStep={this.props.onAddStep}
+            removeStep={this.props.onRemoveStep}/>
     }
-});
+}
 
-module.exports = injectIntl(WizardStep);
+WizardStep
+    .propTypes = {
+    onClose: React.PropTypes.func,
+    onFinish: React.PropTypes.func.isRequired,
+    onAdvance: React.PropTypes.func,
+    onRetreat: React.PropTypes.func,
+    onNext: React.PropTypes.func,
+    onPrevious: React.PropTypes.func,
+    title: React.PropTypes.string,
+    stepIndex: React.PropTypes.number.isRequired,
+    isFirstStep: React.PropTypes.bool,
+    isLastStep: React.PropTypes.bool,
+    defaultNextDisabled: React.PropTypes.bool
+};
+
+export default injectIntl(I18nWrapper(WizardStep));

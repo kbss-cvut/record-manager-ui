@@ -1,9 +1,9 @@
 'use strict';
 
-var Reflux = require('reflux');
+import Reflux from 'reflux';
 
-var Actions = Reflux.createActions([
+const Actions = Reflux.createActions([
     'loadFormOptions'
 ]);
 
-module.exports = Actions;
+export default Actions;

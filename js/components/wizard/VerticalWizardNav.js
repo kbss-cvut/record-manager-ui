@@ -3,25 +3,24 @@
 import React from "react";
 import {ListGroup, ListGroupItem} from "react-bootstrap";
 
-const VerticalWizardNav = (props) => {
-
-    var navMenu = props.steps.map((step, index) => {
-        return <ListGroupItem key={'nav' + index} onClick={() => props.onNavigate(index)} id={'wizard-nav-' + index}
-                              active={index === props.currentStep ? 'active' : ''}>{step.name}</ListGroupItem>;
-    });
-
-    return  <div className="wizard-nav col-xs-2">
+//TODO add "disabled" to VerticalWizardNav
+const VerticalWizardNav = ({steps, onNavigate, currentStep}) => (
+    <div className="wizard-nav col-xs-2">
         <ListGroup>
-            {navMenu}
+            {steps.map((step, index) =>
+                <ListGroupItem
+                    key={'nav' + index} onClick={() => onNavigate(index)}
+                    id={'wizard-nav-' + index}
+                    active={index === currentStep ? 'active' : ''}>{step.name}</ListGroupItem>
+            )}
         </ListGroup>
-    </div>;
-};
+    </div>
+);
 
 VerticalWizardNav.propTypes = {
     currentStep: React.PropTypes.number.isRequired,
     steps: React.PropTypes.array.isRequired,
     onNavigate: React.PropTypes.func.isRequired
 };
-
 
 export default VerticalWizardNav;

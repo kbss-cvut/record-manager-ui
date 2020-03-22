@@ -2,7 +2,6 @@
 
 import React from "react";
 import assign from "object-assign";
-import Actions from "../../actions/Actions";
 import Institution from "./Institution";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
