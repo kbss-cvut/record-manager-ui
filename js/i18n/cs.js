@@ -50,7 +50,6 @@ export default {
         'login.reset-password-error': 'Resetování hesla se nezdařilo. Pokud je zadaný e-mail správný, kontaktujte administrátora.',
         'login.token-password-success': 'Heslo bylo nastaveno.',
 
-        'main.dashboard-nav': 'Hlavní strana',
         'main.users-nav': 'Uživatelé',
         'main.institutions-nav': 'Kliniky',
         'main.institution-nav': 'Moje klinika',
@@ -134,8 +133,11 @@ export default {
         'institution.delete-success': 'Klinika úspěšně odstraněna',
         'institution.delete-error': 'Kliniku se nepodařilo smazat. {error}',
         'institution.load-error': 'Kliniku se nepodařilo načíst. {error}',
+        'institution.members.not-found': 'Nebyli nalezeni žádní členové instituce...',
+        'institution.members.loading-error': 'Nelze načíst členy instituce. {error}',
 
         'records.panel-title': 'Záznamy o pacientech',
+        'records.id': 'Id',
         'records.local-name': 'Identifikátor pacienta',
         'records.completion-status': 'Stav vyplnění',
         'records.completion-status-tooltip.complete': 'Všechny povinné informace o pacientovi byly vyplněny.',
@@ -150,7 +152,7 @@ export default {
         'records.closed-study.create-tooltip': 'Studie je uzavřená na přidávání pacientů. Prosím, kontaktujte studijního koordinátora v připadě, že potřebujete přidat nový záznam pacienta.',
 
         'record.panel-title': 'Záznam o pacientovi {identifier}',
-        'record.form-title': 'Details',
+        'record.form-title': 'Detail',
         'record.institution': 'Pacient léčen na klinice',
         'record.created-by-msg': 'Vytvořil(a) {name} {date}.',
         'record.last-edited-msg': 'Naposledy upravil(a) {name} {date}.',
@@ -206,6 +208,9 @@ export default {
         'The passed username already exists.': 'Zadané uživatelské jméno již existuje.',
         'User with specified username already exists.': 'Uživatel s touto přezdívkou již existuje.',
         'Cannot update user.': 'Není možné aktualizovat usera.',
-        'Institution with members or patient records cannot be deleted.': 'Klinika s zaměstnanci nebo s záznamy o pacientech nelze odstranit.'
+        'Institution with members or patient records cannot be deleted.': 'Klinika s zaměstnanci nebo s záznamy o pacientech nelze odstranit.',
+        'Your browser is not fully supported! Some parts of web may not work properly.': 'Váš prohlížeč není plně podporován! Některé části stránek nemusí fungovat správně.',
+        'We recommend using the latest version of ': 'Doporučujeme použít nejnovější verzi ',
+        'or': ' nebo'
     }
 };
