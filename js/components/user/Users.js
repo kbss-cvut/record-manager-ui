@@ -8,13 +8,14 @@ import UserTable from './UserTable';
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderPanel, LoaderSmall} from "../Loader";
+import PropTypes from "prop-types";
 
 class Users extends React.Component {
     static propTypes = {
-        usersLoaded: React.PropTypes.object,
-        handlers: React.PropTypes.object.isRequired,
-        userDeleted: React.PropTypes.object,
-        showAlert: React.PropTypes.bool.isRequired,
+        usersLoaded: PropTypes.object,
+        handlers: PropTypes.object.isRequired,
+        userDeleted: PropTypes.object,
+        showAlert: PropTypes.bool.isRequired,
     };
 
     constructor(props) {
@@ -24,9 +25,9 @@ class Users extends React.Component {
 
     render() {
         const {usersLoaded, showAlert, userDeleted} = this.props;
-        if(!usersLoaded.users && (!usersLoaded.status || usersLoaded.status === ACTION_STATUS.PENDING)) {
+        if (!usersLoaded.users && (!usersLoaded.status || usersLoaded.status === ACTION_STATUS.PENDING)) {
             return <LoaderPanel header={this.i18n('users.panel-title')}/>;
-        } else if(usersLoaded.status === ACTION_STATUS.ERROR) {
+        } else if (usersLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('users.loading-error', {error: usersLoaded.error.message})}/>
         }
@@ -46,7 +47,7 @@ class Users extends React.Component {
 
     _renderHeader() {
         return <span>
-            {this.i18n('users.panel-title')}{this.props.usersLoaded.status === ACTION_STATUS.PENDING && <LoaderSmall />}
+            {this.i18n('users.panel-title')}{this.props.usersLoaded.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
         </span>;
     }
 }

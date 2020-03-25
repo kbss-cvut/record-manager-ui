@@ -2,6 +2,7 @@
 
 import React from 'react';
 import {Glyphicon, OverlayTrigger, Tooltip} from 'react-bootstrap';
+import PropTypes from "prop-types";
 
 const HelpIcon = (props) => {
     const tooltip = <Tooltip id='help-tooltip'>{props.text}</Tooltip>;
@@ -12,8 +13,8 @@ const HelpIcon = (props) => {
 };
 
 HelpIcon.propTypes = {
-    text: React.PropTypes.string.isRequired,
-    glyph: React.PropTypes.string
+    text: PropTypes.string.isRequired,
+    glyph: PropTypes.string
 };
 
 export default HelpIcon;

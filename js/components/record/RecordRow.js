@@ -7,6 +7,8 @@ import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import RecordValidator from "../../validation/RecordValidator";
 import {LoaderSmall} from "../Loader";
+import PropTypes from "prop-types";
+import {Link} from 'react-router-dom';
 
 let RecordRow = (props) => {
     const record = props.record,
@@ -16,8 +18,8 @@ let RecordRow = (props) => {
             <Button bsStyle='warning' bsSize='small' title={props.i18n('records.delete-tooltip')}
                     onClick={() => props.onDelete(record)}>{props.i18n('delete')}{props.deletionLoading && <LoaderSmall />}</Button>;
     return <tr>
-        <td className='report-row'><a href={'#/' + Routes.records.path + '/' + record.key}>{record.key}</a></td>
-        <td className='report-row'><a href={'#/' + Routes.records.path + '/' + record.key}>{record.localName}</a></td>
+        <td className='report-row'><Link to={Routes.records.path + '/' + record.key}>{record.key}</Link></td>
+        <td className='report-row'><Link to={Routes.records.path + '/' + record.key}>{record.localName}</Link></td>
         <td className='report-row content-center'>
             {formatDate(new Date(record.lastModified ? record.lastModified : record.dateCreated))}
         </td>
@@ -33,11 +35,11 @@ let RecordRow = (props) => {
 };
 
 RecordRow.propTypes = {
-    record: React.PropTypes.object.isRequired,
-    onEdit: React.PropTypes.func.isRequired,
-    onDelete: React.PropTypes.func.isRequired,
-    disableDelete: React.PropTypes.bool.isRequired,
-    deletionLoading: React.PropTypes.bool.isRequired
+    record: PropTypes.object.isRequired,
+    onEdit: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    disableDelete: PropTypes.bool.isRequired,
+    deletionLoading: PropTypes.bool.isRequired
 };
 
 export default injectIntl(I18nWrapper(RecordRow));

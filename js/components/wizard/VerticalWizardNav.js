@@ -2,6 +2,7 @@
 
 import React from "react";
 import {ListGroup, ListGroupItem} from "react-bootstrap";
+import PropTypes from "prop-types";
 
 //TODO add "disabled" to VerticalWizardNav
 const VerticalWizardNav = ({steps, onNavigate, currentStep}) => (
@@ -18,9 +19,9 @@ const VerticalWizardNav = ({steps, onNavigate, currentStep}) => (
 );
 
 VerticalWizardNav.propTypes = {
-    currentStep: React.PropTypes.number.isRequired,
-    steps: React.PropTypes.array.isRequired,
-    onNavigate: React.PropTypes.func.isRequired
+    currentStep: PropTypes.number.isRequired,
+    steps: PropTypes.array.isRequired,
+    onNavigate: PropTypes.func.isRequired
 };
 
 export default VerticalWizardNav;

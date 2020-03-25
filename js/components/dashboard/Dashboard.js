@@ -7,6 +7,7 @@ import {Col, Jumbotron, Grid} from "react-bootstrap";
 import {FormattedMessage} from "react-intl";
 import DashboardTile from "./DashboardTile";
 import {ROLE} from "../../constants/DefaultConstants";
+import PropTypes from "prop-types";
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -78,8 +79,8 @@ class Dashboard extends React.Component {
 }
 
 Dashboard.propTypes = {
-    currentUser: React.PropTypes.object,
-    handlers: React.PropTypes.object
+    currentUser: PropTypes.object,
+    handlers: PropTypes.object
 };
 
 export default injectIntl(I18nWrapper(Dashboard));

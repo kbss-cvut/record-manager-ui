@@ -30,13 +30,13 @@ class PasswordChangeController extends React.Component {
     _onSave = (sendEmail = true) => {
         if(this._passwordValid()){
             delete this.state.password.confirmPassword;
-            this.props.changePassword(this.props.params.username, this.state.password, sendEmail);
+            this.props.changePassword(this.props.match.params.username, this.state.password, sendEmail);
             this.setState({showAlert: true, password: UserFactory.initNewPassword()});
         }
     };
 
     _onCancel = () => {
-        this.props.transitionToWithOpts(Routes.editUser, {params: {username: this.props.params.username}});
+        this.props.transitionToWithOpts(Routes.editUser, {params: {username: this.props.match.params.username}});
     };
 
     _passwordValid = () => {
@@ -50,8 +50,8 @@ class PasswordChangeController extends React.Component {
     };
 
     render() {
-        const { currentUser, passwordChange, params } = this.props;
-        if (!currentUser || currentUser.role !== ROLE.ADMIN && currentUser.username !== params.username) {
+        const { currentUser, passwordChange, match } = this.props;
+        if (!currentUser || currentUser.role !== ROLE.ADMIN && currentUser.username !== match.params.username) {
             return null;
         }
         const handlers = {

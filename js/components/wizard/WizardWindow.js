@@ -3,6 +3,7 @@
 import React from 'react';
 import {Modal} from 'react-bootstrap';
 import Wizard from './Wizard';
+import PropTypes from "prop-types";
 
 const WizardWindow = (props) => {
 
@@ -32,7 +33,7 @@ const WizardWindow = (props) => {
 };
 
 WizardWindow.propTypes = {
-    onHide: React.PropTypes.func,
-    title: React.PropTypes.string,
-    show: React.PropTypes.bool
+    onHide: PropTypes.func,
+    title: PropTypes.string,
+    show: PropTypes.bool
 };

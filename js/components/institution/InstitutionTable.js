@@ -8,12 +8,13 @@ import {ACTION_STATUS} from "../../constants/DefaultConstants";
 import InstitutionRow from "./InstitutionRow";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
+import PropTypes from "prop-types";
 
 class InstitutionTable extends React.Component {
     static propTypes = {
-        institutions: React.PropTypes.array.isRequired,
-        handlers: React.PropTypes.object.isRequired,
-        institutionDeleted: React.PropTypes.object
+        institutions: PropTypes.array.isRequired,
+        handlers: PropTypes.object.isRequired,
+        institutionDeleted: PropTypes.object
     };
 
     constructor(props) {

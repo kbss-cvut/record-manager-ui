@@ -3,20 +3,21 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {Checkbox, Col, ControlLabel, FormGroup, FormControl, HelpBlock, Radio, InputGroup} from "react-bootstrap";
+import PropTypes from "prop-types";
 
 export default class HorizontalInput extends React.Component {
     static propTypes = {
-        type: React.PropTypes.string,
-        label: React.PropTypes.string,
-        value: React.PropTypes.any,
-        onChange: React.PropTypes.func,
-        help: React.PropTypes.string,
-        validation: React.PropTypes.oneOf(['success', 'warning', 'error']),
-        labelWidth: React.PropTypes.number,     // Width of the label
-        inputWidth: React.PropTypes.number,     // Width of the input component container
-        inputOffset: React.PropTypes.number, // Offset to put before the input component. Applicable only for
-                                                // checkboxes and radios
-        iconRight: React.PropTypes.object
+        type: PropTypes.string,
+        label: PropTypes.string,
+        value: PropTypes.any,
+        onChange: PropTypes.func,
+        help: PropTypes.string,
+        validation: PropTypes.oneOf(['success', 'warning', 'error']),
+        labelWidth: PropTypes.number,     // Width of the label
+        inputWidth: PropTypes.number,     // Width of the input component container
+        inputOffset: PropTypes.number, // Offset to put before the input component. Applicable only for
+        // checkboxes and radios
+        iconRight: PropTypes.object
     };
 
     static defaultProps = {

@@ -108,7 +108,7 @@ export function extractKeyFromLocationHeader(response) {
 /**
  * Extracts application path from the current window location.
  *
- * I.e. if the current hash is '#/reports?_k=312312', the result will be 'reports'
+ * I.e. if the current hash is 'reports?_k=312312', the result will be 'reports'
  * @return {String}
  */
 export function getPathFromLocation() {
@@ -233,7 +233,7 @@ export function getRole(user) {
         return undefined;
     }
     if (userToTest.types) {
-        if(userToTest.types.indexOf(Vocabulary.ADMIN_TYPE) !== -1) {
+        if (userToTest.types.indexOf(Vocabulary.ADMIN_TYPE) !== -1) {
             return ROLE.ADMIN;
         } else {
             return ROLE.DOCTOR;
@@ -257,7 +257,7 @@ export function deviceIsSupported() {
     const browser = platformParse.name || 'undefined';
     const version = parseFloat(platformParse.version) || 0;
 
-    SUPPORTED_DEVICES.forEach(function(item) {
+    SUPPORTED_DEVICES.forEach(function (item) {
         item.browser = item.browser || [];
         item.version = parseFloat(item.version) || 0;
 

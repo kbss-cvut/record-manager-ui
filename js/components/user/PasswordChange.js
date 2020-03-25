@@ -10,15 +10,16 @@ import AlertMessage from "../AlertMessage";
 import UserValidator from "../../validation/UserValidator";
 import {LoaderSmall} from "../Loader";
 import HelpIcon from "../HelpIcon";
+import PropTypes from "prop-types";
 
 class PasswordChange extends React.Component {
     static propTypes = {
-        handlers: React.PropTypes.object.isRequired,
-        currentUser: React.PropTypes.object.isRequired,
-        showAlert: React.PropTypes.bool.isRequired,
-        passwordChange: React.PropTypes.object.isRequired,
-        params: React.PropTypes.object.isRequired,
-        password: React.PropTypes.object.isRequired
+        handlers: PropTypes.object.isRequired,
+        currentUser: PropTypes.object.isRequired,
+        showAlert: PropTypes.bool.isRequired,
+        passwordChange: PropTypes.object.isRequired,
+        params: PropTypes.object.isRequired,
+        password: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -35,7 +36,7 @@ class PasswordChange extends React.Component {
     };
 
     _onSave() {
-        this.props.handlers.onSave(this.props.currentUser.username === this.props.params.username);
+        this.props.handlers.onSave(this.props.currentUser.username === this.props.match.params.username);
         this.setState({savedWithEmail: false});
     }
 
@@ -45,10 +46,10 @@ class PasswordChange extends React.Component {
     }
 
     render() {
-        const { handlers, currentUser, showAlert, valid, passwordChange, params, password} = this.props;
+        const { handlers, currentUser, showAlert, valid, passwordChange, match, password} = this.props;
         return <Panel header={<span>{this.i18n('user.password-change')}</span>} bsStyle='primary'>
             <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
-                {currentUser.username === params.username &&
+                {currentUser.username === match.params.username &&
                 <div className='row'>
                     <div className='col-xs-6'>
                         <HorizontalInput type='password' name='currentPassword' label={`${this.i18n('user.password-current')}*`}

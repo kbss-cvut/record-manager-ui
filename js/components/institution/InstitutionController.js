@@ -33,11 +33,11 @@ class InstitutionController extends React.Component {
     }
 
     _isNew() {
-        return !this.props.params.key;
+        return !this.props.match.params.key;
     }
 
     componentWillMount() {
-        const institutionKey = this.props.params.key;
+        const institutionKey = this.props.match.params.key;
         if (!this.state.institution) {
             this.props.loadInstitution(institutionKey);
         }

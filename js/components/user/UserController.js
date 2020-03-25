@@ -32,12 +32,12 @@ class UserController extends React.Component {
     }
 
     _isNew() {
-        return !this.props.params.username;
+        return !this.props.match.params.username;
     }
 
     componentWillMount() {
         if (!this.state.user) {
-            this.props.loadUser(this.props.params.username);
+            this.props.loadUser(this.props.match.params.username);
         }
         if (this.state.user && this.state.user.isNew && this.institution) {
             this._onChange({institution: this.institution});
@@ -77,8 +77,8 @@ class UserController extends React.Component {
         if (this.props.generatedUsername.status === ACTION_STATUS.PENDING && nextProps.generatedUsername.status === ACTION_STATUS.SUCCESS) {
             this._onChange({username: nextProps.generatedUsername.username});
         }
-        if (this.props.params.username !== nextProps.params.username) {
-            this.props.loadUser(nextProps.params.username);
+        if (this.props.match.params.username !== nextProps.match.params.username) {
+            this.props.loadUser(nextProps.match.params.username);
             this.setState({saved: false, showAlert: false, invited: false, impersonated: false});
         }
     }
@@ -111,7 +111,7 @@ class UserController extends React.Component {
 
     _onPasswordChange = () => {
         this.props.transitionToWithOpts(Routes.passwordChange, {
-            params: {username: this.props.params.username}
+            params: {username: this.props.match.params.username}
         });
     };
 

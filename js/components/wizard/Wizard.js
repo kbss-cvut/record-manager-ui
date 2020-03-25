@@ -2,6 +2,7 @@
 
 import React from 'react';
 import classNames from 'classnames';
+import PropTypes from "prop-types";
 import WizardStep from './WizardStep';
 import {WizardStoreInstance} from '../wizard/generator/WizardBuilder';
 import HorizontalWizardNav from './HorizontalWizardNav';
@@ -148,11 +149,11 @@ class Wizard extends React.Component {
 }
 
 Wizard.propTypes = {
-    start: React.PropTypes.number,
-    steps: React.PropTypes.array,
-    onFinish: React.PropTypes.func,
-    onClose: React.PropTypes.func,
-    enableForwardSkip: React.PropTypes.bool // Whether to allow forward step skipping
+    start: PropTypes.number,
+    steps: PropTypes.array,
+    onFinish: PropTypes.func,
+    onClose: PropTypes.func,
+    enableForwardSkip: PropTypes.bool // Whether to allow forward step skipping
 };
 
 export default Wizard;

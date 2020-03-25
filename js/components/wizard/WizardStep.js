@@ -2,11 +2,12 @@
 
 import React from 'react';
 import {Alert, Button, ButtonToolbar, Panel} from 'react-bootstrap';
-import {Constants, HelpIcon} from 's-forms';
+// import {Constants, HelpIcon} from 's-forms';
 import JsonLdUtils from 'jsonld-utils';
 import injectIntl from '../../utils/injectIntl';
 import {WizardStoreInstance} from '../wizard/generator/WizardBuilder';
 import I18nWrapper from '../../i18n/I18nWrapper';
+import PropTypes from "prop-types";
 
 class WizardStep extends React.Component {
     constructor(props) {
@@ -26,7 +27,7 @@ class WizardStep extends React.Component {
                 currentError: err
             });
         } else {
-            WizardStoreInstanceZ.updateStepData(this.props.stepIndex, this.getStepData());
+            WizardStoreInstance.updateStepData(this.props.stepIndex, this.getStepData());
             this.props.onAdvance();
         }
     };
@@ -94,10 +95,10 @@ class WizardStep extends React.Component {
 
     _renderHelpIcon = () => {
         const question = WizardStoreInstance.getStepData([this.props.stepIndex]);
-
-        return question[Constants.HELP_DESCRIPTION] ?
-            <HelpIcon text={JsonLdUtils.getLocalized(question[Constants.HELP_DESCRIPTION], this.props.intl)}
-                      iconClass='help-icon-section'/> : null;
+        /*
+                return question[Constants.HELP_DESCRIPTION] ?
+                    <HelpIcon text={JsonLdUtils.getLocalized(question[Constants.HELP_DESCRIPTION], this.props.intl)}
+                              iconClass='help-icon-section'/> : null; */
     };
 
     renderAdvanceButton = () => {
@@ -131,17 +132,17 @@ class WizardStep extends React.Component {
 
 WizardStep
     .propTypes = {
-    onClose: React.PropTypes.func,
-    onFinish: React.PropTypes.func.isRequired,
-    onAdvance: React.PropTypes.func,
-    onRetreat: React.PropTypes.func,
-    onNext: React.PropTypes.func,
-    onPrevious: React.PropTypes.func,
-    title: React.PropTypes.string,
-    stepIndex: React.PropTypes.number.isRequired,
-    isFirstStep: React.PropTypes.bool,
-    isLastStep: React.PropTypes.bool,
-    defaultNextDisabled: React.PropTypes.bool
+    onClose: PropTypes.func,
+    onFinish: PropTypes.func.isRequired,
+    onAdvance: PropTypes.func,
+    onRetreat: PropTypes.func,
+    onNext: PropTypes.func,
+    onPrevious: PropTypes.func,
+    title: PropTypes.string,
+    stepIndex: PropTypes.number.isRequired,
+    isFirstStep: PropTypes.bool,
+    isLastStep: PropTypes.bool,
+    defaultNextDisabled: PropTypes.bool
 };
 
 export default injectIntl(I18nWrapper(WizardStep));

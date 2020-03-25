@@ -2,6 +2,7 @@ import React from "react";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import {ACTIONS_PER_PAGE, PAGINATION_DIRECTION, SEARCH_TYPE} from "../../constants/DefaultConstants";
+import PropTypes from "prop-types";
 
 let HistoryPagination = (props) => (
     <nav className="content-center">
@@ -20,9 +21,9 @@ let HistoryPagination = (props) => (
 );
 
 HistoryPagination.propTypes = {
-    pageNumber: React.PropTypes.number.isRequired,
-    handlePagination: React.PropTypes.func.isRequired,
-    numberOfActions: React.PropTypes.number.isRequired
+    pageNumber: PropTypes.number.isRequired,
+    handlePagination: PropTypes.func.isRequired,
+    numberOfActions: PropTypes.number.isRequired
 };
 
 export default injectIntl(I18nWrapper(HistoryPagination));

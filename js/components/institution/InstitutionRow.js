@@ -4,13 +4,15 @@ import I18nWrapper from "../../i18n/I18nWrapper";
 import {Routes} from "../../utils/Routes";
 import {Button} from "react-bootstrap";
 import {LoaderSmall} from "../Loader";
+import PropTypes from "prop-types";
+import {Link} from 'react-router-dom';
 
 let InstitutionRow = (props) => {
     const institution = props.institution;
     return <tr>
         <td className='report-row'>
-            <a href={'#/' + Routes.institutions.path + '/' + institution.key}
-               title={props.i18n('institutions.open-tooltip')}>{institution.name}</a>
+            <Link to={Routes.institutions.path + '/' + institution.key}
+               title={props.i18n('institutions.open-tooltip')}>{institution.name}</Link>
         </td>
         <td className='report-row'>{institution.emailAddress}</td>
         <td className='report-row actions'>
@@ -24,10 +26,10 @@ let InstitutionRow = (props) => {
 };
 
 InstitutionRow.propTypes = {
-    institution: React.PropTypes.object.isRequired,
-    onEdit: React.PropTypes.func.isRequired,
-    onDelete: React.PropTypes.func.isRequired,
-    deletionLoading: React.PropTypes.bool.isRequired
+    institution: PropTypes.object.isRequired,
+    onEdit: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    deletionLoading: PropTypes.bool.isRequired
 };
 
 export default injectIntl(I18nWrapper(InstitutionRow));

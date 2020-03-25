@@ -9,13 +9,14 @@ import InstitutionTable from './InstitutionTable';
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderPanel, LoaderSmall} from "../Loader";
+import PropTypes from "prop-types";
 
 class Institutions extends React.Component {
     static propTypes = {
-        institutionsLoaded: React.PropTypes.object,
-        handlers: React.PropTypes.object.isRequired,
-        institutionDeleted: React.PropTypes.object,
-        showAlert: React.PropTypes.bool.isRequired
+        institutionsLoaded: PropTypes.object,
+        handlers: PropTypes.object.isRequired,
+        institutionDeleted: PropTypes.object,
+        showAlert: PropTypes.bool.isRequired
     };
 
     constructor(props) {

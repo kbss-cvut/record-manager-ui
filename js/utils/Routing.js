@@ -2,11 +2,12 @@
 
 import {execute} from "./RoutingRules";
 import {setTransitionPayload} from "../actions/RouterActions";
-import { hashHistory } from 'react-router';
+import {createBrowserHistory} from 'history';
 import {setViewHandlers} from "../actions/RouterActions";
 import * as Constants from "../constants/DefaultConstants";
 
-export const history = hashHistory;
+export const history = createBrowserHistory();
+
 /**
  * Transitions to the specified route
  * @param route Route object
@@ -47,6 +48,7 @@ export function transitionToWithOpts(route, options) {
     }
 }
 
+// TODO
 function setPathParams(path, params) {
     for (let paramName in params) {
         if (params.hasOwnProperty(paramName)) {

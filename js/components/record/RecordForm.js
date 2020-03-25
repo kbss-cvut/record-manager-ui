@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {Panel} from 'react-bootstrap';
-import {QuestionAnswerProcessor} from 's-forms';
+// import {QuestionAnswerProcessor} from 's-forms';
 import I18nWrapper from '../../i18n/I18nWrapper';
 import injectIntl from '../../utils/injectIntl';
 import Wizard from '../wizard/Wizard';
@@ -11,6 +11,7 @@ import {WizardStoreInstance} from '../wizard/generator/WizardBuilder';
 import Loader from "../Loader";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
+import PropTypes from "prop-types";
 
 class RecordForm extends React.Component {
     constructor(props) {
@@ -28,7 +29,7 @@ class RecordForm extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.record.question !== nextProps.record.question) {
-            // this.setState({wizardProperties: null});
+            this.setState({wizardProperties: null});
             WizardBuilder.generateWizard(nextProps.record, this.onWizardReady, this.onWizardError);
         }
     }
@@ -50,7 +51,7 @@ class RecordForm extends React.Component {
     };
 
     getFormData = () => {
-        return QuestionAnswerProcessor.buildQuestionAnswerModel(WizardStoreInstance.getData(), WizardStoreInstance.getStepData());
+        // return QuestionAnswerProcessor.buildQuestionAnswerModel(WizardStoreInstance.getData(), WizardStoreInstance.getStepData());
     };
 
     render() {
@@ -72,9 +73,9 @@ class RecordForm extends React.Component {
 }
 
 RecordForm.propTypes = {
-    record: React.PropTypes.object.isRequired,
-    loadFormgen: React.PropTypes.func,
-    formgen: React.PropTypes.object
+    record: PropTypes.object.isRequired,
+    loadFormgen: PropTypes.func,
+    formgen: PropTypes.object
 };
 
 export default injectIntl(I18nWrapper(RecordForm), {withRef: true});

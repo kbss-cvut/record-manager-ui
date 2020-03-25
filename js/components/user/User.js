@@ -12,23 +12,24 @@ import {getRole, processInstitutions} from "../../utils/Utils";
 import * as Vocabulary from "../../constants/Vocabulary";
 import {LoaderPanel, LoaderSmall} from "../Loader";
 import HelpIcon from "../HelpIcon";
+import PropTypes from "prop-types";
 
 class User extends React.Component {
     static propTypes = {
-        user: React.PropTypes.object,
-        handlers: React.PropTypes.object.isRequired,
-        backToInstitution: React.PropTypes.bool,
-        userSaved: React.PropTypes.object,
-        userLoaded: React.PropTypes.object,
-        currentUser: React.PropTypes.object,
-        showAlert: React.PropTypes.bool,
-        institutions: React.PropTypes.array,
-        invitationSent: React.PropTypes.object,
-        invitationDelete: React.PropTypes.object,
-        invited: React.PropTypes.bool,
-        impersonation: React.PropTypes.object,
-        impersonated: React.PropTypes.bool,
-        deletedInvitation: React.PropTypes.bool
+        user: PropTypes.object,
+        handlers: PropTypes.object.isRequired,
+        backToInstitution: PropTypes.bool,
+        userSaved: PropTypes.object,
+        userLoaded: PropTypes.object,
+        currentUser: PropTypes.object,
+        showAlert: PropTypes.bool,
+        institutions: PropTypes.array,
+        invitationSent: PropTypes.object,
+        invitationDelete: PropTypes.object,
+        invited: PropTypes.bool,
+        impersonation: PropTypes.object,
+        impersonated: PropTypes.bool,
+        deletedInvitation: PropTypes.bool
     };
 
     constructor(props) {
@@ -169,6 +170,7 @@ class User extends React.Component {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('user.load-error', {error: userLoaded.error.message})}/>;
         }
+
         const generateButton = user.isNew &&
             <Button bsStyle='link' bsSize='small' onClick={handlers.generateUsername}>
                 <Glyphicon glyph="random"/>

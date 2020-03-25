@@ -27,11 +27,11 @@ class RecordController extends React.Component {
     }
 
     _isNew() {
-        return !this.props.params.key;
+        return !this.props.match.params.key;
     }
 
     componentWillMount() {
-        const recordKey = this.props.params.key;
+        const recordKey = this.props.match.params.key;
         if (!this.state.record) {
             this.props.loadRecord(recordKey);
         }

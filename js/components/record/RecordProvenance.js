@@ -3,6 +3,7 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {formatDate} from "../../utils/Utils";
+import PropTypes from "prop-types";
 
 const RecordProvenance = (props) => {
     const record = props.record;
@@ -29,7 +30,7 @@ const RecordProvenance = (props) => {
 };
 
 RecordProvenance.propTypes = {
-    record: React.PropTypes.object
+    record: PropTypes.object
 };
 
 export default RecordProvenance;

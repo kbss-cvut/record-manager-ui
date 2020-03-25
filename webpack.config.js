@@ -3,7 +3,6 @@ const dotenvConfig = require('dotenv-safe').config({
     sample: './.env.example',
 });
 
-
 const {resolve} = require('path');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
@@ -40,9 +39,11 @@ module.exports = (
         },
         devServer: {
             inline: true,
-            port: devServerPort || 8080
+            port: devServerPort || 8080,
+            historyApiFallback: true
         },
-        optimization: {
+        devtool: 'source-map',
+        /*optimization: {
             runtimeChunk: 'single',
             splitChunks: {
                 cacheGroups: {
@@ -53,7 +54,7 @@ module.exports = (
                     }
                 },
             },
-        },
+        },*/
         module: {
             rules: [
                 {

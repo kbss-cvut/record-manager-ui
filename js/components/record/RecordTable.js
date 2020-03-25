@@ -9,14 +9,15 @@ import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import RecordRow from "./RecordRow";
 import AlertMessage from "../AlertMessage";
 import Loader from "../Loader";
+import PropTypes from "prop-types";
 
 class RecordTable extends React.Component {
     static propTypes = {
-        recordsLoaded: React.PropTypes.object.isRequired,
-        handlers: React.PropTypes.object.isRequired,
-        recordDeleted: React.PropTypes.object,
-        disableDelete: React.PropTypes.bool,
-        recordsDeleting: React.PropTypes.array
+        recordsLoaded: PropTypes.object.isRequired,
+        handlers: PropTypes.object.isRequired,
+        recordDeleted: PropTypes.object,
+        disableDelete: PropTypes.bool,
+        recordsDeleting: PropTypes.array
     };
 
     static defaultProps = {

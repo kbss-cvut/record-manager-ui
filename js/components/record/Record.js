@@ -9,21 +9,22 @@ import HorizontalInput from "../HorizontalInput";
 import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
 import RequiredAttributes from "./RequiredAttributes";
-import {WizardStoreInstance} from '../wizard/generator/WizardBuilder';
-import {FormUtils} from "s-forms";
+// import {WizardStoreInstance} from '../wizard/generator/WizardBuilder';
+// import {FormUtils} from "s-forms";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderPanel, LoaderSmall} from "../Loader";
+import PropTypes from "prop-types";
 
 class Record extends React.Component {
     static propTypes = {
-        record: React.PropTypes.object,
-        handlers: React.PropTypes.object.isRequired,
-        recordSaved: React.PropTypes.object,
-        recordLoaded: React.PropTypes.object,
-        formgen: React.PropTypes.object,
-        loadFormgen: React.PropTypes.func,
-        showAlert: React.PropTypes.bool
+        record: PropTypes.object,
+        handlers: PropTypes.object.isRequired,
+        recordSaved: PropTypes.object,
+        recordLoaded: PropTypes.object,
+        formgen: PropTypes.object,
+        loadFormgen: PropTypes.func,
+        showAlert: PropTypes.bool
     };
 
     constructor(props) {
@@ -109,7 +110,7 @@ class Record extends React.Component {
     }
 
     _isFormInvalid() {
-        return WizardStoreInstance.data ? FormUtils.isValid(WizardStoreInstance.data) : false;
+        //  return WizardStoreInstance.data ? FormUtils.isValid(WizardStoreInstance.data) : false;
     }
 }
 

@@ -3,6 +3,7 @@
 import React from 'react';
 import {Button, Modal} from 'react-bootstrap';
 import {FormattedMessage} from 'react-intl';
+import PropTypes from "prop-types";
 
 import injectIntl from '../utils/injectIntl';
 import I18nWrapper from '../i18n/I18nWrapper';
@@ -30,11 +31,11 @@ const DeleteItemDialog = (props) => {
 };
 
 DeleteItemDialog.propTypes = {
-    onClose: React.PropTypes.func.isRequired,
-    onSubmit: React.PropTypes.func.isRequired,
-    show: React.PropTypes.bool.isRequired,
-    item: React.PropTypes.object,
-    itemLabel: React.PropTypes.string
+    onClose: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    show: PropTypes.bool.isRequired,
+    item: PropTypes.object,
+    itemLabel: PropTypes.string
 };
 
 export default injectIntl(I18nWrapper(DeleteItemDialog));

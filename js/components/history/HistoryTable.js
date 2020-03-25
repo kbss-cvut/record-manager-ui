@@ -8,12 +8,13 @@ import I18nWrapper from "../../i18n/I18nWrapper";
 import HistoryRow from "./HistoryRow";
 import {ACTIONS_PER_PAGE} from "../../constants/DefaultConstants";
 import HistorySearch from "./HistorySearch";
+import PropTypes from "prop-types";
 
 class HistoryTable extends React.Component {
     static propTypes = {
-        actions: React.PropTypes.array.isRequired,
-        handlers: React.PropTypes.object.isRequired,
-        searchData: React.PropTypes.object.isRequired
+        actions: PropTypes.array.isRequired,
+        handlers: PropTypes.object.isRequired,
+        searchData: PropTypes.object.isRequired
     };
 
     constructor(props) {

@@ -8,12 +8,13 @@ import I18nWrapper from "../../i18n/I18nWrapper";
 import {Routes} from "../../utils/Routes";
 import UserRow from "./UserRow";
 import {ACTION_STATUS} from "../../constants/DefaultConstants";
+import PropTypes from "prop-types";
 
 class UserTable extends React.Component {
     static propTypes = {
-        users: React.PropTypes.array.isRequired,
-        handlers: React.PropTypes.object.isRequired,
-        userDeleted: React.PropTypes.object
+        users: PropTypes.array.isRequired,
+        handlers: PropTypes.object.isRequired,
+        userDeleted: PropTypes.object
     };
 
     constructor(props) {

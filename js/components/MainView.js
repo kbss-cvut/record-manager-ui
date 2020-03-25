@@ -13,6 +13,8 @@ import {ACTION_STATUS, ROLE} from "../constants/DefaultConstants";
 import {loadUserProfile} from "../actions/AuthActions";
 import * as Constants from "../constants/DefaultConstants";
 import {LoaderMask} from "./Loader";
+import {authRoutes, unauthRoutes} from '../app';
+import {Link} from 'react-router-dom';
 
 class MainView extends React.Component {
     constructor(props) {
@@ -26,67 +28,68 @@ class MainView extends React.Component {
 
     _renderUsers() {
         return this.props.user.role === ROLE.ADMIN ?
-                <LinkContainer to='users'><NavItem>{this.i18n('main.users-nav')}</NavItem></LinkContainer>
+            <LinkContainer to={Routes.users.path}><NavItem>{this.i18n('main.users-nav')}</NavItem></LinkContainer>
             : null;
     }
 
     render() {
         if (this.props.status === ACTION_STATUS.PENDING) {
-            return <LoaderMask />;
+            return <LoaderMask/>;
         } else if (!this.props.isLoaded) {
-            return (<div>{this.props.children}</div>);
+            return (<div>{unauthRoutes}</div>);
         }
         const user = this.props.user;
         const name = user.firstName.substr(0, 1) + '. ' + user.lastName;
+
         return (
             <div>
-                {this.props.location.pathname !== `/${Routes.login.path}` &&
                 <header>
                     <Navbar collapseOnSelect>
                         <Navbar.Header>
-                        <Navbar.Brand>
-                            <a href={`#/${Routes.dashboard.path}`}>{Constants.APP_NAME}</a>
-                        </Navbar.Brand>
-                        <Navbar.Toggle />
+                            <Navbar.Brand>
+                                <Link to={Routes.dashboard.path}>{Constants.APP_NAME}</Link>
+                            </Navbar.Brand>
+                            <Navbar.Toggle/>
                         </Navbar.Header>
                         <Navbar.Collapse>
-                        <Nav pullLeft>
-                        {this._renderUsers()}
-                            {user.role === ROLE.ADMIN ?
-                                <LinkContainer to='institutions'>
-                                    <NavItem>{this.i18n('main.institutions-nav')}</NavItem>
-                                </LinkContainer>
-                                : user.institution ?
-                                    <LinkContainer to={{ pathname: '/institutions/'+user.institution.key}}>
-                                    <NavItem>{this.i18n('main.institution-nav')}</NavItem>
-                                </LinkContainer>
-                                    : null
-                            }
-                            <LinkContainer
-                                to='records'><NavItem>{this.i18n('main.records-nav')}</NavItem></LinkContainer>
-                            {user.role === ROLE.ADMIN &&
-                            <LinkContainer
-                                to='statistics'><NavItem>{this.i18n('statistics.panel-title')}</NavItem></LinkContainer>
-                            }
-                            {user.role === ROLE.ADMIN &&
-                            <LinkContainer
-                                to='history'><NavItem>{this.i18n('main.history')}</NavItem></LinkContainer>
-                            }
-                        </Nav>
+                            <Nav pullLeft>
+                                {this._renderUsers()}
+                                {user.role === ROLE.ADMIN ?
+                                    <LinkContainer to={Routes.institutions.path}>
+                                        <NavItem>{this.i18n('main.institutions-nav')}</NavItem>
+                                    </LinkContainer>
+                                    : user.institution ?
+                                        <LinkContainer
+                                            to={{pathname: Routes.institutions.path + '/' + user.institution.key}}>
+                                            <NavItem>{this.i18n('main.institution-nav')}</NavItem>
+                                        </LinkContainer>
+                                        : null
+                                }
+                                <LinkContainer
+                                    to={Routes.records.path}><NavItem>{this.i18n('main.records-nav')}</NavItem></LinkContainer>
+                                {user.role === ROLE.ADMIN &&
+                                <LinkContainer
+                                    to={Routes.statistics.path}><NavItem>{this.i18n('statistics.panel-title')}</NavItem></LinkContainer>
+                                }
+                                {user.role === ROLE.ADMIN &&
+                                <LinkContainer
+                                    to={Routes.historyActions.path}><NavItem>{this.i18n('main.history')}</NavItem></LinkContainer>
+                                }
+                            </Nav>
 
                             <Nav pullRight>
-                            <NavDropdown id='logout' title={name}>
-                                <MenuItem
-                                    href={'#/' + Routes.users.path + '/' + user.username}>{this.i18n('main.my-profile')}</MenuItem>
-                                <MenuItem href={'#/' + Routes.logout.path}>{this.i18n('main.logout')}</MenuItem>
-                            </NavDropdown>
+                                <NavDropdown id='logout' title={name}>
+                                    <MenuItem
+                                        href={Routes.users.path + '/' + user.username}>{this.i18n('main.my-profile')}</MenuItem>
+                                    <MenuItem href={Routes.logout.path}>{this.i18n('main.logout')}</MenuItem>
+                                </NavDropdown>
 
-                        </Nav>
+                            </Nav>
                         </Navbar.Collapse>
                     </Navbar>
-                </header>}
+                </header>
                 <section className="container" style={{height: '100%'}}>
-                    {this.props.children}
+                    {authRoutes}
                 </section>
             </div>
         );

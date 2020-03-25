@@ -2,6 +2,7 @@ import React from "react";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import {Button} from "react-bootstrap";
+import PropTypes from "prop-types";
 
 let HistorySearch = (props) => (
     <tr>
@@ -25,8 +26,8 @@ let HistorySearch = (props) => (
     </tr>);
 
 HistorySearch.propTypes = {
-    handlers: React.PropTypes.object.isRequired,
-    searchData: React.PropTypes.object.isRequired
+    handlers: PropTypes.object.isRequired,
+    searchData: PropTypes.object.isRequired
 };
 
 export default injectIntl(I18nWrapper(HistorySearch));

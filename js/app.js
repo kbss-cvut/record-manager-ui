@@ -6,7 +6,7 @@
 
 import {loadUserProfile} from "./actions/AuthActions";
 import * as I18nStore from './stores/I18nStore';
-import {addLocaleData} from 'react-intl';
+//import {addLocaleData} from 'react-intl';
 import enLang from './i18n/en';
 import csLang from './i18n/cs';
 
@@ -14,11 +14,11 @@ let intlData = null;
 
 function selectLocalization() {
     // Load react-intl locales
-    if ('ReactIntlLocaleData' in window) {
+    /*if ('ReactIntlLocaleData' in window) {
         Object.keys(ReactIntlLocaleData).forEach(function (lang) {
             addLocaleData(ReactIntlLocaleData[lang]);
         });
-    }
+    }*/
     const lang = navigator.language;
     // if (lang && lang === 'cs' || lang === 'cs-CZ' || lang === 'sk' || lang === 'sk-SK') {
     //     intlData = csLang;
@@ -39,7 +39,7 @@ I18nStore.setMessages(intlData.messages);
 // Have the imports here, so that the I18nStore is initialized before any of the components which might need it
 import React from "react";
 import {render} from 'react-dom';
-import {Router, Route, IndexRoute, Redirect} from "react-router";
+import {Router, Redirect, Route, Switch} from 'react-router-dom';
 import {IntlProvider} from "react-intl";
 import {applyMiddleware, compose, createStore} from "redux";
 import rootReducer from "./reducers";
@@ -94,43 +94,50 @@ store.dispatch(loadUserProfile());
 const App = () => (<Provider store={store}>
         <IntlProvider {...intlData}>
             <Router history={history}>
-                <Route path='/' component={MainView}>
-                    <IndexRoute component={requireAuth(DashboardController)}/>
-                    <Route path={Routes.login.path} onEnter={onRouteEnter} component={Login}/>
-                    <Route path={Routes.logout.path} onEnter={onRouteEnter} component={Logout}/>
-                    <Route path={Routes.passwordReset.path} onEnter={onRouteEnter} component={PasswordReset}/>
-                    <Route path={Routes.passwordToken.path} onEnter={onRouteEnter} component={PasswordToken}/>
-                    <Route path={Routes.dashboard.path} onEnter={onRouteEnter}
-                           component={requireAuth(DashboardController)}/>
-                    <Route path={Routes.users.path} onEnter={onRouteEnter} component={requireAuth(UsersController)}/>
-                    <Route path={Routes.createUser.path} onEnter={onRouteEnter}
-                           component={requireAuth(UserController)}/>
-                    <Route path={Routes.editUser.path} onEnter={onRouteEnter} component={requireAuth(UserController)}/>
-                    <Route path={Routes.passwordChange.path} onEnter={onRouteEnter}
-                           component={requireAuth(PasswordChangeController)}/>
-                    <Route path={Routes.statistics.path} onEnter={onRouteEnter} component={requireAuth(Statistics)}/>
-                    <Route path={Routes.institutions.path} onEnter={onRouteEnter}
-                           component={requireAuth(InstitutionsController)}/>
-                    <Route path={Routes.createInstitution.path} onEnter={onRouteEnter}
-                           component={requireAuth(InstitutionController)}/>
-                    <Route path={Routes.editInstitution.path} onEnter={onRouteEnter}
-                           component={requireAuth(InstitutionController)}/>
-                    <Route path={Routes.records.path} onEnter={onRouteEnter}
-                           component={requireAuth(RecordsController)}/>
-                    <Route path={Routes.createRecord.path} onEnter={onRouteEnter}
-                           component={requireAuth(RecordController)}/>
-                    <Route path={Routes.editRecord.path} onEnter={onRouteEnter}
-                           component={requireAuth(RecordController)}/>
-                    <Route path={Routes.historyActions.path} onEnter={onRouteEnter}
-                           component={requireAuth(HistoryActions)}/>
-                    <Route path={Routes.historyAction.path} onEnter={onRouteEnter}
-                           component={requireAuth(HistoryAction)}/>
-                    <Redirect from="*" to={Routes.dashboard.path}/>
-                </Route>
+                <Route path='/' component={MainView}/>
             </Router>
         </IntlProvider>
     </Provider>
 );
+
+export const unauthRoutes = <Switch>
+    <Route exact path={Routes.login.path} component={Login}/>
+    <Route exact path={Routes.passwordReset.path} component={PasswordReset}/>
+    <Route exact path={Routes.passwordToken.path} component={PasswordToken}/>
+</Switch>;
+
+export const authRoutes = (<Switch>
+    <Route exact path={Routes.logout.path} component={Logout}/>
+    <Route exact path={Routes.users.path}
+           component={requireAuth(UsersController)}/>
+    <Route exact path={Routes.createUser.path}
+           component={requireAuth(UserController)}/>
+    <Route exact path={Routes.editUser.path}
+           component={requireAuth(UserController)}/>
+    <Route exact path={Routes.passwordChange.path}
+           component={requireAuth(PasswordChangeController)}/>
+    <Route exact path={Routes.statistics.path}
+           component={requireAuth(Statistics)}/>
+    <Route exact path={Routes.institutions.path}
+           component={requireAuth(InstitutionsController)}/>
+    <Route exact path={Routes.createInstitution.path}
+           component={requireAuth(InstitutionController)}/>
+    <Route exact path={Routes.editInstitution.path}
+           component={requireAuth(InstitutionController)}/>
+    <Route exact path={Routes.records.path}
+           component={requireAuth(RecordsController)}/>
+    <Route exact path={Routes.createRecord.path}
+           component={requireAuth(RecordController)}/>
+    <Route exact path={Routes.editRecord.path}
+           component={requireAuth(RecordController)}/>
+    <Route exact path={Routes.historyActions.path}
+           component={requireAuth(HistoryActions)}/>
+    <Route exact path={Routes.historyAction.path}
+           component={requireAuth(HistoryAction)}/>
+    <Route exact path={Routes.dashboard.path}
+           component={requireAuth(DashboardController)}/>
+    <Redirect from="*" to={'/'}/>
+</Switch>);
 
 // Pass intl data to the top-level component
 render(<App/>, document.getElementById('content'));

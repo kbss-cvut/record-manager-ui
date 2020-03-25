@@ -3,6 +3,7 @@ import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import {Button} from "react-bootstrap";
 import * as moment from 'moment';
+import PropTypes from "prop-types";
 
 let HistoryRow = (props) => {
     const action = props.action;
@@ -19,8 +20,8 @@ let HistoryRow = (props) => {
 };
 
 HistoryRow.propTypes = {
-    action: React.PropTypes.object.isRequired,
-    onOpen: React.PropTypes.func.isRequired
+    action: PropTypes.object.isRequired,
+    onOpen: PropTypes.func.isRequired
 };
 
 export default injectIntl(I18nWrapper(HistoryRow));

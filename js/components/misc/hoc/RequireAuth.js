@@ -1,30 +1,34 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {useEffect} from 'react';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 import * as Routing from "../../../utils/Routing";
 import {Routes} from "../../../utils/Routes";
 
-export default function(ComposedComponent) {
-    class Authentication extends Component {
-        componentWillMount() {
-            if (!this.props.authenticated) {
+export default function (ComposedComponent) {
+    const Authentication = ({authenticated, history, location, match}) => {
+        useEffect(() => {
+            if (authenticated === false) {
                 Routing.transitionTo(Routes.login);
             }
+        }, [authenticated]);
+
+        if (!authenticated) {
+            return null;
         }
 
-        componentWillUpdate(nextProps) {
-            if (!nextProps.authenticated) {
-                Routing.transitionTo(Routes.login);
-            }
-        }
+        return <ComposedComponent history={history} location={location} match={match}/>;
+    };
 
-        render() {
-            return <ComposedComponent {...this.props} />
-        }
-    }
+    Authentication.propTypes = {
+        authenticated: PropTypes.bool,
+        location: PropTypes.object.isRequired,
+        match: PropTypes.object.isRequired,
+        history: PropTypes.object.isRequired,
+    };
 
-    function mapStateToProps(state) {
-        return { authenticated: state.auth.authenticated };
-    }
+    const mapStateToProps = state => ({
+        authenticated: state.auth.authenticated,
+    });
 
     return connect(mapStateToProps)(Authentication);
 }

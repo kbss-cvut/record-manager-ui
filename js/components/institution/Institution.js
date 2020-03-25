@@ -8,6 +8,7 @@ import InstitutionPatients from "./InstitutionPatients";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import HorizontalInput from "../HorizontalInput";
+import PropTypes from "prop-types";
 
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import {formatDate} from "../../utils/Utils";
@@ -21,15 +22,15 @@ import HelpIcon from "../HelpIcon";
  */
 class Institution extends React.Component {
     static propTypes = {
-        institution: React.PropTypes.object,
-        institutionLoaded: React.PropTypes.object,
-        institutionSaved: React.PropTypes.object,
-        institutionMembers: React.PropTypes.object,
-        recordsLoaded: React.PropTypes.object,
-        handlers: React.PropTypes.object.isRequired,
-        currentUser: React.PropTypes.object.isRequired,
-        userDeleted: React.PropTypes.object,
-        showAlert: React.PropTypes.bool
+        institution: PropTypes.object,
+        institutionLoaded: PropTypes.object,
+        institutionSaved: PropTypes.object,
+        institutionMembers: PropTypes.object,
+        recordsLoaded: PropTypes.object,
+        handlers: PropTypes.object.isRequired,
+        currentUser: PropTypes.object.isRequired,
+        userDeleted: PropTypes.object,
+        showAlert: PropTypes.bool
     };
 
     constructor(props) {

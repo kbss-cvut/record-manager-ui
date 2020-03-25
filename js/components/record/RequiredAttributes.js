@@ -6,12 +6,13 @@ import HelpIcon from '../HelpIcon';
 import I18nWrapper from '../../i18n/I18nWrapper';
 import injectIntl from '../../utils/injectIntl';
 import HorizontalInput from '../HorizontalInput';
+import PropTypes from "prop-types";
 
 class RequiredAttributes extends React.Component {
     static propTypes = {
-        record: React.PropTypes.object.isRequired,
-        onChange: React.PropTypes.func.isRequired,
-        completed: React.PropTypes.bool.isRequired
+        record: PropTypes.object.isRequired,
+        onChange: PropTypes.func.isRequired,
+        completed: PropTypes.bool.isRequired
     };
 
     constructor(props) {

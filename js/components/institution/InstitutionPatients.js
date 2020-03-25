@@ -6,6 +6,7 @@ import {Panel} from 'react-bootstrap';
 import I18nWrapper from '../../i18n/I18nWrapper';
 import injectIntl from '../../utils/injectIntl';
 import RecordTable from '../record/RecordTable';
+import PropTypes from "prop-types";
 
 const InstitutionPatients = (props) => {
     const { recordsLoaded, onEdit } = props;
@@ -16,8 +17,8 @@ const InstitutionPatients = (props) => {
 };
 
 InstitutionPatients.propTypes = {
-    recordsLoaded: React.PropTypes.object.isRequired,
-    onEdit: React.PropTypes.func.isRequired
+    recordsLoaded: PropTypes.object.isRequired,
+    onEdit: PropTypes.func.isRequired
 };
 
 export default injectIntl(I18nWrapper(InstitutionPatients));

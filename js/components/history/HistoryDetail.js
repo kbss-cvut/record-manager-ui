@@ -22,7 +22,7 @@ class ActionHistory extends React.Component {
     }
 
     componentDidMount() {
-        this.props.loadActionByKey(this.props.params.key);
+        this.props.loadActionByKey(this.props.match.params.key);
     }
 
     _onCancel = () => {

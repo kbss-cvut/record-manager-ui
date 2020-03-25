@@ -1,5 +1,6 @@
 import React from 'react';
 import {Alert} from "react-bootstrap";
+import PropTypes from "prop-types";
 
 const AlertMessage = (props) => (
     <div className='message-container'>
@@ -10,9 +11,9 @@ const AlertMessage = (props) => (
 );
 
 AlertMessage.propTypes = {
-    type: React.PropTypes.string.isRequired,
-    message: React.PropTypes.string.isRequired,
-    alertPosition: React.PropTypes.string
+    type: PropTypes.string.isRequired,
+    message: PropTypes.string.isRequired,
+    alertPosition: PropTypes.string
 };
 
 export default AlertMessage;

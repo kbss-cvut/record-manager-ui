@@ -9,6 +9,7 @@ import DeleteItemDialog from "../DeleteItemDialog";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import Loader, {LoaderSmall} from "../Loader";
 import AlertMessage from "../AlertMessage";
+import PropTypes from "prop-types";
 
 class InstitutionMembers extends React.Component {
     constructor(props){
@@ -112,13 +113,13 @@ class InstitutionMembers extends React.Component {
 }
 
 InstitutionMembers.propTypes = {
-    institutionMembers: React.PropTypes.object.isRequired,
-    institution: React.PropTypes.object.isRequired,
-    onEditUser: React.PropTypes.func.isRequired,
-    onAddNewUser: React.PropTypes.func.isRequired,
-    onDelete: React.PropTypes.func.isRequired,
-    currentUser: React.PropTypes.object.isRequired,
-    userDeleted: React.PropTypes.object
+    institutionMembers: PropTypes.object.isRequired,
+    institution: PropTypes.object.isRequired,
+    onEditUser: PropTypes.func.isRequired,
+    onAddNewUser: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    currentUser: PropTypes.object.isRequired,
+    userDeleted: PropTypes.object
 };
 
 export default injectInl(I18nWrapper(InstitutionMembers));

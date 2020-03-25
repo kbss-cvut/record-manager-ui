@@ -3,15 +3,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {Checkbox, ControlLabel, FormGroup, FormControl, HelpBlock, Radio} from "react-bootstrap";
+import PropTypes from "prop-types";
 
 export default class Input extends React.Component {
     static propTypes = {
-        type: React.PropTypes.string,
-        label: React.PropTypes.string,
-        value: React.PropTypes.any,
-        onChange: React.PropTypes.func,
-        help: React.PropTypes.string,
-        validation: React.PropTypes.oneOf(['success', 'warning', 'error'])
+        type: PropTypes.string,
+        label: PropTypes.string,
+        value: PropTypes.any,
+        onChange: PropTypes.func,
+        help: PropTypes.string,
+        validation: PropTypes.oneOf(['success', 'warning', 'error'])
     };
 
     static defaultProps = {

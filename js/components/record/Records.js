@@ -8,17 +8,18 @@ import RecordTable from "./RecordTable";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderSmall} from "../Loader";
+import PropTypes from "prop-types";
 
 const STUDY_CLOSED_FOR_ADDITION = false;
 
 class Records extends React.Component {
     static propTypes = {
-        recordsLoaded: React.PropTypes.object,
-        recordDeleted: React.PropTypes.object,
-        recordsDeleting: React.PropTypes.array,
-        showAlert: React.PropTypes.bool.isRequired,
-        handlers: React.PropTypes.object.isRequired,
-        currentUser: React.PropTypes.object.isRequired
+        recordsLoaded: PropTypes.object,
+        recordDeleted: PropTypes.object,
+        recordsDeleting: PropTypes.array,
+        showAlert: PropTypes.bool.isRequired,
+        handlers: PropTypes.object.isRequired,
+        currentUser: PropTypes.object.isRequired
     };
 
     constructor(props) {
