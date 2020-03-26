@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 const AlertMessage = (props) => (
     <div className='message-container'>
         <Alert className={`alert-position-${props.alertPosition || 'down'}`} variant={props.type}>
-            <p>{props.message}</p>
+            {props.message}
         </Alert>
     </div>
 );

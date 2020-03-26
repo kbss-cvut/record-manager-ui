@@ -30,5 +30,5 @@ export const LoaderPanel = (props) => (
 );
 
 export const LoaderSmall = () => (
-    <div className="loader"></div>
+    <div className="loader align-self-center"/>
 );
