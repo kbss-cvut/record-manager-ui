@@ -12,8 +12,10 @@ const InstitutionPatients = (props) => {
     const { recordsLoaded, onEdit } = props;
 
     return <Card variant='info'>
-        <Card.Header>{props.i18n('institution.patients.panel-title')}</Card.Header>
+        <Card.Header className="text-light bg-primary" as="h6">{props.i18n('institution.patients.panel-title')}</Card.Header>
+        <Card.Body>
         <RecordTable recordsLoaded={recordsLoaded} handlers={{onEdit: onEdit}} disableDelete={true} />
+        </Card.Body>
     </Card>;
 };
 

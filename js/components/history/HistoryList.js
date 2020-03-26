@@ -82,14 +82,15 @@ class HistoryList extends React.Component {
             onOpen: this._onOpen
         };
         return <Card variant='primary'>
-            <Card.Header>
+            <Card.Header className="text-light bg-primary" as="h6">
                 {this._renderHeader()}
             </Card.Header>
-            <HistoryTable handlers={handlers} searchData={this.state.searchData}
-                          actions={actionsLoaded.actions} i18n={this.i18n}/>
-            <HistoryPagination pageNumber={this.state.pageNumber}
-                               numberOfActions={actionsLoaded.actions.length}
-                               handlePagination={this._handlePagination}/>
+            <Card.Body><HistoryTable handlers={handlers} searchData={this.state.searchData}
+                                     actions={actionsLoaded.actions} i18n={this.i18n}/>
+                <HistoryPagination pageNumber={this.state.pageNumber}
+                                   numberOfActions={actionsLoaded.actions.length}
+                                   handlePagination={this._handlePagination}/>
+            </Card.Body>
         </Card>
     }
 

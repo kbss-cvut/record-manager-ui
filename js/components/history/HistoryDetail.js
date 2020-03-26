@@ -41,53 +41,55 @@ class ActionHistory extends React.Component {
         }
         const action = actionLoaded.action;
         return <Card variant='primary'>
-            <Card.Header>
+            <Card.Header className="text-light bg-primary" as="h6">
                 {this.i18n('history.panel-title')}
             </Card.Header>
-            <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
-                <div className='row'>
-                    <div className='col-12 col-sm-6'>
-                        <HorizontalInput
-                            type='text' label={this.i18n('history.action-type')}
-                            disabled={true}
-                            value={action.type}
-                            labelWidth={3} inputWidth={8}/>
+            <Card.Body>
+                <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
+                    <div className='row'>
+                        <div className='col-12 col-sm-6'>
+                            <HorizontalInput
+                                type='text' label={this.i18n('history.action-type')}
+                                disabled={true}
+                                value={action.type}
+                                labelWidth={3} inputWidth={8}/>
+                        </div>
+                        <div className='col-12 col-sm-6'>
+                            <HorizontalInput
+                                type='text' label={this.i18n('history.time')}
+                                disabled={true} labelWidth={3} inputWidth={8}
+                                value={moment.unix(action.timestamp / 1000).format('DD-MM-YYYY HH:mm:ss:SSS')}
+                            />
+                        </div>
                     </div>
-                    <div className='col-12 col-sm-6'>
-                        <HorizontalInput
-                            type='text' label={this.i18n('history.time')}
-                            disabled={true} labelWidth={3} inputWidth={8}
-                            value={moment.unix(action.timestamp / 1000).format('DD-MM-YYYY HH:mm:ss:SSS')}
-                        />
+                    {action.author &&
+                    <div className='row'>
+                        <div className='col-12 col-sm-6'>
+                            <HorizontalInput
+                                type='text' label={this.i18n('history.author')}
+                                disabled={true} labelWidth={3} inputWidth={8}
+                                value={action.author.username}/>
+                        </div>
                     </div>
-                </div>
-                {action.author &&
-                <div className='row'>
-                    <div className='col-12 col-sm-6'>
-                        <HorizontalInput
-                            type='text' label={this.i18n('history.author')}
-                            disabled={true} labelWidth={3} inputWidth={8}
-                            value={action.author.username}/>
+                    }
+                    {action.payload &&
+                    <div className='row'>
+                        <div className='col-12 col-sm-6'>
+                            <HorizontalInput
+                                type='textarea' label={this.i18n('history.payload')}
+                                disabled={true} rows={8} labelWidth={3} inputWidth={8}
+                                value={JSON.stringify(JSON.parse(action.payload), undefined, 2)}
+                            />
+                        </div>
                     </div>
-                </div>
-                }
-                {action.payload &&
-                <div className='row'>
-                    <div className='col-12 col-sm-6'>
-                        <HorizontalInput
-                            type='textarea' label={this.i18n('history.payload')}
-                            disabled={true} rows={8} labelWidth={3} inputWidth={8}
-                            value={JSON.stringify(JSON.parse(action.payload), undefined, 2)}
-                        />
+                    }
+                    <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
+                        <Button variant='link' size='sm' onClick={this._onCancel}>
+                            {this.i18n('cancel')}
+                        </Button>
                     </div>
-                </div>
-                }
-                <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
-                    <Button variant='link' size='sm' onClick={this._onCancel}>
-                        {this.i18n('cancel')}
-                    </Button>
-                </div>
-            </form>
+                </form>
+            </Card.Body>
         </Card>
     }
 }

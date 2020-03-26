@@ -28,7 +28,7 @@ class PasswordChangeController extends React.Component {
     };
 
     _onSave = (sendEmail = true) => {
-        if(this._passwordValid()){
+        if (this._passwordValid()) {
             delete this.state.password.confirmPassword;
             this.props.changePassword(this.props.match.params.username, this.state.password, sendEmail);
             this.setState({showAlert: true, password: UserFactory.initNewPassword()});
@@ -41,7 +41,7 @@ class PasswordChangeController extends React.Component {
 
     _passwordValid = () => {
         if (this.state.password.newPassword.length >= 4
-                && this.state.password.newPassword === this.state.password.confirmPassword) {
+            && this.state.password.newPassword === this.state.password.confirmPassword) {
             this.setState({valid: true});
             return true;
         }
@@ -50,7 +50,7 @@ class PasswordChangeController extends React.Component {
     };
 
     render() {
-        const { currentUser, passwordChange, match } = this.props;
+        const {currentUser, passwordChange, match} = this.props;
         if (!currentUser || currentUser.role !== ROLE.ADMIN && currentUser.username !== match.params.username) {
             return null;
         }
@@ -60,7 +60,8 @@ class PasswordChangeController extends React.Component {
             onChange: this._onChange
         };
         return <PasswordChange handlers={handlers} currentUser={currentUser} showAlert={this.state.showAlert}
-        valid={this.state.valid} passwordChange={passwordChange} params={params} password={this.state.password}/>;
+                               valid={this.state.valid} passwordChange={passwordChange} match={match}
+                               password={this.state.password}/>;
     }
 }
 

@@ -33,10 +33,11 @@ class Institutions extends React.Component {
                                  message={this.props.formatMessage('institutions.loading-error', {error: institutionsLoaded.error.message})}/>
         }
         return <Card variant='primary'>
-            <Card.Header>
+            <Card.Header className="text-light bg-primary" as="h6">
                 {this.i18n('institutions.panel-title')}
                 {this.props.institutionsLoaded.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
             </Card.Header>
+            <Card.Body>
             <InstitutionTable institutions={institutionsLoaded.institutions} {...this.props}/>
             <div>
                 <Button variant='primary' size='sm'
@@ -47,6 +48,7 @@ class Institutions extends React.Component {
                           message={this.props.formatMessage('institution.delete-error', {error: this.i18n(this.props.institutionDeleted.error.message)})}/>}
             {showAlert && institutionDeleted.status === ACTION_STATUS.SUCCESS &&
             <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('institution.delete-success')}/>}
+            </Card.Body>
         </Card>
     }
 }

@@ -26,12 +26,13 @@ class RequiredAttributes extends React.Component {
         return <div>
             <div className='row'>
                 <div className='col-12 col-sm-6'>
-                    <HorizontalInput labelWidth={3} inputWidth={8}
+                    <HorizontalInput
+                        labelWidth={4} inputWidth={8}
                         type='text' name='localName' value={record.localName}
                         label={this.i18n('records.local-name') + '*'} onChange={this.props.onChange}
                     />
                 </div>
-                <HelpIcon text={this.i18n('help.local-name')}/>
+                <HelpIcon text={this.i18n('help.local-name')} glyph="help"/>
             </div>
         </div>
     }

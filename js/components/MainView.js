@@ -49,7 +49,7 @@ class MainView extends React.Component {
             <div>
                 <header>
                     <Container>
-                        <Navbar collapseOnSelect light={true}>
+                        <Navbar expand="lg">
                             <Navbar.Brand
                                 onClick={() => this.props.history.push(Routes.dashboard.path)}>
                                 {Constants.APP_NAME}
@@ -94,7 +94,7 @@ class MainView extends React.Component {
                                 </Nav>
 
                                 <Nav>
-                                    <NavDropdown id='logout' title={name}>
+                                    <NavDropdown className="pr-0" id='logout' title={name}>
                                         <DropdownItem
                                             onClick={() => this.props.history.push(Routes.users.path + '/' + user.username)}>{this.i18n('main.my-profile')}</DropdownItem>
                                         <DropdownItem
@@ -106,7 +106,7 @@ class MainView extends React.Component {
                         </Navbar>
                     </Container>
                 </header>
-                <section className="container" style={{height: '100%'}}>
+                <section className="container mt-4" style={{height: '100%'}}>
                     {authRoutes}
                 </section>
             </div>

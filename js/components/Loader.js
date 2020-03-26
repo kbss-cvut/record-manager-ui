@@ -24,8 +24,8 @@ export const LoaderMask = () => (
 
 export const LoaderPanel = (props) => (
     <Card variant='primary'>
-        <Card.Header>{props.header}</Card.Header>
-        <Loader/>
+        <Card.Header className="text-light bg-primary" as="h6">{props.header}</Card.Header>
+        <Card.Body><Loader/></Card.Body>
     </Card>
 );
 

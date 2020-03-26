@@ -104,6 +104,7 @@ export const unauthRoutes = <Switch>
     <Route exact path={Routes.login.path} component={Login}/>
     <Route exact path={Routes.passwordReset.path} component={PasswordReset}/>
     <Route exact path={Routes.passwordToken.path} component={PasswordToken}/>
+    <Redirect from="*" to={Routes.login.path}/>
 </Switch>;
 
 export const authRoutes = (<Switch>

@@ -31,21 +31,23 @@ class Users extends React.Component {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('users.loading-error', {error: usersLoaded.error.message})}/>
         }
-        return <Card variant='primary'>
-            <Card.Header>
+        return <Card>
+            <Card.Header className="text-light bg-primary" as="h6">
                 {this.i18n('users.panel-title')}
                 {this.props.usersLoaded.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
             </Card.Header>
-            <UserTable users={usersLoaded.users}{...this.props}/>
-            <div>
-                <Button variant='primary' size='sm'
-                        onClick={this.props.handlers.onCreate}>{this.i18n('users.create-user')}</Button>
-            </div>
-            {showAlert && userDeleted.status === ACTION_STATUS.ERROR &&
-            <AlertMessage type={ALERT_TYPES.DANGER}
-                          message={this.props.formatMessage('user.delete-error', {error: this.i18n(this.props.userDeleted.error.message)})}/>}
-            {showAlert && userDeleted.status === ACTION_STATUS.SUCCESS &&
-            <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.delete-success')}/>}
+            <Card.Body>
+                <UserTable users={usersLoaded.users}{...this.props}/>
+                <div>
+                    <Button variant='primary' size='sm'
+                            onClick={this.props.handlers.onCreate}>{this.i18n('users.create-user')}</Button>
+                </div>
+                {showAlert && userDeleted.status === ACTION_STATUS.ERROR &&
+                <AlertMessage type={ALERT_TYPES.DANGER}
+                              message={this.props.formatMessage('user.delete-error', {error: this.i18n(this.props.userDeleted.error.message)})}/>}
+                {showAlert && userDeleted.status === ACTION_STATUS.SUCCESS &&
+                <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.delete-success')}/>}
+            </Card.Body>
         </Card>;
     }
 

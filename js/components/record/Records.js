@@ -38,23 +38,25 @@ class Records extends React.Component {
                 : 'records.opened-study.create-tooltip'
         );
         return <Card variant='primary'>
-            <Card.Header>
+            <Card.Header className="text-light bg-primary" as="h6">
                 {this.i18n('records.panel-title')}
                 {this.props.recordsLoaded.records && this.props.recordsLoaded.status === ACTION_STATUS.PENDING &&
                 <LoaderSmall/>}
             </Card.Header>
-            <RecordTable {...this.props}/>
-            <div>
-                <Button variant='primary' size='sm'
-                        disabled={createRecordDisabled}
-                        title={createRecordTooltip}
-                        onClick={this.props.handlers.onCreate}>{this.i18n('records.create-tile')}</Button>
-            </div>
-            {showAlert && recordDeleted.status === ACTION_STATUS.ERROR &&
-            <AlertMessage type={ALERT_TYPES.DANGER}
-                          message={this.props.formatMessage('record.delete-error', {error: this.i18n(this.props.recordDeleted.error.message)})}/>}
-            {showAlert && recordDeleted.status === ACTION_STATUS.SUCCESS &&
-            <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('record.delete-success')}/>}
+            <Card.Body>
+                <RecordTable {...this.props}/>
+                <div>
+                    <Button variant='primary' size='sm'
+                            disabled={createRecordDisabled}
+                            title={createRecordTooltip}
+                            onClick={this.props.handlers.onCreate}>{this.i18n('records.create-tile')}</Button>
+                </div>
+                {showAlert && recordDeleted.status === ACTION_STATUS.ERROR &&
+                <AlertMessage type={ALERT_TYPES.DANGER}
+                              message={this.props.formatMessage('record.delete-error', {error: this.i18n(this.props.recordDeleted.error.message)})}/>}
+                {showAlert && recordDeleted.status === ACTION_STATUS.SUCCESS &&
+                <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('record.delete-success')}/>}
+            </Card.Body>
         </Card>;
     }
 }

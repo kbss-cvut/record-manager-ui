@@ -30,15 +30,17 @@ class Statistics extends React.Component {
                                  message={this.props.formatMessage('history.loading-error', {error: error.message})}/>
         }
         return <Card variant='primary'>
-            <Card.Header>
+            <Card.Header className="text-light bg-primary" as="h6">
                 {this.i18n('statistics.panel-title')}
                 {this.props.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
             </Card.Header>
+            <Card.Body>
             <Table size="sm" responsive striped bordered hover>
                 <tbody>
                 {this._renderTableRow()}
                 </tbody>
             </Table>
+            </Card.Body>
         </Card>
     }
 

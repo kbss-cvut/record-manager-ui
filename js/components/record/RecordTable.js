@@ -78,10 +78,10 @@ class RecordTable extends React.Component {
     _renderHeader() {
         return <thead>
         <tr>
-            <th className='w-20 content-center'>{this.i18n('records.id')}</th>
+            <th className='w-15 content-center'>{this.i18n('records.id')}</th>
             <th className='w-25 content-center'>{this.i18n('records.local-name')}</th>
             <th className='w-25 content-center'>{this.i18n('records.last-modified')}</th>
-            <th className='w-10 content-center'>{this.i18n('records.completion-status')}</th>
+            <th className='w-15 content-center'>{this.i18n('records.completion-status')}</th>
             <th className='w-20 content-center'>{this.i18n('actions')}</th>
         </tr>
         </thead>

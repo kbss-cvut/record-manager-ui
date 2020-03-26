@@ -247,9 +247,10 @@ td.actions button {
     white-space: normal;
 }
 
-@media screen and (min-width: 768px) and (max-width: 992px) {
+@media screen and (min-width: 576px) and (max-width: 992px) {
     .container {
         width: auto;
+        max-width: initial;
     }
 }
 
@@ -608,8 +609,8 @@ button .help-icon {
 }
 
 @media screen and (max-width: 1199px) {
-    .glyphicon-question-sign {
-        margin-top: 30px
+    .help-icon {
+        margin-top: 35px
     }
 }
 
@@ -826,7 +827,7 @@ button .help-icon {
 }
 
 .loader-spin .circle1 {
-    background-color: #337ab7;
+    background-color: #007bff;
     animation: circleOneAnimation 3s infinite;
 }
 
@@ -836,7 +837,7 @@ button .help-icon {
 }
 
 .loader-spin .circle3 {
-    background-color: #337ab7;
+    background-color: #007bff;
     animation: circleThreeAnimation 3s infinite;
 }
 
@@ -881,7 +882,7 @@ button .help-icon {
     cursor: pointer;
 }
 
-.w-10 {
+.w-15 {
     width: 10%;
 }
 
@@ -907,6 +908,7 @@ header {
 
 .nav-item {
     font-size: 0.875rem;
+    padding: 0 0.5rem;
 }
 
 .navbar-brand {

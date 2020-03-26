@@ -51,22 +51,25 @@ class Record extends React.Component {
                                  message={this.props.formatMessage('record.load-error', {error: this.props.recordLoaded.error.message})}/>;
         }
         return <Card variant='primary'>
-            <Card.Header>{this._renderHeader()}</Card.Header>
-            <form className='form-horizontal'>
-                <RequiredAttributes record={record} onChange={this._onChange} completed={record.state.isComplete()}/>
-                {this._renderInstitution()}
-                <RecordProvenance record={record}/>
-            </form>
-            {this._renderForm()}
-            {this._renderButtons()}
-            {showAlert && recordSaved.status === ACTION_STATUS.ERROR &&
-            <div>
-                <AlertMessage type={ALERT_TYPES.DANGER}
-                              message={this.props.formatMessage('record.save-error', {error: this.i18n(recordSaved.error.message)})}/>
-                <br/>
-            </div>}
-            {showAlert && recordSaved.status === ACTION_STATUS.SUCCESS &&
-            <div><AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('record.save-success')}/><br/></div>}
+            <Card.Header className="text-light bg-primary" as="h6">{this._renderHeader()}</Card.Header>
+            <Card.Body>
+                <form className='form-horizontal'>
+                    <RequiredAttributes record={record} onChange={this._onChange}
+                                        completed={record.state.isComplete()}/>
+                    {this._renderInstitution()}
+                    <RecordProvenance record={record}/>
+                </form>
+                {this._renderForm()}
+                {this._renderButtons()}
+                {showAlert && recordSaved.status === ACTION_STATUS.ERROR &&
+                <div>
+                    <AlertMessage type={ALERT_TYPES.DANGER}
+                                  message={this.props.formatMessage('record.save-error', {error: this.i18n(recordSaved.error.message)})}/>
+                    <br/>
+                </div>}
+                {showAlert && recordSaved.status === ACTION_STATUS.SUCCESS &&
+                <div><AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('record.save-success')}/><br/></div>}
+            </Card.Body>
         </Card>;
     }
 
@@ -103,9 +106,9 @@ class Record extends React.Component {
             return null;
         }
         return <div className='row'>
-            <div className='col-12'>
+            <div className='col-12 col-sm-6'>
                 <HorizontalInput
-                    labelWidth={3} inputWidth={8} type='text' value={record.institution.name}
+                    labelWidth={4} inputWidth={8} type='text' value={record.institution.name}
                     label={this.i18n('record.institution')}
                     readOnly/>
             </div>

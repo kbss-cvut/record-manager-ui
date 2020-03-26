@@ -18,7 +18,7 @@ class PasswordChange extends React.Component {
         currentUser: PropTypes.object.isRequired,
         showAlert: PropTypes.bool.isRequired,
         passwordChange: PropTypes.object.isRequired,
-        params: PropTypes.object.isRequired,
+        match: PropTypes.object.isRequired,
         password: PropTypes.object.isRequired
     };
 
@@ -48,70 +48,74 @@ class PasswordChange extends React.Component {
     render() {
         const {handlers, currentUser, showAlert, valid, passwordChange, match, password} = this.props;
         return <Card variant='primary'>
-            <Card.Header>{this.i18n('user.password-change')}</Card.Header>
-            <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
-                {currentUser.username === match.params.username &&
-                <div className='row'>
-                    <div className='col-12 col-sm-6'>
-                        <HorizontalInput
-                            type='password' name='currentPassword'
-                            label={`${this.i18n('user.password-current')}*`}
-                            value={password.currentPassword}
-                            onChange={this._onChange}
-                            labelWidth={3} inputWidth={8}/>
+            <Card.Header className="text-light bg-primary" as="h6">{this.i18n('user.password-change')}</Card.Header>
+            <Card.Body>
+                <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
+                    {currentUser.username === match.params.username &&
+                    <div className='row'>
+                        <div className='col-12 col-sm-6'>
+                            <HorizontalInput
+                                type='password' name='currentPassword'
+                                label={`${this.i18n('user.password-current')}*`}
+                                value={password.currentPassword}
+                                onChange={this._onChange}
+                                labelWidth={4} inputWidth={8}/>
+                        </div>
                     </div>
-                </div>
-                }
-                <div className='row'>
-                    <div className='col-12 col-sm-6'>
-                        <HorizontalInput
-                            type='password' name='newPassword' label={`${this.i18n('user.password-new')}*`}
-                            value={password.newPassword}
-                            onChange={this._onChange}
-                            labelWidth={3} inputWidth={8}/>
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col-12 col-sm-6'>
-                        <HorizontalInput
-                            type='password' name='confirmPassword'
-                            label={`${this.i18n('user.password-confirm')}*`}
-                            value={password.confirmPassword}
-                            onChange={this._onChange}
-                            labelWidth={3} inputWidth={8}/>
-                    </div>
-                </div>
-                <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
-                    {currentUser.role === ROLE.ADMIN &&
-                    <Button style={{margin: '0 0.3em 0 0'}} variant='success' size='sm' ref='submit'
-                            onClick={() => this._onSaveWithEmail()}
-                            disabled={!UserValidator.isPasswordValid(password) || passwordChange.status === ACTION_STATUS.PENDING}>
-                        {this.i18n('save-and-send-email')}
-                        {!UserValidator.isPasswordValid(password) && <HelpIcon text={this.i18n('required')}/>}
-                        {passwordChange.status === ACTION_STATUS.PENDING &&
-                        <LoaderSmall/>}
-                    </Button>
                     }
-                    <Button variant='success' size='sm' ref='submit'
-                            onClick={() => this._onSave()}
-                            disabled={!UserValidator.isPasswordValid(password) || passwordChange.status === ACTION_STATUS.PENDING}>
-                        {this.i18n('save')}
-                        {!UserValidator.isPasswordValid(password) && <HelpIcon text={this.i18n('required')}/>}
-                        {passwordChange.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
-                    </Button>
-                    <Button variant='link' size='sm' onClick={handlers.onCancel}>
-                        {this.i18n('cancel')}
-                    </Button>
-                </div>
-                {!valid &&
-                <AlertMessage type={ALERT_TYPES.DANGER} message={this.i18n('user.password-non-valid')}/>}
-                {showAlert && passwordChange.status === ACTION_STATUS.ERROR &&
-                <AlertMessage type={ALERT_TYPES.DANGER}
-                              message={this.props.formatMessage('user.password-change-error', {error: this.i18n(passwordChange.error.message)})}/>}
-                {showAlert && passwordChange.status === ACTION_STATUS.SUCCESS &&
-                <AlertMessage type={ALERT_TYPES.SUCCESS}
-                              message={this.i18n(this.state.savedWithEmail ? 'user.password-change-success-with-email' : 'user.password-change-success')}/>}
-            </form>
+                    <div className='row'>
+                        <div className='col-12 col-sm-6'>
+                            <HorizontalInput
+                                type='password' name='newPassword' label={`${this.i18n('user.password-new')}*`}
+                                value={password.newPassword}
+                                onChange={this._onChange}
+                                labelWidth={4} inputWidth={8}/>
+                        </div>
+                    </div>
+                    <div className='row'>
+                        <div className='col-12 col-sm-6'>
+                            <HorizontalInput
+                                type='password' name='confirmPassword'
+                                label={`${this.i18n('user.password-confirm')}*`}
+                                value={password.confirmPassword}
+                                onChange={this._onChange}
+                                labelWidth={4} inputWidth={8}/>
+                        </div>
+                    </div>
+                    <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
+                        {currentUser.role === ROLE.ADMIN &&
+                        <Button style={{margin: '0 0.3em 0 0'}} variant='success' size='sm' ref='submit'
+                                onClick={() => this._onSaveWithEmail()} className="d-inline-flex"
+                                disabled={!UserValidator.isPasswordValid(password) || passwordChange.status === ACTION_STATUS.PENDING}>
+                            {this.i18n('save-and-send-email')}
+                            {!UserValidator.isPasswordValid(password) &&
+                            <HelpIcon className="align-self-center" text={this.i18n('required')} glyph="help"/>}
+                            {passwordChange.status === ACTION_STATUS.PENDING &&
+                            <LoaderSmall/>}
+                        </Button>
+                        }
+                        <Button variant='success' size='sm' ref='submit'
+                                onClick={() => this._onSave()} className="d-inline-flex"
+                                disabled={!UserValidator.isPasswordValid(password) || passwordChange.status === ACTION_STATUS.PENDING}>
+                            {this.i18n('save')}
+                            {!UserValidator.isPasswordValid(password) &&
+                            <HelpIcon className="align-self-center" text={this.i18n('required')} glyph="help"/>}
+                            {passwordChange.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
+                        </Button>
+                        <Button variant='link' size='sm' onClick={handlers.onCancel}>
+                            {this.i18n('cancel')}
+                        </Button>
+                    </div>
+                    {!valid &&
+                    <AlertMessage type={ALERT_TYPES.DANGER} message={this.i18n('user.password-non-valid')}/>}
+                    {showAlert && passwordChange.status === ACTION_STATUS.ERROR &&
+                    <AlertMessage type={ALERT_TYPES.DANGER}
+                                  message={this.props.formatMessage('user.password-change-error', {error: this.i18n(passwordChange.error.message)})}/>}
+                    {showAlert && passwordChange.status === ACTION_STATUS.SUCCESS &&
+                    <AlertMessage type={ALERT_TYPES.SUCCESS}
+                                  message={this.i18n(this.state.savedWithEmail ? 'user.password-change-success-with-email' : 'user.password-change-success')}/>}
+                </form>
+            </Card.Body>
         </Card>;
     }
 }

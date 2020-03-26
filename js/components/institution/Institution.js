@@ -53,33 +53,35 @@ class Institution extends React.Component {
                                  message={this.props.formatMessage('institution.load-error', {error: institutionLoaded.error.message})}/>;
         }
         return <Card variant='primary'>
-            <Card.Header>{this.i18n('institution.panel-title')}</Card.Header>
-            <form className='form-horizontal' style={{margin: '0.5em 0 1.5em 0'}}>
-                <div className='row'>
-                    <div className='col-12'>
-                        <HorizontalInput
-                            type='text' name='name' label={`${this.i18n('institution.name')}*`}
-                            value={institution.name} readOnly={currentUser.role !== ROLE.ADMIN}
-                            onChange={this._onChange} labelWidth={3} inputWidth={8}/>
+            <Card.Header className="text-light bg-primary" as="h6">{this.i18n('institution.panel-title')}</Card.Header>
+            <Card.Body>
+                <form className='form-horizontal' style={{margin: '0.5em 0 1.5em 0'}}>
+                    <div className='row'>
+                        <div className='col-12 col-sm-6'>
+                            <HorizontalInput
+                                type='text' name='name' label={`${this.i18n('institution.name')}*`}
+                                value={institution.name} readOnly={currentUser.role !== ROLE.ADMIN}
+                                onChange={this._onChange} labelWidth={3} inputWidth={8}/>
+                        </div>
+                        <div className='col-12 col-sm-6'>
+                            <HorizontalInput
+                                type='text' name='emailAddress' label={this.i18n('institution.email')}
+                                value={institution.emailAddress} readOnly={currentUser.role !== ROLE.ADMIN}
+                                onChange={this._onChange} labelWidth={3} inputWidth={8}/>
+                        </div>
                     </div>
-                    <div className='col-12'>
-                        <HorizontalInput
-                            type='text' name='emailAddress' label={this.i18n('institution.email')}
-                            value={institution.emailAddress} readOnly={currentUser.role !== ROLE.ADMIN}
-                            onChange={this._onChange} labelWidth={3} inputWidth={8}/>
-                    </div>
-                </div>
-                {this._renderAddedDate()}
-                {this._renderButtons()}
-                {showAlert && institutionSaved.status === ACTION_STATUS.ERROR &&
-                <AlertMessage type={ALERT_TYPES.DANGER}
-                              message={this.props.formatMessage('institution.save-error', {error: institutionSaved.error.message})}/>}
-                {showAlert && institutionSaved.status === ACTION_STATUS.SUCCESS &&
-                <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('institution.save-success')}/>}
-            </form>
-            {!this.props.institution.isNew && this._renderMembers()}
-            {!this.props.institution.isNew &&
-            <InstitutionPatients recordsLoaded={recordsLoaded} onEdit={this.props.handlers.onEditPatient}/>}
+                    {this._renderAddedDate()}
+                    {this._renderButtons()}
+                    {showAlert && institutionSaved.status === ACTION_STATUS.ERROR &&
+                    <AlertMessage type={ALERT_TYPES.DANGER}
+                                  message={this.props.formatMessage('institution.save-error', {error: institutionSaved.error.message})}/>}
+                    {showAlert && institutionSaved.status === ACTION_STATUS.SUCCESS &&
+                    <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('institution.save-success')}/>}
+                </form>
+                {!this.props.institution.isNew && this._renderMembers()}
+                {!this.props.institution.isNew &&
+                <InstitutionPatients recordsLoaded={recordsLoaded} onEdit={this.props.handlers.onEditPatient}/>}
+            </Card.Body>
         </Card>;
     }
 
@@ -110,8 +112,9 @@ class Institution extends React.Component {
             return <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
                 <Button variant='success' size='sm' ref='submit'
                         disabled={!InstitutionValidator.isValid(this.props.institution) || this.props.institutionSaved.status === ACTION_STATUS.PENDING}
-                        onClick={handlers.onSave}>{this.i18n('save')}
-                    {!InstitutionValidator.isValid(this.props.institution) && <HelpIcon text={this.i18n('required')}/>}
+                        onClick={handlers.onSave} className="d-inline-flex">{this.i18n('save')}
+                    {!InstitutionValidator.isValid(this.props.institution) &&
+                    <HelpIcon className="align-self-center" text={this.i18n('required')} glyph="help"/>}
                     {institutionSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}</Button>
                 <Button variant='link' size='sm' onClick={handlers.onCancel}>{this.i18n('cancel')}</Button>
             </div>;

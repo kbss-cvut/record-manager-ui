@@ -98,7 +98,9 @@ export default class HorizontalInput extends React.Component {
 
     _renderLabel() {
         return this.props.label ?
-            <Col as={FormLabel} lg={this.props.labelWidth}>{this.props.label}</Col> : null;
+            <Col as={FormLabel} lg={this.props.labelWidth}
+                 className="font-weight-bold text-lg-right align-self-center">{this.props.label}
+            </Col> : null;
     }
 
     _renderTextArea() {
@@ -125,7 +127,7 @@ export default class HorizontalInput extends React.Component {
                 {this.props.iconRight ?
                     <InputGroup>
                         {formControl}
-                        <InputGroup.Append>{this.props.iconRight}</InputGroup.Append>
+                        <InputGroup.Append><InputGroup.Text>{this.props.iconRight}</InputGroup.Text></InputGroup.Append>
                     </InputGroup>
                     :
                     <div>

@@ -77,10 +77,12 @@ class WizardStep extends React.Component {
                     variant='primary'
                     className='wizard-step-content'
                 >
-                    <Card.Header>
-                        <h4>{this.props.title}{this._renderHelpIcon()}</h4>
+                    <Card.Header className="text-light bg-primary" as="h4">
+                        {this.props.title}{this._renderHelpIcon()}
                     </Card.Header>
+                    <Card.Body>
                     {this.renderComponent()}
+                    </Card.Body>
                 </Card>
 
                 <ButtonToolbar style={{float: 'right'}}>

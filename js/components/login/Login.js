@@ -73,43 +73,45 @@ class Login extends React.Component {
     render() {
         return (
             <Card variant='info' className="login-panel">
-                <Card.Header>{this.i18n('login.title')}</Card.Header>
-                {!this.state.deviceSupported &&
-                <div className='message-container'>
-                    <Alert className={`alert-browser-support`} variant="warning">
-                        {this.i18n('Your browser is not fully supported! Some parts of web may not work properly.')}<br/>
-                        {this.i18n('We recommend using the latest version of ')}
-                        {this.getSupportedBrowsersLinks()}
-                    </Alert>
-                </div>}
-                {this.state.showAlert && this.props.error &&
-                <div>
-                    <AlertMessage type={ALERT_TYPES.DANGER} alertPosition={'top'}
-                                  message={this.i18n('login.error')}/>
+                <Card.Header className="text-light bg-primary" as="h6">{this.i18n('login.title')}</Card.Header>
+                <Card.Body>
+                    {!this.state.deviceSupported &&
+                    <div className='message-container'>
+                        <Alert className={`alert-browser-support`} variant="warning">
+                            {this.i18n('Your browser is not fully supported! Some parts of web may not work properly.')}<br/>
+                            {this.i18n('We recommend using the latest version of ')}
+                            {this.getSupportedBrowsersLinks()}
+                        </Alert>
+                    </div>}
+                    {this.state.showAlert && this.props.error &&
+                    <div>
+                        <AlertMessage type={ALERT_TYPES.DANGER} alertPosition={'top'}
+                                      message={this.i18n('login.error')}/>
 
-                </div>}
-                <Form>
-                    <HorizontalInput type='text' name='username' ref={(input) => {
-                        this.usernameField = input;
-                    }}
-                                     label={this.i18n('login.username')} value={this.state.username}
-                                     onChange={this.onChange} labelWidth={3} onKeyPress={this.onKeyPress}
-                                     inputWidth={9}/>
-                    <HorizontalInput type='password' name='password' label={this.i18n('login.password')}
-                                     value={this.state.password}
-                                     onChange={this.onChange} labelWidth={3} onKeyPress={this.onKeyPress}
-                                     inputWidth={9}/>
-                    <div className="login-forgot-password-block">
-                        <Button variant='link' className='login-forgot-password' size='sm'
-                                onClick={this.onForgotPassword}>{this.i18n('login.forgot-password')}</Button>
-                    </div>
-                    <div className="login-buttons">
-                        <Button variant='success' size='lg' onClick={this.login}
-                                disabled={this.props.isLogging}>
-                            {this.i18n('login.submit')}{this.props.isLogging && <LoaderSmall/>}
-                        </Button>
-                    </div>
-                </Form>
+                    </div>}
+                    <Form>
+                        <HorizontalInput type='text' name='username' ref={(input) => {
+                            this.usernameField = input;
+                        }}
+                                         label={this.i18n('login.username')} value={this.state.username}
+                                         onChange={this.onChange} labelWidth={3} onKeyPress={this.onKeyPress}
+                                         inputWidth={9}/>
+                        <HorizontalInput type='password' name='password' label={this.i18n('login.password')}
+                                         value={this.state.password}
+                                         onChange={this.onChange} labelWidth={3} onKeyPress={this.onKeyPress}
+                                         inputWidth={9}/>
+                        <div className="login-forgot-password-block">
+                            <Button variant='link' className='login-forgot-password' size='sm'
+                                    onClick={this.onForgotPassword}>{this.i18n('login.forgot-password')}</Button>
+                        </div>
+                        <div>
+                            <Button variant='success' size='block' onClick={this.login}
+                                    disabled={this.props.isLogging}>
+                                {this.i18n('login.submit')}{this.props.isLogging && <LoaderSmall/>}
+                            </Button>
+                        </div>
+                    </Form>
+                </Card.Body>
             </Card>
         )
     }

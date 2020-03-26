@@ -140,9 +140,9 @@ class User extends React.Component {
         if (!user.isNew && currentUser.role === ROLE.ADMIN && currentUser.username !== user.username) {
             return <Button style={{margin: '0 0.3em 0 0'}} variant='success' size='sm' ref='submit'
                            disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
-                           onClick={() => this._onSaveAndSendEmail()}
+                           onClick={() => this._onSaveAndSendEmail()} className="d-inline-flex"
                            title={this.i18n('required')}>{this.i18n('save-and-send-email')}
-                {!UserValidator.isValid(user) && <HelpIcon text={this.i18n('required')}/>}
+                {!UserValidator.isValid(user) && <HelpIcon text={this.i18n('required')} glyph="help"/>}
                 {userSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
             </Button>
         } else {
@@ -173,113 +173,117 @@ class User extends React.Component {
         }
 
         const generateButton = user.isNew &&
-            <Button variant='link' size='sm' onClick={handlers.generateUsername}>
+            <Button variant="link" className="p-0" size='sm' onClick={handlers.generateUsername}>
                 <FaRandom/>
             </Button>;
 
         return <Card variant='primary'>
-            <Card.Header>{this.i18n('user.panel-title')}</Card.Header>
-            <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
-                {this._sendInvitationButton()}
-                <div className='row'>
-                    <div className='col-12 col-sm-6'>
-                        <HorizontalInput type='text' name='firstName' label={`${this.i18n('user.first-name')}*`}
-                                         disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username}
-                                         value={user.firstName} labelWidth={3} inputWidth={8}
-                                         onChange={this._onChange}/>
+            <Card.Header className="text-light bg-primary" as="h6">{this.i18n('user.panel-title')}</Card.Header>
+            <Card.Body>
+                <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
+                    {this._sendInvitationButton()}
+                    <div className='row'>
+                        <div className='col-12 col-sm-6'>
+                            <HorizontalInput type='text' name='firstName' label={`${this.i18n('user.first-name')}*`}
+                                             disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username}
+                                             value={user.firstName} labelWidth={3} inputWidth={8}
+                                             onChange={this._onChange}/>
+                        </div>
+                        <div className='col-12 col-sm-6'>
+                            <HorizontalInput type='text' name='lastName' label={`${this.i18n('user.last-name')}*`}
+                                             disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username}
+                                             value={user.lastName} labelWidth={3} inputWidth={8}
+                                             onChange={this._onChange}/>
+                        </div>
                     </div>
-                    <div className='col-12 col-sm-6'>
-                        <HorizontalInput type='text' name='lastName' label={`${this.i18n('user.last-name')}*`}
-                                         disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username}
-                                         value={user.lastName} labelWidth={3} inputWidth={8}
-                                         onChange={this._onChange}/>
+                    <div className='row'>
+                        <div className='col-12 col-sm-6'>
+                            <HorizontalInput type='text' name='username' label={`${this.i18n('user.username')}*`}
+                                             disabled={!user.isNew} labelWidth={3} inputWidth={8}
+                                             value={user.username} onChange={this._onChange}
+                                             iconRight={user.isNew ? generateButton : null}/>
+                        </div>
+                        <div className='col-12 col-sm-6'>
+                            <HorizontalInput type='email' name='emailAddress' label={`${this.i18n('users.email')}*`}
+                                             disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username}
+                                             value={user.emailAddress} labelWidth={3} inputWidth={8}
+                                             onChange={this._onChange}/>
+                        </div>
                     </div>
-                </div>
-                <div className='row'>
-                    <div className='col-12 col-sm-6'>
-                        <HorizontalInput type='text' name='username' label={`${this.i18n('user.username')}*`}
-                                         disabled={!user.isNew} labelWidth={3} inputWidth={8}
-                                         value={user.username} onChange={this._onChange}
-                                         iconRight={user.isNew ? generateButton : null}/>
+                    <div className='row'>
+                        {currentUser.role === ROLE.ADMIN &&
+                        <div className='col-12 col-sm-6'>
+                            <HorizontalInput type='select' name='institution'
+                                             label={`${this.i18n('institution.panel-title')}*`}
+                                             onChange={this._onInstitutionSelected}
+                                             disabled={currentUser.role !== ROLE.ADMIN}
+                                             value={user.institution ? user.institution.uri : ''}
+                                             labelWidth={3} inputWidth={8}>
+                                {this._generateInstitutionsOptions()}
+                            </HorizontalInput>
+                        </div>
+                        }
+                        <div className='col-12 col-sm-6'>
+                            <HorizontalInput type='select' name='role' label={`${this.i18n('user.role')}*`}
+                                             onChange={this._onAdminStatusChange}
+                                             disabled={currentUser.role !== ROLE.ADMIN}
+                                             value={user.types && getRole(user)}
+                                             labelWidth={3} inputWidth={8}>
+                                {this._generateRolesOptions()}
+                            </HorizontalInput>
+                        </div>
                     </div>
-                    <div className='col-12 col-sm-6'>
-                        <HorizontalInput type='email' name='emailAddress' label={`${this.i18n('users.email')}*`}
-                                         disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username}
-                                         value={user.emailAddress} labelWidth={3} inputWidth={8}
-                                         onChange={this._onChange}/>
-                    </div>
-                </div>
-                <div className='row'>
-                    {currentUser.role === ROLE.ADMIN &&
-                    <div className='col-12 col-sm-6'>
-                        <HorizontalInput type='select' name='institution'
-                                         label={`${this.i18n('institution.panel-title')}*`}
-                                         onChange={this._onInstitutionSelected}
-                                         disabled={currentUser.role !== ROLE.ADMIN}
-                                         value={user.institution ? user.institution.uri : ''}
-                                         labelWidth={3} inputWidth={8}>
-                            {this._generateInstitutionsOptions()}
-                        </HorizontalInput>
+                    {user.isNew &&
+                    <div className='row'>
+                        <div className='col-12 col-sm-6'>
+                            <HorizontalInput type='text' name='password' label={this.i18n('user.password')}
+                                             readOnly={true} value={user.password} labelWidth={3} inputWidth={8}
+                            />
+                        </div>
                     </div>
                     }
-                    <div className='col-12 col-sm-6'>
-                        <HorizontalInput type='select' name='role' label={`${this.i18n('user.role')}*`}
-                                         onChange={this._onAdminStatusChange}
-                                         disabled={currentUser.role !== ROLE.ADMIN}
-                                         value={user.types && getRole(user)}
-                                         labelWidth={3} inputWidth={8}>
-                            {this._generateRolesOptions()}
-                        </HorizontalInput>
+                    <div className="buttons-line-height" style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
+                        {this._impersonateButton()}
+                        {this._passwordChange()}
+                        {this._saveAndSendEmailButton()}
+                        {(currentUser.role === ROLE.ADMIN || currentUser.username === user.username) &&
+                        <Button variant='success' size='sm' ref='submit' className="d-inline-flex"
+                                disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
+                                onClick={() => this._onSave()}
+                                title={this.i18n('required')}>
+                            {this.i18n('save')}
+                            {!UserValidator.isValid(user) &&
+                            <HelpIcon className="align-self-center" text={this.i18n('required')} glyph="help"/>}
+                            {userSaved.status === ACTION_STATUS.PENDING &&
+                            <LoaderSmall/>}
+                        </Button>
+                        }
+                        <Button variant='link' size='sm' onClick={handlers.onCancel}>
+                            {this.i18n(this.props.backToInstitution ? 'users.back-to-institution' : 'cancel')}
+                        </Button>
                     </div>
-                </div>
-                {user.isNew &&
-                <div className='row'>
-                    <div className='col-12 col-sm-6'>
-                        <HorizontalInput type='text' name='password' label={this.i18n('user.password')}
-                                         readOnly={true} value={user.password} labelWidth={3} inputWidth={8}
-                        />
-                    </div>
-                </div>
-                }
-                <div className="buttons-line-height" style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
-                    {this._impersonateButton()}
-                    {this._passwordChange()}
-                    {this._saveAndSendEmailButton()}
-                    {(currentUser.role === ROLE.ADMIN || currentUser.username === user.username) &&
-                    <Button variant='success' size='sm' ref='submit'
-                            disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
-                            onClick={() => this._onSave()}
-                            title={this.i18n('required')}>
-                        {this.i18n('save')}
-                        {!UserValidator.isValid(user) && <HelpIcon text={this.i18n('required')}/>}
-                        {userSaved.status === ACTION_STATUS.PENDING &&
-                        <LoaderSmall/>}
-                    </Button>
-                    }
-                    <Button variant='link' size='sm' onClick={handlers.onCancel}>
-                        {this.i18n(this.props.backToInstitution ? 'users.back-to-institution' : 'cancel')}
-                    </Button>
-                </div>
-                {showAlert && userSaved.status === ACTION_STATUS.ERROR &&
-                <AlertMessage type={ALERT_TYPES.DANGER}
-                              message={this.props.formatMessage('user.save-error', {error: this.props.userSaved.error.message})}/>}
-                {showAlert && userSaved.status === ACTION_STATUS.SUCCESS &&
-                <AlertMessage type={ALERT_TYPES.SUCCESS}
-                              message={this.i18n(this.state.savedWithEmail ? 'user.save-success-with-email' : 'user.save-success')}/>}
-                {invited && invitationSent.status === ACTION_STATUS.SUCCESS &&
-                <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.send-invitation-success')}/>}
-                {invited && invitationSent.status === ACTION_STATUS.ERROR &&
-                <AlertMessage type={ALERT_TYPES.DANGER}
-                              message={this.props.formatMessage('user.send-invitation-error', {error: invitationSent.error.message})}/>}
-                {deletedInvitation && invitationDelete.status === ACTION_STATUS.SUCCESS &&
-                <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.delete-invitation-option-success')}/>}
-                {deletedInvitation && invitationDelete.status === ACTION_STATUS.ERROR &&
-                <AlertMessage type={ALERT_TYPES.DANGER}
-                              message={this.props.formatMessage('user.delete-invitation-option-error', {error: invitationDelete.error.message})}/>}
-                {impersonated && impersonation.status === ACTION_STATUS.ERROR &&
-                <AlertMessage type={ALERT_TYPES.DANGER}
-                              message={this.props.formatMessage('user.impersonate-error', {error: impersonation.error.message})}/>}
-            </form>
+                    {showAlert && userSaved.status === ACTION_STATUS.ERROR &&
+                    <AlertMessage type={ALERT_TYPES.DANGER}
+                                  message={this.props.formatMessage('user.save-error', {error: this.props.userSaved.error.message})}/>}
+                    {showAlert && userSaved.status === ACTION_STATUS.SUCCESS &&
+                    <AlertMessage type={ALERT_TYPES.SUCCESS}
+                                  message={this.i18n(this.state.savedWithEmail ? 'user.save-success-with-email' : 'user.save-success')}/>}
+                    {invited && invitationSent.status === ACTION_STATUS.SUCCESS &&
+                    <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.send-invitation-success')}/>}
+                    {invited && invitationSent.status === ACTION_STATUS.ERROR &&
+                    <AlertMessage type={ALERT_TYPES.DANGER}
+                                  message={this.props.formatMessage('user.send-invitation-error', {error: invitationSent.error.message})}/>}
+                    {deletedInvitation && invitationDelete.status === ACTION_STATUS.SUCCESS &&
+                    <AlertMessage type={ALERT_TYPES.SUCCESS}
+                                  message={this.i18n('user.delete-invitation-option-success')}/>}
+                    {deletedInvitation && invitationDelete.status === ACTION_STATUS.ERROR &&
+                    <AlertMessage type={ALERT_TYPES.DANGER}
+                                  message={this.props.formatMessage('user.delete-invitation-option-error', {error: invitationDelete.error.message})}/>}
+                    {impersonated && impersonation.status === ACTION_STATUS.ERROR &&
+                    <AlertMessage type={ALERT_TYPES.DANGER}
+                                  message={this.props.formatMessage('user.impersonate-error', {error: impersonation.error.message})}/>}
+                </form>
+            </Card.Body>
         </Card>;
     }
 }

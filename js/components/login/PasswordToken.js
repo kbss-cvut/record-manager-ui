@@ -71,7 +71,8 @@ class PasswordReset extends React.Component {
             return null;
         }
         return <Card variant='info' className="login-panel">
-            <Card.Header>{this.i18n('login.reset-password')}</Card.Header>
+            <Card.Header className="text-light bg-primary" as="h6">{this.i18n('login.reset-password')}</Card.Header>
+            <Card.Body>
             <Form horizontal>
                 {!this.state.valid &&
                 <AlertMessage type={ALERT_TYPES.DANGER} alertPosition={'top'}
@@ -101,6 +102,7 @@ class PasswordReset extends React.Component {
                             onClick={() => transitionTo(Routes.login)}>{this.i18n('login.back-to-login')}</Button>
                 </div>
             </Form>
+            </Card.Body>
         </Card>
     }
 }
