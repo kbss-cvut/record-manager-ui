@@ -20,7 +20,7 @@ const WizardWindow = (props) => {
         return modalProps;
     };
 
-    return <Modal {...getModalProps()} show={show} bsSize="large" title={props.title}
+    return <Modal {...getModalProps()} show={show} size="large" title={props.title}
                   animation={true} dialogClassName="large-modal">
         <Modal.Header closeButton>
             <Modal.Title>{props.title}</Modal.Title>

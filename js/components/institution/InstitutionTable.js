@@ -45,7 +45,7 @@ class InstitutionTable extends React.Component {
                               show={this.state.showDialog} item={this.state.selectedItem}
                               itemLabel={this._getDeleteLabel()}/>
             {this.props.institutions.length > 0 ?
-                <Table responsive striped bordered condensed hover>
+                <Table size="sm" responsive striped bordered hover>
                     {this._renderHeader()}
                     <tbody>
                     {this._renderRows()}
@@ -65,9 +65,9 @@ class InstitutionTable extends React.Component {
     _renderHeader() {
         return <thead>
         <tr>
-            <th className='col-xs-5 col-sm-5 col-md-5 content-center'>{this.i18n('name')}</th>
-            <th className='col-xs-5 col-sm-4 col-md-5 content-center'>{this.i18n('institution.email')}</th>
-            <th className='col-xs-2 col-sm-3 col-md-2 content-center'>{this.i18n('actions')}</th>
+            <th className='w-40 content-center'>{this.i18n('name')}</th>
+            <th className='w-40 content-center'>{this.i18n('institution.email')}</th>
+            <th className='w-20 content-center'>{this.i18n('actions')}</th>
         </tr>
         </thead>;
     }

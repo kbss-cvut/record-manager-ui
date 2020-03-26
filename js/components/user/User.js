@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import {Button, Glyphicon, Panel} from "react-bootstrap";
+import {Button, Card} from "react-bootstrap";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import HorizontalInput from "../HorizontalInput";
@@ -13,6 +13,7 @@ import * as Vocabulary from "../../constants/Vocabulary";
 import {LoaderPanel, LoaderSmall} from "../Loader";
 import HelpIcon from "../HelpIcon";
 import PropTypes from "prop-types";
+import {FaRandom} from 'react-icons/fa';
 
 class User extends React.Component {
     static propTypes = {
@@ -91,7 +92,7 @@ class User extends React.Component {
         if (user.isNew || (currentUser.username !== user.username && currentUser.role !== ROLE.ADMIN)) {
             return null;
         } else {
-            return <Button style={{margin: '0 0.3em 0 0'}} bsStyle='primary' bsSize='small' ref='submit'
+            return <Button style={{margin: '0 0.3em 0 0'}} variant='primary' size='sm' ref='submit'
                            onClick={handlers.onPasswordChange}>{this.i18n('user.password-change')}</Button>;
         }
     }
@@ -101,14 +102,14 @@ class User extends React.Component {
         if (user.isInvited === false && currentUser.role === ROLE.ADMIN) {
             return <h4 className="invite-to-study-text content-center"
                        style={{margin: '0 0 15px 0'}}>{this.i18n('user.invite-to-study-text')}
-                <Button bsStyle='warning' bsSize='small' ref='submit'
+                <Button variant='warning' size='sm' ref='submit'
                         disabled={invitationSent.status === ACTION_STATUS.PENDING
                         || invitationDelete.status === ACTION_STATUS.PENDING}
                         onClick={() => handlers.sendInvitation()}>
                     {this.i18n('user.invite-to-study')}{invitationSent.status === ACTION_STATUS.PENDING &&
                 <LoaderSmall/>}
                 </Button>
-                <Button bsStyle='link' bsSize='small' onClick={handlers.deleteInvitationOption}
+                <Button variant='link' size='sm' onClick={handlers.deleteInvitationOption}
                         disabled={invitationSent.status === ACTION_STATUS.PENDING
                         || invitationDelete.status === ACTION_STATUS.PENDING}>
                     {this.i18n('user.delete-invitation-option')}{invitationDelete.status === ACTION_STATUS.PENDING &&
@@ -123,7 +124,7 @@ class User extends React.Component {
     _impersonateButton() {
         const {user, currentUser, handlers, impersonation} = this.props;
         if (!user.isNew && currentUser.role === ROLE.ADMIN && getRole(user) !== ROLE.ADMIN) {
-            return <Button style={{margin: '0 0.3em 0 0'}} bsStyle='danger' bsSize='small' ref='submit'
+            return <Button style={{margin: '0 0.3em 0 0'}} variant='danger' size='sm' ref='submit'
                            disabled={impersonation.status === ACTION_STATUS.PENDING}
                            onClick={handlers.impersonate}>
                 {this.i18n('user.impersonate')}{impersonation.status === ACTION_STATUS.PENDING &&
@@ -137,7 +138,7 @@ class User extends React.Component {
     _saveAndSendEmailButton() {
         const {user, currentUser, userSaved} = this.props;
         if (!user.isNew && currentUser.role === ROLE.ADMIN && currentUser.username !== user.username) {
-            return <Button style={{margin: '0 0.3em 0 0'}} bsStyle='success' bsSize='small' ref='submit'
+            return <Button style={{margin: '0 0.3em 0 0'}} variant='success' size='sm' ref='submit'
                            disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
                            onClick={() => this._onSaveAndSendEmail()}
                            title={this.i18n('required')}>{this.i18n('save-and-send-email')}
@@ -172,44 +173,45 @@ class User extends React.Component {
         }
 
         const generateButton = user.isNew &&
-            <Button bsStyle='link' bsSize='small' onClick={handlers.generateUsername}>
-                <Glyphicon glyph="random"/>
+            <Button variant='link' size='sm' onClick={handlers.generateUsername}>
+                <FaRandom/>
             </Button>;
 
-        return <Panel header={<span>{this.i18n('user.panel-title')}</span>} bsStyle='primary'>
+        return <Card variant='primary'>
+            <Card.Header>{this.i18n('user.panel-title')}</Card.Header>
             <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
                 {this._sendInvitationButton()}
                 <div className='row'>
-                    <div className='col-xs-6'>
+                    <div className='col-12 col-sm-6'>
                         <HorizontalInput type='text' name='firstName' label={`${this.i18n('user.first-name')}*`}
                                          disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username}
-                                         value={user.firstName}
-                                         labelWidth={3} inputWidth={8} onChange={this._onChange}/>
+                                         value={user.firstName} labelWidth={3} inputWidth={8}
+                                         onChange={this._onChange}/>
                     </div>
-                    <div className='col-xs-6'>
+                    <div className='col-12 col-sm-6'>
                         <HorizontalInput type='text' name='lastName' label={`${this.i18n('user.last-name')}*`}
                                          disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username}
-                                         value={user.lastName}
-                                         labelWidth={3} inputWidth={8} onChange={this._onChange}/>
+                                         value={user.lastName} labelWidth={3} inputWidth={8}
+                                         onChange={this._onChange}/>
                     </div>
                 </div>
                 <div className='row'>
-                    <div className='col-xs-6'>
+                    <div className='col-12 col-sm-6'>
                         <HorizontalInput type='text' name='username' label={`${this.i18n('user.username')}*`}
-                                         disabled={!user.isNew}
-                                         value={user.username} labelWidth={3} inputWidth={8} onChange={this._onChange}
+                                         disabled={!user.isNew} labelWidth={3} inputWidth={8}
+                                         value={user.username} onChange={this._onChange}
                                          iconRight={user.isNew ? generateButton : null}/>
                     </div>
-                    <div className='col-xs-6'>
+                    <div className='col-12 col-sm-6'>
                         <HorizontalInput type='email' name='emailAddress' label={`${this.i18n('users.email')}*`}
                                          disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username}
-                                         value={user.emailAddress}
-                                         labelWidth={3} inputWidth={8} onChange={this._onChange}/>
+                                         value={user.emailAddress} labelWidth={3} inputWidth={8}
+                                         onChange={this._onChange}/>
                     </div>
                 </div>
                 <div className='row'>
                     {currentUser.role === ROLE.ADMIN &&
-                    <div className='col-xs-6'>
+                    <div className='col-12 col-sm-6'>
                         <HorizontalInput type='select' name='institution'
                                          label={`${this.i18n('institution.panel-title')}*`}
                                          onChange={this._onInstitutionSelected}
@@ -220,7 +222,7 @@ class User extends React.Component {
                         </HorizontalInput>
                     </div>
                     }
-                    <div className='col-xs-6'>
+                    <div className='col-12 col-sm-6'>
                         <HorizontalInput type='select' name='role' label={`${this.i18n('user.role')}*`}
                                          onChange={this._onAdminStatusChange}
                                          disabled={currentUser.role !== ROLE.ADMIN}
@@ -232,10 +234,10 @@ class User extends React.Component {
                 </div>
                 {user.isNew &&
                 <div className='row'>
-                    <div className='col-xs-6'>
+                    <div className='col-12 col-sm-6'>
                         <HorizontalInput type='text' name='password' label={this.i18n('user.password')}
-                                         readOnly={true} value={user.password}
-                                         labelWidth={3} inputWidth={8}/>
+                                         readOnly={true} value={user.password} labelWidth={3} inputWidth={8}
+                        />
                     </div>
                 </div>
                 }
@@ -244,7 +246,7 @@ class User extends React.Component {
                     {this._passwordChange()}
                     {this._saveAndSendEmailButton()}
                     {(currentUser.role === ROLE.ADMIN || currentUser.username === user.username) &&
-                    <Button bsStyle='success' bsSize='small' ref='submit'
+                    <Button variant='success' size='sm' ref='submit'
                             disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
                             onClick={() => this._onSave()}
                             title={this.i18n('required')}>
@@ -254,7 +256,7 @@ class User extends React.Component {
                         <LoaderSmall/>}
                     </Button>
                     }
-                    <Button bsStyle='link' bsSize='small' onClick={handlers.onCancel}>
+                    <Button variant='link' size='sm' onClick={handlers.onCancel}>
                         {this.i18n(this.props.backToInstitution ? 'users.back-to-institution' : 'cancel')}
                     </Button>
                 </div>
@@ -278,7 +280,7 @@ class User extends React.Component {
                 <AlertMessage type={ALERT_TYPES.DANGER}
                               message={this.props.formatMessage('user.impersonate-error', {error: impersonation.error.message})}/>}
             </form>
-        </Panel>;
+        </Card>;
     }
 }
 

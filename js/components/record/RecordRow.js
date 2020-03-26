@@ -15,7 +15,7 @@ let RecordRow = (props) => {
         isComplete = RecordValidator.isComplete(record),
         completionTooltip = props.i18n(isComplete ? 'records.completion-status-tooltip.complete' : 'records.completion-status-tooltip.incomplete'),
         deleteButton = props.disableDelete ? null :
-            <Button bsStyle='warning' bsSize='small' title={props.i18n('records.delete-tooltip')}
+            <Button variant='warning' size='sm' title={props.i18n('records.delete-tooltip')}
                     onClick={() => props.onDelete(record)}>{props.i18n('delete')}{props.deletionLoading && <LoaderSmall />}</Button>;
     return <tr>
         <td className='report-row'><Link to={Routes.records.path + '/' + record.key}>{record.key}</Link></td>
@@ -27,7 +27,7 @@ let RecordRow = (props) => {
             <HelpIcon text={completionTooltip} glyph={isComplete ? 'ok' : 'remove'}/>
         </td>
         <td className='report-row actions'>
-            <Button bsStyle='primary' bsSize='small' title={props.i18n('records.open-tooltip')}
+            <Button variant='primary' size='sm' title={props.i18n('records.open-tooltip')}
                     onClick={() => props.onEdit(record)}>{props.i18n('open')}</Button>
             {deleteButton}
         </td>

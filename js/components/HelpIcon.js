@@ -1,14 +1,15 @@
 'use strict';
 
 import React from 'react';
-import {Glyphicon, OverlayTrigger, Tooltip} from 'react-bootstrap';
+import {OverlayTrigger, Tooltip} from 'react-bootstrap';
 import PropTypes from "prop-types";
+import {FaQuestionCircle} from 'react-icons/fa';
 
 const HelpIcon = (props) => {
     const tooltip = <Tooltip id='help-tooltip'>{props.text}</Tooltip>;
 
     return <OverlayTrigger placement='right' overlay={tooltip}>
-        <Glyphicon glyph={props.glyph ? props.glyph : 'question-sign'} className='help-icon'/>
+        <FaQuestionCircle className='help-icon'/>
     </OverlayTrigger>;
 };
 

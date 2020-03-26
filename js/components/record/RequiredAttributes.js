@@ -25,10 +25,11 @@ class RequiredAttributes extends React.Component {
         // If the 'completed' prop is true, the attributes (except for the name) should be read only
         return <div>
             <div className='row'>
-                <div className='col-xs-6'>
-                    <HorizontalInput type='text' name='localName' value={record.localName}
-                           label={this.i18n('records.local-name') + '*'} onChange={this.props.onChange}
-                           labelWidth={4} inputWidth={8}/>
+                <div className='col-12 col-sm-6'>
+                    <HorizontalInput labelWidth={3} inputWidth={8}
+                        type='text' name='localName' value={record.localName}
+                        label={this.i18n('records.local-name') + '*'} onChange={this.props.onChange}
+                    />
                 </div>
                 <HelpIcon text={this.i18n('help.local-name')}/>
             </div>

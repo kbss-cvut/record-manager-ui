@@ -23,9 +23,9 @@ const DeleteItemDialog = (props) => {
                               values={{itemLabel: props.itemLabel}}/>
         </Modal.Body>
         <Modal.Footer>
-            <Button bsStyle='warning' bsSize='small'
+            <Button variant='warning' size='sm'
                     onClick={props.onSubmit}>{props.i18n('delete')}</Button>
-            <Button bsSize='small' onClick={props.onClose}>{props.i18n('cancel')}</Button>
+            <Button size='sm' onClick={props.onClose}>{props.i18n('cancel')}</Button>
         </Modal.Footer>
     </Modal>
 };

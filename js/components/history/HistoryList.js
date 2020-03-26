@@ -1,10 +1,10 @@
 'use strict';
 
-import React from 'react';
+import React, {Fragment} from 'react';
 import {connect} from "react-redux";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
-import {Panel} from "react-bootstrap";
+import {Card} from "react-bootstrap";
 import {loadActions} from "../../actions/HistoryActions";
 import {bindActionCreators} from "redux";
 import {ACTION_STATUS, ALERT_TYPES, ACTIONS_PER_PAGE} from "../../constants/DefaultConstants";
@@ -68,7 +68,7 @@ class HistoryList extends React.Component {
 
     render() {
         const {actionsLoaded} = this.props;
-        if(!actionsLoaded.actions && (!actionsLoaded.status || actionsLoaded.status === ACTION_STATUS.PENDING)) {
+        if (!actionsLoaded.actions && (!actionsLoaded.status || actionsLoaded.status === ACTION_STATUS.PENDING)) {
             return <LoaderPanel header={this._renderHeader()}/>;
         } else if (actionsLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
@@ -81,20 +81,23 @@ class HistoryList extends React.Component {
             onKeyPress: this._onKeyPress,
             onOpen: this._onOpen
         };
-        return <Panel header={this._renderHeader()} bsStyle='primary'>
+        return <Card variant='primary'>
+            <Card.Header>
+                {this._renderHeader()}
+            </Card.Header>
             <HistoryTable handlers={handlers} searchData={this.state.searchData}
                           actions={actionsLoaded.actions} i18n={this.i18n}/>
             <HistoryPagination pageNumber={this.state.pageNumber}
                                numberOfActions={actionsLoaded.actions.length}
                                handlePagination={this._handlePagination}/>
-        </Panel>
+        </Card>
     }
 
-    _renderHeader() {
-        return <span>
-            {this.i18n('main.history')}{this.props.actionsLoaded.status === ACTION_STATUS.PENDING && <LoaderSmall />}
-        </span>;
-
+    _renderHeader = () => {
+        return <Fragment>
+            {this.i18n('main.history')}{this.props.actionsLoaded.status === ACTION_STATUS.PENDING &&
+        <LoaderSmall/>}
+        </Fragment>
     }
 }
 
@@ -109,6 +112,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         loadActions: bindActionCreators(loadActions, dispatch),
-        transitionToWithOpts:bindActionCreators(transitionToWithOpts, dispatch)
+        transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch)
     }
 }

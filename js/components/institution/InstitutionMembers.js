@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {Button, Panel, Table} from 'react-bootstrap';
+import {Button, Card, Table} from 'react-bootstrap';
 
 import injectInl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
@@ -48,12 +48,13 @@ class InstitutionMembers extends React.Component {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('institution.members.loading-error', {error: institutionMembers.error.message})}/>
         }
-        return <Panel header={<span>{this.i18n('institution.members.panel-title')}</span>} bsStyle='info'>
+        return <Card variant='info'>
+            <Card.Header>{this.i18n('institution.members.panel-title')}</Card.Header>
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
                               show={this.state.showDialog} item={this.state.selectedUser}
                               itemLabel={this._getDeleteLabel()}/>
             {institutionMembers.members.length > 0 ?
-                <Table responsive striped bordered condensed hover>
+                <Table size="sm" responsive striped bordered hover>
                     <thead>
                     <tr>
                         <th className='col-xs-4 content-center'>{this.i18n('name')}</th>
@@ -71,7 +72,7 @@ class InstitutionMembers extends React.Component {
             }
             {currentUser.role === ROLE.ADMIN &&
                 <div className="btn-toolbar">
-                    <Button bsStyle='primary' className="btn-sm" onClick={() => onAddNewUser(institution)}>
+                    <Button variant='primary' size="sm" onClick={() => onAddNewUser(institution)}>
                         {this.i18n('users.add-new-user')}
                     </Button>
                 </div>
@@ -81,7 +82,7 @@ class InstitutionMembers extends React.Component {
                           message={this.props.formatMessage('user.delete-error', {error: this.i18n(this.props.userDeleted.error.message)})}/>}
             {this.state.showAlert && userDeleted.status === ACTION_STATUS.SUCCESS &&
             <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.delete-success')}/>}
-        </Panel>;
+        </Card>;
     };
 
     _renderRows() {
@@ -96,12 +97,12 @@ class InstitutionMembers extends React.Component {
                 <td className='report-row'>{member.username}</td>
                 <td className='report-row'>{member.emailAddress}</td>
                 <td className='report-row actions'>
-                    <Button bsStyle='primary' bsSize='small' title={this.i18n('users.open-tooltip')}
+                    <Button variant='primary' size='sm' title={this.i18n('users.open-tooltip')}
                             onClick={() => onEditUser(member, institution)}>
                         {this.i18n('open')}
                     </Button>
                     {currentUser.role === ROLE.ADMIN &&
-                        <Button bsStyle='warning' bsSize='small' title={this.i18n('users.delete-tooltip')}
+                        <Button variant='warning' size='sm' title={this.i18n('users.delete-tooltip')}
                                 onClick={() => this._onDelete(member)}>
                             {this.i18n('delete')}{deletionLoading && <LoaderSmall />}
                         </Button>}

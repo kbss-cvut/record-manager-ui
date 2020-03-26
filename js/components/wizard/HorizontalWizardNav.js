@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 
 const HorizontalWizardNav = ({steps, onNavigate, currentStep}) => (
     <div className="wizard-nav">
-        <Nav bsStyle="tabs" onSelect={(key) => onNavigate(key)}>
+        <Nav variant="tabs" onSelect={(key) => onNavigate(key)}>
             {steps.map((step, index) =>
                 <NavItem
                     key={'nav' + index} eventKey={index}

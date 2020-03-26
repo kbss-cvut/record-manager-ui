@@ -2,7 +2,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import {Checkbox, ControlLabel, FormGroup, FormControl, HelpBlock, Radio} from "react-bootstrap";
+import {FormLabel, FormGroup, FormControl, FormText, FormCheck} from "react-bootstrap";
 import PropTypes from "prop-types";
 
 export default class Input extends React.Component {
@@ -47,46 +47,46 @@ export default class Input extends React.Component {
     }
 
     _renderCheckbox() {
-        return <Checkbox ref={c => this.input = c} {...this.props}>{this.props.label}</Checkbox>;
+        return <FormCheck ref={c => this.input = c} {...this.props}>{this.props.label}</FormCheck>;
     }
 
     _renderRadio() {
-        return <Radio ref={c => this.input = c} {...this.props}>{this.props.label}</Radio>;
+        return <FormCheck ref={c => this.input = c} {...this.props}>{this.props.label}</FormCheck>;
     }
 
     _renderSelect() {
-        return <FormGroup bsSize='small' validationState={this.props.validation}>
+        return <FormGroup size='sm' validationState={this.props.validation}>
             {this._renderLabel()}
-            <FormControl componentClass='select' ref={c => this.input = c} {...this.props}>
+            <FormControl as='select' ref={c => this.input = c} {...this.props}>
                 {this.props.children}
             </FormControl>
-            {this.props.validation && <FormControl.Feedback />}
+            {this.props.validation && <FormControl.Feedback/>}
             {this._renderHelp()}
         </FormGroup>;
     }
 
     _renderLabel() {
-        return this.props.label ? <ControlLabel>{this.props.label}</ControlLabel> : null;
+        return this.props.label ? <FormLabel>{this.props.label}</FormLabel> : null;
     }
 
     _renderTextArea() {
-        return <FormGroup bsSize='small' validationState={this.props.validation}>
+        return <FormGroup size='sm' validationState={this.props.validation}>
             {this._renderLabel()}
-            <FormControl componentClass='textarea' style={{height: 'auto'}} ref={c => this.input = c} {...this.props}/>
-            {this.props.validation && <FormControl.Feedback />}
+            <FormControl as='textarea' style={{height: 'auto'}} ref={c => this.input = c} {...this.props}/>
+            {this.props.validation && <FormControl.Feedback/>}
             {this._renderHelp()}
         </FormGroup>;
     }
 
     _renderHelp() {
-        return this.props.help ? <HelpBlock>{this.props.help}</HelpBlock> : null;
+        return this.props.help ? <FormText>{this.props.help}</FormText> : null;
     }
 
     _renderInput() {
-        return <FormGroup bsSize='small' validationState={this.props.validation}>
+        return <FormGroup size='sm' validationState={this.props.validation}>
             {this._renderLabel()}
-            <FormControl ref={c => this.input = c} componentClass='input' {...this.props}/>
-            {this.props.validation && <FormControl.Feedback />}
+            <FormControl ref={c => this.input = c} as='input' {...this.props}/>
+            {this.props.validation && <FormControl.Feedback/>}
             {this._renderHelp()}
         </FormGroup>;
     }

@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import {Alert, Button, Form, Panel} from "react-bootstrap";
+import {Alert, Button, Form, Card} from "react-bootstrap";
 import HorizontalInput from "../HorizontalInput";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
@@ -71,43 +71,46 @@ class Login extends React.Component {
     }
 
     render() {
-        return(
-            <Panel header={<span>{this.i18n('login.title')}</span>} bsStyle='info' className="login-panel">
+        return (
+            <Card variant='info' className="login-panel">
+                <Card.Header>{this.i18n('login.title')}</Card.Header>
                 {!this.state.deviceSupported &&
                 <div className='message-container'>
-                    <Alert className={`alert-browser-support`} bsStyle="warning">
+                    <Alert className={`alert-browser-support`} variant="warning">
                         {this.i18n('Your browser is not fully supported! Some parts of web may not work properly.')}<br/>
                         {this.i18n('We recommend using the latest version of ')}
                         {this.getSupportedBrowsersLinks()}
                     </Alert>
                 </div>}
                 {this.state.showAlert && this.props.error &&
-                    <div>
-                        <AlertMessage type={ALERT_TYPES.DANGER} alertPosition={'top'}
-                              message={this.i18n('login.error')}/>
+                <div>
+                    <AlertMessage type={ALERT_TYPES.DANGER} alertPosition={'top'}
+                                  message={this.i18n('login.error')}/>
 
-                    </div>}
-            <Form horizontal>
-                <HorizontalInput type='text' name='username' ref={(input) => { this.usernameField = input; }}
-                       label={this.i18n('login.username')} value={this.state.username}
-                       onChange={this.onChange} labelWidth={3} onKeyPress={this.onKeyPress}
-                       inputWidth={9}/>
-                <HorizontalInput type='password' name='password' label={this.i18n('login.password')}
-                       value={this.state.password}
-                       onChange={this.onChange} labelWidth={3} onKeyPress={this.onKeyPress}
-                       inputWidth={9}/>
-                <div className="login-forgot-password-block">
-                    <Button bsStyle='link' className='login-forgot-password' bsSize='small'
-                            onClick={this.onForgotPassword}>{this.i18n('login.forgot-password')}</Button>
-                </div>
-                <div className="login-buttons">
-                    <Button bsStyle='success' bsSize='large' onClick={this.login}
-                            disabled={this.props.isLogging}>
-                        {this.i18n('login.submit')}{this.props.isLogging && <LoaderSmall />}
+                </div>}
+                <Form>
+                    <HorizontalInput type='text' name='username' ref={(input) => {
+                        this.usernameField = input;
+                    }}
+                                     label={this.i18n('login.username')} value={this.state.username}
+                                     onChange={this.onChange} labelWidth={3} onKeyPress={this.onKeyPress}
+                                     inputWidth={9}/>
+                    <HorizontalInput type='password' name='password' label={this.i18n('login.password')}
+                                     value={this.state.password}
+                                     onChange={this.onChange} labelWidth={3} onKeyPress={this.onKeyPress}
+                                     inputWidth={9}/>
+                    <div className="login-forgot-password-block">
+                        <Button variant='link' className='login-forgot-password' size='sm'
+                                onClick={this.onForgotPassword}>{this.i18n('login.forgot-password')}</Button>
+                    </div>
+                    <div className="login-buttons">
+                        <Button variant='success' size='lg' onClick={this.login}
+                                disabled={this.props.isLogging}>
+                            {this.i18n('login.submit')}{this.props.isLogging && <LoaderSmall/>}
                         </Button>
-                </div>
-            </Form>
-        </Panel>
+                    </div>
+                </Form>
+            </Card>
         )
     }
 }

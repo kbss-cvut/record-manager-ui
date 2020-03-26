@@ -24,27 +24,27 @@ class HistoryTable extends React.Component {
 
     render() {
         return <div>
-                <Table responsive striped bordered condensed hover>
-                    {this._renderHeader()}
-                    <tbody>
-                    <HistorySearch handlers={this.props.handlers} searchData={this.props.searchData}/>
-                    {this.props.actions.length > 0 ? this._renderRows()
-                        : <tr className="font-italic">
-                            <td colSpan="4">{this.i18n('history.not-found')}</td>
-                        </tr>
-                    }
-                    </tbody>
-                </Table>
+            <Table size="sm" responsive striped bordered hover>
+                {this._renderHeader()}
+                <tbody>
+                <HistorySearch handlers={this.props.handlers} searchData={this.props.searchData}/>
+                {this.props.actions.length > 0 ? this._renderRows()
+                    : <tr className="font-italic">
+                        <td colSpan="4">{this.i18n('history.not-found')}</td>
+                    </tr>
+                }
+                </tbody>
+            </Table>
         </div>;
     }
 
     _renderHeader() {
         return <thead>
         <tr>
-            <th className='col-xs-3 col-sm-3 col-md-3 content-center'>{this.i18n('history.action-type')}</th>
-            <th className='col-xs-3 col-sm-3 col-md-3 content-center'>{this.i18n('history.author')}</th>
-            <th className='col-xs-3 col-sm-3 col-md-3 content-center'>{this.i18n('history.time')}</th>
-            <th className='col-xs-3 col-sm-3 col-md-3 content-center'>{this.i18n('actions')}</th>
+            <th className='w-26 content-center'>{this.i18n('history.action-type')}</th>
+            <th className='w-26 content-center'>{this.i18n('history.author')}</th>
+            <th className='w-26 content-center'>{this.i18n('history.time')}</th>
+            <th className='w-20 content-center'>{this.i18n('actions')}</th>
         </tr>
         </thead>;
     }

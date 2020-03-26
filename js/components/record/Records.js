@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import {Button, Panel} from "react-bootstrap";
+import {Button, Card} from "react-bootstrap";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import RecordTable from "./RecordTable";
@@ -32,15 +32,20 @@ class Records extends React.Component {
         const createRecordDisabled =
             STUDY_CLOSED_FOR_ADDITION
             && (this.props.currentUser.role !== ROLE.ADMIN);
-        const createRecordTooltip= this.i18n(
+        const createRecordTooltip = this.i18n(
             createRecordDisabled
-                ?'records.closed-study.create-tooltip'
-                :'records.opened-study.create-tooltip'
+                ? 'records.closed-study.create-tooltip'
+                : 'records.opened-study.create-tooltip'
         );
-        return <Panel header={this._renderHeader()} bsStyle='primary'>
+        return <Card variant='primary'>
+            <Card.Header>
+                {this.i18n('records.panel-title')}
+                {this.props.recordsLoaded.records && this.props.recordsLoaded.status === ACTION_STATUS.PENDING &&
+                <LoaderSmall/>}
+            </Card.Header>
             <RecordTable {...this.props}/>
             <div>
-                <Button bsStyle='primary'
+                <Button variant='primary' size='sm'
                         disabled={createRecordDisabled}
                         title={createRecordTooltip}
                         onClick={this.props.handlers.onCreate}>{this.i18n('records.create-tile')}</Button>
@@ -50,14 +55,7 @@ class Records extends React.Component {
                           message={this.props.formatMessage('record.delete-error', {error: this.i18n(this.props.recordDeleted.error.message)})}/>}
             {showAlert && recordDeleted.status === ACTION_STATUS.SUCCESS &&
             <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('record.delete-success')}/>}
-        </Panel>;
-    }
-
-    _renderHeader() {
-        return <span>
-            {this.i18n('records.panel-title')}
-            {this.props.recordsLoaded.records && this.props.recordsLoaded.status === ACTION_STATUS.PENDING && <LoaderSmall />}
-        </span>;
+        </Card>;
     }
 }
 

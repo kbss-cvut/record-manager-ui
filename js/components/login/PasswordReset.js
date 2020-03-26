@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import {Button, Form, Panel} from "react-bootstrap";
+import {Button, Form, Card} from "react-bootstrap";
 import HorizontalInput from "../HorizontalInput";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
@@ -61,23 +61,30 @@ class PasswordReset extends React.Component {
     }
 
     render() {
-        return(<Panel header={<span>{this.i18n('login.forgot-your-password')}</span>} bsStyle='info' className="login-panel">
-            <Form horizontal>
-                {this.renderAlert()}
-                <HorizontalInput type='email' name='email' ref={(input) => { this.emailField = input; }}
-                       label={this.i18n('login.email')} value={this.state.email}
-                       onChange={this.onChange} labelWidth={3} onKeyPress={this.onKeyPress}
-                       inputWidth={9}/>
-                <div className="login-buttons">
-                    <Button bsStyle='success' onClick={this.resetPassword}
-                            disabled={this.props.status === ACTION_STATUS.PENDING || !Utils.validateEmail(this.state.email)}>
-                        {this.i18n('login.reset-password')}{this.props.status === ACTION_STATUS.PENDING && <LoaderSmall />}
-                    </Button>
-                    <Button bsStyle='link'
-                            onClick={() => transitionTo(Routes.login)}>{this.i18n('login.back-to-login')}</Button>
-                </div>
-            </Form>
-        </Panel>
+        return (<Card variant='info' className="login-panel">
+                <Card.Header>{this.i18n('login.forgot-your-password')}</Card.Header>
+                <Form horizontal>
+                    {this.renderAlert()}
+                    <HorizontalInput
+                        labelWidth={3} inputWidth={8}
+                        type='email' name='email'
+                        ref={(input) => {
+                            this.emailField = input;
+                        }}
+                        label={this.i18n('login.email')} value={this.state.email}
+                        onChange={this.onChange} onKeyPress={this.onKeyPress}
+                    />
+                    <div className="login-buttons">
+                        <Button variant='success' onClick={this.resetPassword}
+                                disabled={this.props.status === ACTION_STATUS.PENDING || !Utils.validateEmail(this.state.email)}>
+                            {this.i18n('login.reset-password')}{this.props.status === ACTION_STATUS.PENDING &&
+                        <LoaderSmall/>}
+                        </Button>
+                        <Button variant='link'
+                                onClick={() => transitionTo(Routes.login)}>{this.i18n('login.back-to-login')}</Button>
+                    </div>
+                </Form>
+            </Card>
         )
     }
 }

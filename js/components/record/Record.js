@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import {Button, Panel} from "react-bootstrap";
+import {Button, Card} from "react-bootstrap";
 import {FormattedMessage} from "react-intl";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
@@ -45,12 +45,13 @@ class Record extends React.Component {
     render() {
         const {recordLoaded, recordSaved, showAlert, record} = this.props;
         if (!record && (!recordLoaded.status || recordLoaded.status === ACTION_STATUS.PENDING)) {
-            return <LoaderPanel header={this._renderHeader()} bsStyle='primary'/>;
+            return <LoaderPanel header={this._renderHeader()} variant='primary'/>;
         } else if (recordLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('record.load-error', {error: this.props.recordLoaded.error.message})}/>;
         }
-        return <Panel header={this._renderHeader()} bsStyle='primary'>
+        return <Card variant='primary'>
+            <Card.Header>{this._renderHeader()}</Card.Header>
             <form className='form-horizontal'>
                 <RequiredAttributes record={record} onChange={this._onChange} completed={record.state.isComplete()}/>
                 {this._renderInstitution()}
@@ -66,7 +67,7 @@ class Record extends React.Component {
             </div>}
             {showAlert && recordSaved.status === ACTION_STATUS.SUCCESS &&
             <div><AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('record.save-success')}/><br/></div>}
-        </Panel>;
+        </Card>;
     }
 
     _renderHeader() {
@@ -85,13 +86,13 @@ class Record extends React.Component {
     _renderButtons() {
         const {record, recordSaved, formgen} = this.props;
         return <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
-            <Button bsStyle='success' bsSize='small'
+            <Button variant='success' size='sm'
                     disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
                     || this._isFormInvalid() || !record.state.isComplete()}
                     onClick={this.props.handlers.onSave}>
                 {this.i18n('save')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
             </Button>
-            <Button bsStyle='link' bsSize='small'
+            <Button variant='link' size='sm'
                     onClick={this.props.handlers.onCancel}>{this.i18n('cancel')}</Button>
         </div>
     }
@@ -102,9 +103,11 @@ class Record extends React.Component {
             return null;
         }
         return <div className='row'>
-            <div className='col-xs-6'>
-                <HorizontalInput type='text' value={record.institution.name} label={this.i18n('record.institution')}
-                                 labelWidth={4} inputWidth={8} readOnly/>
+            <div className='col-12'>
+                <HorizontalInput
+                    labelWidth={3} inputWidth={8} type='text' value={record.institution.name}
+                    label={this.i18n('record.institution')}
+                    readOnly/>
             </div>
         </div>;
     }

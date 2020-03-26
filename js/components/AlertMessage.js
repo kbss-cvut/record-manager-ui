@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 const AlertMessage = (props) => (
     <div className='message-container'>
-        <Alert className={`alert-position-${props.alertPosition || 'down'}`} bsStyle={props.type}>
+        <Alert className={`alert-position-${props.alertPosition || 'down'}`} variant={props.type}>
             <p>{props.message}</p>
         </Alert>
     </div>

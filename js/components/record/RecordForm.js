@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {Panel} from 'react-bootstrap';
+import {Card} from 'react-bootstrap';
 // import {QuestionAnswerProcessor} from 's-forms';
 import I18nWrapper from '../../i18n/I18nWrapper';
 import injectIntl from '../../utils/injectIntl';
@@ -63,12 +63,13 @@ class RecordForm extends React.Component {
             return <Loader/>;
         }
 
-        return <Panel header={<h5>{this.i18n('record.form-title')}</h5>} bsStyle='info'>
+        return <Card variant='info'>
+            <Card.Header><h5>{this.i18n('record.form-title')}</h5></Card.Header>
             {this.props.formgen.status === ACTION_STATUS.ERROR ?
                 <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('institution.save-success')}/>
                 : this.props.formgen.status === ACTION_STATUS.PENDING || !this.state.wizardProperties ? <Loader/>
                     : <Wizard steps={this.state.wizardProperties.steps} enableForwardSkip={true}/>}
-        </Panel>;
+        </Card>;
     }
 }
 

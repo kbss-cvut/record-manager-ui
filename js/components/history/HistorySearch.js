@@ -18,9 +18,9 @@ let HistorySearch = (props) => (
             <input className="form-control" type="text" disabled={true}/>
         </td>
         <td className='report-row actions'>
-            <Button bsStyle='primary' bsSize='small' title={props.i18n('history.search')}
+            <Button variant='primary' size='sm' title={props.i18n('history.search')}
                     onClick={() => props.handlers.handleSearch(1)}>{props.i18n('history.search')}</Button>
-            <Button bsStyle='warning' bsSize='small' title={props.i18n('history.reset')}
+            <Button variant='warning' size='sm' title={props.i18n('history.reset')}
                     onClick={() => props.handlers.handleReset()}>{props.i18n('history.reset')}</Button>
         </td>
     </tr>);

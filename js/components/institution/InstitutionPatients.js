@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {Panel} from 'react-bootstrap';
+import {Card} from 'react-bootstrap';
 
 import I18nWrapper from '../../i18n/I18nWrapper';
 import injectIntl from '../../utils/injectIntl';
@@ -11,9 +11,10 @@ import PropTypes from "prop-types";
 const InstitutionPatients = (props) => {
     const { recordsLoaded, onEdit } = props;
 
-    return <Panel header={<span>{props.i18n('institution.patients.panel-title')}</span>} bsStyle='info'>
+    return <Card variant='info'>
+        <Card.Header>{props.i18n('institution.patients.panel-title')}</Card.Header>
         <RecordTable recordsLoaded={recordsLoaded} handlers={{onEdit: onEdit}} disableDelete={true} />
-    </Panel>;
+    </Card>;
 };
 
 InstitutionPatients.propTypes = {

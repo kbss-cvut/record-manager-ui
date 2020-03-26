@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import {Button, Panel} from "react-bootstrap";
+import {Button, Card} from "react-bootstrap";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
 import HorizontalInput from "../HorizontalInput";
@@ -46,48 +46,60 @@ class PasswordChange extends React.Component {
     }
 
     render() {
-        const { handlers, currentUser, showAlert, valid, passwordChange, match, password} = this.props;
-        return <Panel header={<span>{this.i18n('user.password-change')}</span>} bsStyle='primary'>
+        const {handlers, currentUser, showAlert, valid, passwordChange, match, password} = this.props;
+        return <Card variant='primary'>
+            <Card.Header>{this.i18n('user.password-change')}</Card.Header>
             <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
                 {currentUser.username === match.params.username &&
                 <div className='row'>
-                    <div className='col-xs-6'>
-                        <HorizontalInput type='password' name='currentPassword' label={`${this.i18n('user.password-current')}*`}
-                                         labelWidth={3} inputWidth={8} value={password.currentPassword} onChange={this._onChange}/>
+                    <div className='col-12 col-sm-6'>
+                        <HorizontalInput
+                            type='password' name='currentPassword'
+                            label={`${this.i18n('user.password-current')}*`}
+                            value={password.currentPassword}
+                            onChange={this._onChange}
+                            labelWidth={3} inputWidth={8}/>
                     </div>
                 </div>
                 }
                 <div className='row'>
-                    <div className='col-xs-6'>
-                        <HorizontalInput type='password' name='newPassword' label={`${this.i18n('user.password-new')}*`}
-                                         labelWidth={3} inputWidth={8} value={password.newPassword} onChange={this._onChange}/>
+                    <div className='col-12 col-sm-6'>
+                        <HorizontalInput
+                            type='password' name='newPassword' label={`${this.i18n('user.password-new')}*`}
+                            value={password.newPassword}
+                            onChange={this._onChange}
+                            labelWidth={3} inputWidth={8}/>
                     </div>
                 </div>
                 <div className='row'>
-                    <div className='col-xs-6'>
-                        <HorizontalInput type='password' name='confirmPassword' label={`${this.i18n('user.password-confirm')}*`}
-                                         labelWidth={3} inputWidth={8} value={password.confirmPassword} onChange={this._onChange}/>
+                    <div className='col-12 col-sm-6'>
+                        <HorizontalInput
+                            type='password' name='confirmPassword'
+                            label={`${this.i18n('user.password-confirm')}*`}
+                            value={password.confirmPassword}
+                            onChange={this._onChange}
+                            labelWidth={3} inputWidth={8}/>
                     </div>
                 </div>
                 <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
                     {currentUser.role === ROLE.ADMIN &&
-                    <Button style={{margin: '0 0.3em 0 0'}} bsStyle='success' bsSize='small' ref='submit'
+                    <Button style={{margin: '0 0.3em 0 0'}} variant='success' size='sm' ref='submit'
                             onClick={() => this._onSaveWithEmail()}
                             disabled={!UserValidator.isPasswordValid(password) || passwordChange.status === ACTION_STATUS.PENDING}>
                         {this.i18n('save-and-send-email')}
                         {!UserValidator.isPasswordValid(password) && <HelpIcon text={this.i18n('required')}/>}
                         {passwordChange.status === ACTION_STATUS.PENDING &&
-                    <LoaderSmall/>}
+                        <LoaderSmall/>}
                     </Button>
                     }
-                    <Button bsStyle='success' bsSize='small' ref='submit'
+                    <Button variant='success' size='sm' ref='submit'
                             onClick={() => this._onSave()}
                             disabled={!UserValidator.isPasswordValid(password) || passwordChange.status === ACTION_STATUS.PENDING}>
                         {this.i18n('save')}
                         {!UserValidator.isPasswordValid(password) && <HelpIcon text={this.i18n('required')}/>}
-                        {passwordChange.status === ACTION_STATUS.PENDING && <LoaderSmall />}
+                        {passwordChange.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
                     </Button>
-                    <Button bsStyle='link' bsSize='small' onClick={handlers.onCancel} >
+                    <Button variant='link' size='sm' onClick={handlers.onCancel}>
                         {this.i18n('cancel')}
                     </Button>
                 </div>
@@ -100,7 +112,7 @@ class PasswordChange extends React.Component {
                 <AlertMessage type={ALERT_TYPES.SUCCESS}
                               message={this.i18n(this.state.savedWithEmail ? 'user.password-change-success-with-email' : 'user.password-change-success')}/>}
             </form>
-        </Panel>;
+        </Card>;
     }
 }
 

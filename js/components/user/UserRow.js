@@ -18,9 +18,9 @@ let UserRow = (props) => {
         <td className='report-row'>{user.institution ? user.institution.name : ''}</td>
         <td className='report-row'>{user.emailAddress}</td>
         <td className='report-row actions'>
-            <Button bsStyle='primary' bsSize='small' title={props.i18n('users.open-tooltip')}
+            <Button variant='primary' size='sm' title={props.i18n('users.open-tooltip')}
                     onClick={() => props.onEdit(props.user)}>{props.i18n('open')}</Button>
-            <Button bsStyle='warning' bsSize='small' title={props.i18n('users.delete-tooltip')}
+            <Button variant='warning' size='sm' title={props.i18n('users.delete-tooltip')}
                     onClick={() => props.onDelete(props.user)}>{props.i18n('delete')}
                 {props.deletionLoading && <LoaderSmall/>}</Button>
         </td>

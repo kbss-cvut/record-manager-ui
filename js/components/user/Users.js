@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {Button, Panel} from 'react-bootstrap';
+import {Button, Card} from 'react-bootstrap';
 import injectIntl from '../../utils/injectIntl';
 import I18nWrapper from '../../i18n/I18nWrapper';
 import UserTable from './UserTable';
@@ -31,10 +31,14 @@ class Users extends React.Component {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('users.loading-error', {error: usersLoaded.error.message})}/>
         }
-        return <Panel header={this._renderHeader()} bsStyle='primary'>
+        return <Card variant='primary'>
+            <Card.Header>
+                {this.i18n('users.panel-title')}
+                {this.props.usersLoaded.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
+            </Card.Header>
             <UserTable users={usersLoaded.users}{...this.props}/>
             <div>
-                <Button bsStyle='primary'
+                <Button variant='primary' size='sm'
                         onClick={this.props.handlers.onCreate}>{this.i18n('users.create-user')}</Button>
             </div>
             {showAlert && userDeleted.status === ACTION_STATUS.ERROR &&
@@ -42,7 +46,7 @@ class Users extends React.Component {
                           message={this.props.formatMessage('user.delete-error', {error: this.i18n(this.props.userDeleted.error.message)})}/>}
             {showAlert && userDeleted.status === ACTION_STATUS.SUCCESS &&
             <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.delete-success')}/>}
-        </Panel>;
+        </Card>;
     }
 
     _renderHeader() {

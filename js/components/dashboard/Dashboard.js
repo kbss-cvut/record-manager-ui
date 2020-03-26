@@ -3,7 +3,7 @@
 import React from "react";
 import I18nWrapper from "../../i18n/I18nWrapper";
 import injectIntl from "../../utils/injectIntl";
-import {Col, Jumbotron, Grid} from "react-bootstrap";
+import {Col, Jumbotron, Container} from "react-bootstrap";
 import {FormattedMessage} from "react-intl";
 import DashboardTile from "./DashboardTile";
 import {ROLE} from "../../constants/DefaultConstants";
@@ -22,7 +22,7 @@ class Dashboard extends React.Component {
     }
 
     _renderMainDashboard() {
-        return <Grid fluid={true}>
+        return <Container fluid={true}>
             <div>
                 <Col xs={12} sm={3} className='dashboard-sector'>
                     <DashboardTile onClick={this.props.handlers.createRecord}>{this.i18n('dashboard.create-tile')}</DashboardTile>
@@ -34,7 +34,7 @@ class Dashboard extends React.Component {
                 </Col>
                 {this._renderStatisticsTile()}
             </div>
-        </Grid>;
+        </Container>;
     }
 
     _renderUsersTile() {

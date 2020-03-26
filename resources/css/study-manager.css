@@ -6,6 +6,7 @@ html {
 
 body {
     height: 100%;
+    font-size: 0.8125rem;
 }
 
 #wrap {
@@ -224,6 +225,7 @@ td.actions button {
     text-align: center;
     vertical-align: middle;
     padding: 0.5em;
+    float: left;
 }
 
 .dashboard-sector-search {
@@ -245,7 +247,7 @@ td.actions button {
     white-space: normal;
 }
 
-@media screen and (min-width: 768px) and (max-width: 992px){
+@media screen and (min-width: 768px) and (max-width: 992px) {
     .container {
         width: auto;
     }
@@ -255,6 +257,7 @@ td.actions button {
     .dashboard-tile {
         min-height: 5em;
     }
+
     .formatted-message-size {
         font-size: 150%;
     }
@@ -264,12 +267,13 @@ td.actions button {
     .dashboard-tile {
         min-height: 3em;
     }
+
     .formatted-message-size {
         font-size: 130%;
     }
 }
 
-@media screen and (max-width: 400px)  {
+@media screen and (max-width: 400px) {
     .navbar-brand {
         font-size: 14px;
     }
@@ -281,6 +285,7 @@ td.actions button {
         padding-left: 10px;
         font-size: 15px;
     }
+
     #logout {
         padding-right: 12px;
         padding-left: 12px;
@@ -463,7 +468,7 @@ ul.event-type {
     margin-bottom: 0.5em;
 }
 
-@media screen and (min-width: 1199px){
+@media screen and (min-width: 1199px) {
     .notice-small {
         margin-left: 4.7%;
     }
@@ -602,7 +607,7 @@ button .help-icon {
     margin-top: 0px;
 }
 
-@media screen and (max-width: 1199px){
+@media screen and (max-width: 1199px) {
     .glyphicon-question-sign {
         margin-top: 30px
     }
@@ -626,13 +631,21 @@ button .help-icon {
 
 /* Safari */
 @-webkit-keyframes spin {
-    0% { -webkit-transform: rotate(0deg); }
-    100% { -webkit-transform: rotate(360deg); }
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .alert-position-down {
@@ -651,8 +664,8 @@ button .help-icon {
     margin: 0 auto;
     height: 60px;
     width: 108px;
-    display:flex;
-    align-items:center;
+    display: flex;
+    align-items: center;
 }
 
 .circle {
@@ -671,140 +684,140 @@ button .help-icon {
 
 @keyframes circleOneAnimation {
     0% {
-        transform:  translate(0px) scale(1);
+        transform: translate(0px) scale(1);
         opacity: 1
     }
     12.5% {
-        transform:  translate(0px);
+        transform: translate(0px);
     }
     25% {
-        transform:  translate(37.5px);
+        transform: translate(37.5px);
     }
     37.5% {
-        transform:  translate(37.5px);
+        transform: translate(37.5px);
     }
     50% {
-        transform:  translate(75px);
+        transform: translate(75px);
     }
     62.5% {
-        transform:  translate(75px);
+        transform: translate(75px);
     }
     68% {
-        transform:  translate(75px) scale(0.1);
+        transform: translate(75px) scale(0.1);
         opacity: 1
     }
     68.1% {
         opacity: 0
     }
     87.5% {
-        transform:  translate(0px) scale(0.1);
+        transform: translate(0px) scale(0.1);
         opacity: 0
     }
 }
 
 @keyframes circleTwoAnimation {
     0% {
-        transform:  translate(0px);
+        transform: translate(0px);
     }
     12.5% {
-        transform:  translate(0px);
+        transform: translate(0px);
     }
     25% {
-        transform:  translate(37.5px);
+        transform: translate(37.5px);
     }
     37.5% {
-        transform:  translate(37.5px);
+        transform: translate(37.5px);
     }
     43% {
-        transform:  translate(37.5px) scale(0.1);
+        transform: translate(37.5px) scale(0.1);
         opacity: 1;
     }
     43.1% {
         opacity: 0;
     }
     62.5% {
-        transform:  translate(-37.5px) scale(0.1);
+        transform: translate(-37.5px) scale(0.1);
         opacity: 0
     }
     75% {
-        transform:  translate(-37.5px) scale(1);
+        transform: translate(-37.5px) scale(1);
         opacity: 1
     }
     87.5% {
-        transform:  translate(-37.5px);
+        transform: translate(-37.5px);
     }
 }
 
 @keyframes circleThreeAnimation {
     0% {
-        transform:  translate(0px);
+        transform: translate(0px);
     }
     12.5% {
-        transform:  translate(0px);
+        transform: translate(0px);
     }
     18% {
-        transform:  translate(0px,0px) scale(0.1);
+        transform: translate(0px, 0px) scale(0.1);
         opacity: 1;
     }
     18.1% {
         opacity: 0;
     }
     37.5% {
-        transform:  translate(-75px) scale(0.1);
+        transform: translate(-75px) scale(0.1);
         opacity: 0
     }
     50% {
-        transform:  translate(-75px) scale(1);
+        transform: translate(-75px) scale(1);
         opacity: 1
     }
     62.5% {
-        transform:  translate(-75px);
+        transform: translate(-75px);
     }
     75% {
-        transform:  translate(-37.5px);
+        transform: translate(-37.5px);
     }
     87.5% {
-        transform:  translate(-37.5px);
+        transform: translate(-37.5px);
     }
     100% {
-        transform:  translate(0px);
+        transform: translate(0px);
     }
 }
 
 @keyframes circleFourAnimation {
     0% {
-        transform:  translate(-112.5px);
+        transform: translate(-112.5px);
         opacity: 0;
     }
     12.5% {
-        transform:  translate(-112.5px) scale(0.1);;
+        transform: translate(-112.5px) scale(0.1);;
         opacity: 0;
     }
     25% {
-        transform:  translate(-112.5px) scale(1);
+        transform: translate(-112.5px) scale(1);
         opacity: 1;
     }
     37.5% {
-        transform:  translate(-112.5px);
+        transform: translate(-112.5px);
     }
     50% {
-        transform:  translate(-75px);
+        transform: translate(-75px);
     }
     62.5% {
-        transform:  translate(-75px);
+        transform: translate(-75px);
     }
     75% {
-        transform:  translate(-37.5px);
+        transform: translate(-37.5px);
     }
     87.5% {
-        transform:  translate(-37.5px);
+        transform: translate(-37.5px);
     }
     92.5% {
-        transform:  translate(-37.5px) scale(0.1);
+        transform: translate(-37.5px) scale(0.1);
         opacity: 1;
     }
     92.51% {
-        transform:  translate(-37.5px) scale(0.1);
+        transform: translate(-37.5px) scale(0.1);
         opacity: 0;
     }
     100% {
@@ -816,14 +829,17 @@ button .help-icon {
     background-color: #337ab7;
     animation: circleOneAnimation 3s infinite;
 }
+
 .loader-spin .circle2 {
     background-color: #d9edf7;
     animation: circleTwoAnimation 3s infinite;
 }
+
 .loader-spin .circle3 {
     background-color: #337ab7;
     animation: circleThreeAnimation 3s infinite;
 }
+
 .loader-spin .circle4 {
     background-color: #d9edf7;
     animation: circleFourAnimation 3s infinite;
@@ -838,14 +854,14 @@ button .help-icon {
     margin: 0 auto 15px;
 }
 
-@media screen and (max-width: 600px){
+@media screen and (max-width: 600px) {
     .history-search {
         width: 300px;
         margin: 0 auto 15px;
     }
 }
 
-.pagination .pointer{
+.pagination .pointer {
     cursor: pointer
 }
 
@@ -861,3 +877,42 @@ button .help-icon {
     line-height: 2.6;
 }
 
+.navbar-brand {
+    cursor: pointer;
+}
+
+.w-10 {
+    width: 10%;
+}
+
+.w-20 {
+    width: 20%;
+}
+
+.w-26 {
+    width: 26.66%;
+}
+
+.w-33 {
+    width: 33.33%;
+}
+
+.w-40 {
+    width: 40%;
+}
+
+header {
+    background-color: #F8F8F8;
+}
+
+.nav-item {
+    font-size: 0.875rem;
+}
+
+.navbar-brand {
+    font-size: 1.125rem
+}
+
+.form-control, .dropdown-menu {
+    font-size: 0.8125rem;
+}

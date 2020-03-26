@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {Alert, Button, ButtonToolbar, Panel} from 'react-bootstrap';
+import {Alert, Button, ButtonToolbar, Card} from 'react-bootstrap';
 // import {Constants, HelpIcon} from 's-forms';
 import JsonLdUtils from 'jsonld-utils';
 import injectIntl from '../../utils/injectIntl';
@@ -73,22 +73,24 @@ class WizardStep extends React.Component {
 
         return (
             <div className='wizard-step'>
-                <Panel
-                    header={<h4>{this.props.title}{this._renderHelpIcon()}</h4>}
-                    bsStyle='primary'
+                <Card
+                    variant='primary'
                     className='wizard-step-content'
                 >
+                    <Card.Header>
+                        <h4>{this.props.title}{this._renderHelpIcon()}</h4>
+                    </Card.Header>
                     {this.renderComponent()}
-                </Panel>
+                </Card>
 
                 <ButtonToolbar style={{float: 'right'}}>
                     {!this.props.isFirstStep &&
-                    <Button onClick={this.onPrevious} disabled={this.state.retreatDisabled} bsStyle='primary'
-                            bsSize='small'>{this.i18n('wizard.previous')}</Button>}
+                    <Button onClick={this.onPrevious} disabled={this.state.retreatDisabled} variant='primary'
+                            size='sm'>{this.i18n('wizard.previous')}</Button>}
                     {this.renderAdvanceButton()}
                 </ButtonToolbar>
                 {this.state.currentError &&
-                <Alert bsStyle='danger'><p>{this.state.currentError.message}</p></Alert>}
+                <Alert variant='danger'><p>{this.state.currentError.message}</p></Alert>}
             </div>
         );
     };
@@ -106,8 +108,8 @@ class WizardStep extends React.Component {
 
         if (!this.props.isLastStep) {
             return <Button
-                onClick={this.onNext} disabled={this.state.advanceDisabled} bsStyle='primary'
-                bsSize='small'
+                onClick={this.onNext} disabled={this.state.advanceDisabled} variant='primary'
+                size='sm'
                 title={disabledTitle}>{this.i18n('wizard.next')}</Button>;
         }
         return null;

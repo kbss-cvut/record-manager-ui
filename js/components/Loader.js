@@ -1,5 +1,5 @@
 import React from 'react';
-import {Panel} from "react-bootstrap";
+import {Card} from "react-bootstrap";
 
 const Loader = () => (
     <div className="loader-spin">
@@ -23,9 +23,10 @@ export const LoaderMask = () => (
 );
 
 export const LoaderPanel = (props) => (
-    <Panel header={<span>{props.header}</span>} bsStyle='primary'>
+    <Card variant='primary'>
+        <Card.Header>{props.header}</Card.Header>
         <Loader/>
-    </Panel>
+    </Card>
 );
 
 export const LoaderSmall = () => (

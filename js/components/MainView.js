@@ -2,8 +2,7 @@
 
 import React from "react";
 import * as I18nStore from "../stores/I18nStore";
-import {MenuItem, Nav, Navbar, NavDropdown, NavItem} from "react-bootstrap";
-import {LinkContainer} from "react-router-bootstrap";
+import {Container, DropdownItem, Nav, Navbar, NavDropdown, NavItem} from "react-bootstrap";
 import {Routes} from "../utils/Routes";
 import {injectIntl} from "react-intl";
 import I18nWrapper from "../i18n/I18nWrapper";
@@ -14,7 +13,7 @@ import {loadUserProfile} from "../actions/AuthActions";
 import * as Constants from "../constants/DefaultConstants";
 import {LoaderMask} from "./Loader";
 import {authRoutes, unauthRoutes} from '../app';
-import {Link} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 
 class MainView extends React.Component {
     constructor(props) {
@@ -27,9 +26,13 @@ class MainView extends React.Component {
     }
 
     _renderUsers() {
+        const path = this.props.location.pathname;
+
         return this.props.user.role === ROLE.ADMIN ?
-            <LinkContainer to={Routes.users.path}><NavItem>{this.i18n('main.users-nav')}</NavItem></LinkContainer>
-            : null;
+            <NavItem>
+                <NavLink to={Routes.users.path} isActive={() => path.startsWith(Routes.users.path)}
+                         className="nav-link">{this.i18n('main.users-nav')}</NavLink>
+            </NavItem> : null
     }
 
     render() {
@@ -40,53 +43,68 @@ class MainView extends React.Component {
         }
         const user = this.props.user;
         const name = user.firstName.substr(0, 1) + '. ' + user.lastName;
+        const path = this.props.location.pathname;
 
         return (
             <div>
                 <header>
-                    <Navbar collapseOnSelect>
-                        <Navbar.Header>
-                            <Navbar.Brand>
-                                <Link to={Routes.dashboard.path}>{Constants.APP_NAME}</Link>
+                    <Container>
+                        <Navbar collapseOnSelect light={true}>
+                            <Navbar.Brand
+                                onClick={() => this.props.history.push(Routes.dashboard.path)}>
+                                {Constants.APP_NAME}
                             </Navbar.Brand>
                             <Navbar.Toggle/>
-                        </Navbar.Header>
-                        <Navbar.Collapse>
-                            <Nav pullLeft>
-                                {this._renderUsers()}
-                                {user.role === ROLE.ADMIN ?
-                                    <LinkContainer to={Routes.institutions.path}>
-                                        <NavItem>{this.i18n('main.institutions-nav')}</NavItem>
-                                    </LinkContainer>
-                                    : user.institution ?
-                                        <LinkContainer
-                                            to={{pathname: Routes.institutions.path + '/' + user.institution.key}}>
-                                            <NavItem>{this.i18n('main.institution-nav')}</NavItem>
-                                        </LinkContainer>
-                                        : null
-                                }
-                                <LinkContainer
-                                    to={Routes.records.path}><NavItem>{this.i18n('main.records-nav')}</NavItem></LinkContainer>
-                                {user.role === ROLE.ADMIN &&
-                                <LinkContainer
-                                    to={Routes.statistics.path}><NavItem>{this.i18n('statistics.panel-title')}</NavItem></LinkContainer>
-                                }
-                                {user.role === ROLE.ADMIN &&
-                                <LinkContainer
-                                    to={Routes.historyActions.path}><NavItem>{this.i18n('main.history')}</NavItem></LinkContainer>
-                                }
-                            </Nav>
+                            <Navbar.Collapse className="justify-content-between">
+                                <Nav>
+                                    {this._renderUsers()}
+                                    {user.role === ROLE.ADMIN ?
+                                        <NavItem>
+                                            <NavLink to={Routes.institutions.path}
+                                                     isActive={() => path.startsWith(Routes.institutions.path)}
+                                                     className="nav-link">{this.i18n('main.institutions-nav')}</NavLink>
+                                        </NavItem>
+                                        : user.institution ?
+                                            <NavItem>
+                                                <NavLink to={Routes.institutions.path + '/' + user.institution.key}
+                                                         isActive={() => path.startsWith(Routes.institutions.path)}>
+                                                    {this.i18n('main.institution-nav')}
+                                                </NavLink>
+                                            </NavItem>
+                                            : null
+                                    }
+                                    <NavItem>
+                                        <NavLink className="nav-link"
+                                                 isActive={() => path.startsWith(Routes.records.path)}
+                                                 to={Routes.records.path}>{this.i18n('main.records-nav')}</NavLink>
+                                    </NavItem>
+                                    {user.role === ROLE.ADMIN &&
+                                    <NavItem>
+                                        <NavLink className="nav-link"
+                                                 isActive={() => path.startsWith(Routes.statistics.path)}
+                                                 to={Routes.statistics.path}>{this.i18n('statistics.panel-title')}</NavLink>
+                                    </NavItem>
+                                    }
+                                    {user.role === ROLE.ADMIN &&
+                                    <NavItem>
+                                        <NavLink className="nav-link"
+                                                 isActive={() => path.startsWith(Routes.historyActions.path)}
+                                                 to={Routes.historyActions.path}>{this.i18n('main.history')}</NavLink>
+                                    </NavItem>}
+                                </Nav>
 
-                            <Nav pullRight>
-                                <NavDropdown id='logout' title={name}>
-                                    <MenuItem
-                                        href={Routes.users.path + '/' + user.username}>{this.i18n('main.my-profile')}</MenuItem>
-                                    <MenuItem href={Routes.logout.path}>{this.i18n('main.logout')}</MenuItem>
-                                </NavDropdown>
+                                <Nav>
+                                    <NavDropdown id='logout' title={name}>
+                                        <DropdownItem
+                                            onClick={() => this.props.history.push(Routes.users.path + '/' + user.username)}>{this.i18n('main.my-profile')}</DropdownItem>
+                                        <DropdownItem
+                                            onClick={() => this.props.history.push(Routes.logout.path)}>{this.i18n('main.logout')}</DropdownItem>
+                                    </NavDropdown>
 
-                            </Nav>
-                        </Navbar.Collapse>
-                    </Navbar>
+                                </Nav>
+                            </Navbar.Collapse>
+                        </Navbar>
+                    </Container>
                 </header>
                 <section className="container" style={{height: '100%'}}>
                     {authRoutes}

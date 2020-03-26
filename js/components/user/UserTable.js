@@ -1,11 +1,10 @@
 'use strict';
 
 import React from "react";
-import {Button, Table} from "react-bootstrap";
+import {Table} from "react-bootstrap";
 import DeleteItemDialog from "../DeleteItemDialog";
 import injectIntl from "../../utils/injectIntl";
 import I18nWrapper from "../../i18n/I18nWrapper";
-import {Routes} from "../../utils/Routes";
 import UserRow from "./UserRow";
 import {ACTION_STATUS} from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
@@ -45,7 +44,7 @@ class UserTable extends React.Component {
                               show={this.state.showDialog} item={this.state.selectedUser}
                               itemLabel={this._getDeleteLabel()}/>
             {this.props.users.length > 0 ?
-                <Table responsive striped bordered condensed hover>
+                <Table size="sm" responsive striped bordered hover>
                     {this._renderHeader()}
                     <tbody>
                     {this._renderUsers()}
@@ -65,11 +64,11 @@ class UserTable extends React.Component {
     _renderHeader() {
         return <thead>
         <tr>
-            <th className='col-xs-3 col-sm-3 col-md-3 content-center'>{this.i18n('name')}</th>
-            <th className='col-xs-2 col-sm-2 col-md-2 content-center'>{this.i18n('login.username')}</th>
-            <th className='col-xs-3 col-sm-2 col-md-3 content-center'>{this.i18n('institution.name')}</th>
-            <th className='col-xs-2 col-sm-2 col-md-2 content-center'>{this.i18n('users.email')}</th>
-            <th className='col-xs-2 col-sm-3 col-md-2 content-center'>{this.i18n('actions')}</th>
+            <th className='w-20 content-center'>{this.i18n('name')}</th>
+            <th className='w-20 content-center'>{this.i18n('login.username')}</th>
+            <th className='w-20 content-center'>{this.i18n('institution.name')}</th>
+            <th className='w-20 content-center'>{this.i18n('users.email')}</th>
+            <th className='w-20 content-center'>{this.i18n('actions')}</th>
         </tr>
         </thead>;
     }
@@ -81,7 +80,7 @@ class UserTable extends React.Component {
         for (let i = 0, len = users.length; i < len; i++) {
             rows.push(<UserRow key={users[i].username} user={users[i]} onEdit={onEdit} onDelete={this._onDelete}
                                deletionLoading={!!(userDeleted.status === ACTION_STATUS.PENDING
-                                                && userDeleted.username === users[i].username)}/>);
+                                   && userDeleted.username === users[i].username)}/>);
         }
         return rows;
     }
