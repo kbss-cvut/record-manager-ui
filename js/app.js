@@ -41,10 +41,11 @@ import React from "react";
 import {render} from 'react-dom';
 import {Router, Redirect, Route, Switch} from 'react-router-dom';
 import {IntlProvider} from "react-intl";
-import {applyMiddleware, compose, createStore} from "redux";
 import rootReducer from "./reducers";
 import {Provider} from "react-redux";
-import thunk from "redux-thunk";
+import reduxThunk from "redux-thunk";
+import { applyMiddleware, createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 
 import {history} from "./utils/Routing";
 import {Routes} from "./utils/Routes";
@@ -57,7 +58,6 @@ import RecordController from "./components/record/RecordController";
 import RecordsController from "./components/record/RecordsController";
 import UsersController from "./components/user/UsersController";
 import UserController from "./components/user/UserController";
-import {execute} from "./utils/RoutingRules";
 import PasswordReset from "./components/login/PasswordReset";
 import MainView from "./components/MainView";
 import requireAuth from './components/misc/hoc/RequireAuth';
@@ -70,18 +70,12 @@ import PasswordToken from "./components/login/PasswordToken";
 import Logout from "./components/login/Logout";
 import {LANGUAGE} from '../config';
 
-function onRouteEnter() {
-    execute(this.path);
-}
+// store initialization
+const createStoreWithMiddleware = composeWithDevTools(
+    applyMiddleware(reduxThunk, historyLogger),
+)(createStore);
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-const store = createStore(
-    rootReducer,
-    composeEnhancers(
-        applyMiddleware(thunk, historyLogger)
-    )
-);
+export const store = createStoreWithMiddleware(rootReducer);
 
 window.onerror = (msg, source, line) => {
     errorLogger(msg, line, store);
