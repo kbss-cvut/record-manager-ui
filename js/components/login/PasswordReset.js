@@ -65,7 +65,7 @@ class PasswordReset extends React.Component {
                 <Card.Header className="text-light bg-primary"
                              as="h6">{this.i18n('login.forgot-your-password')}</Card.Header>
                 <Card.Body>
-                    <Form horizontal>
+                    <Form>
                         {this.renderAlert()}
                         <HorizontalInput
                             labelWidth={3} inputWidth={8}

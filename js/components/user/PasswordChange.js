@@ -50,7 +50,7 @@ class PasswordChange extends React.Component {
         return <Card variant='primary'>
             <Card.Header className="text-light bg-primary" as="h6">{this.i18n('user.password-change')}</Card.Header>
             <Card.Body>
-                <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
+                <form>
                     {currentUser.username === match.params.username &&
                     <div className='row'>
                         <div className='col-12 col-sm-6'>

@@ -5,15 +5,17 @@ import {ACTIONS_PER_PAGE, PAGINATION_DIRECTION, SEARCH_TYPE} from "../../constan
 import PropTypes from "prop-types";
 
 let HistoryPagination = (props) => (
-    <nav className="content-center">
+    <nav className="d-flex justify-content-center">
         <ul className="pagination">
             <li className={`page-item ${props.pageNumber === 1 && "disabled"}`}>
-                        <span className="page-link pointer" onClick={() => props.handlePagination(PAGINATION_DIRECTION.PREVIOUS)}>
+                        <span className="page-link pointer"
+                              onClick={() => props.handlePagination(PAGINATION_DIRECTION.PREVIOUS)}>
                             {props.i18n('history.previous')}</span>
             </li>
             <li className="page-item disabled"><span className="page-link">{props.pageNumber}</span></li>
             <li className={`page-item ${props.numberOfActions <= ACTIONS_PER_PAGE && "disabled"}`}>
-                        <span className="page-link pointer" onClick={() => props.handlePagination(PAGINATION_DIRECTION.NEXT)}>
+                        <span className="page-link pointer"
+                              onClick={() => props.handlePagination(PAGINATION_DIRECTION.NEXT)}>
                             {props.i18n('history.next')}</span>
             </li>
         </ul>

@@ -45,7 +45,7 @@ class ActionHistory extends React.Component {
                 {this.i18n('history.panel-title')}
             </Card.Header>
             <Card.Body>
-                <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
+                <form>
                     <div className='row'>
                         <div className='col-12 col-sm-6'>
                             <HorizontalInput

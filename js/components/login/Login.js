@@ -91,12 +91,12 @@ class Login extends React.Component {
                             this.usernameField = input;
                         }}
                                          label={this.i18n('login.username')} value={this.state.username}
-                                         onChange={this.onChange} labelWidth={3} onKeyPress={this.onKeyPress}
-                                         inputWidth={9}/>
+                                         onChange={this.onChange} labelWidth={4} onKeyPress={this.onKeyPress}
+                                         inputWidth={8}/>
                         <HorizontalInput type='password' name='password' label={this.i18n('login.password')}
                                          value={this.state.password}
-                                         onChange={this.onChange} labelWidth={3} onKeyPress={this.onKeyPress}
-                                         inputWidth={9}/>
+                                         onChange={this.onChange} labelWidth={4} onKeyPress={this.onKeyPress}
+                                         inputWidth={8}/>
                         <div className="login-forgot-password-block">
                             <Button variant='link' className='login-forgot-password' size='sm'
                                     onClick={this.onForgotPassword}>{this.i18n('login.forgot-password')}</Button>

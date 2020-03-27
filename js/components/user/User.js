@@ -184,7 +184,7 @@ class User extends React.Component {
         return <Card variant='primary'>
             <Card.Header className="text-light bg-primary" as="h6">{this.i18n('user.panel-title')}</Card.Header>
             <Card.Body>
-                <form className='form-horizontal' style={{margin: '0.5em 0 0 0'}}>
+                <form>
                     {this._sendInvitationButton()}
                     <div className='row'>
                         <div className='col-12 col-sm-6'>

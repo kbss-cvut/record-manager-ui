@@ -48,8 +48,9 @@ class InstitutionMembers extends React.Component {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('institution.members.loading-error', {error: institutionMembers.error.message})}/>
         }
-        return <Card variant='info'>
-            <Card.Header className="text-light bg-primary" as="h6">{this.i18n('institution.members.panel-title')}</Card.Header>
+        return <Card variant='info' className="mt-3">
+            <Card.Header className="text-light bg-primary"
+                         as="h6">{this.i18n('institution.members.panel-title')}</Card.Header>
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
                               show={this.state.showDialog} item={this.state.selectedUser}
                               itemLabel={this._getDeleteLabel()}/>
