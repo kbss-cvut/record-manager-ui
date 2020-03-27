@@ -21,7 +21,7 @@ class MainView extends React.Component {
         this.i18n = this.props.i18n;
     }
 
-    componentWillMount() {
+    componentDidMount() {
         I18nStore.setIntl(this.props.intl);
     }
 

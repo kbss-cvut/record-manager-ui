@@ -23,16 +23,13 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
-            showAlert: false
+            showAlert: false,
         }
     }
 
-    componentWillMount() {
-        this.setState({deviceSupported: deviceIsSupported()});
-    };
-
     componentDidMount() {
         this.usernameField.focus();
+        this.setState({deviceSupported: deviceIsSupported()});
     }
 
     onChange = (e) => {

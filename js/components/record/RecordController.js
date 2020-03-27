@@ -26,16 +26,13 @@ class RecordController extends React.Component {
         };
     }
 
-    _isNew() {
-        return !this.props.match.params.key;
-    }
-
-    componentWillMount() {
+    componentDidMount() {
         const recordKey = this.props.match.params.key;
+
         if (!this.state.record) {
             this.props.loadRecord(recordKey);
         }
-        if(this.props.recordSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY && this.props.recordSaved.status === ACTION_STATUS.SUCCESS) {
+        if (this.props.recordSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY && this.props.recordSaved.status === ACTION_STATUS.SUCCESS) {
             this.setState({showAlert: true});
             this.props.unloadSavedRecord();
         }
@@ -65,6 +62,10 @@ class RecordController extends React.Component {
 
     componentWillUnmount() {
         this.props.unloadRecord();
+    }
+
+    _isNew() {
+        return !this.props.match.params.key;
     }
 
     _onSave = () => {
@@ -135,6 +136,6 @@ function mapDispatchToProps(dispatch) {
         updateRecord: bindActionCreators(updateRecord, dispatch),
         unloadSavedRecord: bindActionCreators(unloadSavedRecord, dispatch),
         loadFormgen: bindActionCreators(loadFormgen, dispatch),
-        transitionToWithOpts:bindActionCreators(transitionToWithOpts, dispatch)
+        transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch)
     }
 }

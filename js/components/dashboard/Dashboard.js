@@ -16,10 +16,10 @@ class Dashboard extends React.Component {
     }
 
     renderTitle() {
-        return <h3 className='formatted-message-size'>
+        return <h5 className='formatted-message-size'>
             <FormattedMessage id='dashboard.welcome'
                               values={{name: <span className='bold'>{this.props.currentUser.firstName}</span>}}/>
-        </h3>;
+        </h5>;
     }
 
     _renderMainDashboard() {

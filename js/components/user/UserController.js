@@ -31,11 +31,10 @@ class UserController extends React.Component {
         this.institution = this._getPayload();
     }
 
-    _isNew() {
-        return !this.props.match.params.username;
-    }
-
-    componentWillMount() {
+    componentDidMount() {
+        if (this.props.currentUser.role === ROLE.ADMIN && !this.props.institutionsLoaded.institutions) {
+            this.props.loadInstitutions();
+        }
         if (!this.state.user) {
             this.props.loadUser(this.props.match.params.username);
         }
@@ -45,16 +44,6 @@ class UserController extends React.Component {
         if (this.props.userSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY && this.props.userSaved.status === ACTION_STATUS.SUCCESS) {
             this.setState({showAlert: true});
             this.props.unloadSavedUser();
-        }
-    }
-
-    componentWillUnmount() {
-        this.props.unloadUser();
-    }
-
-    componentDidMount() {
-        if (this.props.currentUser.role === ROLE.ADMIN && !this.props.institutionsLoaded.institutions) {
-            this.props.loadInstitutions();
         }
     }
 
@@ -81,6 +70,14 @@ class UserController extends React.Component {
             this.props.loadUser(nextProps.match.params.username);
             this.setState({saved: false, showAlert: false, invited: false, impersonated: false});
         }
+    }
+
+    componentWillUnmount() {
+        this.props.unloadUser();
+    }
+
+    _isNew() {
+        return !this.props.match.params.username;
     }
 
     _onSave = (sendEmail = true) => {

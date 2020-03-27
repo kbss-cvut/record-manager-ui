@@ -32,12 +32,9 @@ class InstitutionController extends React.Component {
         };
     }
 
-    _isNew() {
-        return !this.props.match.params.key;
-    }
-
-    componentWillMount() {
+    componentDidMount() {
         const institutionKey = this.props.match.params.key;
+
         if (!this.state.institution) {
             this.props.loadInstitution(institutionKey);
         }
@@ -76,6 +73,10 @@ class InstitutionController extends React.Component {
     componentWillUnmount() {
         this.props.unloadInstitution();
         this.props.unloadInstitutionMembers();
+    }
+
+    _isNew() {
+        return !this.props.match.params.key;
     }
 
     _onSave = () => {
