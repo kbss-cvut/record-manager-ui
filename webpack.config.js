@@ -10,6 +10,8 @@ const cssnano = require('cssnano');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {getIfUtils, removeEmpty} = require('webpack-config-utils');
 const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const apiUrl = process.env.STUDY_MANAGER_API_URL;
 const appTitle = process.env.STUDY_MANAGER_APP_TITLE;
@@ -115,6 +117,22 @@ module.exports = (
                     }, {}),
                 },
             }),
+
+            new CleanWebpackPlugin({
+                root: resolve('./'),
+                verbose: true,
+                dry: false,
+            }),
+
+            // Copy public directory contents to {output}
+            new CopyWebpackPlugin(
+                [
+                    {
+                        from: resolve('./resources'),
+                    }
+                ],
+                { copyUnmodified: true },
+            ),
 
         ])
     };
