@@ -30,8 +30,8 @@ class PasswordReset extends React.Component {
         this.props.validateToken(this.props.match.params.token);
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.validTokenStatus === ACTION_STATUS.ERROR) {
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.validTokenStatus === ACTION_STATUS.ERROR) {
             transitionTo(Routes.login);
         }
     }
@@ -73,35 +73,35 @@ class PasswordReset extends React.Component {
         return <Card variant='info' className="login-panel">
             <Card.Header className="text-light bg-primary" as="h6">{this.i18n('login.reset-password')}</Card.Header>
             <Card.Body>
-            <Form horizontal>
-                {!this.state.valid &&
-                <AlertMessage type={ALERT_TYPES.DANGER} alertPosition={'top'}
-                              message={this.i18n('user.password-non-valid')}/>}
-                {this.state.showAlert && passwordChange.status === ACTION_STATUS.ERROR &&
-                <AlertMessage type={ALERT_TYPES.DANGER} alertPosition={'top'}
-                              message={this.props.formatMessage('user.password-change-error', {error: this.i18n(passwordChange.error.message)})}/>}
-                {this.state.showAlert && passwordChange.status === ACTION_STATUS.SUCCESS &&
-                <AlertMessage type={ALERT_TYPES.SUCCESS} alertPosition={'top'}
-                              message={this.i18n('login.token-password-success')}/>}
-                <HorizontalInput
-                    labelWidth={3} inputWidth={8}
-                    type='password' name='newPassword' label={this.i18n('user.password-new')}
-                    onChange={this.onChange} onKeyPress={this.onKeyPress}
-                    value={this.state.newPassword}/>
-                <HorizontalInput
-                    labelWidth={3} inputWidth={8}
-                    type='password' name='confirmPassword' label={this.i18n('user.password-confirm')}
-                    onChange={this.onChange} onKeyPress={this.onKeyPress}
-                    value={this.state.confirmPassword}/>
-                <div className="login-buttons">
-                    <Button variant='success' onClick={this.onSave}
-                            disabled={this.props.passwordChange.status === ACTION_STATUS.PENDING || this.props.passwordChange.status === ACTION_STATUS.SUCCESS}>{this.i18n('login.reset-password')}
-                        {this.props.passwordChange.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
-                    </Button>
-                    <Button variant='link'
-                            onClick={() => transitionTo(Routes.login)}>{this.i18n('login.back-to-login')}</Button>
-                </div>
-            </Form>
+                <Form>
+                    {!this.state.valid &&
+                    <AlertMessage type={ALERT_TYPES.DANGER} alertPosition={'top'}
+                                  message={this.i18n('user.password-non-valid')}/>}
+                    {this.state.showAlert && passwordChange.status === ACTION_STATUS.ERROR &&
+                    <AlertMessage type={ALERT_TYPES.DANGER} alertPosition={'top'}
+                                  message={this.props.formatMessage('user.password-change-error', {error: this.i18n(passwordChange.error.message)})}/>}
+                    {this.state.showAlert && passwordChange.status === ACTION_STATUS.SUCCESS &&
+                    <AlertMessage type={ALERT_TYPES.SUCCESS} alertPosition={'top'}
+                                  message={this.i18n('login.token-password-success')}/>}
+                    <HorizontalInput
+                        labelWidth={3} inputWidth={8}
+                        type='password' name='newPassword' label={this.i18n('user.password-new')}
+                        onChange={this.onChange} onKeyPress={this.onKeyPress}
+                        value={this.state.newPassword}/>
+                    <HorizontalInput
+                        labelWidth={3} inputWidth={8}
+                        type='password' name='confirmPassword' label={this.i18n('user.password-confirm')}
+                        onChange={this.onChange} onKeyPress={this.onKeyPress}
+                        value={this.state.confirmPassword}/>
+                    <div className="login-buttons">
+                        <Button variant='success' onClick={this.onSave}
+                                disabled={this.props.passwordChange.status === ACTION_STATUS.PENDING || this.props.passwordChange.status === ACTION_STATUS.SUCCESS}>{this.i18n('login.reset-password')}
+                            {this.props.passwordChange.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
+                        </Button>
+                        <Button variant='link'
+                                onClick={() => transitionTo(Routes.login)}>{this.i18n('login.back-to-login')}</Button>
+                    </div>
+                </Form>
             </Card.Body>
         </Card>
     }

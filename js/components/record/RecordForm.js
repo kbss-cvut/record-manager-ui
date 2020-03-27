@@ -27,10 +27,12 @@ class RecordForm extends React.Component {
         WizardBuilder.generateWizard(this.props.record, this.onWizardReady, this.onWizardError);
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.record.question !== nextProps.record.question) {
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const {record} = this.props;
+
+        if (prevProps.record.question !== record.question) {
             this.setState({wizardProperties: null});
-            WizardBuilder.generateWizard(nextProps.record, this.onWizardReady, this.onWizardError);
+            WizardBuilder.generateWizard(record, this.onWizardReady, this.onWizardError);
         }
     }
 
@@ -66,10 +68,10 @@ class RecordForm extends React.Component {
         return <Card variant='info'>
             <Card.Header className="text-light bg-primary" as="h6">{this.i18n('record.form-title')}</Card.Header>
             <Card.Body>
-            {this.props.formgen.status === ACTION_STATUS.ERROR ?
-                <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('institution.save-success')}/>
-                : this.props.formgen.status === ACTION_STATUS.PENDING || !this.state.wizardProperties ? <Loader/>
-                    : <Wizard steps={this.state.wizardProperties.steps} enableForwardSkip={true}/>}
+                {this.props.formgen.status === ACTION_STATUS.ERROR ?
+                    <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('institution.save-success')}/>
+                    : this.props.formgen.status === ACTION_STATUS.PENDING || !this.state.wizardProperties ? <Loader/>
+                        : <Wizard steps={this.state.wizardProperties.steps} enableForwardSkip={true}/>}
             </Card.Body>
         </Card>;
     }

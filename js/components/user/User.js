@@ -165,11 +165,15 @@ class User extends React.Component {
             userSaved, userLoaded, currentUser, showAlert, user, handlers,
             invitationSent, invited, invitationDelete, impersonation, impersonated, deletedInvitation
         } = this.props;
-        if (!user && (!userLoaded.status || userLoaded.status === ACTION_STATUS.PENDING)) {
+
+        if (userLoaded.status === ACTION_STATUS.ERROR) {
+            return <AlertMessage
+                type={ALERT_TYPES.DANGER}
+                message={this.props.formatMessage('user.load-error', {error: userLoaded.error.message})}/>;
+        }
+
+        if (!user) {
             return <LoaderPanel header={<span>{this.i18n('user.panel-title')}</span>}/>;
-        } else if (userLoaded.status === ACTION_STATUS.ERROR) {
-            return <AlertMessage type={ALERT_TYPES.DANGER}
-                                 message={this.props.formatMessage('user.load-error', {error: userLoaded.error.message})}/>;
         }
 
         const generateButton = user.isNew &&

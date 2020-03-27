@@ -44,16 +44,20 @@ class Record extends React.Component {
 
     render() {
         const {recordLoaded, recordSaved, showAlert, record} = this.props;
-        if (!record && (!recordLoaded.status || recordLoaded.status === ACTION_STATUS.PENDING)) {
-            return <LoaderPanel header={this._renderHeader()} variant='primary'/>;
-        } else if (recordLoaded.status === ACTION_STATUS.ERROR) {
+
+        if (recordLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('record.load-error', {error: this.props.recordLoaded.error.message})}/>;
         }
+
+        if (!record) {
+            return <LoaderPanel header={this._renderHeader()} variant='primary'/>;
+        }
+
         return <Card variant='primary'>
             <Card.Header className="text-light bg-primary" as="h6">{this._renderHeader()}</Card.Header>
             <Card.Body>
-                <form className='form-horizontal'>
+                <form>
                     <RequiredAttributes record={record} onChange={this._onChange}
                                         completed={record.state.isComplete()}/>
                     {this._renderInstitution()}

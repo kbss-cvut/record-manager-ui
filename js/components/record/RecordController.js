@@ -38,12 +38,14 @@ class RecordController extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.state.saved && nextProps.recordLoaded.status !== ACTION_STATUS.PENDING
-            && nextProps.recordSaved.status === ACTION_STATUS.SUCCESS) {
-            if (nextProps.recordSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const {recordLoaded, recordSaved} = this.props;
+
+        if (this.state.saved && recordLoaded.status !== ACTION_STATUS.PENDING
+            && recordSaved.status === ACTION_STATUS.SUCCESS) {
+            if (recordSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
                 this.props.transitionToWithOpts(Routes.editRecord, {
-                    params: {key: nextProps.recordSaved.record.key},
+                    params: {key: recordSaved.record.key},
                     handlers: {
                         onCancel: Routes.records
                     }
@@ -53,8 +55,9 @@ class RecordController extends React.Component {
                 this.props.loadRecord(this.state.record.key);
             }
         }
-        if (this.props.recordLoaded.status === ACTION_STATUS.PENDING && nextProps.recordLoaded.status === ACTION_STATUS.SUCCESS) {
-            const record = nextProps.recordLoaded.record;
+
+        if (prevProps.recordLoaded.status === ACTION_STATUS.PENDING && recordLoaded.status === ACTION_STATUS.SUCCESS) {
+            const record = recordLoaded.record;
             record.state = RecordState.createRecordState();
             this.setState({record: record});
         }

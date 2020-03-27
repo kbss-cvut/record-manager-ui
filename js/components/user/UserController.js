@@ -47,27 +47,32 @@ class UserController extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.state.saved && nextProps.userLoaded.status !== ACTION_STATUS.PENDING
-            && nextProps.userSaved.status === ACTION_STATUS.SUCCESS) {
-            if (nextProps.userSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
-                this.props.transitionToWithOpts(Routes.editUser, {
-                    params: {username: nextProps.userSaved.user.username},
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const {userLoaded, userSaved, transitionToWithOpts, match, loadUser, generatedUsername} = this.props;
+
+        if (this.state.saved && userLoaded.status !== ACTION_STATUS.PENDING
+            && userSaved.status === ACTION_STATUS.SUCCESS) {
+            if (userSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
+                transitionToWithOpts(Routes.editUser, {
+                    params: {username: userSaved.user.username},
                     payload: {institution: this.institution}
                 });
             } else {
                 this.setState({saved: false});
-                this.props.loadUser(nextProps.userSaved.user.username);
+                this.props.loadUser(userSaved.user.username);
             }
         }
-        if (this.props.userLoaded.status === ACTION_STATUS.PENDING && nextProps.userLoaded.status === ACTION_STATUS.SUCCESS) {
-            this.setState({user: nextProps.userLoaded.user});
+
+        if (prevProps.userLoaded.status === ACTION_STATUS.PENDING && userLoaded.status === ACTION_STATUS.SUCCESS) {
+            this.setState({user: userLoaded.user});
         }
-        if (this.props.generatedUsername.status === ACTION_STATUS.PENDING && nextProps.generatedUsername.status === ACTION_STATUS.SUCCESS) {
-            this._onChange({username: nextProps.generatedUsername.username});
+
+        if (prevProps.generatedUsername.status === ACTION_STATUS.PENDING && generatedUsername.status === ACTION_STATUS.SUCCESS) {
+            this._onChange({username: generatedUsername.username});
         }
-        if (this.props.match.params.username !== nextProps.match.params.username) {
-            this.props.loadUser(nextProps.match.params.username);
+
+        if (prevProps.match.params.username !== match.params.username) {
+            loadUser(match.params.username);
             this.setState({saved: false, showAlert: false, invited: false, impersonated: false});
         }
     }

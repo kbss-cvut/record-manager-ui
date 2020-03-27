@@ -50,23 +50,26 @@ class InstitutionController extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.state.saved && nextProps.institutionLoaded.status !== ACTION_STATUS.PENDING
-            && nextProps.institutionSaved.status === ACTION_STATUS.SUCCESS) {
-            if (nextProps.institutionSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
-                this.props.transitionToWithOpts(Routes.editInstitution, {
-                    params: {key: nextProps.institutionSaved.institution.key},
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const {institutionLoaded, institutionSaved, transitionToWithOpts} = this.props;
+
+        if (prevProps.institutionLoaded.status === ACTION_STATUS.PENDING && institutionLoaded.status === ACTION_STATUS.SUCCESS) {
+            this.setState({institution: institutionLoaded.institution});
+        }
+
+        if (this.state.saved && institutionLoaded.status !== ACTION_STATUS.PENDING
+            && institutionSaved.status === ACTION_STATUS.SUCCESS) {
+            if (institutionSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
+                transitionToWithOpts(Routes.editInstitution, {
+                    params: {key: institutionSaved.institution.key},
                     handlers: {
                         onCancel: Routes.institutions
                     }
                 });
             } else {
                 this.setState({saved: false});
-                this.props.loadInstitution(this.state.institution.key);
+                loadInstitution(this.state.institution.key);
             }
-        }
-        if (this.props.institutionLoaded.status === ACTION_STATUS.PENDING && nextProps.institutionLoaded.status === ACTION_STATUS.SUCCESS) {
-            this.setState({institution: nextProps.institutionLoaded.institution});
         }
     }
 
