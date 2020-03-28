@@ -1,10 +1,9 @@
 'use strict';
 
 import React from "react";
-import I18nWrapper from "../../i18n/I18nWrapper";
-import injectIntl from "../../utils/injectIntl";
+import withI18n from "../../i18n/withI18n";
+import {injectIntl, FormattedMessage} from "react-intl";
 import {Col, Jumbotron, Container, Row} from "react-bootstrap";
-import {FormattedMessage} from "react-intl";
 import DashboardTile from "./DashboardTile";
 import {ROLE} from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
@@ -93,4 +92,4 @@ Dashboard.propTypes = {
     handlers: PropTypes.object
 };
 
-export default injectIntl(I18nWrapper(Dashboard));
+export default injectIntl(withI18n(Dashboard));

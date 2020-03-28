@@ -3,8 +3,8 @@ import {formatDate} from "../../utils/Utils";
 import {Routes} from "../../utils/Routes";
 import HelpIcon from "../HelpIcon";
 import {Button} from "react-bootstrap";
-import injectIntl from "../../utils/injectIntl";
-import I18nWrapper from "../../i18n/I18nWrapper";
+import {injectIntl} from "react-intl";
+import withI18n from "../../i18n/withI18n";
 import RecordValidator from "../../validation/RecordValidator";
 import {LoaderSmall} from "../Loader";
 import PropTypes from "prop-types";
@@ -42,4 +42,4 @@ RecordRow.propTypes = {
     deletionLoading: PropTypes.bool.isRequired
 };
 
-export default injectIntl(I18nWrapper(RecordRow));
+export default injectIntl(withI18n(RecordRow));

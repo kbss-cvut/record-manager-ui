@@ -1,6 +1,6 @@
 import React from "react";
-import injectIntl from "../../utils/injectIntl";
-import I18nWrapper from "../../i18n/I18nWrapper";
+import {injectIntl} from "react-intl";
+import withI18n from "../../i18n/withI18n";
 import {Routes} from "../../utils/Routes";
 import {Button} from "react-bootstrap";
 import {LoaderSmall} from "../Loader";
@@ -32,5 +32,5 @@ InstitutionRow.propTypes = {
     deletionLoading: PropTypes.bool.isRequired
 };
 
-export default injectIntl(I18nWrapper(InstitutionRow));
+export default injectIntl(withI18n(InstitutionRow));
 

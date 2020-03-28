@@ -2,8 +2,8 @@
 
 import React from 'react';
 import {connect} from "react-redux";
-import injectIntl from "../../utils/injectIntl";
-import I18nWrapper from "../../i18n/I18nWrapper";
+import {injectIntl} from "react-intl";
+import withI18n from "../../i18n/withI18n";
 import {Button, Card} from "react-bootstrap";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import {transitionTo} from "../../utils/Routing";
@@ -94,7 +94,7 @@ class ActionHistory extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(ActionHistory)));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(ActionHistory)));
 
 function mapStateToProps(state) {
     return {

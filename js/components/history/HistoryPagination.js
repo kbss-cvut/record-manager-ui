@@ -1,6 +1,6 @@
 import React from "react";
-import injectIntl from "../../utils/injectIntl";
-import I18nWrapper from "../../i18n/I18nWrapper";
+import {injectIntl} from "react-intl";
+import withI18n from "../../i18n/withI18n";
 import {ACTIONS_PER_PAGE, PAGINATION_DIRECTION, SEARCH_TYPE} from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
 
@@ -28,5 +28,5 @@ HistoryPagination.propTypes = {
     numberOfActions: PropTypes.number.isRequired
 };
 
-export default injectIntl(I18nWrapper(HistoryPagination));
+export default injectIntl(withI18n(HistoryPagination));
 

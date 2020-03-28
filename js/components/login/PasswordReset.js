@@ -3,8 +3,8 @@
 import React from "react";
 import {Button, Form, Card} from "react-bootstrap";
 import HorizontalInput from "../HorizontalInput";
-import I18nWrapper from "../../i18n/I18nWrapper";
-import injectIntl from "../../utils/injectIntl";
+import withI18n from "../../i18n/withI18n";
+import {injectIntl} from "react-intl";
 import {transitionTo} from "../../utils/Routing";
 import {Routes} from "../../utils/Routes";
 import {connect} from "react-redux";
@@ -92,7 +92,7 @@ class PasswordReset extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(PasswordReset)));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(PasswordReset)));
 
 function mapStateToProps(state) {
     return {

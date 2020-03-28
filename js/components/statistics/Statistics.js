@@ -2,8 +2,8 @@
 
 import React from 'react';
 import {connect} from "react-redux";
-import injectIntl from "../../utils/injectIntl";
-import I18nWrapper from "../../i18n/I18nWrapper";
+import {injectIntl} from "react-intl";
+import withI18n from "../../i18n/withI18n";
 import {Card, Table} from "react-bootstrap";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import {LoaderPanel, LoaderSmall} from "../Loader";
@@ -62,7 +62,7 @@ class Statistics extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(Statistics)));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(Statistics)));
 
 function mapStateToProps(state) {
     return {

@@ -3,8 +3,8 @@
 import React from 'react';
 
 import HelpIcon from '../HelpIcon';
-import I18nWrapper from '../../i18n/I18nWrapper';
-import injectIntl from '../../utils/injectIntl';
+import withI18n from '../../i18n/withI18n';
+import {injectIntl} from "react-intl";
 import HorizontalInput from '../HorizontalInput';
 import PropTypes from "prop-types";
 
@@ -38,4 +38,4 @@ class RequiredAttributes extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(RequiredAttributes));
+export default injectIntl(withI18n(RequiredAttributes));

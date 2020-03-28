@@ -3,8 +3,8 @@
 import React from "react";
 import {Table} from "react-bootstrap";
 
-import injectIntl from "../../utils/injectIntl";
-import I18nWrapper from "../../i18n/I18nWrapper";
+import {injectIntl} from "react-intl";
+import withI18n from "../../i18n/withI18n";
 import HistoryRow from "./HistoryRow";
 import {ACTIONS_PER_PAGE} from "../../constants/DefaultConstants";
 import HistorySearch from "./HistorySearch";
@@ -60,4 +60,4 @@ class HistoryTable extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(HistoryTable));
+export default injectIntl(withI18n(HistoryTable));

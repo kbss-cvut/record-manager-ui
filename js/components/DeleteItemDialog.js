@@ -1,12 +1,11 @@
 'use strict';
 
 import React from 'react';
+import {injectIntl, FormattedMessage} from "react-intl";
 import {Button, Modal} from 'react-bootstrap';
-import {FormattedMessage} from 'react-intl';
 import PropTypes from "prop-types";
 
-import injectIntl from '../utils/injectIntl';
-import I18nWrapper from '../i18n/I18nWrapper';
+import withI18n from '../i18n/withI18n';
 
 const DeleteItemDialog = (props) => {
     if (!props.item) {
@@ -38,4 +37,4 @@ DeleteItemDialog.propTypes = {
     itemLabel: PropTypes.string
 };
 
-export default injectIntl(I18nWrapper(DeleteItemDialog));
+export default injectIntl(withI18n(DeleteItemDialog));

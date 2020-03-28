@@ -3,8 +3,8 @@
 import React from "react";
 import {Table} from "react-bootstrap";
 import DeleteItemDialog from "../DeleteItemDialog";
-import injectIntl from "../../utils/injectIntl";
-import I18nWrapper from "../../i18n/I18nWrapper";
+import {injectIntl} from "react-intl";
+import withI18n from "../../i18n/withI18n";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import RecordRow from "./RecordRow";
 import AlertMessage from "../AlertMessage";
@@ -101,4 +101,4 @@ class RecordTable extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(RecordTable));
+export default injectIntl(withI18n(RecordTable));

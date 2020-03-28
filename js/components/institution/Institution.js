@@ -2,11 +2,10 @@
 
 import React from "react";
 import {Button, Card} from "react-bootstrap";
-import {FormattedMessage} from "react-intl";
+import {injectIntl, FormattedMessage} from "react-intl";
 import InstitutionMembers from "./InstitutionMembers";
 import InstitutionPatients from "./InstitutionPatients";
-import I18nWrapper from "../../i18n/I18nWrapper";
-import injectIntl from "../../utils/injectIntl";
+import withI18n from "../../i18n/withI18n";
 import HorizontalInput from "../HorizontalInput";
 import PropTypes from "prop-types";
 
@@ -132,4 +131,4 @@ class Institution extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(Institution));
+export default injectIntl(withI18n(Institution));

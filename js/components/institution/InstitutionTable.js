@@ -6,8 +6,8 @@ import {Table} from "react-bootstrap";
 import DeleteItemDialog from "../DeleteItemDialog";
 import {ACTION_STATUS} from "../../constants/DefaultConstants";
 import InstitutionRow from "./InstitutionRow";
-import injectIntl from "../../utils/injectIntl";
-import I18nWrapper from "../../i18n/I18nWrapper";
+import {injectIntl} from "react-intl";
+import withI18n from "../../i18n/withI18n";
 import PropTypes from "prop-types";
 
 class InstitutionTable extends React.Component {
@@ -86,4 +86,4 @@ class InstitutionTable extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(InstitutionTable));
+export default injectIntl(withI18n(InstitutionTable));

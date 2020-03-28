@@ -2,12 +2,12 @@
 
 import Dashboard from "./Dashboard";
 import React from 'react';
-import injectIntl from '../../utils/injectIntl';
-import {Routes} from '../../utils/Routes';
-import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
-import I18nWrapper from "../../i18n/I18nWrapper";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
+import {injectIntl} from "react-intl";
+import {Routes} from '../../utils/Routes';
+import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
+import withI18n from "../../i18n/withI18n";
 
 class DashboardController extends React.Component {
     constructor(props) {
@@ -70,7 +70,7 @@ class DashboardController extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(DashboardController)));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(DashboardController)));
 
 function mapStateToProps(state) {
     return {

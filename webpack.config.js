@@ -10,7 +10,7 @@ const cssnano = require('cssnano');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {getIfUtils, removeEmpty} = require('webpack-config-utils');
 const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const apiUrl = process.env.STUDY_MANAGER_API_URL;
@@ -29,7 +29,7 @@ module.exports = (
     return {
         mode: ifProd('production', 'development'),
         context: resolve('js'),
-        entry: './app.js',
+        entry: './index.js',
         output: {
             filename: ifProd('bundle.[name].[chunkhash].js', 'bundle.[name].js'),
             chunkFilename: '[name].[chunkhash].js',
@@ -131,7 +131,7 @@ module.exports = (
                         from: resolve('./resources'),
                     }
                 ],
-                { copyUnmodified: true },
+                {copyUnmodified: true},
             ),
 
         ])

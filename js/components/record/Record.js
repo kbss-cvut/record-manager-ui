@@ -2,9 +2,8 @@
 
 import React from "react";
 import {Button, Card} from "react-bootstrap";
-import {FormattedMessage} from "react-intl";
-import I18nWrapper from "../../i18n/I18nWrapper";
-import injectIntl from "../../utils/injectIntl";
+import {injectIntl, FormattedMessage} from "react-intl";
+import withI18n from "../../i18n/withI18n";
 import HorizontalInput from "../HorizontalInput";
 import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
@@ -124,4 +123,4 @@ class Record extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(Record), {withRef: true});
+export default injectIntl(withI18n(Record), {forwardRef: true});

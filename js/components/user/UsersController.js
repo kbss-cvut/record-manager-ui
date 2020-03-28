@@ -5,8 +5,8 @@ import {Routes} from "../../utils/Routes";
 import {transitionToWithOpts} from "../../utils/Routing";
 import Users from "./Users";
 import {connect} from "react-redux";
-import I18nWrapper from "../../i18n/I18nWrapper";
-import injectIntl from "../../utils/injectIntl";
+import withI18n from "../../i18n/withI18n";
+import {injectIntl} from "react-intl";
 import {bindActionCreators} from "redux";
 import {loadUsers} from "../../actions/UsersActions";
 import {ROLE} from "../../constants/DefaultConstants";
@@ -63,7 +63,7 @@ class UsersController extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(UsersController)));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(UsersController)));
 
 function mapStateToProps(state) {
     return {

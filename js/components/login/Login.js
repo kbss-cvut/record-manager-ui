@@ -3,8 +3,8 @@
 import React from "react";
 import {Alert, Button, Form, Card} from "react-bootstrap";
 import HorizontalInput from "../HorizontalInput";
-import I18nWrapper from "../../i18n/I18nWrapper";
-import injectIntl from "../../utils/injectIntl";
+import withI18n from "../../i18n/withI18n";
+import {injectIntl} from "react-intl";
 import {Routes} from "../../utils/Routes";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -114,7 +114,7 @@ class Login extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(Login)));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(Login)));
 
 function mapStateToProps(state) {
     return {

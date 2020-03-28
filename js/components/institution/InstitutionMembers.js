@@ -2,9 +2,8 @@
 
 import React from 'react';
 import {Button, Card, Table} from 'react-bootstrap';
-
-import injectInl from '../../utils/injectIntl';
-import I18nWrapper from '../../i18n/I18nWrapper';
+import {injectIntl} from "react-intl";
+import withI18n from '../../i18n/withI18n';
 import DeleteItemDialog from "../DeleteItemDialog";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import Loader, {LoaderSmall} from "../Loader";
@@ -126,4 +125,4 @@ InstitutionMembers.propTypes = {
     userDeleted: PropTypes.object
 };
 
-export default injectInl(I18nWrapper(InstitutionMembers));
+export default injectIntl(withI18n(InstitutionMembers));

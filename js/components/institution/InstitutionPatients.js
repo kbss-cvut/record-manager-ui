@@ -3,8 +3,8 @@
 import React from 'react';
 import {Card} from 'react-bootstrap';
 
-import I18nWrapper from '../../i18n/I18nWrapper';
-import injectIntl from '../../utils/injectIntl';
+import withI18n from '../../i18n/withI18n';
+import {injectIntl} from "react-intl";
 import RecordTable from '../record/RecordTable';
 import PropTypes from "prop-types";
 
@@ -25,4 +25,4 @@ InstitutionPatients.propTypes = {
     onEdit: PropTypes.func.isRequired
 };
 
-export default injectIntl(I18nWrapper(InstitutionPatients));
+export default injectIntl(withI18n(InstitutionPatients));

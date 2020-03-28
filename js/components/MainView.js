@@ -3,16 +3,15 @@
 import React from "react";
 import * as I18nStore from "../stores/I18nStore";
 import {Container, DropdownItem, Nav, Navbar, NavDropdown, NavItem} from "react-bootstrap";
-import {Routes} from "../utils/Routes";
+import {Routes, authRoutes, unauthRoutes} from "../utils/Routes";
 import {injectIntl} from "react-intl";
-import I18nWrapper from "../i18n/I18nWrapper";
+import withI18n from "../i18n/withI18n";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {ACTION_STATUS, ROLE} from "../constants/DefaultConstants";
 import {loadUserProfile} from "../actions/AuthActions";
 import * as Constants from "../constants/DefaultConstants";
 import {LoaderMask} from "./Loader";
-import {authRoutes, unauthRoutes} from '../app';
 import {NavLink} from 'react-router-dom';
 
 class MainView extends React.Component {
@@ -114,13 +113,14 @@ class MainView extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(MainView)));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(MainView)));
 
 function mapStateToProps(state) {
     return {
         user: state.auth.user,
         isLoaded: state.auth.isLoaded,
-        status: state.auth.status
+        status: state.auth.status,
+        intl: state.intl
     };
 }
 

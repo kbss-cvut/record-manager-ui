@@ -3,8 +3,8 @@
 import React from "react";
 import {Table} from "react-bootstrap";
 import DeleteItemDialog from "../DeleteItemDialog";
-import injectIntl from "../../utils/injectIntl";
-import I18nWrapper from "../../i18n/I18nWrapper";
+import {injectIntl} from "react-intl";
+import withI18n from "../../i18n/withI18n";
 import UserRow from "./UserRow";
 import {ACTION_STATUS} from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
@@ -86,4 +86,4 @@ class UserTable extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(UserTable));
+export default injectIntl(withI18n(UserTable));

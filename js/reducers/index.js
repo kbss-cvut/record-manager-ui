@@ -10,6 +10,7 @@ import RouterReducer from "./RouterReducer";
 import HistoryReducer from "./HistoryReducer";
 import * as ActionConstants from "../constants/ActionConstants";
 import StatisticsReducer from "./StatisticsReducer";
+import IntlReducer from './IntlReducer';
 
 const rootReducer = (state, action) => {
     if (action.type === ActionConstants.UNAUTH_USER) {
@@ -19,6 +20,7 @@ const rootReducer = (state, action) => {
 };
 
 const appReducer = combineReducers({
+    intl: IntlReducer,
     auth: AuthReducer,
     user: UserReducer,
     users: UsersReducer,

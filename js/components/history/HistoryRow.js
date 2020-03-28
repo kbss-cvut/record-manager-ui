@@ -1,6 +1,6 @@
 import React from "react";
-import injectIntl from "../../utils/injectIntl";
-import I18nWrapper from "../../i18n/I18nWrapper";
+import {injectIntl} from "react-intl";
+import withI18n from "../../i18n/withI18n";
 import {Button} from "react-bootstrap";
 import * as moment from 'moment';
 import PropTypes from "prop-types";
@@ -24,5 +24,5 @@ HistoryRow.propTypes = {
     onOpen: PropTypes.func.isRequired
 };
 
-export default injectIntl(I18nWrapper(HistoryRow));
+export default injectIntl(withI18n(HistoryRow));
 

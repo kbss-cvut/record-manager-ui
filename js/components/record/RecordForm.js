@@ -3,8 +3,8 @@
 import React from 'react';
 import {Card} from 'react-bootstrap';
 // import {QuestionAnswerProcessor} from 's-forms';
-import I18nWrapper from '../../i18n/I18nWrapper';
-import injectIntl from '../../utils/injectIntl';
+import withI18n from '../../i18n/withI18n';
+import {injectIntl} from "react-intl";
 import Wizard from '../wizard/Wizard';
 import * as WizardBuilder from '../wizard/generator/WizardBuilder';
 import {WizardStoreInstance} from '../wizard/generator/WizardBuilder';
@@ -83,4 +83,4 @@ RecordForm.propTypes = {
     formgen: PropTypes.object
 };
 
-export default injectIntl(I18nWrapper(RecordForm), {withRef: true});
+export default injectIntl(withI18n(RecordForm), {forwardRef: true});

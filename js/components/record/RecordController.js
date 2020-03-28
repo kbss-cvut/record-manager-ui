@@ -1,8 +1,8 @@
 'use strict';
 
 import React from 'react';
-import injectIntl from '../../utils/injectIntl';
-import I18nWrapper from '../../i18n/I18nWrapper';
+import {injectIntl} from "react-intl";
+import withI18n from '../../i18n/withI18n';
 import Record from './Record';
 import {Routes} from '../../utils/Routes';
 import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
@@ -118,7 +118,7 @@ class RecordController extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(I18nWrapper(RecordController), {withRef: true}));
+export default connect(mapStateToProps, mapDispatchToProps, undefined, {forwardRef: true})(injectIntl(withI18n(RecordController, {forwardRef: true})));
 
 function mapStateToProps(state) {
     return {

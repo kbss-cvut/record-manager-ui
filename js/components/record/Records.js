@@ -2,8 +2,8 @@
 
 import React from "react";
 import {Button, Card} from "react-bootstrap";
-import injectIntl from "../../utils/injectIntl";
-import I18nWrapper from "../../i18n/I18nWrapper";
+import {injectIntl} from "react-intl";
+import withI18n from "../../i18n/withI18n";
 import RecordTable from "./RecordTable";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
@@ -61,4 +61,4 @@ class Records extends React.Component {
     }
 }
 
-export default injectIntl(I18nWrapper(Records));
+export default injectIntl(withI18n(Records));

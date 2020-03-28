@@ -4,9 +4,9 @@ import React from 'react';
 import {Alert, Button, ButtonToolbar, Card} from 'react-bootstrap';
 // import {Constants, HelpIcon} from 's-forms';
 import JsonLdUtils from 'jsonld-utils';
-import injectIntl from '../../utils/injectIntl';
+import {injectIntl} from "react-intl";
 import {WizardStoreInstance} from '../wizard/generator/WizardBuilder';
-import I18nWrapper from '../../i18n/I18nWrapper';
+import withI18n from '../../i18n/withI18n';
 import PropTypes from "prop-types";
 
 class WizardStep extends React.Component {
@@ -149,4 +149,4 @@ WizardStep
     defaultNextDisabled: PropTypes.bool
 };
 
-export default injectIntl(I18nWrapper(WizardStep));
+export default injectIntl(withI18n(WizardStep));
