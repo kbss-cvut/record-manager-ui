@@ -54,7 +54,7 @@ export function logout() {
         axiosBackend.post(`${API_URL}/j_spring_security_logout`).then(() => {
             dispatch(unauthUser());
             //Logger.log('User successfully logged out.');
-        }).catch((error) => {
+        }).catch(() => {
             //Logger.error('Logout failed. Status: ' + error.status);
         });
     }
@@ -104,7 +104,7 @@ export function passwordReset(email) {
         axiosBackend.post(`${API_URL}/rest/users/password-reset`, email, {headers: {"Content-Type": "text/plain"}})
             .then(() => {
                 dispatch({type: ActionConstants.PASSWORD_RESET_SUCCESS, email});
-            }).catch((error) => {
+            }).catch(() => {
             dispatch({type: ActionConstants.PASSWORD_RESET_ERROR});
         });
     }

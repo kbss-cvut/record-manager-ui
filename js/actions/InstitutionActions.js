@@ -38,7 +38,7 @@ export function deleteInstitutionError(error, institution) {
     return {
         type: ActionConstants.DELETE_INSTITUTION_ERROR,
         error,
-        institution,
+        institution
     }
 }
 
@@ -102,7 +102,7 @@ export function updateInstitution(institution) {
         dispatch(saveInstitutionPending(ACTION_FLAG.UPDATE_ENTITY));
         axiosBackend.put(`${API_URL}/rest/institutions/${institution.key}`, {
             ...institution
-        }).then((response) => {
+        }).then(() => {
             dispatch(saveInstitutionSuccess(institution, null, ACTION_FLAG.UPDATE_ENTITY));
             dispatch(loadInstitutions());
         }).catch((error) => {
