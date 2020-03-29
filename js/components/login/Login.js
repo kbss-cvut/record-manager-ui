@@ -102,7 +102,7 @@ class Login extends React.Component {
                                     onClick={this.onForgotPassword}>{this.i18n('login.forgot-password')}</Button>
                         </div>
                         <div>
-                            <Button variant='success' size='block' onClick={this.login}
+                            <Button className="mt-2" variant='success' size='block' onClick={this.login}
                                     disabled={this.props.isLogging}>
                                 {this.i18n('login.submit')}{this.props.isLogging && <LoaderSmall/>}
                             </Button>
