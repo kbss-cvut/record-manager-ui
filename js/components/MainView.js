@@ -66,7 +66,8 @@ class MainView extends React.Component {
                                         </NavItem>
                                         : user.institution ?
                                             <NavItem>
-                                                <NavLink to={Routes.institutions.path + '/' + user.institution.key}
+                                                <NavLink className="nav-link"
+                                                         to={Routes.institutions.path + '/' + user.institution.key}
                                                          isActive={() => path.startsWith(Routes.institutions.path)}>
                                                     {this.i18n('main.institution-nav')}
                                                 </NavLink>

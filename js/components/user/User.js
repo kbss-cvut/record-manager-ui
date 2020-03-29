@@ -248,7 +248,7 @@ class User extends React.Component {
                         </div>
                     </div>
                     }
-                    <div className="buttons-line-height" style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
+                    <div className="buttons-line-height mt-3 text-center">
                         {this._impersonateButton()}
                         {this._passwordChange()}
                         {this._saveAndSendEmailButton()}

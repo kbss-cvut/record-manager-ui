@@ -83,7 +83,7 @@ class PasswordChange extends React.Component {
                                 labelWidth={4} inputWidth={8}/>
                         </div>
                     </div>
-                    <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
+                    <div className="mt-3 text-center">
                         {currentUser.role === ROLE.ADMIN &&
                         <Button style={{margin: '0 0.3em 0 0'}} variant='success' size='sm' ref='submit'
                                 onClick={() => this._onSaveWithEmail()} className="d-inline-flex"

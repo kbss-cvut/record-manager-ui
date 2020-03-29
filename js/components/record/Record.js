@@ -91,7 +91,7 @@ class Record extends React.Component {
 
     _renderButtons() {
         const {record, recordSaved, formgen} = this.props;
-        return <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
+        return <div className="mt-3 text-center">
             <Button variant='success' size='sm'
                     disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
                     || this._isFormInvalid() || !record.state.isComplete()}

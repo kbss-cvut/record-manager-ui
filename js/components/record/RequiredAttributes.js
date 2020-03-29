@@ -25,7 +25,7 @@ class RequiredAttributes extends React.Component {
         // If the 'completed' prop is true, the attributes (except for the name) should be read only
         return <div>
             <div className='row'>
-                <div className='col-12 col-sm-6'>
+                <div className='col-11 col-sm-6'>
                     <HorizontalInput
                         labelWidth={4} inputWidth={8}
                         type='text' name='localName' value={record.localName}

@@ -83,7 +83,7 @@ class ActionHistory extends React.Component {
                         </div>
                     </div>
                     }
-                    <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
+                    <div className="mt-3 text-center">
                         <Button variant='link' size='sm' onClick={this._onCancel}>
                             {this.i18n('cancel')}
                         </Button>

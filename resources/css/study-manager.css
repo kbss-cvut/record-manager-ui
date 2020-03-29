@@ -608,7 +608,7 @@ button .help-icon {
     margin-top: 0px;
 }
 
-@media screen and (max-width: 1199px) {
+@media screen and (max-width: 992px) {
     .help-icon {
         margin-top: 35px
     }

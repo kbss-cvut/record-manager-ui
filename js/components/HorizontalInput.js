@@ -127,7 +127,8 @@ export default class HorizontalInput extends React.Component {
                 {this.props.iconRight ?
                     <InputGroup>
                         {formControl}
-                        <InputGroup.Append><InputGroup.Text>{this.props.iconRight}</InputGroup.Text></InputGroup.Append>
+                        <InputGroup.Append><InputGroup.Text
+                            className="py-0">{this.props.iconRight}</InputGroup.Text></InputGroup.Append>
                     </InputGroup>
                     :
                     <div>

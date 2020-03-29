@@ -104,22 +104,21 @@ class Institution extends React.Component {
     _renderButtons() {
         const {currentUser, handlers, institutionSaved} = this.props;
         if (currentUser.role !== ROLE.ADMIN) {
-            return <div className='row'>
-                <div className='col-xs-1'>
-                    <Button variant='primary' size='sm' onClick={handlers.onCancel}>{this.i18n('back')}</Button>
-                </div>
-            </div>;
-        } else {
-            return <div style={{margin: '1em 0em 0em 0em', textAlign: 'center'}}>
-                <Button variant='success' size='sm' ref='submit'
-                        disabled={!InstitutionValidator.isValid(this.props.institution) || this.props.institutionSaved.status === ACTION_STATUS.PENDING}
-                        onClick={handlers.onSave} className="d-inline-flex">{this.i18n('save')}
-                    {!InstitutionValidator.isValid(this.props.institution) &&
-                    <HelpIcon className="align-self-center" text={this.i18n('required')} glyph="help"/>}
-                    {institutionSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}</Button>
-                <Button variant='link' size='sm' onClick={handlers.onCancel}>{this.i18n('cancel')}</Button>
+            return <div className='row justify-content-center'>
+                <Button variant='primary' size='sm' onClick={handlers.onCancel}>{this.i18n('back')}</Button>
             </div>;
         }
+
+        return <div className="mt-3 text-center">
+            <Button variant='success' size='sm' ref='submit'
+                    disabled={!InstitutionValidator.isValid(this.props.institution) || this.props.institutionSaved.status === ACTION_STATUS.PENDING}
+                    onClick={handlers.onSave} className="d-inline-flex">{this.i18n('save')}
+                {!InstitutionValidator.isValid(this.props.institution) &&
+                <HelpIcon className="align-self-center" text={this.i18n('required')} glyph="help"/>}
+                {institutionSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}</Button>
+            <Button variant='link' size='sm' onClick={handlers.onCancel}>{this.i18n('cancel')}</Button>
+        </div>;
+
     }
 
     _renderMembers() {
