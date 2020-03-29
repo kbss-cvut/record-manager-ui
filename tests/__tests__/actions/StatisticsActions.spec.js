@@ -5,20 +5,21 @@ import MockAdapter from 'axios-mock-adapter';
 import thunk from "redux-thunk";
 import configureMockStore from "redux-mock-store";
 import {loadStatistics} from "../../../js/actions/StatisticsActions";
+import {API_URL} from '../../../config';
 
 const middlewares = [thunk.withExtraArgument(axiosBackend)];
 const mockStore = configureMockStore(middlewares);
 
 describe('Statistics asynchronize actions', function () {
     let store,
-        MockApi;
+        mockApi;
     const payload = {numberOfPatients: 5, numberOfInstitutions: 10},
         error = {
             "message": "An error has occurred.",
         };
 
     beforeEach(() => {
-        MockApi = new MockAdapter(axiosBackend);
+        mockApi = new MockAdapter(axiosBackend);
         store = mockStore();
     });
 
@@ -28,7 +29,7 @@ describe('Statistics asynchronize actions', function () {
             {type: ActionConstants.LOAD_STATISTICS_SUCCESS, payload}
         ];
 
-        MockApi.onGet('rest/statistics').reply(200, payload);
+        mockApi.onGet(`${API_URL}/rest/statistics`).reply(200, payload);
 
         store.dispatch(loadStatistics());
 
@@ -44,7 +45,7 @@ describe('Statistics asynchronize actions', function () {
             {type: ActionConstants.LOAD_STATISTICS_ERROR, error}
         ];
 
-        MockApi.onGet('rest/statistics').reply(400, error);
+        mockApi.onGet(`${API_URL}/rest/statistics`).reply(400, error);
 
         store.dispatch(loadStatistics());
 

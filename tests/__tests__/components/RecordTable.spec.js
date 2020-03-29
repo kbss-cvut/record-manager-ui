@@ -1,4 +1,4 @@
-import TestUtils from "react-addons-test-utils";
+import TestUtils from "react-dom/test-utils";
 import React from "react";
 import {IntlProvider} from "react-intl";
 import RecordTable from "../../../js/components/record/RecordTable";
@@ -72,14 +72,14 @@ describe('RecordTable', function () {
         expect(td.length).toEqual(10);
     });
 
-    it('renders "Open" button and click on it', function () {
+    it('renders 2 "Open" buttons and 4 link buttons and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <RecordTable recordsLoaded={recordsLoaded} handlers={handlers} disableDelete={disableDelete}
                              recordDeleted={recordDeleted}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-        expect(buttons.length).toEqual(2);
+        expect(buttons.length).toEqual(6);
         TestUtils.Simulate.click(buttons[0]); // open
         expect(handlers.onEdit).toHaveBeenCalled();
     });

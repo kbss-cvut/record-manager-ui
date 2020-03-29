@@ -12,7 +12,7 @@ import RequiredAttributes from "./RequiredAttributes";
 // import {FormUtils} from "s-forms";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
-import {LoaderPanel, LoaderSmall} from "../Loader";
+import {LoaderCard, LoaderSmall} from "../Loader";
 import PropTypes from "prop-types";
 
 class Record extends React.Component {
@@ -50,7 +50,7 @@ class Record extends React.Component {
         }
 
         if (!record) {
-            return <LoaderPanel header={this._renderHeader()} variant='primary'/>;
+            return <LoaderCard header={this._renderHeader()} variant='primary'/>;
         }
 
         return <Card variant='primary'>

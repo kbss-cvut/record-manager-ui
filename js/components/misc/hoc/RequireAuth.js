@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import * as Routing from "../../../utils/Routing";
-import {Routes} from "../../../utils/Routes";
+import Routes from "../../../constants/RoutesConstants";
 
 export default function (ComposedComponent) {
     const Authentication = ({authenticated, history, location, match}) => {

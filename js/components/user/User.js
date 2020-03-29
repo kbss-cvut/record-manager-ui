@@ -10,7 +10,7 @@ import AlertMessage from "../AlertMessage";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import {getRole, processInstitutions} from "../../utils/Utils";
 import * as Vocabulary from "../../constants/Vocabulary";
-import {LoaderPanel, LoaderSmall} from "../Loader";
+import {LoaderCard, LoaderSmall} from "../Loader";
 import HelpIcon from "../HelpIcon";
 import PropTypes from "prop-types";
 import {FaRandom} from 'react-icons/fa';
@@ -30,7 +30,8 @@ class User extends React.Component {
         invited: PropTypes.bool,
         impersonation: PropTypes.object,
         impersonated: PropTypes.bool,
-        deletedInvitation: PropTypes.bool
+        deletedInvitation: PropTypes.bool,
+        i18n: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -173,11 +174,12 @@ class User extends React.Component {
         }
 
         if (!user) {
-            return <LoaderPanel header={<span>{this.i18n('user.panel-title')}</span>}/>;
+            return <LoaderCard header={<span>{this.i18n('user.panel-title')}</span>}/>;
         }
 
         const generateButton = user.isNew &&
-            <Button variant="link" className="p-0" size='sm' onClick={handlers.generateUsername}>
+            <Button variant="link" className="p-0 button-random" size='sm'
+                    onClick={handlers.generateUsername}>
                 <FaRandom/>
             </Button>;
 

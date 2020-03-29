@@ -8,7 +8,7 @@ import withI18n from '../../i18n/withI18n';
 import InstitutionTable from './InstitutionTable';
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
-import {LoaderPanel, LoaderSmall} from "../Loader";
+import {LoaderCard, LoaderSmall} from "../Loader";
 import PropTypes from "prop-types";
 
 class Institutions extends React.Component {
@@ -27,7 +27,7 @@ class Institutions extends React.Component {
     render() {
         const {showAlert, institutionDeleted, institutionsLoaded} = this.props;
         if (!institutionsLoaded.institutions && (!institutionsLoaded.status || institutionsLoaded.status === ACTION_STATUS.PENDING)) {
-            return <LoaderPanel header={this.i18n('institutions.panel-title')}/>;
+            return <LoaderCard header={this.i18n('institutions.panel-title')}/>;
         } else if (institutionsLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('institutions.loading-error', {error: institutionsLoaded.error.message})}/>

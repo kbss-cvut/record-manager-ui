@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {IntlProvider} from 'react-intl';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-dom/test-utils';
 import UserTable from "../../../js/components/user/UserTable";
 import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
 import enLang from '../../../js/i18n/en';

@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {logout} from "../../actions/AuthActions";
 import {transitionTo} from "../../utils/Routing";
-import {Routes} from "../../utils/Routes";
+import Routes from "../../constants/RoutesConstants";
 
 class Logout extends React.Component {
     componentDidMount() {

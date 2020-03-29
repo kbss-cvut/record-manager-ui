@@ -1,5 +1,5 @@
 import {ACTION_FLAG, ROLE} from "../constants/DefaultConstants";
-import { axiosBackend} from "./index";
+import {axiosBackend} from "./index";
 import * as ActionConstants from "../constants/ActionConstants";
 import {loadUsers} from "./UsersActions";
 import {API_URL} from '../../config';
@@ -27,7 +27,7 @@ export function updateUser(user, currentUser, sendEmail = true) {
             ...user
         }).then(() => {
             dispatch(saveUserSuccess(user, ACTION_FLAG.UPDATE_ENTITY));
-            if (currentUser.role === ROLE.ADMIN){
+            if (currentUser.role === ROLE.ADMIN) {
                 dispatch(loadUsers());
             }
         }).catch((error) => {
@@ -73,7 +73,7 @@ export function deleteUser(user, institution = null) {
         axiosBackend.delete(`${API_URL}/rest/users/${user.username}`, {
             ...user
         }).then(() => {
-            if (institution){
+            if (institution) {
                 dispatch(loadInstitutionMembers(institution.key))
             } else {
                 dispatch(loadUsers());
@@ -255,8 +255,9 @@ export function impersonate(username) {
         dispatch({type: ActionConstants.IMPERSONATE_PENDING});
         axiosBackend.post(`${API_URL}/rest/users/impersonate`, username, {headers: {"Content-Type": "text/plain"}}).then(() => {
             dispatch({type: ActionConstants.IMPERSONATE_SUCCESS, username});
+
             window.location.reload();
-        }).catch ((error) => {
+        }).catch((error) => {
             dispatch({type: ActionConstants.IMPERSONATE_ERROR, error: error.response.data});
         });
     }

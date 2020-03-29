@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import {formatDate} from "../../utils/Utils";
 import AlertMessage from "../AlertMessage";
-import {LoaderPanel, LoaderSmall} from "../Loader";
+import {LoaderCard, LoaderSmall} from "../Loader";
 import InstitutionValidator from "../../validation/InstitutionValidator";
 import HelpIcon from "../HelpIcon";
 
@@ -50,7 +50,7 @@ class Institution extends React.Component {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('institution.load-error', {error: institutionLoaded.error.message})}/>;
         } else if (!institution) {
-            return <LoaderPanel header={<span>{this.i18n('institution.panel-title')}</span>}/>;
+            return <LoaderCard header={<span>{this.i18n('institution.panel-title')}</span>}/>;
         }
 
         return <Card variant='primary'>

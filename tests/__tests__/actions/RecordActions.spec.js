@@ -22,6 +22,7 @@ import {
     unloadSavedRecord,
     updateRecord
 } from "../../../js/actions/RecordActions";
+import {API_URL} from '../../../config';
 
 describe('Record synchronize actions', function () {
     const record = {key: 7979868757},
@@ -129,7 +130,7 @@ const mockStore = configureMockStore(middlewares);
 
 describe('Record asynchronize actions', function () {
     let store,
-        MockApi;
+        mockApi;
     const error = {
             "message" : "An error has occurred.",
             "requestUri": "/rest/institutions/xxx"
@@ -146,7 +147,7 @@ describe('Record asynchronize actions', function () {
         location = `rest/records/${key}`;
 
     beforeEach(() => {
-        MockApi = new MockAdapter(axiosBackend);
+        mockApi = new MockAdapter(axiosBackend);
         store = mockStore();
     });
 
@@ -158,8 +159,8 @@ describe('Record asynchronize actions', function () {
             { type: ActionConstants.LOAD_RECORDS_SUCCESS, records},
         ];
 
-        MockApi.onPost('rest/records').reply(200, null, {location});
-        MockApi.onGet('rest/records').reply(200, records);
+        mockApi.onPost(`${API_URL}/rest/records`).reply(200, null, {location});
+        mockApi.onGet(`${API_URL}/rest/records`).reply(200, records);
 
         store.dispatch(createRecord(record, currentUser));
 
@@ -177,8 +178,8 @@ describe('Record asynchronize actions', function () {
             { type: ActionConstants.LOAD_RECORDS_SUCCESS, records},
         ];
 
-        MockApi.onPut(`rest/records/${record.key}`).reply(200, null, {location});
-        MockApi.onGet('rest/records').reply(200, records);
+        mockApi.onPut(`${API_URL}/rest/records/${record.key}`).reply(200, null, {location});
+        mockApi.onGet(`${API_URL}/rest/records`).reply(200, records);
 
         store.dispatch(updateRecord(record, currentUser));
 
@@ -194,7 +195,7 @@ describe('Record asynchronize actions', function () {
             { type: ActionConstants.SAVE_RECORD_ERROR, actionFlag: ACTION_FLAG.UPDATE_ENTITY, error, record}
         ];
 
-        MockApi.onPut(`rest/records/${record.key}`).reply(400, error);
+        mockApi.onPut(`${API_URL}/rest/records/${record.key}`).reply(400, error);
 
         store.dispatch(updateRecord(record, currentUser));
 
@@ -212,8 +213,8 @@ describe('Record asynchronize actions', function () {
             { type: ActionConstants.LOAD_RECORDS_SUCCESS, records},
         ];
 
-        MockApi.onDelete(`rest/records/${record.key}`).reply(200);
-        MockApi.onGet('rest/records').reply(200, records);
+        mockApi.onDelete(`${API_URL}/rest/records/${record.key}`).reply(200);
+        mockApi.onGet(`${API_URL}/rest/records`).reply(200, records);
 
         store.dispatch(deleteRecord(record, currentUser));
 
@@ -229,7 +230,7 @@ describe('Record asynchronize actions', function () {
             { type: ActionConstants.DELETE_RECORD_ERROR, error, record, key: record.key}
         ];
 
-        MockApi.onDelete(`rest/records/${record.key}`).reply(400, error);
+        mockApi.onDelete(`${API_URL}/rest/records/${record.key}`).reply(400, error);
 
         store.dispatch(deleteRecord(record, currentUser));
 
@@ -245,7 +246,7 @@ describe('Record asynchronize actions', function () {
             { type: ActionConstants.LOAD_RECORD_SUCCESS, record}
         ];
 
-        MockApi.onGet(`rest/records/${record.key}`).reply(200, {key: record.key});
+        mockApi.onGet(`${API_URL}/rest/records/${record.key}`).reply(200, {key: record.key});
 
         store.dispatch(loadRecord(record.key));
 
@@ -261,7 +262,7 @@ describe('Record asynchronize actions', function () {
             { type: ActionConstants.LOAD_RECORD_ERROR, error}
         ];
 
-        MockApi.onGet(`rest/records/${record.key}`).reply(400, error);
+        mockApi.onGet(`${API_URL}/rest/records/${record.key}`).reply(400, error);
 
         store.dispatch(loadRecord(record.key));
 

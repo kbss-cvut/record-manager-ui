@@ -1,4 +1,4 @@
-import {Routes} from "../utils/Routes";
+import Routes from "./RoutesConstants";
 import {APP_TITLE} from '../../config';
 
 export const WEB_LANG = 'en';

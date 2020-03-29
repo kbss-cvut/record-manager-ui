@@ -1,4 +1,4 @@
-import TestUtils from "react-addons-test-utils";
+import TestUtils from "react-dom/test-utils";
 import React from "react";
 import {IntlProvider} from "react-intl";
 import InstitutionPatients from "../../../js/components/institution/InstitutionPatients";
@@ -10,7 +10,7 @@ describe('InstitutionPatients', function () {
         records,
         onEdit = jasmine.createSpy('onEdit');
 
-    it('renders panel', function () {
+    it('renders card', function () {
         recordsLoaded = {
             records
         };
@@ -18,9 +18,9 @@ describe('InstitutionPatients', function () {
             <IntlProvider locale="en" {...intlData}>
                 <InstitutionPatients recordsLoaded={recordsLoaded} onEdit={onEdit}/>
             </IntlProvider>);
-        const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
-        expect(panelHeading).not.toBeNull();
-        const panelBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel-body');
-        expect(panelBody).not.toBeNull();
+        const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
+        expect(cardHeading).not.toBeNull();
+        const cardBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'card-body');
+        expect(cardBody).not.toBeNull();
     });
 });

@@ -5,7 +5,7 @@ import {Alert, Button, Form, Card} from "react-bootstrap";
 import HorizontalInput from "../HorizontalInput";
 import withI18n from "../../i18n/withI18n";
 import {injectIntl} from "react-intl";
-import {Routes} from "../../utils/Routes";
+import Routes from "../../constants/RoutesConstants";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {ALERT_TYPES} from "../../constants/DefaultConstants";

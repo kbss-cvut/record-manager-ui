@@ -5,7 +5,7 @@ import {injectIntl} from "react-intl";
 import withI18n from '../../i18n/withI18n';
 import {connect} from "react-redux";
 import PasswordChange from "./PasswordChange";
-import {Routes} from "../../utils/Routes";
+import Routes from "../../constants/RoutesConstants";
 import {transitionToWithOpts} from "../../utils/Routing";
 import {bindActionCreators} from "redux";
 import {ROLE} from "../../constants/DefaultConstants";

@@ -1,6 +1,6 @@
 import React from 'react';
-import TestUtils from "react-addons-test-utils";
-import Loader, {LoaderMask, LoaderPanel} from "../../../js/components/Loader";
+import TestUtils from "react-dom/test-utils";
+import Loader, {LoaderMask, LoaderCard} from "../../../js/components/Loader";
 import {IntlProvider} from "react-intl";
 import enLang from '../../../js/i18n/en';
 
@@ -17,14 +17,14 @@ describe('Loader', function () {
         expect(result).not.toBeNull();
     });
 
-    it('renders loader with panel', function () {
+    it('renders loader with card', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <LoaderPanel />
+                <LoaderCard />
             </IntlProvider>
         );
-        const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
-        expect(panelHeading).not.toBeNull();
+        const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
+        expect(cardHeading).not.toBeNull();
         const loaderSpin = TestUtils.findRenderedDOMComponentWithClass(tree, 'loader-spin');
         expect(loaderSpin).not.toBeNull();
     });

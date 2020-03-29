@@ -11,6 +11,7 @@ import {
     loadRecordsPending,
     loadRecordsSuccess
 } from "../../../js/actions/RecordsActions";
+import {API_URL} from '../../../config';
 
 const records = [{key: 786785600}, {key: 86875960}];
 
@@ -45,11 +46,11 @@ const mockStore = configureMockStore(middlewares);
 
 describe('Records asynchronize actions', function () {
     let store,
-        MockApi;
+        mockApi;
     const error = {
-            "message" : "An error has occurred.",
+            "message": "An error has occurred.",
             "requestUri": "/rest/records/xxx"
-          },
+        },
         doctor = {
             role: ROLE.DOCTOR,
             institution: {
@@ -62,17 +63,17 @@ describe('Records asynchronize actions', function () {
         institutionKey = 12345678;
 
     beforeEach(() => {
-        MockApi = new MockAdapter(axiosBackend);
+        mockApi = new MockAdapter(axiosBackend);
         store = mockStore();
     });
 
     it('creates LOAD_RECORDS_SUCCESS action when loading all records successfully is done', function (done) {
         const expectedActions = [
-            { type: ActionConstants.LOAD_RECORDS_PENDING},
-            { type: ActionConstants.LOAD_RECORDS_SUCCESS, records}
+            {type: ActionConstants.LOAD_RECORDS_PENDING},
+            {type: ActionConstants.LOAD_RECORDS_SUCCESS, records}
         ];
 
-        MockApi.onGet('rest/records').reply(200, records);
+        mockApi.onGet(`${API_URL}/rest/records`).reply(200, records);
 
         store.dispatch(loadRecords(admin));
 
@@ -84,11 +85,11 @@ describe('Records asynchronize actions', function () {
 
     it("creates LOAD_RECORDS_SUCCESS action when loading doctor's institution records is done successfully", function (done) {
         const expectedActions = [
-            { type: ActionConstants.LOAD_RECORDS_PENDING},
-            { type: ActionConstants.LOAD_RECORDS_SUCCESS, records}
+            {type: ActionConstants.LOAD_RECORDS_PENDING},
+            {type: ActionConstants.LOAD_RECORDS_SUCCESS, records}
         ];
 
-        MockApi.onGet(`rest/records?institution=${doctor.institution.key}`).reply(200, records);
+        mockApi.onGet(`${API_URL}/rest/records?institution=${doctor.institution.key}`).reply(200, records);
 
         store.dispatch(loadRecords(doctor));
 
@@ -100,11 +101,11 @@ describe('Records asynchronize actions', function () {
 
     it('creates LOAD_RECORDS_SUCCESS action when loading institution records by institution key is done successfully', function (done) {
         const expectedActions = [
-            { type: ActionConstants.LOAD_RECORDS_PENDING},
-            { type: ActionConstants.LOAD_RECORDS_SUCCESS, records}
+            {type: ActionConstants.LOAD_RECORDS_PENDING},
+            {type: ActionConstants.LOAD_RECORDS_SUCCESS, records}
         ];
 
-        MockApi.onGet(`rest/records?institution=${institutionKey}`).reply(200, records);
+        mockApi.onGet(`${API_URL}/rest/records?institution=${institutionKey}`).reply(200, records);
 
         store.dispatch(loadRecords(null, institutionKey));
 
@@ -116,11 +117,11 @@ describe('Records asynchronize actions', function () {
 
     it('creates LOAD_RECORDS_ERROR action if an error occurred during loading records', function (done) {
         const expectedActions = [
-            { type: ActionConstants.LOAD_RECORDS_PENDING},
-            { type: ActionConstants.LOAD_RECORDS_ERROR, error}
+            {type: ActionConstants.LOAD_RECORDS_PENDING},
+            {type: ActionConstants.LOAD_RECORDS_ERROR, error}
         ];
 
-        MockApi.onGet('rest/records').reply(400, error);
+        mockApi.onGet(`${API_URL}/rest/records`).reply(400, error);
 
         store.dispatch(loadRecords(admin));
 

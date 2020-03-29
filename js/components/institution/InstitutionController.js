@@ -4,7 +4,7 @@ import React from "react";
 import Institution from "./Institution";
 import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
-import {Routes} from "../../utils/Routes";
+import Routes from "../../constants/RoutesConstants";
 import {transitionTo, transitionToWithOpts} from "../../utils/Routing";
 import {connect} from "react-redux";
 import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";

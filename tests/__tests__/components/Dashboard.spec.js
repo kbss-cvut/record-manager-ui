@@ -1,6 +1,6 @@
 import React from 'react';
 import {IntlProvider} from 'react-intl';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-dom/test-utils';
 import {ROLE} from "../../../js/constants/DefaultConstants";
 import Dashboard from "../../../js/components/dashboard/Dashboard";
 import enLang from '../../../js/i18n/en';

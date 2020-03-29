@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {IntlProvider} from 'react-intl';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-dom/test-utils';
 import RecordProvenance from "../../../js/components/record/RecordProvenance";
 import * as RecordState from "../../../js/model/RecordState";
 import enLang from '../../../js/i18n/en';
@@ -44,7 +44,7 @@ describe('RequiredProvenance', function () {
             <IntlProvider locale="en" {...intlData}>
                 <RecordProvenance record={newRecord}/>
             </IntlProvider>);
-        const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'span');
+        const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'b');
         expect(result.length).toEqual(0);
     });
 
@@ -53,7 +53,7 @@ describe('RequiredProvenance', function () {
             <IntlProvider locale="en" {...intlData}>
                 <RecordProvenance record={createdRecord}/>
             </IntlProvider>);
-        const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'span');
+        const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'b');
         expect(result.length).toEqual(1);
     });
 
@@ -62,7 +62,7 @@ describe('RequiredProvenance', function () {
             <IntlProvider locale="en" {...intlData}>
                 <RecordProvenance record={modifiedRecord}/>
             </IntlProvider>);
-        const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'span');
+        const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'b');
         expect(result.length).toEqual(2);
     });
 });

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {IntlProvider} from 'react-intl';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-dom/test-utils';
 import Institutions from "../../../js/components/institution/Institutions";
 import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
 import enLang from '../../../js/i18n/en';
@@ -17,15 +17,15 @@ describe('Institutions', function () {
         handlers;
 
     institutions = [{
-        "uri":"http://test1.io",
-        "key":"823372507340798303",
-        "name":"Test1 Institution",
-        "emailAddress":"test1@institution.io"
+        "uri": "http://test1.io",
+        "key": "823372507340798303",
+        "name": "Test1 Institution",
+        "emailAddress": "test1@institution.io"
     }, {
-        "uri":"http://test2.io",
-        "key":"823372507340798301",
-        "name":"Test2 Institution",
-        "emailAddress":"test2@institution.io"
+        "uri": "http://test2.io",
+        "key": "823372507340798301",
+        "name": "Test2 Institution",
+        "emailAddress": "test2@institution.io"
     }];
 
     beforeEach(() => {
@@ -55,7 +55,7 @@ describe('Institutions', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institutions institutionsLoaded={institutionsLoaded} showAlert={showAlert}
-                       institutionDeleted={institutionDeleted} handlers={handlers} />
+                              institutionDeleted={institutionDeleted} handlers={handlers}/>
             </IntlProvider>);
         const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'loader-spin');
         expect(result).not.toBeNull();
@@ -71,39 +71,39 @@ describe('Institutions', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institutions institutionsLoaded={institutionsLoaded} showAlert={showAlert}
-                              institutionDeleted={institutionDeleted} handlers={handlers} />
+                              institutionDeleted={institutionDeleted} handlers={handlers}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
         expect(alert).not.toBeNull();
     });
 
-    it('renders panel with text, that no institutions were found', function () {
+    it('renders card with text, that no institutions were found', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institutions institutionsLoaded={institutionsLoadedEmpty} showAlert={showAlert}
-                              institutionDeleted={institutionDeleted} handlers={handlers} />
+                              institutionDeleted={institutionDeleted} handlers={handlers}/>
             </IntlProvider>);
-        const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
-        expect(panelHeading).not.toBeNull();
-        const panelBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel-body');
-        expect(panelBody).not.toBeNull();
-        const text = TestUtils.scryRenderedDOMComponentsWithTag(tree,'p');
+        const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
+        expect(cardHeading).not.toBeNull();
+        const cardBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'card-body');
+        expect(cardBody).not.toBeNull();
+        const text = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'p');
         expect(text.length).toEqual(1);
     });
 
-    it('renders panel with table and institutions', function () {
+    it('renders card with table and institutions', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institutions institutionsLoaded={institutionsLoaded} showAlert={showAlert}
-                       institutionDeleted={institutionDeleted} handlers={handlers}/>
+                              institutionDeleted={institutionDeleted} handlers={handlers}/>
             </IntlProvider>);
-        const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
-        expect(panelHeading).not.toBeNull();
-        const panelBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel-body');
-        expect(panelBody).not.toBeNull();
-        const table = TestUtils.scryRenderedDOMComponentsWithTag(tree,'table');
+        const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
+        expect(cardHeading).not.toBeNull();
+        const cardBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'card-body');
+        expect(cardBody).not.toBeNull();
+        const table = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'table');
         expect(table).not.toBeNull();
-        const th = TestUtils.scryRenderedDOMComponentsWithTag(tree,'th');
+        const th = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'th');
         expect(th.length).toEqual(3);
     });
 
@@ -111,12 +111,12 @@ describe('Institutions', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institutions institutionsLoaded={institutionsLoaded} showAlert={showAlert}
-                       institutionDeleted={institutionDeleted} handlers={handlers}/>
+                              institutionDeleted={institutionDeleted} handlers={handlers}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-        expect(buttons.length).toEqual(5);
+        expect(buttons.length).toEqual(7);
 
-        TestUtils.Simulate.click(buttons[4]); // Create Institution
+        TestUtils.Simulate.click(buttons[6]); // Create Institution
         expect(handlers.onCreate).toHaveBeenCalled();
     });
 
@@ -128,7 +128,7 @@ describe('Institutions', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institutions institutionsLoaded={institutionsLoaded} showAlert={showAlert}
-                       institutionDeleted={institutionDeleted} handlers={handlers}/>
+                              institutionDeleted={institutionDeleted} handlers={handlers}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-success");
         expect(alert).not.toBeNull();
@@ -145,7 +145,7 @@ describe('Institutions', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institutions institutionsLoaded={institutionsLoaded} showAlert={showAlert}
-                       institutionDeleted={institutionDeleted} handlers={handlers}/>
+                              institutionDeleted={institutionDeleted} handlers={handlers}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
         expect(alert).not.toBeNull();

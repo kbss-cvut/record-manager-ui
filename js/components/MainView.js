@@ -3,7 +3,8 @@
 import React from "react";
 import * as I18nStore from "../stores/I18nStore";
 import {Container, DropdownItem, Nav, Navbar, NavDropdown, NavItem} from "react-bootstrap";
-import {Routes, authRoutes, unauthRoutes} from "../utils/Routes";
+import {authRoutes, unauthRoutes} from "../utils/Routes";
+import Routes from "../constants/RoutesConstants";
 import {injectIntl} from "react-intl";
 import withI18n from "../i18n/withI18n";
 import {connect} from "react-redux";

@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import {Routes} from "../../utils/Routes";
+import Routes from "../../constants/RoutesConstants";
 import {transitionToWithOpts} from "../../utils/Routing";
 import Institutions from "./Institutions";
 import {injectIntl} from "react-intl";
@@ -76,6 +76,6 @@ function mapDispatchToProps(dispatch) {
     return {
         deleteInstitution: bindActionCreators(deleteInstitution, dispatch),
         loadInstitutions: bindActionCreators(loadInstitutions, dispatch),
-        transitionToWithOpts:bindActionCreators(transitionToWithOpts, dispatch)
+        transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch)
     }
 }

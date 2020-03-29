@@ -1,4 +1,4 @@
-import TestUtils from "react-addons-test-utils";
+import TestUtils from "react-dom/test-utils";
 import {ACTION_STATUS, ROLE} from "../../../js/constants/DefaultConstants";
 import React from "react";
 import {IntlProvider} from "react-intl";
@@ -94,17 +94,17 @@ describe('InstitutionMembers', function () {
         expect(alert).not.toBeNull();
     });
 
-    it('renders panel with table and table headers and columns', function () {
+    it('renders card with table and table headers and columns', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <InstitutionMembers institution={institution} institutionMembers={institutionMembers}
                                     onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
                                     currentUser={admin} userDeleted={userDeleted}/>
             </IntlProvider>);
-        const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
-        expect(panelHeading).not.toBeNull();
-        const panelBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel-body');
-        expect(panelBody).not.toBeNull();
+        const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
+        expect(cardHeading).not.toBeNull();
+        const cardBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'card-body');
+        expect(cardBody).not.toBeNull();
         const table = TestUtils.scryRenderedDOMComponentsWithTag(tree,'table');
         expect(table).not.toBeNull();
         const th = TestUtils.scryRenderedDOMComponentsWithTag(tree,'th');
@@ -113,17 +113,17 @@ describe('InstitutionMembers', function () {
         expect(td.length).toEqual(8);
     });
 
-    it('renders panel with text, that no members were found', function () {
+    it('renders card with text, that no members were found', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <InstitutionMembers institution={institution} institutionMembers={institutionMembersEmpty}
                                     onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
                                     currentUser={admin} userDeleted={userDeleted}/>
             </IntlProvider>);
-        const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
-        expect(panelHeading).not.toBeNull();
-        const panelBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel-body');
-        expect(panelBody).not.toBeNull();
+        const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
+        expect(cardHeading).not.toBeNull();
+        const cardBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'card-body');
+        expect(cardBody).not.toBeNull();
         const text = TestUtils.scryRenderedDOMComponentsWithTag(tree,'p');
         expect(text.length).toEqual(1);
     });

@@ -7,7 +7,7 @@ import withI18n from '../../i18n/withI18n';
 import UserTable from './UserTable';
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
-import {LoaderPanel, LoaderSmall} from "../Loader";
+import {LoaderCard, LoaderSmall} from "../Loader";
 import PropTypes from "prop-types";
 
 class Users extends React.Component {
@@ -26,7 +26,7 @@ class Users extends React.Component {
     render() {
         const {usersLoaded, showAlert, userDeleted} = this.props;
         if (!usersLoaded.users && (!usersLoaded.status || usersLoaded.status === ACTION_STATUS.PENDING)) {
-            return <LoaderPanel header={this.i18n('users.panel-title')}/>;
+            return <LoaderCard header={this.i18n('users.panel-title')}/>;
         } else if (usersLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('users.loading-error', {error: usersLoaded.error.message})}/>
@@ -37,7 +37,7 @@ class Users extends React.Component {
                 {this.props.usersLoaded.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
             </Card.Header>
             <Card.Body>
-                <UserTable users={usersLoaded.users}{...this.props}/>
+                <UserTable users={usersLoaded.users} {...this.props}/>
                 <div>
                     <Button variant='primary' size='sm'
                             onClick={this.props.handlers.onCreate}>{this.i18n('users.create-user')}</Button>

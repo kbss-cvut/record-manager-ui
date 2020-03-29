@@ -10,6 +10,7 @@ import {
     loadInstitutionsPending,
     loadInstitutionsSuccess
 } from "../../../js/actions/InstitutionsActions";
+import {API_URL} from '../../../config';
 
 const institutions = [{key: 786785600}, {key: 86875960}];
 
@@ -44,14 +45,14 @@ const mockStore = configureMockStore(middlewares);
 
 describe('Institutions asynchronize actions', function () {
     let store,
-        MockApi;
+        mockApi;
     const error = {
             "message" : "An error has occurred.",
             "requestUri": "/rest/institutions/xxx"
         };
 
     beforeEach(() => {
-        MockApi = new MockAdapter(axiosBackend);
+        mockApi = new MockAdapter(axiosBackend);
         store = mockStore();
     });
 
@@ -61,7 +62,7 @@ describe('Institutions asynchronize actions', function () {
             { type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS, institutions}
         ];
 
-        MockApi.onGet('rest/institutions').reply(200, institutions);
+        mockApi.onGet(`${API_URL}/rest/institutions`).reply(200, institutions);
 
         store.dispatch(loadInstitutions());
 
@@ -77,7 +78,7 @@ describe('Institutions asynchronize actions', function () {
             { type: ActionConstants.LOAD_INSTITUTIONS_ERROR, error}
         ];
 
-        MockApi.onGet('rest/institutions').reply(400, error);
+        mockApi.onGet(`${API_URL}/rest/institutions`).reply(400, error);
 
         store.dispatch(loadInstitutions());
 

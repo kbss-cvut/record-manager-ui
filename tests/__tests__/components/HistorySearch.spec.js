@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {IntlProvider} from 'react-intl';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-dom/test-utils';
 import HistorySearch from "../../../js/components/history/HistorySearch";
 import enLang from '../../../js/i18n/en';
 

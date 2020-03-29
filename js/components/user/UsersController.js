@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import {Routes} from "../../utils/Routes";
+import Routes from "../../constants/RoutesConstants";
 import {transitionToWithOpts} from "../../utils/Routing";
 import Users from "./Users";
 import {connect} from "react-redux";

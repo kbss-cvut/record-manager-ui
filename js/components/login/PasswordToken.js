@@ -11,7 +11,7 @@ import {LoaderSmall} from "../Loader";
 import {bindActionCreators} from "redux";
 import {changePasswordToken, validateToken} from "../../actions/AuthActions";
 import {transitionTo} from "../../utils/Routing";
-import {Routes} from "../../utils/Routes";
+import Routes from "../../constants/RoutesConstants";
 import AlertMessage from "../AlertMessage";
 
 class PasswordReset extends React.Component {

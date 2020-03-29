@@ -5,6 +5,7 @@ import MockAdapter from 'axios-mock-adapter';
 import {TEST_TIMEOUT} from "../../constants/DefaultTestConstants";
 import {axiosBackend} from "../../../js/actions";
 import * as actions from "../../../js/actions/AuthActions";
+import {API_URL} from '../../../config';
 
 describe('Auth synchronize actions', function () {
     const user = {username: 'test'},
@@ -69,17 +70,17 @@ const mockStore = configureMockStore(middlewares);
 
 describe('Auth asynchronize actions', function () {
     let store,
-        MockApi;
+        mockApi;
     const user = {username: 'test', password: 'testPassword'},
         users = [{username: 'test1'}, {username: 'test2'}],
         error = {
-            "message" : "An error has occurred.",
+            "message": "An error has occurred.",
             "requestUri": "/rest/users/xxx"
         },
         username = 'test';
 
     beforeEach(() => {
-        MockApi = new MockAdapter(axiosBackend);
+        mockApi = new MockAdapter(axiosBackend);
         store = mockStore();
     });
 
@@ -91,14 +92,14 @@ describe('Auth asynchronize actions', function () {
             username: "test"
         };
         const expectedActions = [
-            { type: ActionConstants.AUTH_USER_PENDING },
-            { type: ActionConstants.AUTH_USER_SUCCESS, username: user.username },
-            { type: ActionConstants.LOAD_USER_PROFILE_PENDING },
-            { type: ActionConstants.LOAD_USER_PROFILE_SUCCESS, user}
+            {type: ActionConstants.AUTH_USER_PENDING},
+            {type: ActionConstants.AUTH_USER_SUCCESS, username: user.username},
+            {type: ActionConstants.LOAD_USER_PROFILE_PENDING},
+            {type: ActionConstants.LOAD_USER_PROFILE_SUCCESS, user}
         ];
 
-        MockApi.onPost('j_spring_security_check').reply(200, reply);
-        MockApi.onGet('rest/users/current').reply(200, user);
+        mockApi.onPost(`${API_URL}/j_spring_security_check`).reply(200, reply);
+        mockApi.onGet(`${API_URL}/rest/users/current`).reply(200, user);
 
         store.dispatch(actions.login(user.username, user.password, null));
 
@@ -116,11 +117,11 @@ describe('Auth asynchronize actions', function () {
             username: null
         };
         const expectedActions = [
-            { type: ActionConstants.AUTH_USER_PENDING },
-            { type: ActionConstants.AUTH_USER_ERROR, error: reply }
+            {type: ActionConstants.AUTH_USER_PENDING},
+            {type: ActionConstants.AUTH_USER_ERROR, error: reply}
         ];
 
-        MockApi.onPost('j_spring_security_check').reply(400, reply);
+        mockApi.onPost(`${API_URL}/j_spring_security_check`).reply(400, reply);
 
         store.dispatch(actions.login(user.username, user.password, null));
 
@@ -132,10 +133,10 @@ describe('Auth asynchronize actions', function () {
 
     it('creates UNAUTH_USER action when user successfully logs out', function (done) {
         const expectedActions = [
-            { type: ActionConstants.UNAUTH_USER }
+            {type: ActionConstants.UNAUTH_USER}
         ];
 
-        MockApi.onPost('j_spring_security_logout').reply(200);
+        mockApi.onPost(`${API_URL}/j_spring_security_logout`).reply(200);
 
         store.dispatch(actions.logout(user));
 
@@ -147,11 +148,11 @@ describe('Auth asynchronize actions', function () {
 
     it('creates LOAD_USER_PROFILE_SUCCESS action when current user is successfully loaded', function (done) {
         const expectedActions = [
-            { type: ActionConstants.LOAD_USER_PROFILE_PENDING },
-            { type: ActionConstants.LOAD_USER_PROFILE_SUCCESS, user}
+            {type: ActionConstants.LOAD_USER_PROFILE_PENDING},
+            {type: ActionConstants.LOAD_USER_PROFILE_SUCCESS, user}
         ];
 
-        MockApi.onGet('rest/users/current').reply(200, user);
+        mockApi.onGet(`${API_URL}/rest/users/current`).reply(200, user);
 
         store.dispatch(actions.loadUserProfile());
 
@@ -163,11 +164,11 @@ describe('Auth asynchronize actions', function () {
 
     it('creates LOAD_USER_PROFILE_ERROR action when current user is successfully loaded', function (done) {
         const expectedActions = [
-            { type: ActionConstants.LOAD_USER_PROFILE_PENDING },
-            { type: ActionConstants.LOAD_USER_PROFILE_ERROR, error }
+            {type: ActionConstants.LOAD_USER_PROFILE_PENDING},
+            {type: ActionConstants.LOAD_USER_PROFILE_ERROR, error}
         ];
 
-        MockApi.onGet('rest/users/current').reply(400, error);
+        mockApi.onGet(`${API_URL}/rest/users/current`).reply(400, error);
 
         store.dispatch(actions.loadUserProfile());
 
@@ -180,11 +181,11 @@ describe('Auth asynchronize actions', function () {
     it('creates PASSWORD_RESET_SUCCESS action when password is successfully reset', function (done) {
         const email = "admin@gmail.com";
         const expectedActions = [
-            { type: ActionConstants.PASSWORD_RESET_PENDING },
-            { type: ActionConstants.PASSWORD_RESET_SUCCESS, email}
+            {type: ActionConstants.PASSWORD_RESET_PENDING},
+            {type: ActionConstants.PASSWORD_RESET_SUCCESS, email}
         ];
 
-        MockApi.onPost('rest/users/password-reset').reply(200);
+        mockApi.onPost(`${API_URL}/rest/users/password-reset`).reply(200);
 
         store.dispatch(actions.passwordReset(email));
 
@@ -197,11 +198,11 @@ describe('Auth asynchronize actions', function () {
     it('creates VALIDATE_TOKEN_SUCCESS action when token exists', function (done) {
         const token = "12345";
         const expectedActions = [
-            { type: ActionConstants.VALIDATE_TOKEN_PENDING },
-            { type: ActionConstants.VALIDATE_TOKEN_SUCCESS}
+            {type: ActionConstants.VALIDATE_TOKEN_PENDING},
+            {type: ActionConstants.VALIDATE_TOKEN_SUCCESS}
         ];
 
-        MockApi.onPost('rest/users/validate-token').reply(200);
+        mockApi.onPost(`${API_URL}/rest/users/validate-token`).reply(200);
 
         store.dispatch(actions.validateToken(token));
 
@@ -214,11 +215,11 @@ describe('Auth asynchronize actions', function () {
     it('creates VALIDATE_TOKEN_ERROR action when token does not exist', function (done) {
         const token = "12345";
         const expectedActions = [
-            { type: ActionConstants.VALIDATE_TOKEN_PENDING },
-            { type: ActionConstants.VALIDATE_TOKEN_ERROR}
+            {type: ActionConstants.VALIDATE_TOKEN_PENDING},
+            {type: ActionConstants.VALIDATE_TOKEN_ERROR}
         ];
 
-        MockApi.onPost('rest/users/validate-token').reply(400);
+        mockApi.onPost(`${API_URL}/rest/users/validate-token`).reply(400);
 
         store.dispatch(actions.validateToken(token));
 
@@ -232,11 +233,11 @@ describe('Auth asynchronize actions', function () {
         const token = "12345";
         const password = "12345";
         const expectedActions = [
-            { type: ActionConstants.PASSWORD_CHANGE_TOKEN_PENDING },
-            { type: ActionConstants.PASSWORD_CHANGE_TOKEN_SUCCESS }
+            {type: ActionConstants.PASSWORD_CHANGE_TOKEN_PENDING},
+            {type: ActionConstants.PASSWORD_CHANGE_TOKEN_SUCCESS}
         ];
 
-        MockApi.onPut('rest/users/password-change-token').reply(200);
+        mockApi.onPut(`${API_URL}/rest/users/password-change-token`).reply(200);
 
         store.dispatch(actions.changePasswordToken(password, token));
 
@@ -250,11 +251,11 @@ describe('Auth asynchronize actions', function () {
         const token = "12345";
         const password = "12345";
         const expectedActions = [
-            { type: ActionConstants.PASSWORD_CHANGE_TOKEN_PENDING },
-            { type: ActionConstants.PASSWORD_CHANGE_TOKEN_ERROR }
+            {type: ActionConstants.PASSWORD_CHANGE_TOKEN_PENDING},
+            {type: ActionConstants.PASSWORD_CHANGE_TOKEN_ERROR}
         ];
 
-        MockApi.onPut('rest/users/password-change-token').reply(400);
+        mockApi.onPut(`${API_URL}/rest/users/password-change-token`).reply(400);
 
         store.dispatch(actions.changePasswordToken(password, token));
 

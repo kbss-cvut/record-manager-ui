@@ -5,6 +5,7 @@ import MockAdapter from 'axios-mock-adapter';
 import {TEST_TIMEOUT} from "../../constants/DefaultTestConstants";
 import {axiosBackend} from "../../../js/actions";
 import {loadUsers, loadUsersError, loadUsersPending, loadUsersSuccess} from "../../../js/actions/UsersActions";
+import {API_URL} from '../../../config';
 
 describe('Users synchronize actions', function () {
     it('creates an action to fetch all users', () => {
@@ -38,7 +39,7 @@ const mockStore = configureMockStore(middlewares);
 
 describe('Users asynchronize actions', function () {
     let store,
-        MockApi;
+        mockApi;
     const users = [{username: 'test1'}, {username: 'test2'}],
         error = {
             "message" : "An error has occurred.",
@@ -46,7 +47,7 @@ describe('Users asynchronize actions', function () {
         };
 
     beforeEach(() => {
-        MockApi = new MockAdapter(axiosBackend);
+        mockApi = new MockAdapter(axiosBackend);
         store = mockStore();
     });
 
@@ -56,7 +57,7 @@ describe('Users asynchronize actions', function () {
             { type: ActionConstants.LOAD_USERS_SUCCESS, users}
         ];
 
-        MockApi.onGet('rest/users').reply(200, users);
+        mockApi.onGet(`${API_URL}/rest/users`).reply(200, users);
 
         store.dispatch(loadUsers());
 
@@ -72,7 +73,7 @@ describe('Users asynchronize actions', function () {
             { type: ActionConstants.LOAD_USERS_ERROR, error}
         ];
 
-        MockApi.onGet('rest/users').reply(400, error);
+        mockApi.onGet(`${API_URL}/rest/users`).reply(400, error);
 
         store.dispatch(loadUsers());
 

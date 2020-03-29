@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {IntlProvider} from 'react-intl';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-dom/test-utils';
 import Users from "../../../js/components/user/Users";
 import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
 import enLang from '../../../js/i18n/en';
@@ -71,30 +71,30 @@ describe('Users', function () {
         expect(alert).not.toBeNull();
     });
 
-    it('renders panel with text, that no users were found', function () {
+    it('renders card with text, that no users were found', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Users usersLoaded={usersLoadedEmpty} showAlert={showAlert}
                        userDeleted={userDeleted} handlers={handlers}/>
             </IntlProvider>);
-        const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
-        expect(panelHeading).not.toBeNull();
-        const panelBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel-body');
-        expect(panelBody).not.toBeNull();
+        const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
+        expect(cardHeading).not.toBeNull();
+        const cardBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'card-body');
+        expect(cardBody).not.toBeNull();
         const text = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'p');
         expect(text.length).toEqual(1);
     });
 
-    it('renders panel with table and table headers', function () {
+    it('renders card with table and table headers', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Users usersLoaded={usersLoaded} showAlert={showAlert}
                        userDeleted={userDeleted} handlers={handlers}/>
             </IntlProvider>);
-        const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
-        expect(panelHeading).not.toBeNull();
-        const panelBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel-body');
-        expect(panelBody).not.toBeNull();
+        const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
+        expect(cardHeading).not.toBeNull();
+        const cardBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'card-body');
+        expect(cardBody).not.toBeNull();
         const table = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'table');
         expect(table).not.toBeNull();
         const th = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'th');
@@ -108,9 +108,9 @@ describe('Users', function () {
                        userDeleted={userDeleted} handlers={handlers}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-        expect(buttons.length).toEqual(5);
+        expect(buttons.length).toEqual(7);
 
-        TestUtils.Simulate.click(buttons[4]); // Create User
+        TestUtils.Simulate.click(buttons[6]); // Create User
         expect(handlers.onCreate).toHaveBeenCalled();
     });
 

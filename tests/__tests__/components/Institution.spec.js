@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {IntlProvider} from 'react-intl';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-dom/test-utils';
 import {ACTION_STATUS, ROLE} from "../../../js/constants/DefaultConstants";
 import Institution from "../../../js/components/institution/Institution";
 import enLang from '../../../js/i18n/en';

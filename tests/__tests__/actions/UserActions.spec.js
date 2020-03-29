@@ -27,6 +27,7 @@ import {
     unloadUser,
     updateUser
 } from "../../../js/actions/UserActions";
+import {API_URL} from '../../../config';
 
 const members = [
         {username: 'record1'},
@@ -167,7 +168,7 @@ const mockStore = configureMockStore(middlewares);
 
 describe('User asynchronize actions', function () {
     let store,
-        MockApi;
+        mockApi;
     const user = {username: 'test'},
         users = [
             {username: 'test1'},
@@ -189,7 +190,7 @@ describe('User asynchronize actions', function () {
         usernamePrefix = 'doctor';
 
     beforeEach(() => {
-        MockApi = new MockAdapter(axiosBackend);
+        mockApi = new MockAdapter(axiosBackend);
         store = mockStore();
     });
 
@@ -201,8 +202,8 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.LOAD_USERS_SUCCESS, users},
         ];
 
-        MockApi.onPost('rest/users').reply(200);
-        MockApi.onGet('rest/users').reply(200, users);
+        mockApi.onPost(`${API_URL}/rest/users`).reply(200);
+        mockApi.onGet(`${API_URL}/rest/users`).reply(200, users);
 
         store.dispatch(createUser(user));
 
@@ -218,7 +219,7 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.SAVE_USER_ERROR, actionFlag: ACTION_FLAG.CREATE_ENTITY, error, user}
         ];
 
-        MockApi.onPost('rest/users').reply(400, error);
+        mockApi.onPost(`${API_URL}/rest/users`).reply(400, error);
 
         store.dispatch(createUser(user));
 
@@ -236,8 +237,8 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.LOAD_USERS_SUCCESS, users},
         ];
 
-        MockApi.onPut(`rest/users/${user.username}`).reply(200);
-        MockApi.onGet('rest/users').reply(200, users);
+        mockApi.onPut(`${API_URL}/rest/users/${user.username}`).reply(200);
+        mockApi.onGet(`${API_URL}/rest/users`).reply(200, users);
 
         store.dispatch(updateUser(user, currentUserAdmin));
 
@@ -253,7 +254,7 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.SAVE_USER_ERROR, actionFlag: ACTION_FLAG.UPDATE_ENTITY, error, user}
         ];
 
-        MockApi.onPut(`rest/users/${user.username}`).reply(400, error);
+        mockApi.onPut(`${API_URL}/rest/users/${user.username}`).reply(400, error);
 
         store.dispatch(updateUser(user, currentUserAdmin));
 
@@ -271,8 +272,8 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.LOAD_USERS_SUCCESS, users},
         ];
 
-        MockApi.onDelete(`rest/users/${user.username}`).reply(200);
-        MockApi.onGet('rest/users').reply(200, users);
+        mockApi.onDelete(`${API_URL}/rest/users/${user.username}`).reply(200);
+        mockApi.onGet(`${API_URL}/rest/users`).reply(200, users);
 
         store.dispatch(deleteUser(user));
 
@@ -288,7 +289,7 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.DELETE_USER_ERROR, error, user}
         ];
 
-        MockApi.onDelete(`rest/users/${user.username}`).reply(400, error);
+        mockApi.onDelete(`${API_URL}/rest/users/${user.username}`).reply(400, error);
 
         store.dispatch(deleteUser(user));
 
@@ -304,7 +305,7 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.LOAD_USER_SUCCESS, user}
         ];
 
-        MockApi.onGet(`rest/users/${user.username}`).reply(200, {username});
+        mockApi.onGet(`${API_URL}/rest/users/${user.username}`).reply(200, {username});
 
         store.dispatch(loadUser(user.username));
 
@@ -320,7 +321,7 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.LOAD_USER_ERROR, error}
         ];
 
-        MockApi.onGet(`rest/users/${user.username}`).reply(400, error);
+        mockApi.onGet(`${API_URL}/rest/users/${user.username}`).reply(400, error);
 
         store.dispatch(loadUser(user.username));
 
@@ -336,7 +337,7 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.LOAD_INSTITUTION_MEMBERS_SUCCESS, members}
         ];
 
-        MockApi.onGet(`rest/users?institution=${institutionKey}`).reply(200, members);
+        mockApi.onGet(`${API_URL}/rest/users?institution=${institutionKey}`).reply(200, members);
 
         store.dispatch(loadInstitutionMembers(institutionKey));
 
@@ -352,7 +353,7 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.LOAD_INSTITUTION_MEMBERS_ERROR, error}
         ];
 
-        MockApi.onGet(`rest/users?institution=${institutionKey}`).reply(400, error);
+        mockApi.onGet(`${API_URL}/rest/users?institution=${institutionKey}`).reply(400, error);
 
         store.dispatch(loadInstitutionMembers(institutionKey));
 
@@ -368,7 +369,7 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.PASSWORD_CHANGE_SUCCESS}
         ];
 
-        MockApi.onPut(`rest/users/${username}/password-change`).reply(200);
+        mockApi.onPut(`${API_URL}/rest/users/${username}/password-change`).reply(200);
 
         store.dispatch(changePassword(username, password));
 
@@ -384,7 +385,7 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.PASSWORD_CHANGE_ERROR, error}
         ];
 
-        MockApi.onPut(`rest/users/${username}/password-change`).reply(400, error);
+        mockApi.onPut(`${API_URL}/rest/users/${username}/password-change`).reply(400, error);
 
         store.dispatch(changePassword(username, password));
 
@@ -400,7 +401,7 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.GENERATE_USERNAME_SUCCESS, generatedUsername: `${usernamePrefix}1`}
         ];
 
-        MockApi.onGet(`rest/users/generate-username/${usernamePrefix}`).reply(200, `${usernamePrefix}1`);
+        mockApi.onGet(`${API_URL}/rest/users/generate-username/${usernamePrefix}`).reply(200, `${usernamePrefix}1`);
 
         store.dispatch(generateUsername(usernamePrefix));
 
@@ -418,8 +419,8 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.LOAD_USER_SUCCESS, user}
         ];
 
-        MockApi.onGet(`rest/users/${user.username}`).reply(200, {username});
-        MockApi.onPut(`rest/users/send-invitation/${username}`).reply(200);
+        mockApi.onGet(`${API_URL}/rest/users/${user.username}`).reply(200, {username});
+        mockApi.onPut(`${API_URL}/rest/users/send-invitation/${username}`).reply(200);
 
         store.dispatch(sendInvitation(username));
 
@@ -437,8 +438,8 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.LOAD_USER_SUCCESS, user}
         ];
 
-        MockApi.onGet(`rest/users/${user.username}`).reply(200, {username});
-        MockApi.onPut(`rest/users/send-invitation/${username}`).reply(400, error);
+        mockApi.onGet(`${API_URL}/rest/users/${user.username}`).reply(200, {username});
+        mockApi.onPut(`${API_URL}/rest/users/send-invitation/${username}`).reply(400, error);
 
         store.dispatch(sendInvitation(username));
 
@@ -456,8 +457,8 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.LOAD_USER_SUCCESS, user}
         ];
 
-        MockApi.onGet(`rest/users/${user.username}`).reply(200, {username});
-        MockApi.onPost(`rest/users/send-invitation/delete`).reply(200);
+        mockApi.onGet(`${API_URL}/rest/users/${user.username}`).reply(200, {username});
+        mockApi.onPost(`${API_URL}/rest/users/send-invitation/delete`).reply(200);
 
         store.dispatch(deleteInvitationOption(username));
 
@@ -475,8 +476,8 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.LOAD_USER_SUCCESS, user}
         ];
 
-        MockApi.onGet(`rest/users/${user.username}`).reply(200, {username});
-        MockApi.onPost(`rest/users/send-invitation/delete`).reply(400, error);
+        mockApi.onGet(`${API_URL}/rest/users/${user.username}`).reply(200, {username});
+        mockApi.onPost(`${API_URL}/rest/users/send-invitation/delete`).reply(400, error);
 
         store.dispatch(deleteInvitationOption(username));
 
@@ -492,7 +493,7 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.IMPERSONATE_SUCCESS, username}
         ];
 
-        MockApi.onPost(`rest/users/impersonate`).reply(200);
+        mockApi.onPost(`${API_URL}/rest/users/impersonate`).reply(200);
 
         store.dispatch(impersonate(username));
 
@@ -508,7 +509,7 @@ describe('User asynchronize actions', function () {
             { type: ActionConstants.IMPERSONATE_ERROR, error}
         ];
 
-        MockApi.onPost(`rest/users/impersonate`).reply(400, error);
+        mockApi.onPost(`${API_URL}/rest/users/impersonate`).reply(400, error);
 
         store.dispatch(impersonate(username));
 

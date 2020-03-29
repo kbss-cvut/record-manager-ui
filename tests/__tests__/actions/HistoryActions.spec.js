@@ -5,13 +5,14 @@ import MockAdapter from 'axios-mock-adapter';
 import thunk from "redux-thunk";
 import configureMockStore from "redux-mock-store";
 import {loadActionByKey, loadActions} from "../../../js/actions/HistoryActions";
+import {API_URL} from '../../../config';
 
 const middlewares = [thunk.withExtraArgument(axiosBackend)];
 const mockStore = configureMockStore(middlewares);
 
 describe('History asynchronize actions', function () {
     let store,
-        MockApi;
+        mockApi;
     const error = {
             "message": "An error has occurred.",
         }, key = "12345",
@@ -19,7 +20,7 @@ describe('History asynchronize actions', function () {
         actions = [action, action];;
 
     beforeEach(() => {
-        MockApi = new MockAdapter(axiosBackend);
+        mockApi = new MockAdapter(axiosBackend);
         store = mockStore();
     });
 
@@ -29,7 +30,7 @@ describe('History asynchronize actions', function () {
             {type: ActionConstants.LOAD_ACTION_HISTORY_SUCCESS, actionHistory: action}
         ];
 
-        MockApi.onGet(`rest/history/${key}`).reply(200, action);
+        mockApi.onGet(`${API_URL}/rest/history/${key}`).reply(200, action);
 
         store.dispatch(loadActionByKey(key));
 
@@ -45,7 +46,7 @@ describe('History asynchronize actions', function () {
             {type: ActionConstants.LOAD_ACTION_HISTORY_ERROR, error}
         ];
 
-        MockApi.onGet(`rest/history/${key}`).reply(400, error);
+        mockApi.onGet(`${API_URL}/rest/history/${key}`).reply(400, error);
 
         store.dispatch(loadActionByKey(key));
 
@@ -61,7 +62,7 @@ describe('History asynchronize actions', function () {
             {type: ActionConstants.LOAD_ACTIONS_HISTORY_SUCCESS, actionsHistory: actions}
         ];
 
-        MockApi.onGet(`rest/history?page=1`).reply(200, actions);
+        mockApi.onGet(`${API_URL}/rest/history?page=1`).reply(200, actions);
 
         store.dispatch(loadActions(1, null));
 
@@ -77,7 +78,7 @@ describe('History asynchronize actions', function () {
             {type: ActionConstants.LOAD_ACTIONS_HISTORY_ERROR, error}
         ];
 
-        MockApi.onGet(`rest/history?page=1`).reply(400, error);
+        mockApi.onGet(`${API_URL}/rest/history?page=1`).reply(400, error);
 
         store.dispatch(loadActions(1, null));
 

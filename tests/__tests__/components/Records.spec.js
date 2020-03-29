@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {IntlProvider} from 'react-intl';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-dom/test-utils';
 import Records from "../../../js/components/record/Records";
 import {ACTION_STATUS, ROLE} from "../../../js/constants/DefaultConstants";
 import enLang from '../../../js/i18n/en';
@@ -53,17 +53,17 @@ describe('Records', function () {
 
     });
 
-    it('renders panel with table and records', function () {
+    it('renders card with table and records', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
                          recordDeleted={recordDeleted} handlers={handlers}
                          recordsDeleting={recordsDeleting} currentUser={admin}/>
             </IntlProvider>);
-        const panelHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel');
-        expect(panelHeading).not.toBeNull();
-        const panelBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'panel-body');
-        expect(panelBody).not.toBeNull();
+        const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
+        expect(cardHeading).not.toBeNull();
+        const cardBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'card-body');
+        expect(cardBody).not.toBeNull();
         const table = TestUtils.scryRenderedDOMComponentsWithTag(tree,'table');
         expect(table).not.toBeNull();
         const th = TestUtils.scryRenderedDOMComponentsWithTag(tree,'th');
@@ -78,9 +78,9 @@ describe('Records', function () {
                          recordsDeleting={recordsDeleting} currentUser={admin}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-        expect(buttons.length).toEqual(5);
+        expect(buttons.length).toEqual(9);
 
-        TestUtils.Simulate.click(buttons[4]); // Create record
+        TestUtils.Simulate.click(buttons[8]); // Create record
         expect(handlers.onCreate).toHaveBeenCalled();
     });
 

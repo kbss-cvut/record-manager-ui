@@ -6,7 +6,7 @@ import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import {Card, Table} from "react-bootstrap";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
-import {LoaderPanel, LoaderSmall} from "../Loader";
+import {LoaderCard, LoaderSmall} from "../Loader";
 import AlertMessage from "../AlertMessage";
 import {bindActionCreators} from "redux";
 import {loadStatistics} from "../../actions/StatisticsActions";
@@ -24,7 +24,7 @@ class Statistics extends React.Component {
     render() {
         const {statistics, status, error} = this.props;
         if (!statistics && (!status || status === ACTION_STATUS.PENDING)) {
-            return <LoaderPanel header={this._renderHeader()}/>;
+            return <LoaderCard header={this._renderHeader()}/>;
         } else if (status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('history.loading-error', {error: error.message})}/>

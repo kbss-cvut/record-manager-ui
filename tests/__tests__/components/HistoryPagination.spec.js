@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {IntlProvider} from 'react-intl';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-dom/test-utils';
 import HistoryPagination from "../../../js/components/history/HistoryPagination";
 import enLang from '../../../js/i18n/en';
 

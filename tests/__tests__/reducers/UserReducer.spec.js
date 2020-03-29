@@ -8,14 +8,14 @@ import InstitutionReducer from "../../../js/reducers/InstitutionReducer";
 
 describe('UserReducer', function () {
     const user = {username: 'test'},
-          username = user.username,
-          members = [
+        username = user.username,
+        members = [
             {username: 'record1'},
             {username: 'record2'}
-          ],
-          error = {
-              message: 'An error has occurred.'
-          };
+        ],
+        error = {
+            message: 'An error has occurred.'
+        };
 
     it('leaves state unchanged if action not recognized', () => {
         const initialState = {
@@ -296,11 +296,10 @@ describe('UserReducer', function () {
         };
         expect(newState).toEqual(expectedState);
     });
-    
+
     it('handles LOAD_INSTITUTION_MEMBERS_PENDING action', () => {
         const initialState = {
-            institutionMembers: {
-            },
+            institutionMembers: {},
             testEntry: "should not touch"
         };
 
@@ -385,8 +384,7 @@ describe('UserReducer', function () {
 
     it('handles PASSWORD_CHANGE_PENDING action', () => {
         const initialState = {
-            passwordChange: {
-            },
+            passwordChange: {},
             testEntry: "should not touch"
         };
 

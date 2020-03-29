@@ -7,10 +7,10 @@ import withI18n from "../../i18n/withI18n";
 import {Button, Card} from "react-bootstrap";
 import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import {transitionTo} from "../../utils/Routing";
-import {Routes} from "../../utils/Routes";
+import Routes from "../../constants/RoutesConstants";
 import {loadActionByKey} from "../../actions/HistoryActions";
 import {bindActionCreators} from "redux";
-import {LoaderPanel} from "../Loader";
+import {LoaderCard} from "../Loader";
 import AlertMessage from "../AlertMessage";
 import HorizontalInput from "../HorizontalInput";
 import * as moment from "moment/moment";
@@ -34,7 +34,7 @@ class ActionHistory extends React.Component {
         if (!currentUser || currentUser.role !== ROLE.ADMIN) {
             return null;
         } else if (!actionLoaded.status || actionLoaded.status === ACTION_STATUS.PENDING) {
-            return <LoaderPanel header={this.i18n('history.panel-title')}/>;
+            return <LoaderCard header={this.i18n('history.panel-title')}/>;
         } else if (actionLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('history.load-error', {error: actionLoaded.error.message})}/>;

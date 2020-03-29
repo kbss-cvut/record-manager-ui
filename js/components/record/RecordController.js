@@ -4,7 +4,7 @@ import React from 'react';
 import {injectIntl} from "react-intl";
 import withI18n from '../../i18n/withI18n';
 import Record from './Record';
-import {Routes} from '../../utils/Routes';
+import Routes from "../../constants/RoutesConstants";
 import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
 import {ACTION_FLAG, ACTION_STATUS} from "../../constants/DefaultConstants";
 import {loadFormgen, unloadSavedRecord} from "../../actions/RecordActions";

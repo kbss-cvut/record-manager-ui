@@ -5,7 +5,7 @@ import React from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {injectIntl} from "react-intl";
-import {Routes} from '../../utils/Routes';
+import Routes from '../../constants/RoutesConstants';
 import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
 import withI18n from "../../i18n/withI18n";
 
@@ -43,7 +43,8 @@ class DashboardController extends React.Component {
     };
 
     _createRecord = () => {
-        {/*TODO bug on cancel it doesnt return to dashboard but to patient records */}
+        {/*TODO bug on cancel it doesnt return to dashboard but to patient records */
+        }
         this.props.transitionToWithOpts(Routes.createRecord, {
             handlers: {
                 onSuccess: Routes.records,
@@ -63,9 +64,9 @@ class DashboardController extends React.Component {
             showStatistics: this._showStatistics
         };
         return (
-        <div>
-            <Dashboard currentUser={this.props.currentUser} handlers={handlers}/>
-        </div>
+            <div>
+                <Dashboard currentUser={this.props.currentUser} handlers={handlers}/>
+            </div>
         );
     }
 }

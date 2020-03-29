@@ -47,6 +47,7 @@ class PasswordChange extends React.Component {
 
     render() {
         const {handlers, currentUser, showAlert, valid, passwordChange, match, password} = this.props;
+
         return <Card variant='primary'>
             <Card.Header className="text-light bg-primary" as="h6">{this.i18n('user.password-change')}</Card.Header>
             <Card.Body>

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {IntlProvider} from 'react-intl';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-dom/test-utils';
 import RecordRow from "../../../js/components/record/RecordRow";
 import enLang from '../../../js/i18n/en';
 
@@ -15,10 +15,10 @@ describe('RecordRow', function () {
         onDelete = jasmine.createSpy('onDelete');
 
     record = {
-        "uri":"http://vfn.cz/ontologies/study-manager/patient-record#instance456619208",
-        "key":"159968282553298775",
-        "localName":"Test2",
-        "dateCreated":"1520956570035",
+        "uri": "http://vfn.cz/ontologies/study-manager/patient-record#instance456619208",
+        "key": "159968282553298775",
+        "localName": "Test2",
+        "dateCreated": "1520956570035",
         "author": {username: 'test'},
         "institution": {key: 12345678}
     };
@@ -29,14 +29,14 @@ describe('RecordRow', function () {
                 <table>
                     <tbody>
                     <RecordRow record={record} onEdit={onEdit} onDelete={onDelete}
-                             deletionLoading={deletionLoading} disableDelete={disableDelete}/>
+                               deletionLoading={deletionLoading} disableDelete={disableDelete}/>
                     </tbody>
                 </table>
             </IntlProvider>);
         const td = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'td');
         expect(td.length).toEqual(5);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'Button');
-        expect(buttons.length).toEqual(2);
+        expect(buttons.length).toEqual(4);
     });
 
     it('renders "Open" button and click on it', function () {
@@ -45,30 +45,30 @@ describe('RecordRow', function () {
                 <table>
                     <tbody>
                     <RecordRow record={record} onEdit={onEdit} onDelete={onDelete}
-                             deletionLoading={deletionLoading} disableDelete={disableDelete}/>
+                               deletionLoading={deletionLoading} disableDelete={disableDelete}/>
                     </tbody>
                 </table>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-        expect(buttons.length).toEqual(2);
+        expect(buttons.length).toEqual(4);
 
         TestUtils.Simulate.click(buttons[0]); // Open Record
         expect(onEdit).toHaveBeenCalled();
     });
 
-    it('renders id and patients identifier with links and click on one', function () {
+    it('renders id and patients identifier buttons together with open and delete button and click on one but delete button', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <table>
                     <tbody>
                     <RecordRow record={record} onEdit={onEdit} onDelete={onDelete}
-                             deletionLoading={deletionLoading} disableDelete={disableDelete}/>
+                               deletionLoading={deletionLoading} disableDelete={disableDelete}/>
                     </tbody>
                 </table>
             </IntlProvider>);
 
-        const links = TestUtils.scryRenderedDOMComponentsWithTag(tree, "a");
-        expect(links.length).toEqual(2);
+        const links = TestUtils.scryRenderedDOMComponentsWithTag(tree, "button");
+        expect(links.length).toEqual(4);
 
         TestUtils.Simulate.click(links[0]);
         expect(onEdit).toHaveBeenCalled();
@@ -80,14 +80,14 @@ describe('RecordRow', function () {
                 <table>
                     <tbody>
                     <RecordRow record={record} onEdit={onEdit} onDelete={onDelete}
-                             deletionLoading={deletionLoading} disableDelete={disableDelete}/>
+                               deletionLoading={deletionLoading} disableDelete={disableDelete}/>
                     </tbody>
                 </table>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-        expect(buttons.length).toEqual(2);
+        expect(buttons.length).toEqual(4);
 
-        TestUtils.Simulate.click(buttons[1]); // Delete Record
+        TestUtils.Simulate.click(buttons[3]); // Delete Record
         expect(onDelete).toHaveBeenCalled();
     });
 });

@@ -2,6 +2,8 @@
 // Based on https://github.com/robertknight/react-testing
 import jsdom from "jsdom";
 
+const {JSDOM} = jsdom;
+
 var FAKE_DOM_HTML = `
 <html>
 <body>
@@ -25,13 +27,26 @@ function setupFakeDOM() {
     //
     // If you want to do any async setup in your tests, use
     // the before() and beforeEach() hooks.
-    global.document = jsdom.jsdom(FAKE_DOM_HTML);
-    global.window = document.defaultView;
+
+    const {window} = new JSDOM(FAKE_DOM_HTML);
+    const {document} = window;
+
+    const reloadMock = jasmine.createSpy('reload');
+    delete window.location;
+    window.location = {reload: reloadMock};
+
+    global.process.env = require('dotenv').config().parsed;
+
+    global.document = document;
+    global.window = window;
     global.navigator = window.navigator;
     global.HTMLElement = window.HTMLElement;
     global.HTMLAnchorElement = window.HTMLAnchorElement;
-    global.removeEventListener = () => {};
-    global.addEventListener = () => {};
+    global.removeEventListener = () => {
+    };
+    global.addEventListener = () => {
+    };
+
 }
 
 setupFakeDOM();

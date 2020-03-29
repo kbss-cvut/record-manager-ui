@@ -8,10 +8,10 @@ import {Card} from "react-bootstrap";
 import {loadActions} from "../../actions/HistoryActions";
 import {bindActionCreators} from "redux";
 import {ACTION_STATUS, ALERT_TYPES, ACTIONS_PER_PAGE} from "../../constants/DefaultConstants";
-import {LoaderPanel, LoaderSmall} from "../Loader";
+import {LoaderCard, LoaderSmall} from "../Loader";
 import AlertMessage from "../AlertMessage";
 import HistoryTable from "./HistoryTable";
-import {Routes} from "../../utils/Routes";
+import Routes from "../../constants/RoutesConstants";
 import {transitionToWithOpts} from "../../utils/Routing";
 import HistoryPagination from "./HistoryPagination";
 
@@ -69,7 +69,7 @@ class HistoryList extends React.Component {
     render() {
         const {actionsLoaded} = this.props;
         if (!actionsLoaded.actions && (!actionsLoaded.status || actionsLoaded.status === ACTION_STATUS.PENDING)) {
-            return <LoaderPanel header={this._renderHeader()}/>;
+            return <LoaderCard header={this._renderHeader()}/>;
         } else if (actionsLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('history.loading-error', {error: actionsLoaded.error.message})}/>
