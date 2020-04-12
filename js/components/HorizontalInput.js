@@ -70,7 +70,8 @@ export default class HorizontalInput extends React.Component {
     _renderCheckbox() {
         return <FormGroup as={Row}>
             <Col lgOffset={this.props.inputOffset} lg={this.props.inputWidth}>
-                <FormCheck ref={c => this.input = c} {...this._getInputProps()}>{this.props.label}</FormCheck>
+                <FormCheck type="checkbox"
+                           ref={c => this.input = c} {...this._getInputProps()}>{this.props.label}</FormCheck>
             </Col>
         </FormGroup>;
     }
@@ -78,7 +79,8 @@ export default class HorizontalInput extends React.Component {
     _renderRadio() {
         return <FormGroup as={Row}>
             <Col lgOffset={this.props.inputOffset} lg={this.props.inputWidth}>
-                <FormCheck ref={c => this.input = c} {...this._getInputProps()}>{this.props.label}</FormCheck>
+                <FormCheck type="radio"
+                           ref={c => this.input = c} {...this._getInputProps()}>{this.props.label}</FormCheck>
             </Col>
         </FormGroup>;
     }
