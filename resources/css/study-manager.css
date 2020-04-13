@@ -894,6 +894,10 @@ button .help-icon {
     width: 26.66%;
 }
 
+.w-30 {
+    width: 30%;
+}
+
 .w-33 {
     width: 33.33%;
 }
@@ -917,4 +921,8 @@ header {
 
 .form-control, .dropdown-menu {
     font-size: 0.8125rem;
+}
+
+.list-group-item {
+    cursor: pointer;
 }

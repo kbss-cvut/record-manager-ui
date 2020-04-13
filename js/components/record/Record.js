@@ -8,8 +8,8 @@ import HorizontalInput from "../HorizontalInput";
 import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
 import RequiredAttributes from "./RequiredAttributes";
-// import {WizardStoreInstance} from '../wizard/generator/WizardBuilder';
-// import {FormUtils} from "s-forms";
+import {WizardStoreInstance} from '../wizard/generator/WizardBuilder';
+import {FormUtils} from "s-forms";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderCard, LoaderSmall} from "../Loader";
@@ -119,7 +119,7 @@ class Record extends React.Component {
     }
 
     _isFormInvalid() {
-        //  return WizardStoreInstance.data ? FormUtils.isValid(WizardStoreInstance.data) : false;
+        return WizardStoreInstance.data ? FormUtils.isValid(WizardStoreInstance.data) : false;
     }
 }
 

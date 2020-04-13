@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {Card} from 'react-bootstrap';
-// import {QuestionAnswerProcessor} from 's-forms';
+import {QuestionAnswerProcessor} from 's-forms';
 import withI18n from '../../i18n/withI18n';
 import {injectIntl} from "react-intl";
 import Wizard from '../wizard/Wizard';
@@ -53,7 +53,7 @@ class RecordForm extends React.Component {
     };
 
     getFormData = () => {
-        // return QuestionAnswerProcessor.buildQuestionAnswerModel(WizardStoreInstance.getData(), WizardStoreInstance.getStepData());
+        return QuestionAnswerProcessor.buildQuestionAnswerModel(WizardStoreInstance.getData(), WizardStoreInstance.getStepData());
     };
 
     render() {
@@ -67,12 +67,10 @@ class RecordForm extends React.Component {
 
         return <Card variant='info'>
             <Card.Header className="text-light bg-primary" as="h6">{this.i18n('record.form-title')}</Card.Header>
-            <Card.Body>
-                {this.props.formgen.status === ACTION_STATUS.ERROR ?
-                    <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('institution.save-success')}/>
-                    : this.props.formgen.status === ACTION_STATUS.PENDING || !this.state.wizardProperties ? <Loader/>
-                        : <Wizard steps={this.state.wizardProperties.steps} enableForwardSkip={true}/>}
-            </Card.Body>
+            {this.props.formgen.status === ACTION_STATUS.ERROR ?
+                <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('institution.save-success')}/>
+                : this.props.formgen.status === ACTION_STATUS.PENDING || !this.state.wizardProperties ? <Loader/>
+                    : <Wizard steps={this.state.wizardProperties.steps} enableForwardSkip={true}/>}
         </Card>;
     }
 }

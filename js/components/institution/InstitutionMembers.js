@@ -47,6 +47,7 @@ class InstitutionMembers extends React.Component {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('institution.members.loading-error', {error: institutionMembers.error.message})}/>
         }
+
         return <Card variant='info' className="mt-3">
             <Card.Header className="text-light bg-primary"
                          as="h6">{this.i18n('institution.members.panel-title')}</Card.Header>
@@ -58,10 +59,10 @@ class InstitutionMembers extends React.Component {
                     <Table size="sm" responsive striped bordered hover>
                         <thead>
                         <tr>
-                            <th className='col-xs-4 content-center'>{this.i18n('name')}</th>
-                            <th className='col-xs-2 content-center'>{this.i18n('login.username')}</th>
-                            <th className='col-xs-4 content-center'>{this.i18n('users.email')}</th>
-                            <th className='col-xs-2 content-center'>{this.i18n('table-actions')}</th>
+                            <th className='w-30 content-center'>{this.i18n('name')}</th>
+                            <th className='w-20 content-center'>{this.i18n('login.username')}</th>
+                            <th className='w-30 content-center'>{this.i18n('users.email')}</th>
+                            <th className='w-20 content-center'>{this.i18n('table-actions')}</th>
                         </tr>
                         </thead>
                         <tbody>

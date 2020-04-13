@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 //TODO add "disabled" to VerticalWizardNav
 const VerticalWizardNav = ({steps, onNavigate, currentStep}) => (
-    <div className="wizard-nav col-xs-2">
+    <div className="wizard-nav col-2 p-0">
         <ListGroup>
             {steps.map((step, index) =>
                 <ListGroupItem

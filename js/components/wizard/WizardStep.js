@@ -2,10 +2,10 @@
 
 import React from 'react';
 import {Alert, Button, ButtonToolbar, Card} from 'react-bootstrap';
-// import {Constants, HelpIcon} from 's-forms';
+import {Constants, HelpIcon} from 's-forms';
 import JsonLdUtils from 'jsonld-utils';
 import {injectIntl} from "react-intl";
-import {WizardStoreInstance} from '../wizard/generator/WizardBuilder';
+import {WizardStoreInstance} from './generator/WizardBuilder';
 import withI18n from '../../i18n/withI18n';
 import PropTypes from "prop-types";
 
@@ -70,24 +70,24 @@ class WizardStep extends React.Component {
     };
 
     render() {
-
         return (
             <div className='wizard-step'>
                 <Card
                     variant='primary'
                     className='wizard-step-content'
                 >
-                    <Card.Header className="text-light bg-primary" as="h4">
+                    <Card.Header className="text-light bg-primary" as="h6">
                         {this.props.title}{this._renderHelpIcon()}
                     </Card.Header>
                     <Card.Body>
-                    {this.renderComponent()}
+                        {this.renderComponent()}
                     </Card.Body>
                 </Card>
 
-                <ButtonToolbar style={{float: 'right'}}>
+                <ButtonToolbar className="m-3 float-right">
                     {!this.props.isFirstStep &&
-                    <Button onClick={this.onPrevious} disabled={this.state.retreatDisabled} variant='primary'
+                    <Button className="mr-2" onClick={this.onPrevious} disabled={this.state.retreatDisabled}
+                            variant='primary'
                             size='sm'>{this.i18n('wizard.previous')}</Button>}
                     {this.renderAdvanceButton()}
                 </ButtonToolbar>
@@ -99,10 +99,10 @@ class WizardStep extends React.Component {
 
     _renderHelpIcon = () => {
         const question = WizardStoreInstance.getStepData([this.props.stepIndex]);
-        /*
-                return question[Constants.HELP_DESCRIPTION] ?
-                    <HelpIcon text={JsonLdUtils.getLocalized(question[Constants.HELP_DESCRIPTION], this.props.intl)}
-                              iconClass='help-icon-section'/> : null; */
+
+        return question[Constants.HELP_DESCRIPTION] ?
+            <HelpIcon text={JsonLdUtils.getLocalized(question[Constants.HELP_DESCRIPTION], this.props.intl)}
+                      iconClass='help-icon-section'/> : null;
     };
 
     renderAdvanceButton = () => {

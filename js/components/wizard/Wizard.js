@@ -7,6 +7,7 @@ import WizardStep from './WizardStep';
 import {WizardStoreInstance} from '../wizard/generator/WizardBuilder';
 import HorizontalWizardNav from './HorizontalWizardNav';
 import VerticalWizardNav from './VerticalWizardNav';
+import {Card} from 'react-bootstrap';
 
 const IS_HORIZONTAL = true;
 
@@ -93,20 +94,21 @@ class Wizard extends React.Component {
     };
 
     render() {
-        return <div className="wizard">
+        return <Card className={classNames({"flex-row p-2": !IS_HORIZONTAL})}>
             {IS_HORIZONTAL ?
                 <HorizontalWizardNav
                     currentStep={this.state.currentStep} steps={this.props.steps}
                     onNavigate={this.navigate}/> :
+
                 <VerticalWizardNav
                     currentStep={this.state.currentStep} steps={this.props.steps}
                     onNavigate={this.navigate}/>
             }
-            <div className={classNames('wizard-content', {'col-xs-10': !IS_HORIZONTAL})}>
+            <div className={classNames({'col-10 p-0': !IS_HORIZONTAL, "card-body": IS_HORIZONTAL})}>
                 {this.initComponent()}
             </div>
-        </div>;
-    };
+        </Card>;
+    }
 
     navigate = (stepIndex) => {
         if (stepIndex === this.state.currentStep || stepIndex >= this.props.steps.length) {

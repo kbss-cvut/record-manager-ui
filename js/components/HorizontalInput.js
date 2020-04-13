@@ -86,6 +86,7 @@ export default class HorizontalInput extends React.Component {
     }
 
     _renderSelect() {
+        // TODO validation
         return <FormGroup as={Row}>
             {this._renderLabel()}
             <Col lg={this.props.inputWidth}>
@@ -106,6 +107,7 @@ export default class HorizontalInput extends React.Component {
     }
 
     _renderTextArea() {
+        // TODO validation
         return <FormGroup as={Row}>
             {this._renderLabel()}
             <Col lg={this.props.inputWidth}>
@@ -122,6 +124,7 @@ export default class HorizontalInput extends React.Component {
     }
 
     _renderInput() {
+        // TODO validation
         const formControl = <FormControl ref={c => this.input = c} as='input' {...this._getInputProps()}/>;
         return <FormGroup as={Row}>
             {this._renderLabel()}

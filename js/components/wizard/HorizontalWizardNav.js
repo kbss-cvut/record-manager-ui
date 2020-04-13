@@ -1,25 +1,22 @@
 'use strict';
 
 import React from "react";
-import {Nav, NavItem} from "react-bootstrap";
-// import {FormUtils} from "s-forms";
+import {Nav, NavItem, NavLink, Card} from "react-bootstrap";
+import {FormUtils} from "s-forms";
 import PropTypes from "prop-types";
 
 const HorizontalWizardNav = ({steps, onNavigate, currentStep}) => (
-    <div className="wizard-nav">
-        <Nav variant="tabs" onSelect={(key) => onNavigate(key)}>
-            {steps.map((step, index) =>
-                <NavItem
-                    key={'nav' + index} eventKey={index}
-                    id={'wizard-nav-' + index}
-                    active={index === currentStep}>{step.name}
-                    {
-                        // disabled={!FormUtils.isRelevant(step.data)}>
-                    }
+    <Card.Header className="wizard-nav">
+        <Nav variant="tabs" activeKey={currentStep} onSelect={(key) => onNavigate(key)}>
+            {steps.map((step, index) => (<NavItem
+                    key={'nav' + index}
+                    id={'wizard-nav-' + index}>
+                    <NavLink eventKey={index} active={index === parseInt(currentStep, 10)}
+                             disabled={!FormUtils.isRelevant(step.data)}>{step.name}</NavLink>
                 </NavItem>
-            )}
+            ))}
         </Nav>
-    </div>
+    </Card.Header>
 );
 
 HorizontalWizardNav.propTypes = {
@@ -27,6 +24,5 @@ HorizontalWizardNav.propTypes = {
     steps: PropTypes.array.isRequired,
     onNavigate: PropTypes.func.isRequired
 };
-
 
 export default HorizontalWizardNav;
