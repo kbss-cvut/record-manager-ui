@@ -7,11 +7,11 @@ import PropTypes from "prop-types";
 
 const HorizontalWizardNav = ({steps, onNavigate, currentStep}) => (
     <Card.Header className="wizard-nav">
-        <Nav variant="tabs" activeKey={currentStep} onSelect={(key) => onNavigate(key)}>
+        <Nav variant="tabs" activeKey={currentStep} onSelect={(key) => onNavigate(parseInt(key))}>
             {steps.map((step, index) => (<NavItem
                     key={'nav' + index}
                     id={'wizard-nav-' + index}>
-                    <NavLink eventKey={index} active={index === parseInt(currentStep, 10)}
+                    <NavLink eventKey={index} active={index === currentStep}
                              disabled={!FormUtils.isRelevant(step.data)}>{step.name}</NavLink>
                 </NavItem>
             ))}

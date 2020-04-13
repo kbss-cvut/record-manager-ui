@@ -2,9 +2,10 @@
 
 import Reflux from 'reflux';
 import jsonld from 'jsonld';
-import axios from 'axios';
 import Actions from '../actions/Actions';
 import * as Logger from "../utils/Logger";
+import {axiosBackend} from "../actions";
+import {API_URL} from '../../config';
 
 class FormGenStore extends Reflux.Store {
     constructor() {
@@ -15,11 +16,11 @@ class FormGenStore extends Reflux.Store {
 
     onLoadFormOptions = (id, query) => {
         if (this.options[id] && this.options[id].length !== 0) {
-            this.trigger(id, options[id]);
+            this.trigger(id, this.options[id]);
             return;
         }
 
-        axios.get('rest/formGen/possibleValues?query=' + encodeURIComponent(query)).then((response) => {
+        axiosBackend.get(`${API_URL}/rest/formGen/possibleValues?query=${encodeURIComponent(query)}`).then((response) => {
             const data = response.data;
             if (data.length > 0) {
                 jsonld.frame(data, {}, null, (err, framed) => {
