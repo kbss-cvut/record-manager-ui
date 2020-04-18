@@ -14,15 +14,20 @@ export default function withI18n(Component, options) {
 
         render() {
             return <Component
-                i18n={this.i18n} formatMessage={this.formatMessage}
+                i18n={this.i18n}
+                formatMessage={this.formatMessage}
                 locale={this.props.intl.locale}
-                ref={forwardRef ? this.props.forwardedRef : null} {...this.props}/>;
+                ref={forwardRef ? this.props.forwardedRef : null}
+                {...this.props}
+            />;
         }
     }
 
     if (forwardRef) {
         return React.forwardRef((props, ref) =>
-            <Wrapper {...props} forwardedRef={ref}/>);
+            <Wrapper {...props} forwardedRef={ref}/>
+        )
     }
+
     return Wrapper;
 }

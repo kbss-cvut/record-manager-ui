@@ -81,4 +81,4 @@ RecordForm.propTypes = {
     formgen: PropTypes.object
 };
 
-export default injectIntl(withI18n(RecordForm), {forwardRef: true});
+export default injectIntl(withI18n(RecordForm, {forwardRef: true}), {forwardRef: true});

@@ -29,6 +29,7 @@ class Record extends React.Component {
     constructor(props) {
         super(props);
         this.i18n = this.props.i18n;
+        this.form = React.createRef();
     }
 
     _onChange = (e) => {
@@ -37,8 +38,9 @@ class Record extends React.Component {
         this.props.handlers.onChange(change);
     };
 
+
     getFormData = () => {
-        return this.form.refs.wrappedInstance.getWrappedComponent().getFormData();
+        return this.form.current.getFormData();
     };
 
     render() {
@@ -84,7 +86,7 @@ class Record extends React.Component {
     _renderForm() {
         const record = this.props.record;
         return !record.state.isInitial() ?
-            <RecordForm ref={(c) => this.form = c} record={this.props.record}
+            <RecordForm ref={this.form} record={this.props.record}
                         loadFormgen={this.props.loadFormgen}
                         formgen={this.props.formgen}/> : null;
     }
@@ -123,4 +125,4 @@ class Record extends React.Component {
     }
 }
 
-export default injectIntl(withI18n(Record), {forwardRef: true});
+export default injectIntl(withI18n(Record, {forwardRef: true}), {forwardRef: true});

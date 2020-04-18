@@ -24,6 +24,8 @@ class RecordController extends React.Component {
             saved: false,
             showAlert: false
         };
+        this.recordComponent = React.createRef();
+
     }
 
     componentDidMount() {
@@ -75,7 +77,8 @@ class RecordController extends React.Component {
         const currentUser = this.props.currentUser;
         const record = this.state.record;
         this.setState({saved: true, showAlert: true});
-        record.question = this.recordComponent.refs.wrappedInstance.getWrappedComponent().getFormData();
+
+        record.question = this.recordComponent.current.getFormData();
         if (record.isNew) {
             this.props.createRecord(omit(record, 'isNew'), currentUser);
         } else {
@@ -112,13 +115,15 @@ class RecordController extends React.Component {
             onCancel: this._onCancel,
             onChange: this._onChange
         };
-        return <Record ref={(c) => this.recordComponent = c} handlers={handlers} record={this.state.record}
+
+        return <Record ref={this.recordComponent} handlers={handlers}
+                       record={this.state.record}
                        recordLoaded={recordLoaded} recordSaved={recordSaved} showAlert={this.state.showAlert}
                        formgen={formgen} loadFormgen={loadFormgen}/>;
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, undefined, {forwardRef: true})(injectIntl(withI18n(RecordController, {forwardRef: true})));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(RecordController)));
 
 function mapStateToProps(state) {
     return {
