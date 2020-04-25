@@ -10,32 +10,26 @@ const FORM_GEN_POSSIBLE_VALUES_URL = `${API_URL}/rest/formGen/possibleValues`;
 class FormGenStore {
     options = {};
 
-    loadFormOptions = async (id, query) => async (resolve, reject) => {
+    loadFormOptions = async (id, query) => {
         const option = this.options[id];
 
         if (option && option.length) {
-            return resolve(this.options[id]);
+            return this.options[id];
         }
 
-        try {
-            const response = await axiosBackend.get(`${FORM_GEN_POSSIBLE_VALUES_URL}?query=${encodeURIComponent(query)}`);
-            const data = response.data;
+        const {data} = await axiosBackend.get(`${FORM_GEN_POSSIBLE_VALUES_URL}?query=${encodeURIComponent(query)}`);
 
-            if (data.length) {
-                const framed = await jsonld.frame(data, {});
+        if (data.length) {
+            const framed = await jsonld.frame(data, {});
 
-                this.options[id] = framed['@graph'];
+            this.options[id] = framed['@graph'];
 
-                return resolve(this.options[id]);
-            }
-            Logger.warn(`No data received when loading options using query ${query}`);
-
-            return resolve([]);
-        } catch (error) {
-            Logger.error(`An error has occurred during loadFormOptions using ${query}.`);
-
-            return reject(error);
+            return this.options[id];
         }
+
+        Logger.warn(`No data received when loading options using id ${id}`);
+
+        return [];
     }
 
     getOptions = (id) => this.options[id] || []
