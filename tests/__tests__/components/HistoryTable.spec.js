@@ -11,11 +11,11 @@ describe('HistoryTable', function () {
     let actions = [],
         searchData = {},
         handlers = {
-            handleSearch: jasmine.createSpy('handleSearch'),
-            handleReset: jasmine.createSpy('handleReset'),
-            handleChange: jasmine.createSpy('handleChange'),
-            onKeyPress: jasmine.createSpy('onKeyPress'),
-            onOpen: jasmine.createSpy('onOpen')
+            handleSearch: jest.fn(),
+            handleReset: jest.fn(),
+            handleChange: jest.fn(),
+            onKeyPress: jest.fn(),
+            onOpen: jest.fn()
         };
 
     it('renders table with 4 headers columns', function () {

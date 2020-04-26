@@ -19,13 +19,13 @@ describe('Institution', function () {
         institutionMembers = {},
         recordsLoaded = {},
         handlers = {
-            onSave: jasmine.createSpy('onSave'),
-            onCancel: jasmine.createSpy('onCancel'),
-            onChange: jasmine.createSpy('onChange'),
-            onEditUser: jasmine.createSpy('onEditUser'),
-            onAddNewUser: jasmine.createSpy('onAddNewUser'),
-            onDelete: jasmine.createSpy('onDelete'),
-            onEditPatient: jasmine.createSpy('onEditPatient')
+            onSave: jest.fn(),
+            onCancel: jest.fn(),
+            onChange: jest.fn(),
+            onEditUser: jest.fn(),
+            onAddNewUser: jest.fn(),
+            onDelete: jest.fn(),
+            onEditPatient: jest.fn()
         };
 
     user = {

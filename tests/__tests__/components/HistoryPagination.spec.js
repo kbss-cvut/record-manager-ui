@@ -8,7 +8,7 @@ import enLang from '../../../js/i18n/en';
 
 describe('HistoryPagination', function () {
     const intlData = enLang;
-    let handlePagination = jasmine.createSpy('handlePagination');
+    let handlePagination = jest.fn();
 
     it('renders pagination with previous and next button', function () {
         const tree = TestUtils.renderIntoDocument(

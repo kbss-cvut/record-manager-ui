@@ -11,7 +11,7 @@ describe('RequiredAttributes', function () {
     const intlData = enLang;
     let record,
         completed = true,
-        onChange = jasmine.createSpy('onChange');
+        onChange = jest.fn();
 
 
     record = {

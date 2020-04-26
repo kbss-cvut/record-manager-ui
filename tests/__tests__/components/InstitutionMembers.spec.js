@@ -11,9 +11,9 @@ describe('InstitutionMembers', function () {
         institutionMembersEmpty,
         members,
         institution,
-        onEditUser = jasmine.createSpy('onEditUser'),
-        onAddNewUser = jasmine.createSpy('onAddNewUser'),
-        onDelete = jasmine.createSpy('onDelete'),
+        onEditUser = jest.fn(),
+        onAddNewUser = jest.fn(),
+        onDelete = jest.fn(),
         user,
         admin,
         userDeleted;

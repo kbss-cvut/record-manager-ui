@@ -22,13 +22,13 @@ describe('Dashboard', function () {
             role: ROLE.DOCTOR
         },
         handlers = {
-            showUsers: jasmine.createSpy('showUsers'),
-            showInstitutions: jasmine.createSpy('showInstitutions'),
-            showRecords: jasmine.createSpy('showRecords'),
-            createRecord: jasmine.createSpy('createRecord'),
-            showMyInstitution: jasmine.createSpy('showMyInstitution'),
-            showMyProfile: jasmine.createSpy('showMyProfile'),
-            showStatistics: jasmine.createSpy('showStatistics')
+            showUsers: jest.fn(),
+            showInstitutions: jest.fn(),
+            showRecords: jest.fn(),
+            createRecord: jest.fn(),
+            showMyInstitution: jest.fn(),
+            showMyProfile: jest.fn(),
+            showStatistics: jest.fn()
         };
 
     it('renders dashboard with title and four buttons', function () {

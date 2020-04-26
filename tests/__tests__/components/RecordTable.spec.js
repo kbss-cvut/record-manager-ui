@@ -10,7 +10,7 @@ describe('RecordTable', function () {
     let records,
         recordsLoaded,
         recordDeleted = {status: ACTION_STATUS.SUCCESS},
-        handlers = {onEdit: jasmine.createSpy('onEdit')},
+        handlers = {onEdit: jest.fn()},
         disableDelete = true;
 
     records = [

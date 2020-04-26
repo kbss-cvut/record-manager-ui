@@ -10,8 +10,8 @@ describe('UserRow', function () {
     const intlData = enLang;
     let user,
         deletionLoading = false,
-        onEdit = jasmine.createSpy('onEdit'),
-        onDelete = jasmine.createSpy('onDelete');
+        onEdit = jest.fn(),
+        onDelete = jest.fn();
 
     user = {
         "uri": "http://vfn.cz/ontologies/study-manager/Admin-Administratorowitch",

@@ -10,8 +10,8 @@ describe('InstitutionRow', function () {
     const intlData = enLang;
     let institution,
         deletionLoading = false,
-        onEdit = jasmine.createSpy('onEdit'),
-        onDelete = jasmine.createSpy('onDelete');
+        onEdit = jest.fn(),
+        onDelete = jest.fn();
 
     institution = {
         "uri": "http://test.io",

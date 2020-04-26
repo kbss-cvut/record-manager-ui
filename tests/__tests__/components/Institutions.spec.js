@@ -34,9 +34,9 @@ describe('Institutions', function () {
             status: ACTION_STATUS.SUCCESS
         };
         handlers = {
-            onEdit: jasmine.createSpy('onEdit'),
-            onCreate: jasmine.createSpy('onCreate'),
-            onDelete: jasmine.createSpy('onDelete')
+            onEdit: jest.fn(),
+            onCreate: jest.fn(),
+            onDelete: jest.fn()
         };
         institutionsLoaded = {
             status: ACTION_STATUS.SUCCESS,

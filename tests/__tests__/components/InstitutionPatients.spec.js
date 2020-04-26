@@ -8,7 +8,7 @@ describe('InstitutionPatients', function () {
     const intlData = enLang;
     let recordsLoaded,
         records,
-        onEdit = jasmine.createSpy('onEdit');
+        onEdit = jest.fn();
 
     it('renders card', function () {
         recordsLoaded = {

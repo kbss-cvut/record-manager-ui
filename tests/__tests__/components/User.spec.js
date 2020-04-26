@@ -21,9 +21,9 @@ describe('User', function () {
         currentUser,
         currentUserAdmin,
         handlers = {
-            onSave: jasmine.createSpy('onSave'),
-            onCancel: jasmine.createSpy('onCancel'),
-            onChange: jasmine.createSpy('onChange'),
+            onSave: jest.fn(),
+            onCancel: jest.fn(),
+            onChange: jest.fn(),
         };
 
     currentUser = {

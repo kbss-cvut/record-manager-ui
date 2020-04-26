@@ -28,9 +28,9 @@ describe('Users', function () {
             status: ACTION_STATUS.SUCCESS
         };
         handlers = {
-            onEdit: jasmine.createSpy('onEdit'),
-            onCreate: jasmine.createSpy('onCreate'),
-            onDelete: jasmine.createSpy('onDelete')
+            onEdit: jest.fn(),
+            onCreate: jest.fn(),
+            onDelete: jest.fn()
         };
         usersLoaded = {
             status: ACTION_STATUS.SUCCESS,

@@ -4,7 +4,7 @@ import RouterReducer from "../../../js/reducers/RouterReducer";
 describe('RouterReducer', function () {
     const routeName = "user",
         payload = {data: 123456},
-        handlers = {onEvent: jasmine.createSpy('onEvent')};
+        handlers = {onEvent: jest.fn()};
 
     it('leaves state unchanged if action not recognized', () => {
         const initialState = {

@@ -9,7 +9,7 @@ import enLang from '../../../js/i18n/en';
 describe('HistoryRow', function () {
     const intlData = enLang;
     let action = {key: "12345", type: "TEST", author: {username: "test"}, timestamp: 1526074842 },
-        onOpen = jasmine.createSpy('onOpen');
+        onOpen = jest.fn();
 
     it('renders one row of table with 4 columns and 1 button', function () {
         const tree = TestUtils.renderIntoDocument(

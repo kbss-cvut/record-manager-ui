@@ -10,9 +10,9 @@ describe('HistorySearch', function () {
     const intlData = enLang;
     let searchData = {},
         handlers = {
-            handleChange: jasmine.createSpy('handleChange'),
-            handleSearch: jasmine.createSpy('handleSearch'),
-            handleReset: jasmine.createSpy('handleReset')
+            handleChange: jest.fn(),
+            handleSearch: jest.fn(),
+            handleReset: jest.fn()
     };
 
     it('renders search with 3 inputs and 2 buttons', function () {

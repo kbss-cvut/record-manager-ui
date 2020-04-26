@@ -4,7 +4,7 @@ import {setTransitionPayload, setViewHandlers} from "../../../js/actions/RouterA
 describe('Router synchronize actions', function () {
     const routeName = "user",
         payload = {data: 123456},
-        handlers = {onEvent: jasmine.createSpy('onEvent')};
+        handlers = {onEvent: jest.fn()};
 
     it('creates an action to set view handlers', () => {
         const expectedAction = {

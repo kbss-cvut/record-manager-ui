@@ -38,6 +38,7 @@
     "autoprefixer": "^9.7.5",
     "axios-mock-adapter": "^1.18.1",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "^25.4.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-lodash": "^3.3.4",
     "clean-webpack-plugin": "^3.0.0",
@@ -48,20 +49,18 @@
     "cssnano": "^4.1.10",
     "dotenv": "^8.2.0",
     "dotenv-safe": "^8.2.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^6.8.0",
     "eslint-plugin-react": "^7.19.0",
     "express": "^4.17.1",
     "html-webpack-plugin": "^3.2.0",
     "inline-manifest-webpack-plugin": "^4.0.2",
-    "jasmine": "^3.5.0",
-    "jasmine-core": "^3.5.0",
-    "jasmine-reporters": "^2.3.2",
-    "jsdom": "^16.2.1",
+    "jest": "^25.4.0",
     "npm-run-all": "^4.1.5",
     "postcss-loader": "^3.0.0",
     "redux-mock-store": "^1.5.4",
     "style-loader": "^1.1.3",
-    "url-loader": "^4.1.0",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-config-utils": "^2.3.1",
@@ -71,14 +70,9 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server --env.dev --config ./webpack.config.js",
     "build": "cross-env NODE_ENV=production webpack --env.prod -p --config ./webpack.config.js",
     "start": "node server.js",
-    "test": "jasmine JASMINE_CONFIG_PATH=tests/jasmine.json",
+    "test": "jest",
     "lint": "eslint js",
     "validate": "npm-run-all --parallel lint build test"
-  },
-  "browserify": {
-    "transform": [
-      "babelify"
-    ]
   },
   "author": "Miroslav Blaško",
   "contributors": [

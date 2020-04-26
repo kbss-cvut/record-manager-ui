@@ -11,8 +11,8 @@ describe('RecordRow', function () {
     let record,
         disableDelete = false,
         deletionLoading = false,
-        onEdit = jasmine.createSpy('onEdit'),
-        onDelete = jasmine.createSpy('onDelete');
+        onEdit = jest.fn(),
+        onDelete = jest.fn();
 
     record = {
         "uri": "http://vfn.cz/ontologies/study-manager/patient-record#instance456619208",
