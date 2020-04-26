@@ -1,23 +1,14 @@
 'use strict';
 
-import Reflux from 'reflux';
+import {isNil} from 'lodash';
 
-class WizardStore extends Reflux.Store {
-    constructor() {
-        super();
-
-        this._data = {};
-        this._stepData = [];
-    }
+class WizardStore {
+    _data = {};
+    _stepData = [];
 
     initWizard = (data, stepData) => {
-        this._data = data ? {...data} : {};
-        this._stepData = [];
-        if (stepData) {
-            for (let i = 0, len = stepData.length; i < len; i++) {
-                this._stepData.push({...stepData[i]});
-            }
-        }
+        this._data = data || {};
+        this._stepData = stepData || [];
     };
 
     updateData = (update) => {
@@ -26,7 +17,6 @@ class WizardStore extends Reflux.Store {
         }
 
         this._data = {...this._data, ...update};
-        this.trigger();
     };
 
     updateStepData = (index, update) => {
@@ -35,7 +25,6 @@ class WizardStore extends Reflux.Store {
         }
 
         this._stepData[index] = {...this._stepData[index], ...update};
-        this.trigger();
     };
 
     /**
@@ -44,28 +33,18 @@ class WizardStore extends Reflux.Store {
      * @param index Index at which to insert step data
      * @param stepData The data to insert
      */
-    insertStep = (index, stepData) => {
-        this._stepData.splice(index, 0, stepData ? {...stepData} : {});
-        this.trigger();
-    };
+    insertStep = (index, stepData) => this._stepData.splice(index, 0, stepData ? {...stepData} : {});
 
-    removeStep = (index) => {
-        this._stepData.splice(index, 1);
-        this.trigger();
-    };
+    removeStep = (index) => this._stepData.splice(index, 1);
 
     reset = () => {
         this._data = {};
         this._stepData = [];
     };
 
-    getData = () => {
-        return this._data;
-    };
+    getData = () => this._data;
 
-    getStepData = (index) => {
-        return (index !== undefined && index !== null) ? this._stepData[index] : this._stepData;
-    }
+    getStepData = (index) => isNil(index) ? this._stepData : this._stepData[index];
 }
 
 export default WizardStore;

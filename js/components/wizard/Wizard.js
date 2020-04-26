@@ -21,18 +21,19 @@ class Wizard extends React.Component {
         };
     }
 
-    _onWizardDataChange = () => {
-        this.forceUpdate();
-    };
+    /*
+        _onWizardDataChange = () => {
+            this.forceUpdate();
+        };
 
-    componentDidMount() {
-        this.unsubscribe = WizardStoreInstance.listen(this._onWizardDataChange)
-    }
+        componentDidMount() {
+            this.unsubscribe = WizardStoreInstance.listen(this._onWizardDataChange)
+        }
 
-    componentWillUnmount() {
-        this.unsubscribe();
-    }
-
+        componentWillUnmount() {
+            this.unsubscribe();
+        }
+    */
     onAdvance = () => {
         const change = {};
         if (this.state.currentStep !== this.props.steps.length - 1) {
