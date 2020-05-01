@@ -1,42 +1,38 @@
 'use strict';
 
-import Reflux from 'reflux';
 import jsonld from 'jsonld';
-import Actions from '../actions/Actions';
 import * as Logger from "../utils/Logger";
 import {axiosBackend} from "../actions";
 import {API_URL} from '../../config';
 
-class FormGenStore extends Reflux.Store {
-    constructor() {
-        super();
-        this.options = {};
-        this.listenTo(Actions.loadFormOptions, this.onLoadFormOptions);
-    }
+const FORM_GEN_POSSIBLE_VALUES_URL = `${API_URL}/rest/formGen/possibleValues`;
 
-    onLoadFormOptions = (id, query) => {
-        if (this.options[id] && this.options[id].length !== 0) {
-            this.trigger(id, this.options[id]);
-            return;
+class FormGenStore {
+    options = {};
+
+    loadFormOptions = async (id, query) => {
+        const option = this.options[id];
+
+        if (option && option.length) {
+            return this.options[id];
         }
 
-        axiosBackend.get(`${API_URL}/rest/formGen/possibleValues?query=${encodeURIComponent(query)}`).then((response) => {
-            const data = response.data;
-            if (data.length > 0) {
-                jsonld.frame(data, {}, null, (err, framed) => {
-                    this.options[id] = framed['@graph'];
-                    this.trigger(id, this.options[id]);
-                });
-            } else {
-                Logger.warn('No data received when loading options using query' + query + '.');
-                this.trigger(id, this.getOptions(id));
-            }
-        });
-    };
+        const {data} = await axiosBackend.get(`${FORM_GEN_POSSIBLE_VALUES_URL}?query=${encodeURIComponent(query)}`);
 
-    getOptions = (id) => {
-        return this.options[id] ? this.options[id] : [];
+        if (data.length) {
+            const framed = await jsonld.frame(data, {});
+
+            this.options[id] = framed['@graph'];
+
+            return this.options[id];
+        }
+
+        Logger.warn(`No data received when loading options using id ${id}`);
+
+        return [];
     }
+
+    getOptions = (id) => this.options[id] || []
 }
 
 export default FormGenStore;

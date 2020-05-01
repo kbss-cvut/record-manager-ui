@@ -5,9 +5,9 @@ import {Alert, Button, ButtonToolbar, Card} from 'react-bootstrap';
 import {Constants, HelpIcon} from 's-forms';
 import JsonLdUtils from 'jsonld-utils';
 import {injectIntl} from "react-intl";
-import {WizardStoreInstance} from './generator/WizardBuilder';
 import withI18n from '../../i18n/withI18n';
 import PropTypes from "prop-types";
+import {WizardContext} from '../../contexts/WizardContext';
 
 class WizardStep extends React.Component {
     constructor(props) {
@@ -17,6 +17,7 @@ class WizardStep extends React.Component {
             advanceDisabled: this.props.defaultNextDisabled != null ? this.props.defaultNextDisabled : false,
             retreatDisabled: false
         }
+        this.generatedStep = React.createRef();
     }
 
     onAdvance = (err) => {
@@ -27,13 +28,13 @@ class WizardStep extends React.Component {
                 currentError: err
             });
         } else {
-            WizardStoreInstance.updateStepData(this.props.stepIndex, this.getStepData());
+            this.context.updateStepData(this.props.stepIndex, this.getStepData());
             this.props.onAdvance();
         }
     };
 
     getStepData = () => {
-        return this.refs.component.getData ? this.refs.component.getData() : null;
+        return this.generatedStep.current.getData ? this.generatedStep.current.getData() : null;
     };
 
     onNext = () => {
@@ -45,7 +46,7 @@ class WizardStep extends React.Component {
         if (this.props.onNext) {
             this.props.onNext.apply(this, [this.onAdvance]);
         } else {
-            WizardStoreInstance.updateStepData(this.props.stepIndex, this.getStepData());
+            this.context.updateStepData(this.props.stepIndex, this.getStepData());
             this.props.onAdvance();
         }
     };
@@ -59,7 +60,7 @@ class WizardStep extends React.Component {
     };
 
     onFinish = () => {
-        WizardStoreInstance.updateStepData(this.props.stepIndex, this.getStepData());
+        this.context.updateStepData(this.props.stepIndex, this.getStepData());
         this.props.onFinish();
     };
 
@@ -98,7 +99,7 @@ class WizardStep extends React.Component {
     };
 
     _renderHelpIcon = () => {
-        const question = WizardStoreInstance.getStepData([this.props.stepIndex]);
+        const question = this.context.getStepData([this.props.stepIndex]);
 
         return question[Constants.HELP_DESCRIPTION] ?
             <HelpIcon text={JsonLdUtils.getLocalized(question[Constants.HELP_DESCRIPTION], this.props.intl)}
@@ -121,21 +122,15 @@ class WizardStep extends React.Component {
         const PropsComponent = this.props.component;
 
         return <PropsComponent
-            ref='component'
+            ref={this.generatedStep}
             stepIndex={this.props.stepIndex}
-            enableNext={this.enableNext}
-            disableNext={this.disableNext}
-            next={this.onNext}
-            previous={this.onPrevious}
-            finish={this.onFinish}
-            insertStepAfterCurrent={this.props.onInsertStepAfterCurrent}
-            addStep={this.props.onAddStep}
-            removeStep={this.props.onRemoveStep}/>
+            getStepData={this.context.getStepData}
+            updateStepData={this.context.updateStepData}
+        />
     }
 }
 
-WizardStep
-    .propTypes = {
+WizardStep.propTypes = {
     onClose: PropTypes.func,
     onFinish: PropTypes.func.isRequired,
     onAdvance: PropTypes.func,
@@ -148,5 +143,7 @@ WizardStep
     isLastStep: PropTypes.bool,
     defaultNextDisabled: PropTypes.bool
 };
+
+WizardStep.contextType = WizardContext;
 
 export default injectIntl(withI18n(WizardStep));

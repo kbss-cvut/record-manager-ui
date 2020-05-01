@@ -4,10 +4,10 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from "prop-types";
 import WizardStep from './WizardStep';
-import {WizardStoreInstance} from '../wizard/generator/WizardBuilder';
 import HorizontalWizardNav from './HorizontalWizardNav';
 import VerticalWizardNav from './VerticalWizardNav';
 import {Card} from 'react-bootstrap';
+import {WizardContext} from '../../contexts/WizardContext';
 
 const IS_HORIZONTAL = true;
 
@@ -19,18 +19,6 @@ class Wizard extends React.Component {
             nextDisabled: false,
             previousDisabled: false
         };
-    }
-
-    _onWizardDataChange = () => {
-        this.forceUpdate();
-    };
-
-    componentDidMount() {
-        this.unsubscribe = WizardStoreInstance.listen(this._onWizardDataChange)
-    }
-
-    componentWillUnmount() {
-        this.unsubscribe();
     }
 
     onAdvance = () => {
@@ -53,10 +41,10 @@ class Wizard extends React.Component {
 
     onFinish = (errCallback) => {
         const data = {
-            data: WizardStoreInstance.getData(),
-            stepData: WizardStoreInstance.getStepData()
+            data: this.context.getData(),
+            stepData: this.context.getStepData()
         };
-        WizardStoreInstance.reset();
+        this.context.reset();
         this.props.onFinish(data, this.props.onClose, errCallback);
     };
 
@@ -66,7 +54,7 @@ class Wizard extends React.Component {
      */
     onInsertStepAfterCurrent = (step) => {
         this.props.steps.splice(this.state.currentStep + 1, 0, step);
-        WizardStoreInstance.insertStep(this.state.currentStep + 1, step.data);
+        this.context.insertStep(this.state.currentStep + 1, step.data);
     };
 
     /**
@@ -75,7 +63,7 @@ class Wizard extends React.Component {
      */
     onAddStep = (step) => {
         this.props.steps.push(step);
-        WizardStoreInstance.insertStep(this.props.steps.length - 1, step.data);
+        this.context.insertStep(this.props.steps.length - 1, step.data);
     };
 
     onRemoveStep = (stepId) => {
@@ -83,7 +71,7 @@ class Wizard extends React.Component {
         for (let i = 0, len = this.props.steps.length; i < len; i++) {
             if (this.props.steps[i].id === stepId) {
                 this.props.steps.splice(i, 1);
-                WizardStoreInstance.removeStep(i);
+                this.context.removeStep(i);
                 if (i === this.state.currentStep && i !== 0) {
                     stateUpdate.currentStep = this.state.currentStep - 1;
                 }
@@ -157,5 +145,7 @@ Wizard.propTypes = {
     onClose: PropTypes.func,
     enableForwardSkip: PropTypes.bool // Whether to allow forward step skipping
 };
+
+Wizard.contextType = WizardContext;
 
 export default Wizard;

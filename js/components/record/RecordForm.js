@@ -7,11 +7,11 @@ import withI18n from '../../i18n/withI18n';
 import {injectIntl} from "react-intl";
 import Wizard from '../wizard/Wizard';
 import * as WizardBuilder from '../wizard/generator/WizardBuilder';
-import {WizardStoreInstance} from '../wizard/generator/WizardBuilder';
 import Loader from "../Loader";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import PropTypes from "prop-types";
+import {WizardContext} from '../../contexts/WizardContext';
 
 class RecordForm extends React.Component {
     constructor(props) {
@@ -24,7 +24,7 @@ class RecordForm extends React.Component {
 
     componentDidMount() {
         this.props.loadFormgen(ACTION_STATUS.PENDING);
-        WizardBuilder.generateWizard(this.props.record, this.onWizardReady, this.onWizardError);
+        WizardBuilder.generateWizard(this.props.record, this.context.initWizard, this.onWizardReady, this.onWizardError);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -32,7 +32,7 @@ class RecordForm extends React.Component {
 
         if (prevProps.record.question !== record.question) {
             this.setState({wizardProperties: null});
-            WizardBuilder.generateWizard(record, this.onWizardReady, this.onWizardError);
+            WizardBuilder.generateWizard(record, this.context.initWizard, this.onWizardReady, this.onWizardError);
         }
     }
 
@@ -53,7 +53,10 @@ class RecordForm extends React.Component {
     };
 
     getFormData = () => {
-        return QuestionAnswerProcessor.buildQuestionAnswerModel(WizardStoreInstance.getData(), WizardStoreInstance.getStepData());
+        const data = this.context.getData();
+        const stepData = this.context.getStepData();
+
+        return QuestionAnswerProcessor.buildQuestionAnswerModel(data, stepData);
     };
 
     render() {
@@ -80,5 +83,7 @@ RecordForm.propTypes = {
     loadFormgen: PropTypes.func,
     formgen: PropTypes.object
 };
+
+RecordForm.contextType = WizardContext;
 
 export default injectIntl(withI18n(RecordForm, {forwardRef: true}), {forwardRef: true});

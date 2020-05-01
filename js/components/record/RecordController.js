@@ -15,6 +15,7 @@ import * as EntityFactory from "../../utils/EntityFactory";
 import RecordValidator from "../../validation/RecordValidator";
 import * as RecordState from "../../model/RecordState";
 import omit from 'lodash/omit';
+import {WizardContextProvider} from '../../contexts/WizardContext';
 
 class RecordController extends React.Component {
     constructor(props) {
@@ -116,10 +117,17 @@ class RecordController extends React.Component {
             onChange: this._onChange
         };
 
-        return <Record ref={this.recordComponent} handlers={handlers}
-                       record={this.state.record}
-                       recordLoaded={recordLoaded} recordSaved={recordSaved} showAlert={this.state.showAlert}
-                       formgen={formgen} loadFormgen={loadFormgen}/>;
+        return <WizardContextProvider>
+            <Record
+                ref={this.recordComponent}
+                handlers={handlers}
+                record={this.state.record}
+                recordLoaded={recordLoaded}
+                recordSaved={recordSaved}
+                showAlert={this.state.showAlert}
+                formgen={formgen}
+                loadFormgen={loadFormgen}/>
+        </WizardContextProvider>;
     }
 }
 
