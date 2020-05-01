@@ -8,12 +8,12 @@ import HorizontalInput from "../HorizontalInput";
 import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
 import RequiredAttributes from "./RequiredAttributes";
-import {WizardStoreInstance} from '../wizard/generator/WizardBuilder';
 import {FormUtils} from "s-forms";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderCard, LoaderSmall} from "../Loader";
 import PropTypes from "prop-types";
+import {WizardContext} from '../../contexts/WizardContext';
 
 class Record extends React.Component {
     static propTypes = {
@@ -93,10 +93,11 @@ class Record extends React.Component {
 
     _renderButtons() {
         const {record, recordSaved, formgen} = this.props;
+
         return <div className="mt-3 text-center">
             <Button variant='success' size='sm'
                     disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
-                    || this._isFormInvalid() || !record.state.isComplete()}
+                    || !this._isFormValid() || !record.state.isComplete()}
                     onClick={this.props.handlers.onSave}>
                 {this.i18n('save')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
             </Button>
@@ -120,9 +121,11 @@ class Record extends React.Component {
         </div>;
     }
 
-    _isFormInvalid() {
-        return WizardStoreInstance.data ? FormUtils.isValid(WizardStoreInstance.data) : false;
+    _isFormValid() {
+        return FormUtils.isValid(this.context.getData());
     }
 }
+
+Record.contextType = WizardContext;
 
 export default injectIntl(withI18n(Record, {forwardRef: true}), {forwardRef: true});
