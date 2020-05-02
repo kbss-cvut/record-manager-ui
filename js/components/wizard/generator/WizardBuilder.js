@@ -4,7 +4,6 @@ import {Configuration, WizardGenerator} from "s-forms";
 import {axiosBackend} from "../../../actions/index";
 import FormGenStore from "../../../stores/FormGenStore";
 import * as I18nStore from "../../../stores/I18nStore";
-import TypeaheadResultList from "../../typeahead/TypeaheadResultList";
 import * as Logger from "../../../utils/Logger";
 import {API_URL} from '../../../../config';
 
@@ -19,7 +18,6 @@ export const generateWizard = (record, initWizard, renderCallback, errorCallback
 
         Configuration.initWizard = initWizard;
         Configuration.intl = I18nStore.getIntl();
-        Configuration.typeaheadResultList = TypeaheadResultList;
         WizardGenerator.createWizard(response.data, record.question, null, renderCallback);
     }).catch((error) => {
         errorCallback(error);

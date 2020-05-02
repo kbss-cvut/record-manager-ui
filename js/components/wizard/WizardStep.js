@@ -74,10 +74,9 @@ class WizardStep extends React.Component {
         return (
             <div className='wizard-step'>
                 <Card
-                    variant='primary'
                     className='wizard-step-content'
                 >
-                    <Card.Header className="text-light bg-primary" as="h6">
+                    <Card.Header className="bg-info text-white" as="h6">
                         {this.props.title}{this._renderHelpIcon()}
                     </Card.Header>
                     <Card.Body>
