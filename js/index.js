@@ -12,6 +12,8 @@ import {loadUserProfile} from "./actions/AuthActions";
 import {errorLogger, historyLogger} from "./utils/HistoryLogger";
 import App from './App';
 
+import 's-forms/css/s-forms.min.css'
+
 // store initialization
 const createStoreWithMiddleware = composeWithDevTools(
     applyMiddleware(reduxThunk, historyLogger),
