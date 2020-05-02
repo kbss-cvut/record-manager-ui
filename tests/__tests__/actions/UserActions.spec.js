@@ -30,13 +30,13 @@ import {
 import {API_URL} from '../../../config';
 
 const members = [
-        {username: 'record1'},
-        {username: 'record2'}
-    ];
+    {username: 'record1'},
+    {username: 'record2'}
+];
 
 describe('User synchronize actions', function () {
     const user = {username: 'test'},
-          error = {message: 'error'};
+        error = {message: 'error'};
 
     it('creates an action to save user', () => {
         const actionFlag = ACTION_FLAG.CREATE_ENTITY;
@@ -48,7 +48,7 @@ describe('User synchronize actions', function () {
     });
 
     it('creates an action to announce successful save of user', () => {
-        const actionFlag = ACTION_FLAG.CREATE_ENTITY ;
+        const actionFlag = ACTION_FLAG.CREATE_ENTITY;
         const expectedAction = {
             type: ActionConstants.SAVE_USER_SUCCESS,
             user,
@@ -58,7 +58,7 @@ describe('User synchronize actions', function () {
     });
 
     it('creates an action to announce unsuccessful save of user', () => {
-        const actionFlag = ACTION_FLAG.UPDATE_ENTITY ;
+        const actionFlag = ACTION_FLAG.UPDATE_ENTITY;
         const expectedAction = {
             type: ActionConstants.SAVE_USER_ERROR,
             error,
@@ -176,7 +176,7 @@ describe('User asynchronize actions', function () {
         ],
         institutionKey = 92979802112,
         error = {
-            "message" : "An error has occurred.",
+            "message": "An error has occurred.",
             "requestUri": "/rest/users/xxx"
         },
         username = 'test',
@@ -196,10 +196,10 @@ describe('User asynchronize actions', function () {
 
     it('creates SAVE_USER_SUCCESS action when saving user successfully is done', function (done) {
         const expectedActions = [
-            { type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.CREATE_ENTITY },
-            { type: ActionConstants.SAVE_USER_SUCCESS, actionFlag: ACTION_FLAG.CREATE_ENTITY, user},
-            { type: ActionConstants.LOAD_USERS_PENDING},
-            { type: ActionConstants.LOAD_USERS_SUCCESS, users},
+            {type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.CREATE_ENTITY},
+            {type: ActionConstants.SAVE_USER_SUCCESS, actionFlag: ACTION_FLAG.CREATE_ENTITY, user},
+            {type: ActionConstants.LOAD_USERS_PENDING},
+            {type: ActionConstants.LOAD_USERS_SUCCESS, users},
         ];
 
         mockApi.onPost(`${API_URL}/rest/users`).reply(200);
@@ -215,8 +215,8 @@ describe('User asynchronize actions', function () {
 
     it('creates SAVE_USER_ERROR action if an error occurred during creating user', function (done) {
         const expectedActions = [
-            { type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.CREATE_ENTITY },
-            { type: ActionConstants.SAVE_USER_ERROR, actionFlag: ACTION_FLAG.CREATE_ENTITY, error, user}
+            {type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.CREATE_ENTITY},
+            {type: ActionConstants.SAVE_USER_ERROR, actionFlag: ACTION_FLAG.CREATE_ENTITY, error, user}
         ];
 
         mockApi.onPost(`${API_URL}/rest/users`).reply(400, error);
@@ -231,10 +231,10 @@ describe('User asynchronize actions', function () {
 
     it('creates UPDATE_USER_SUCCESS action when saving user successfully is done', function (done) {
         const expectedActions = [
-            { type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.UPDATE_ENTITY },
-            { type: ActionConstants.SAVE_USER_SUCCESS, actionFlag: ACTION_FLAG.UPDATE_ENTITY, user},
-            { type: ActionConstants.LOAD_USERS_PENDING},
-            { type: ActionConstants.LOAD_USERS_SUCCESS, users},
+            {type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.UPDATE_ENTITY},
+            {type: ActionConstants.SAVE_USER_SUCCESS, actionFlag: ACTION_FLAG.UPDATE_ENTITY, user},
+            {type: ActionConstants.LOAD_USERS_PENDING},
+            {type: ActionConstants.LOAD_USERS_SUCCESS, users},
         ];
 
         mockApi.onPut(`${API_URL}/rest/users/${user.username}`).reply(200);
@@ -250,8 +250,8 @@ describe('User asynchronize actions', function () {
 
     it('creates SAVE_USER_ERROR action if an error occurred during updating user', function (done) {
         const expectedActions = [
-            { type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.UPDATE_ENTITY },
-            { type: ActionConstants.SAVE_USER_ERROR, actionFlag: ACTION_FLAG.UPDATE_ENTITY, error, user}
+            {type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.UPDATE_ENTITY},
+            {type: ActionConstants.SAVE_USER_ERROR, actionFlag: ACTION_FLAG.UPDATE_ENTITY, error, user}
         ];
 
         mockApi.onPut(`${API_URL}/rest/users/${user.username}`).reply(400, error);
@@ -266,10 +266,10 @@ describe('User asynchronize actions', function () {
 
     it('creates DELETE_USER_SUCCESS action when deleting user successfully is done', function (done) {
         const expectedActions = [
-            { type: ActionConstants.DELETE_USER_PENDING, username},
-            { type: ActionConstants.LOAD_USERS_PENDING},
-            { type: ActionConstants.DELETE_USER_SUCCESS, user},
-            { type: ActionConstants.LOAD_USERS_SUCCESS, users},
+            {type: ActionConstants.DELETE_USER_PENDING, username},
+            {type: ActionConstants.LOAD_USERS_PENDING},
+            {type: ActionConstants.DELETE_USER_SUCCESS, user},
+            {type: ActionConstants.LOAD_USERS_SUCCESS, users},
         ];
 
         mockApi.onDelete(`${API_URL}/rest/users/${user.username}`).reply(200);
@@ -285,8 +285,8 @@ describe('User asynchronize actions', function () {
 
     it('creates SAVE_USER_ERROR action if an error occurred during updating user', function (done) {
         const expectedActions = [
-            { type: ActionConstants.DELETE_USER_PENDING, username},
-            { type: ActionConstants.DELETE_USER_ERROR, error, user}
+            {type: ActionConstants.DELETE_USER_PENDING, username},
+            {type: ActionConstants.DELETE_USER_ERROR, error, user}
         ];
 
         mockApi.onDelete(`${API_URL}/rest/users/${user.username}`).reply(400, error);
@@ -301,8 +301,8 @@ describe('User asynchronize actions', function () {
 
     it('creates LOAD_USER_SUCCESS action when loading user successfully is done', function (done) {
         const expectedActions = [
-            { type: ActionConstants.LOAD_USER_PENDING},
-            { type: ActionConstants.LOAD_USER_SUCCESS, user}
+            {type: ActionConstants.LOAD_USER_PENDING},
+            {type: ActionConstants.LOAD_USER_SUCCESS, user}
         ];
 
         mockApi.onGet(`${API_URL}/rest/users/${user.username}`).reply(200, {username});
@@ -317,8 +317,8 @@ describe('User asynchronize actions', function () {
 
     it('creates LOAD_USER_ERROR action if an error occurred during loading user', function (done) {
         const expectedActions = [
-            { type: ActionConstants.LOAD_USER_PENDING},
-            { type: ActionConstants.LOAD_USER_ERROR, error}
+            {type: ActionConstants.LOAD_USER_PENDING},
+            {type: ActionConstants.LOAD_USER_ERROR, error}
         ];
 
         mockApi.onGet(`${API_URL}/rest/users/${user.username}`).reply(400, error);
@@ -333,8 +333,8 @@ describe('User asynchronize actions', function () {
 
     it("creates LOAD_INSTITUTION_MEMBERS_SUCCESS action when loading institution's memebrs successfully is done", function (done) {
         const expectedActions = [
-            { type: ActionConstants.LOAD_INSTITUTION_MEMBERS_PENDING},
-            { type: ActionConstants.LOAD_INSTITUTION_MEMBERS_SUCCESS, members}
+            {type: ActionConstants.LOAD_INSTITUTION_MEMBERS_PENDING},
+            {type: ActionConstants.LOAD_INSTITUTION_MEMBERS_SUCCESS, members}
         ];
 
         mockApi.onGet(`${API_URL}/rest/users?institution=${institutionKey}`).reply(200, members);
@@ -349,8 +349,8 @@ describe('User asynchronize actions', function () {
 
     it("creates LOAD_INSTITUTION_MEMBERS_ERROR action if an error occurred during loading institution's memebrs", function (done) {
         const expectedActions = [
-            { type: ActionConstants.LOAD_INSTITUTION_MEMBERS_PENDING},
-            { type: ActionConstants.LOAD_INSTITUTION_MEMBERS_ERROR, error}
+            {type: ActionConstants.LOAD_INSTITUTION_MEMBERS_PENDING},
+            {type: ActionConstants.LOAD_INSTITUTION_MEMBERS_ERROR, error}
         ];
 
         mockApi.onGet(`${API_URL}/rest/users?institution=${institutionKey}`).reply(400, error);
@@ -365,8 +365,8 @@ describe('User asynchronize actions', function () {
 
     it("creates PASSWORD_CHANGE_SUCCESS action when changing password successfully is done", function (done) {
         const expectedActions = [
-            { type: ActionConstants.PASSWORD_CHANGE_PENDING},
-            { type: ActionConstants.PASSWORD_CHANGE_SUCCESS}
+            {type: ActionConstants.PASSWORD_CHANGE_PENDING},
+            {type: ActionConstants.PASSWORD_CHANGE_SUCCESS}
         ];
 
         mockApi.onPut(`${API_URL}/rest/users/${username}/password-change`).reply(200);
@@ -381,8 +381,8 @@ describe('User asynchronize actions', function () {
 
     it("creates PASSWORD_CHANGE_ERROR action if an error occurred during changing password", function (done) {
         const expectedActions = [
-            { type: ActionConstants.PASSWORD_CHANGE_PENDING},
-            { type: ActionConstants.PASSWORD_CHANGE_ERROR, error}
+            {type: ActionConstants.PASSWORD_CHANGE_PENDING},
+            {type: ActionConstants.PASSWORD_CHANGE_ERROR, error}
         ];
 
         mockApi.onPut(`${API_URL}/rest/users/${username}/password-change`).reply(400, error);
@@ -397,8 +397,8 @@ describe('User asynchronize actions', function () {
 
     it("creates GENERATE_USERNAME_SUCCESS action when changing password successfully is done", function (done) {
         const expectedActions = [
-            { type: ActionConstants.GENERATE_USERNAME_PENDING},
-            { type: ActionConstants.GENERATE_USERNAME_SUCCESS, generatedUsername: `${usernamePrefix}1`}
+            {type: ActionConstants.GENERATE_USERNAME_PENDING},
+            {type: ActionConstants.GENERATE_USERNAME_SUCCESS, generatedUsername: `${usernamePrefix}1`}
         ];
 
         mockApi.onGet(`${API_URL}/rest/users/generate-username/${usernamePrefix}`).reply(200, `${usernamePrefix}1`);
@@ -413,10 +413,10 @@ describe('User asynchronize actions', function () {
 
     it("creates SEND_INVITATION_SUCCESS action when user is invited successfully", function (done) {
         const expectedActions = [
-            { type: ActionConstants.SEND_INVITATION_PENDING, username},
-            { type: ActionConstants.SEND_INVITATION_SUCCESS, username},
-            { type: ActionConstants.LOAD_USER_PENDING},
-            { type: ActionConstants.LOAD_USER_SUCCESS, user}
+            {type: ActionConstants.SEND_INVITATION_PENDING, username},
+            {type: ActionConstants.SEND_INVITATION_SUCCESS, username},
+            {type: ActionConstants.LOAD_USER_PENDING},
+            {type: ActionConstants.LOAD_USER_SUCCESS, user}
         ];
 
         mockApi.onGet(`${API_URL}/rest/users/${user.username}`).reply(200, {username});
@@ -432,10 +432,10 @@ describe('User asynchronize actions', function () {
 
     it("creates SEND_INVITATION_ERROR action if an error occurred during user invitation", function (done) {
         const expectedActions = [
-            { type: ActionConstants.SEND_INVITATION_PENDING, username},
-            { type: ActionConstants.SEND_INVITATION_ERROR, error},
-            { type: ActionConstants.LOAD_USER_PENDING},
-            { type: ActionConstants.LOAD_USER_SUCCESS, user}
+            {type: ActionConstants.SEND_INVITATION_PENDING, username},
+            {type: ActionConstants.SEND_INVITATION_ERROR, error},
+            {type: ActionConstants.LOAD_USER_PENDING},
+            {type: ActionConstants.LOAD_USER_SUCCESS, user}
         ];
 
         mockApi.onGet(`${API_URL}/rest/users/${user.username}`).reply(200, {username});
@@ -451,10 +451,10 @@ describe('User asynchronize actions', function () {
 
     it("creates INVITATION_OPTION_DELETE_SUCCESS action when option to invite user is deleted successfully", function (done) {
         const expectedActions = [
-            { type: ActionConstants.INVITATION_OPTION_DELETE_PENDING, username},
-            { type: ActionConstants.INVITATION_OPTION_DELETE_SUCCESS, username},
-            { type: ActionConstants.LOAD_USER_PENDING},
-            { type: ActionConstants.LOAD_USER_SUCCESS, user}
+            {type: ActionConstants.INVITATION_OPTION_DELETE_PENDING, username},
+            {type: ActionConstants.INVITATION_OPTION_DELETE_SUCCESS, username},
+            {type: ActionConstants.LOAD_USER_PENDING},
+            {type: ActionConstants.LOAD_USER_SUCCESS, user}
         ];
 
         mockApi.onGet(`${API_URL}/rest/users/${user.username}`).reply(200, {username});
@@ -470,10 +470,10 @@ describe('User asynchronize actions', function () {
 
     it("creates INVITATION_OPTION_DELETE_ERROR action if an error occurred during deleting option to invite user", function (done) {
         const expectedActions = [
-            { type: ActionConstants.INVITATION_OPTION_DELETE_PENDING, username},
-            { type: ActionConstants.INVITATION_OPTION_DELETE_ERROR, error},
-            { type: ActionConstants.LOAD_USER_PENDING},
-            { type: ActionConstants.LOAD_USER_SUCCESS, user}
+            {type: ActionConstants.INVITATION_OPTION_DELETE_PENDING, username},
+            {type: ActionConstants.INVITATION_OPTION_DELETE_ERROR, error},
+            {type: ActionConstants.LOAD_USER_PENDING},
+            {type: ActionConstants.LOAD_USER_SUCCESS, user}
         ];
 
         mockApi.onGet(`${API_URL}/rest/users/${user.username}`).reply(200, {username});
@@ -488,9 +488,13 @@ describe('User asynchronize actions', function () {
     });
 
     it("creates IMPERSONATE_SUCCESS action when user is successfully impersonated", function (done) {
+        const {location} = window;
+        delete window.location;
+        window.location = {reload: jest.fn()};
+        
         const expectedActions = [
-            { type: ActionConstants.IMPERSONATE_PENDING},
-            { type: ActionConstants.IMPERSONATE_SUCCESS, username}
+            {type: ActionConstants.IMPERSONATE_PENDING},
+            {type: ActionConstants.IMPERSONATE_SUCCESS, username}
         ];
 
         mockApi.onPost(`${API_URL}/rest/users/impersonate`).reply(200);
@@ -505,8 +509,8 @@ describe('User asynchronize actions', function () {
 
     it("creates IMPERSONATE_ERROR action if an error occurred during impersonating user", function (done) {
         const expectedActions = [
-            { type: ActionConstants.IMPERSONATE_PENDING},
-            { type: ActionConstants.IMPERSONATE_ERROR, error}
+            {type: ActionConstants.IMPERSONATE_PENDING},
+            {type: ActionConstants.IMPERSONATE_ERROR, error}
         ];
 
         mockApi.onPost(`${API_URL}/rest/users/impersonate`).reply(400, error);
