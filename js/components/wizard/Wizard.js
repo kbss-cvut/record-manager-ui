@@ -87,7 +87,6 @@ class Wizard extends React.Component {
                 <HorizontalWizardNav
                     currentStep={this.state.currentStep} steps={this.props.steps}
                     onNavigate={this.navigate}/> :
-
                 <VerticalWizardNav
                     currentStep={this.state.currentStep} steps={this.props.steps}
                     onNavigate={this.navigate}/>

@@ -9,19 +9,25 @@ import {API_URL} from '../../../../config';
 
 const FORM_GEN_URL = 'rest/formGen';
 
-export const generateWizard = (record, initWizard, renderCallback, errorCallback) => {
+export const generateWizard = async (record, initWizard) => {
     const formGenStore = new FormGenStore()
 
-    axiosBackend.post(`${API_URL}/${FORM_GEN_URL}`, record).then((response) => {
-        Configuration.loadFormOptions = formGenStore.loadFormOptions;
-        Configuration.getOptions = formGenStore.getOptions;
-
-        Configuration.initWizard = initWizard;
-        Configuration.intl = I18nStore.getIntl();
-        WizardGenerator.createWizard(response.data, record.question, null, renderCallback);
-    }).catch((error) => {
-        errorCallback(error);
+    let response;
+    try {
+        response = await axiosBackend.post(`${API_URL}/${FORM_GEN_URL}`, record);
+    } catch (error) {
         Logger.error('Received no valid wizard.');
-    });
+        throw(error);
+    }
+
+    Configuration.loadFormOptions = formGenStore.loadFormOptions;
+    Configuration.getOptions = formGenStore.getOptions;
+
+    Configuration.initWizard = initWizard;
+    Configuration.intl = I18nStore.getIntl();
+
+    // const response = {data: require('../../../form.json')}
+
+    return await WizardGenerator.createWizard(response.data, record.question, null);
 };
 

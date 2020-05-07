@@ -24,33 +24,30 @@ class RecordForm extends React.Component {
 
     componentDidMount() {
         this.props.loadFormgen(ACTION_STATUS.PENDING);
-        WizardBuilder.generateWizard(this.props.record, this.context.initWizard, this.onWizardReady, this.onWizardError);
+        this.loadWizard();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {record} = this.props;
 
         if (prevProps.record.question !== record.question) {
-            this.setState({wizardProperties: null});
-            WizardBuilder.generateWizard(record, this.context.initWizard, this.onWizardReady, this.onWizardError);
+            this.loadWizard();
         }
     }
 
-    onWizardReady = (wizardProperties) => {
-        const {loadFormgen} = this.props;
+    loadWizard() {
+        WizardBuilder.generateWizard(this.props.record, this.context.initWizard).then((wizardProperties) => {
+            this.props.loadFormgen(ACTION_STATUS.SUCCESS);
 
-        loadFormgen(ACTION_STATUS.SUCCESS);
+            if (wizardProperties && wizardProperties.steps && wizardProperties.steps.length > 0) {
+                wizardProperties.steps[0].visited = true;
+            }
 
-        if (wizardProperties && wizardProperties.steps && wizardProperties.steps.length > 0) {
-            wizardProperties.steps[0].visited = true;
-        }
-
-        this.setState({wizardProperties: wizardProperties});
-    };
-
-    onWizardError = (error) => {
-        this.props.loadFormgen(ACTION_STATUS.ERROR, error);
-    };
+            this.setState({wizardProperties: wizardProperties});
+        }).catch((error) => {
+            this.props.loadFormgen(ACTION_STATUS.ERROR, error);
+        })
+    }
 
     getFormData = () => {
         const data = this.context.getData();
