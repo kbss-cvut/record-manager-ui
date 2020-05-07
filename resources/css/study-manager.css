@@ -889,7 +889,3 @@ header {
 .list-group-item {
     cursor: pointer;
 }
-
-.accordion > .card {
-    overflow: visible
-}
