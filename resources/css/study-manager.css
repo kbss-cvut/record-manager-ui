@@ -66,14 +66,6 @@ body {
     max-height: 90%;
 }
 
-.wizard-step {
-    min-height: 650px;
-}
-
-.wizard-step-content {
-    min-height: 600px;
-}
-
 .centered {
     margin-left: auto;
     margin-right: auto;

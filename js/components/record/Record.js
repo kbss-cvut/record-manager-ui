@@ -13,7 +13,6 @@ import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderCard, LoaderSmall} from "../Loader";
 import PropTypes from "prop-types";
-import {WizardContext} from '../../contexts/WizardContext';
 
 class Record extends React.Component {
     static propTypes = {
@@ -122,10 +121,10 @@ class Record extends React.Component {
     }
 
     _isFormValid() {
-        return FormUtils.isValid(this.context.getData());
+        // TODO
+        return true;
+        // return FormUtils.isValid(this.context.getData());
     }
 }
-
-Record.contextType = WizardContext;
 
 export default injectIntl(withI18n(Record, {forwardRef: true}), {forwardRef: true});
