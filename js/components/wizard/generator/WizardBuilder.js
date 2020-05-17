@@ -19,10 +19,9 @@ export const generateWizard = async (record) => {
     }
 
     Configuration.intl = I18nStore.getIntl();
-    // TODO
     Configuration.i18n = {
-        'wizard.next': 'Další',
-        'wizard.previous': 'Předchozí'
+        'wizard.next': I18nStore.i18n('wizard.next'),
+        'wizard.previous': I18nStore.i18n('wizard.previous'),
     };
     Configuration.horizontalWizardNav = true;
     Configuration.modalView = false;
@@ -31,8 +30,6 @@ export const generateWizard = async (record) => {
         return result.data;
     }
 
-    // const response = {data: require('../../../form.json')}
-
-    return await WizardGenerator.createWizard(response.data, record.question, null);
+    return WizardGenerator.createWizard(response.data, record.question, null);
 };
 

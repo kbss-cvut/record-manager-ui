@@ -70,8 +70,11 @@ class RecordForm extends React.Component {
                 <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('institution.save-success')}/>
                 : this.props.formgen.status === ACTION_STATUS.PENDING || !this.state.wizardProperties ? <Loader/>
                     : <WizardContainer
-                        ref={this.form} steps={this.state.wizardProperties.steps} enableForwardSkip={true}
-                        data={this.state.form}/>}
+                        ref={this.form} steps={this.state.wizardProperties.steps}
+                        enableForwardSkip={true}
+                        data={this.state.form}
+                        isFormValid={this.props.isFormValid}
+                    />}
         </Card>;
     }
 }

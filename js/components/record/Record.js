@@ -2,33 +2,25 @@
 
 import React from "react";
 import {Button, Card} from "react-bootstrap";
+import PropTypes from "prop-types";
 import {injectIntl, FormattedMessage} from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import HorizontalInput from "../HorizontalInput";
 import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
 import RequiredAttributes from "./RequiredAttributes";
-import {FormUtils} from "s-forms";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderCard, LoaderSmall} from "../Loader";
-import PropTypes from "prop-types";
 
 class Record extends React.Component {
-    static propTypes = {
-        record: PropTypes.object,
-        handlers: PropTypes.object.isRequired,
-        recordSaved: PropTypes.object,
-        recordLoaded: PropTypes.object,
-        formgen: PropTypes.object,
-        loadFormgen: PropTypes.func,
-        showAlert: PropTypes.bool
-    };
-
     constructor(props) {
         super(props);
         this.i18n = this.props.i18n;
-        this.form = React.createRef();
+        this.recordForm = React.createRef();
+        this.state = {
+            isFormValid: false
+        }
     }
 
     _onChange = (e) => {
@@ -37,10 +29,13 @@ class Record extends React.Component {
         this.props.handlers.onChange(change);
     };
 
-
     getFormData = () => {
-        return this.form.current.getFormData();
+        return this.recordForm.current.getFormData();
     };
+
+    isFormValid = (formValid) => {
+        this.setState({formValid})
+    }
 
     render() {
         const {recordLoaded, recordSaved, showAlert, record} = this.props;
@@ -85,9 +80,13 @@ class Record extends React.Component {
     _renderForm() {
         const record = this.props.record;
         return !record.state.isInitial() ?
-            <RecordForm ref={this.form} record={this.props.record}
-                        loadFormgen={this.props.loadFormgen}
-                        formgen={this.props.formgen}/> : null;
+            <RecordForm
+                ref={this.recordForm}
+                record={this.props.record}
+                loadFormgen={this.props.loadFormgen}
+                formgen={this.props.formgen}
+                isFormValid={this.isFormValid}/>
+            : null;
     }
 
     _renderButtons() {
@@ -96,7 +95,7 @@ class Record extends React.Component {
         return <div className="mt-3 text-center">
             <Button variant='success' size='sm'
                     disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
-                    || !this._isFormValid() || !record.state.isComplete()}
+                    || !this.state.isFormValid || !record.state.isComplete()}
                     onClick={this.props.handlers.onSave}>
                 {this.i18n('save')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
             </Button>
@@ -119,12 +118,16 @@ class Record extends React.Component {
             </div>
         </div>;
     }
-
-    _isFormValid() {
-        // TODO
-        return true;
-        // return FormUtils.isValid(this.context.getData());
-    }
 }
+
+Record.propTypes = {
+    record: PropTypes.object,
+    handlers: PropTypes.object.isRequired,
+    recordSaved: PropTypes.object,
+    recordLoaded: PropTypes.object,
+    formgen: PropTypes.object,
+    loadFormgen: PropTypes.func,
+    showAlert: PropTypes.bool
+};
 
 export default injectIntl(withI18n(Record, {forwardRef: true}), {forwardRef: true});
