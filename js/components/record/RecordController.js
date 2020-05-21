@@ -7,15 +7,13 @@ import Record from './Record';
 import Routes from "../../constants/RoutesConstants";
 import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
 import {ACTION_FLAG, ACTION_STATUS} from "../../constants/DefaultConstants";
-import {loadFormgen, unloadSavedRecord} from "../../actions/RecordActions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {createRecord, loadRecord, unloadRecord, updateRecord} from "../../actions/RecordActions";
+import {createRecord, loadRecord, unloadRecord, updateRecord, loadFormgen, unloadSavedRecord} from "../../actions/RecordActions";
 import * as EntityFactory from "../../utils/EntityFactory";
 import RecordValidator from "../../validation/RecordValidator";
 import * as RecordState from "../../model/RecordState";
 import omit from 'lodash/omit';
-import {WizardContextProvider} from '../../contexts/WizardContext';
 
 class RecordController extends React.Component {
     constructor(props) {
@@ -80,6 +78,7 @@ class RecordController extends React.Component {
         this.setState({saved: true, showAlert: true});
 
         record.question = this.recordComponent.current.getFormData();
+
         if (record.isNew) {
             this.props.createRecord(omit(record, 'isNew'), currentUser);
         } else {
@@ -117,8 +116,7 @@ class RecordController extends React.Component {
             onChange: this._onChange
         };
 
-        return <WizardContextProvider>
-            <Record
+        return <Record
                 ref={this.recordComponent}
                 handlers={handlers}
                 record={this.state.record}
@@ -126,8 +124,7 @@ class RecordController extends React.Component {
                 recordSaved={recordSaved}
                 showAlert={this.state.showAlert}
                 formgen={formgen}
-                loadFormgen={loadFormgen}/>
-        </WizardContextProvider>;
+                loadFormgen={loadFormgen}/>;
     }
 }
 
