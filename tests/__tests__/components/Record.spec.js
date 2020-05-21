@@ -7,7 +7,6 @@ import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
 import Record from "../../../js/components/record/Record";
 import * as RecordState from "../../../js/model/RecordState";
 import enLang from '../../../js/i18n/en';
-import {WizardContextProvider} from '../../../js/contexts/WizardContext';
 
 describe('Record', function () {
     const intlData = enLang;
@@ -86,12 +85,10 @@ describe('Record', function () {
 
     it("renders record's form empty", function () {
         const tree = mount(
-            <WizardContextProvider>
-                <IntlProvider locale="en" {...intlData}>
-                    <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
-                            recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
-                </IntlProvider>
-            </WizardContextProvider>
+            <IntlProvider locale="en" {...intlData}>
+                <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
+                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
+            </IntlProvider>
         );
         const result = tree.find('input');
         expect(result.length).toEqual(1);
@@ -107,12 +104,10 @@ describe('Record', function () {
 
     it('renders "Save" and "Cancel" buttons', function () {
         const tree = mount(
-            <WizardContextProvider>
-                <IntlProvider locale="en" {...intlData}>
-                    <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
-                            recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
-                </IntlProvider>
-            </WizardContextProvider>
+            <IntlProvider locale="en" {...intlData}>
+                <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
+                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
+            </IntlProvider>
         );
         let buttons = tree.find("Button");
         expect(buttons.length).toEqual(2);
@@ -125,12 +120,11 @@ describe('Record', function () {
             status: ACTION_STATUS.SUCCESS
         };
         const tree = TestUtils.renderIntoDocument(
-            <WizardContextProvider>
-                <IntlProvider locale="en" {...intlData}>
-                    <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
-                            recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
-                </IntlProvider>
-            </WizardContextProvider>);
+            <IntlProvider locale="en" {...intlData}>
+                <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
+                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
+            </IntlProvider>
+        );
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-success");
         expect(alert).not.toBeNull();
     });
@@ -145,12 +139,11 @@ describe('Record', function () {
             }
         };
         const tree = TestUtils.renderIntoDocument(
-            <WizardContextProvider>
-                <IntlProvider locale="en" {...intlData}>
-                    <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
-                            recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
-                </IntlProvider>
-            </WizardContextProvider>);
+            <IntlProvider locale="en" {...intlData}>
+                <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
+                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
+            </IntlProvider>
+        );
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
         expect(alert).not.toBeNull();
     });

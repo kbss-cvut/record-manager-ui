@@ -33,8 +33,8 @@ class Record extends React.Component {
         return this.recordForm.current.getFormData();
     };
 
-    isFormValid = (formValid) => {
-        this.setState({formValid})
+    isFormValid = (isFormValid) => {
+        this.setState({isFormValid})
     }
 
     render() {
@@ -73,18 +73,19 @@ class Record extends React.Component {
     }
 
     _renderHeader() {
-        const name = this.props.record && this.props.record.localName ? this.props.record.localName : '';
-        return <span><FormattedMessage id='record.panel-title' values={{identifier: name}}/></span>;
+        const identifier = this.props.record && this.props.record.localName ? this.props.record.localName : '';
+        return <span><FormattedMessage id='record.panel-title' values={{identifier}}/></span>;
     }
 
     _renderForm() {
-        const record = this.props.record;
+        const {record, loadFormgen, formgen} = this.props;
+
         return !record.state.isInitial() ?
             <RecordForm
                 ref={this.recordForm}
-                record={this.props.record}
-                loadFormgen={this.props.loadFormgen}
-                formgen={this.props.formgen}
+                record={record}
+                loadFormgen={loadFormgen}
+                formgen={formgen}
                 isFormValid={this.isFormValid}/>
             : null;
     }
