@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {Card} from 'react-bootstrap';
-import {Configuration, WizardContainer, WizardGenerator} from 's-forms';
+import SForms from 's-forms';
 import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
 import withI18n from '../../i18n/withI18n';
@@ -22,7 +22,7 @@ class RecordForm extends React.Component {
             wizardProperties: null,
             form: null
         }
-        this.form = React.createRef();
+        this.refForm = React.createRef();
     }
 
     componentDidMount() {
@@ -40,32 +40,17 @@ class RecordForm extends React.Component {
 
     async loadWizard() {
         try {
-            let response
-            try {
-                response = await axiosBackend.post(`${API_URL}/rest/formGen`, this.props.record);
-            } catch (error) {
-                Logger.error('Received no valid wizard.');
-                this.props.loadFormgen(ACTION_STATUS.ERROR, error);
-            }
-
-            Configuration.intl = I18nStore.getIntl();
-
-            const [wizardProperties, form] = await WizardGenerator.createWizard(response.data, this.props.record.question, null);
-
+            const response = await axiosBackend.post(`${API_URL}/rest/formGen`, this.props.record);
             this.props.loadFormgen(ACTION_STATUS.SUCCESS);
-
-            if (wizardProperties && wizardProperties.steps && wizardProperties.steps.length > 0) {
-                wizardProperties.steps[0].visited = true;
-            }
-
-            this.setState({wizardProperties, form});
+            this.setState({form: response.data})
         } catch (error) {
+            Logger.error('Received no valid wizard.');
             this.props.loadFormgen(ACTION_STATUS.ERROR, error);
         }
     }
 
     getFormData = () => {
-        return this.form.current.getFormData();
+        return this.refForm.current.getFormData();
     };
 
     fetchTypeAheadValues = async (query) => {
@@ -85,22 +70,23 @@ class RecordForm extends React.Component {
             return <AlertMessage
                 type={ALERT_TYPES.DANGER}
                 message={this.props.formatMessage('record.load-form-error', {error: this.props.formgen.error.message})}/>;
-        } else if (this.props.formgen.status === ACTION_STATUS.PENDING || !this.state.wizardProperties) {
+        } else if (this.props.formgen.status === ACTION_STATUS.PENDING || !this.state.form) {
             return <Loader/>;
         }
 
         return <Card variant='info'>
             <Card.Header className="text-light bg-primary" as="h6">{this.i18n('record.form-title')}</Card.Header>
-            <WizardContainer
-                ref={this.form}
-                data={this.state.form}
-                steps={this.state.wizardProperties.steps}
-                enableForwardSkip={true}
-                isFormValid={this.props.isFormValid}
-                i18n={i18n}
-                horizontalWizardNav={true}
-                modalView={false}
+            <SForms
+                ref={this.refForm}
+                form={this.state.form}
+                formData={this.props.record.question}
+                options={{i18n, intl: I18nStore.getIntl()}}
                 fetchTypeAheadValues={this.fetchTypeAheadValues}
+                isFormValid={this.props.isFormValid}
+                modalView={false}
+                enableForwardSkip={true}
+                horizontalWizardNav={true}
+                loader={<Loader/>}
             />
         </Card>;
     }
