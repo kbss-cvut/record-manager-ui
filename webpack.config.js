@@ -1,5 +1,5 @@
 const dotenvConfig = require('dotenv-safe').config({
-    allowEmptyValues: false,
+    allowEmptyValues: [ 'STUDY_MANAGER_BASENAME' ],
     sample: './.env.example',
 });
 
@@ -31,10 +31,10 @@ module.exports = (
         context: resolve('js'),
         entry: './index.js',
         output: {
-            filename: ifProd('bundle.[name].[chunkhash].js', 'bundle.[name].js'),
+            filename: ifProd('bundle.min.js', 'bundle.[name].js'),
             chunkFilename: '[name].[chunkhash].js',
-            path: resolve('build/'),
-            publicPath: '/',
+            path: process.env.STATIC ? resolve("../../../target/study-manager-0.2.1/") : resolve('build/'),
+            publicPath: process.env.STATIC ? '/study-manager' : "/",
         },
         resolve: {
             extensions: ['.js', '.jsx', '.json'],
@@ -106,6 +106,7 @@ module.exports = (
                 template: 'index.html',
                 inject: true,
                 minify: true,
+                basename: process.env.STATIC ? '/study-manager' : "",
             }),
             new InlineManifestWebpackPlugin(),
 
@@ -130,6 +131,9 @@ module.exports = (
                 [
                     {
                         from: resolve('./resources'),
+                    },
+                    {
+                        from: resolve('./WEB-INF'),
                     }
                 ],
                 {copyUnmodified: true},
