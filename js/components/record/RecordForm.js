@@ -83,9 +83,7 @@ class RecordForm extends React.Component {
                 options={{i18n, intl: I18nStore.getIntl()}}
                 fetchTypeAheadValues={this.fetchTypeAheadValues}
                 isFormValid={this.props.isFormValid}
-                modalView={false}
                 enableForwardSkip={true}
-                horizontalWizardNav={true}
                 loader={<Loader/>}
             />
         </Card>;
