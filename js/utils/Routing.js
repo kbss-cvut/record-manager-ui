@@ -5,9 +5,10 @@ import {setTransitionPayload} from "../actions/RouterActions";
 import {createBrowserHistory} from 'history';
 import {setViewHandlers} from "../actions/RouterActions";
 import * as Constants from "../constants/DefaultConstants";
+import {BASENAME} from "../../config";
 
 export const history = createBrowserHistory({
-    basename: "/study-manager"
+    basename: BASENAME
 });
 
 /**

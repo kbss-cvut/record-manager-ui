@@ -25,16 +25,19 @@ module.exports = (
     },
 ) => {
     const {ifProd, ifNotProd} = getIfUtils(env);
+    const isStatic = process.env.STATIC
+    const basename = process.env.STUDY_MANAGER_BASENAME;
+    const version = process.env.npm_package_version;
 
     return {
         mode: ifProd('production', 'development'),
         context: resolve('js'),
         entry: './index.js',
         output: {
-            filename: ifProd('bundle.min.js', 'bundle.[name].js'),
+            filename: ifProd('bundle.[name].[chunkhash].js', 'bundle.[name].js'),
             chunkFilename: '[name].[chunkhash].js',
-            path: process.env.STATIC ? resolve("../../../target/study-manager-0.2.1/") : resolve('build/'),
-            publicPath: process.env.STATIC ? '/study-manager' : "/",
+            path: isStatic ? resolve(`../../../target/study-manager-${version}/`) : resolve('build/'),
+            publicPath: isStatic ? basename : "/",
         },
         resolve: {
             extensions: ['.js', '.jsx', '.json'],
@@ -100,13 +103,13 @@ module.exports = (
             ifNotProd(new webpack.HotModuleReplacementPlugin()),
 
             new HtmlWebpackPlugin({
-                version: ifProd(process.env.npm_package_version, "Dev"),
+                version: ifProd(version, "Dev"),
                 year: new Date().getFullYear(),
                 title: appTitle,
                 template: 'index.html',
                 inject: true,
                 minify: true,
-                basename: process.env.STATIC ? '/study-manager' : "",
+                basename: isStatic ? basename : "",
             }),
             new InlineManifestWebpackPlugin(),
 
@@ -131,9 +134,6 @@ module.exports = (
                 [
                     {
                         from: resolve('./resources'),
-                    },
-                    {
-                        from: resolve('./WEB-INF'),
                     }
                 ],
                 {copyUnmodified: true},

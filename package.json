@@ -67,7 +67,7 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server --env.dev --config ./webpack.config.js",
     "build": "cross-env NODE_ENV=production webpack --env.prod -p --config ./webpack.config.js",
     "start": "node server.js",
-    "build:static": "cross-env NODE_ENV=production --env.STATIC=true webpack --env.prod -p --config ./webpack.config.js",
+    "build:static": "cross-env NODE_ENV=production STATIC=true webpack --env.prod -p --config ./webpack.config.js",
     "test": "jest",
     "lint": "eslint js",
     "validate": "npm-run-all --parallel lint build test"
