@@ -5,10 +5,11 @@ import {IntlProvider} from "react-intl";
 import {Route, Router} from "react-router-dom";
 import MainView from "./components/MainView";
 import {connect} from "react-redux";
+import {history} from "./utils/Routing";
 
 const App = (props) => (
     <IntlProvider {...props.intl}>
-        <Router history={props.history}>
+        <Router history={history} basename="/study-manager">
             <Route path='/' component={MainView}/>
         </Router>
     </IntlProvider>

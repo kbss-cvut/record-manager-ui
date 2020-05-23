@@ -6,7 +6,9 @@ import {createBrowserHistory} from 'history';
 import {setViewHandlers} from "../actions/RouterActions";
 import * as Constants from "../constants/DefaultConstants";
 
-export const history = createBrowserHistory();
+export const history = createBrowserHistory({
+    basename: "/study-manager"
+});
 
 /**
  * Transitions to the specified route

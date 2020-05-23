@@ -6,7 +6,6 @@ import {Provider} from "react-redux";
 import reduxThunk from "redux-thunk";
 import {applyMiddleware, createStore} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension/developmentOnly';
-import {history} from "./utils/Routing";
 import rootReducer from "./reducers";
 import {loadUserProfile} from "./actions/AuthActions";
 import {errorLogger, historyLogger} from "./utils/HistoryLogger";
@@ -30,7 +29,7 @@ store.dispatch(loadUserProfile());
 
 render(
     <Provider store={store}>
-        <App history={history}/>
+        <App/>
     </Provider>,
     document.getElementById('content')
 );
