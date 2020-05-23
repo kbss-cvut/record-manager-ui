@@ -268,3 +268,16 @@ export function deviceIsSupported() {
 
     return isSupported;
 }
+
+// format to DD-MM-YYYY HH:mm:ss:SSS
+export function formatDateWithMilliseconds(timestamp) {
+    const date = new Date(timestamp / 1000);
+    const dateStr =
+        ("00" + date.getDate()).slice(-2) + "-" +
+        ("00" + (date.getMonth() + 1)).slice(-2) + "-" +
+        date.getFullYear() + " " +
+        ("00" + date.getHours()).slice(-2) + ":" +
+        ("00" + date.getMinutes()).slice(-2) + ":" +
+        ("00" + date.getSeconds()).slice(-2) + ("00" + date.getMilliseconds()).slice(-2);
+    return dateStr;
+}

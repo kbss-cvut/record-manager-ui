@@ -13,7 +13,7 @@ import {bindActionCreators} from "redux";
 import {LoaderCard} from "../Loader";
 import AlertMessage from "../AlertMessage";
 import HorizontalInput from "../HorizontalInput";
-import * as moment from "moment/moment";
+import {formatDateWithMilliseconds} from "../../utils/Utils";
 
 class ActionHistory extends React.Component {
     constructor(props) {
@@ -58,7 +58,7 @@ class ActionHistory extends React.Component {
                             <HorizontalInput
                                 type='text' label={this.i18n('history.time')}
                                 disabled={true} labelWidth={3} inputWidth={8}
-                                value={moment.unix(action.timestamp / 1000).format('DD-MM-YYYY HH:mm:ss:SSS')}
+                                value={formatDateWithMilliseconds(action.timestamp)}
                             />
                         </div>
                     </div>

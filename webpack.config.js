@@ -48,7 +48,7 @@ module.exports = (
             historyApiFallback: true
         },
         devtool: 'source-map',
-        /*optimization: {
+        optimization: {
             runtimeChunk: 'single',
             splitChunks: {
                 cacheGroups: {
@@ -59,7 +59,7 @@ module.exports = (
                     }
                 },
             },
-        },*/
+        },
         module: {
             rules: [
                 {
@@ -138,7 +138,6 @@ module.exports = (
                 ],
                 {copyUnmodified: true},
             ),
-
         ])
     };
 };
