@@ -581,7 +581,7 @@ button .help-icon {
     height: 12px;
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
-    display: inline-grid;
+    display: inline-block;
     margin-left: 4px;
 }
 
@@ -620,8 +620,7 @@ button .help-icon {
     margin: 0 auto;
     height: 60px;
     width: 108px;
-    display: flex;
-    align-items: center;
+    position: relative;
 }
 
 .circle {

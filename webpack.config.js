@@ -32,7 +32,7 @@ module.exports = (
     return {
         mode: ifProd('production', 'development'),
         context: resolve('js'),
-        entry: './index.js',
+        entry: ['core-js/stable/object/assign', 'core-js/stable/promise', './index.js'],
         output: {
             filename: ifProd('bundle.[name].[chunkhash].js', 'bundle.[name].js'),
             chunkFilename: '[name].[chunkhash].js',
@@ -40,9 +40,10 @@ module.exports = (
             publicPath: isStatic ? basename : "/",
         },
         resolve: {
-            extensions: ['.js', '.jsx', '.json'],
+            extensions: ['.js', '.jsx', '.json']
         },
         devServer: {
+            host: '0.0.0.0',
             inline: true,
             port: devServerPort || 8080,
             historyApiFallback: true
