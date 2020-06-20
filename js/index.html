@@ -12,9 +12,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0"/>
     <!-- <script type="text/javascript" src="/locale/cs.js"></script> -->
     <title><%=htmlWebpackPlugin.options.title %></title>
+    <script src="https://unpkg.com/bowser@2.7.0/es5.js"></script>
 </head>
 <body>
 <div id="wrap">
+    <div id="unsupported-browser" style="text-align:center;font-style:italic;"></div>
     <div id="content"></div>
 </div>
 <footer class="footer">
@@ -28,5 +30,9 @@
         </p>
     </div>
 </footer>
+<script>
+    var unsupportedBrowserElement,SUPPORTED_BROWSERS={edge:">=14",chrome:">=48",chromium:">=48",opera:">=35",safari:">=10.1",firefox:">=44",ie:">=11",samsung_internet:">=6.2"},browser=bowser.getParser(window.navigator.userAgent),isSupported=browser.satisfies(SUPPORTED_BROWSERS);
+    isSupported||((unsupportedBrowserElement=document.getElementById("unsupported-browser")).innerHTML+="Your browser is not fully supported! Some parts of web may not work properly. We recommend using the latest version of Chrome, Firefox, Safari or Edge.");
+</script>
 </body>
 </html>

@@ -35,10 +35,21 @@ class MainView extends React.Component {
             </NavItem> : null
     }
 
+    removeUnsupportedBrowserWarning() {
+        const unsupportedBrowserElem = document.getElementById("unsupported-browser");
+        if (unsupportedBrowserElem) {
+            unsupportedBrowserElem.remove();
+        }
+    }
+
     render() {
         if (this.props.status === ACTION_STATUS.PENDING) {
             return <LoaderMask/>;
-        } else if (!this.props.isLoaded) {
+        }
+
+        this.removeUnsupportedBrowserWarning()
+
+        if (!this.props.isLoaded) {
             return (<div>{unauthRoutes}</div>);
         }
         const user = this.props.user;
