@@ -14,7 +14,7 @@ import {transitionTo} from "../../utils/Routing";
 import {login} from "../../actions/AuthActions";
 import {LoaderSmall} from "../Loader";
 import {deviceIsMobile, deviceIsSupported} from "../../utils/Utils";
-import * as Constants from "../../constants/DefaultConstants";
+import * as SupportedDevices from "../../constants/SupportedDevices";
 
 class Login extends React.Component {
     constructor(props) {
@@ -55,14 +55,14 @@ class Login extends React.Component {
     };
 
     getSupportedBrowsersLinks() {
-        return Constants.SUPPORTED_BROWSERS.map((browser, index) => {
+        return SupportedDevices.SUPPORTED_BROWSERS_LINKS.map((browser, index) => {
             return <span key={browser.name}>
         {browser.linkMobile && browser.linkDesktop ?
             <a href={deviceIsMobile() ? browser.linkMobile : browser.linkDesktop} target="_blank"
                key="0">{browser.name}</a> : <span>{browser.name}</span>}
-                {index <= Constants.SUPPORTED_BROWSERS.length - 3 && <span>, </span>}
-                {index === Constants.SUPPORTED_BROWSERS.length - 2 && <span>{this.i18n('or')} </span>}
-                {index === Constants.SUPPORTED_BROWSERS.length - 1 && <span>.</span>}
+                {index <= SupportedDevices.SUPPORTED_BROWSERS_LINKS.length - 3 && <span>, </span>}
+                {index === SupportedDevices.SUPPORTED_BROWSERS_LINKS.length - 2 && <span>{this.i18n('or')} </span>}
+                {index === SupportedDevices.SUPPORTED_BROWSERS_LINKS.length - 1 && <span>.</span>}
       </span>
         });
     }

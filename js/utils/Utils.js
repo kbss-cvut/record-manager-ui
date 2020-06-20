@@ -1,8 +1,8 @@
 'use strict';
-import {ROLE, SUPPORTED_DEVICES} from "../constants/DefaultConstants";
+import Bowser from 'bowser';
 import * as Constants from "../constants/DefaultConstants";
 import * as Vocabulary from "../constants/Vocabulary";
-import platformParse from 'platform';
+import * as supportedDevices from "../constants/SupportedDevices";
 
 /**
  * Common propositions that should not be capitalized
@@ -253,20 +253,9 @@ export function validateEmail(email) {
 }
 
 export function deviceIsSupported() {
-    let isSupported = false;
-    const browser = platformParse.name || 'undefined';
-    const version = parseFloat(platformParse.version) || 0;
+    const browser = Bowser.getParser(window.navigator.userAgent);
 
-    SUPPORTED_DEVICES.forEach(function (item) {
-        item.browser = item.browser || [];
-        item.version = parseFloat(item.version) || 0;
-
-        if ((item.browser).indexOf(browser) !== -1 && item.version <= version) {
-            isSupported = true;
-        }
-    });
-
-    return isSupported;
+    return browser.satisfies(supportedDevices.SUPPORTED_BROWSERS);
 }
 
 // format to DD-MM-YYYY HH:mm:ss:SSS

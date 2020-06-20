@@ -5,6 +5,7 @@
   "main": "js/index.js",
   "dependencies": {
     "axios": "^0.19.2",
+    "bowser": "^2.9.0",
     "classnames": "^2.2.6",
     "history": "^4.10.1",
     "lodash": "^4.17.15",
@@ -21,7 +22,7 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
-    "s-forms": "https://kbss.felk.cvut.cz/dist/s-forms-0.1.8.tgz"
+    "s-forms": "./s-forms-0.2.16.tgz"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
