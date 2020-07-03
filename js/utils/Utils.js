@@ -3,6 +3,7 @@ import Bowser from 'bowser';
 import * as Constants from "../constants/DefaultConstants";
 import * as Vocabulary from "../constants/Vocabulary";
 import * as supportedDevices from "../constants/SupportedDevices";
+import {ROLE} from "../constants/DefaultConstants";
 
 /**
  * Common propositions that should not be capitalized
