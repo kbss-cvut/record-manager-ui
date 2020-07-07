@@ -2,9 +2,10 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import {FormCheck, Col, FormLabel, FormGroup, FormControl, FormText, InputGroup} from "react-bootstrap";
+import {Col, FormCheck, FormControl, FormGroup, FormLabel, FormText, InputGroup} from "react-bootstrap";
 import PropTypes from "prop-types";
 import Row from 'react-bootstrap/Row';
+import TypeaheadAnswer from "./record/TypeaheadAnswer";
 
 export default class HorizontalInput extends React.Component {
     static propTypes = {
@@ -17,6 +18,7 @@ export default class HorizontalInput extends React.Component {
         labelWidth: PropTypes.number,     // Width of the label
         inputWidth: PropTypes.number,     // Width of the input component container
         inputOffset: PropTypes.number, // Offset to put before the input component. Applicable only for
+        possibleValueQuery: PropTypes.string,
         // checkboxes and radios
         iconRight: PropTypes.object
     };
@@ -50,6 +52,8 @@ export default class HorizontalInput extends React.Component {
                 return this._renderSelect();
             case 'textarea':
                 return this._renderTextArea();
+            case 'autocomplete':
+                return this._renderAutocomplete();
             default:
                 return this._renderInput();
         }
@@ -97,6 +101,18 @@ export default class HorizontalInput extends React.Component {
                 {this._renderHelp()}
             </Col>
         </FormGroup>;
+    }
+
+    _renderAutocomplete() {
+        // TODO validation
+        return <FormGroup as={Row}>
+            {this._renderLabel()}
+            <Col lg={this.props.inputWidth}>
+                <TypeaheadAnswer {...this._getInputProps()}/>
+                {this.props.validation && <FormControl.Feedback/>}
+                {this._renderHelp()}
+            </Col>
+        </FormGroup>
     }
 
     _renderLabel() {
