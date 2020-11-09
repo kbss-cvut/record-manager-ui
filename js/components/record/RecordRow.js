@@ -20,10 +20,6 @@ let RecordRow = (props) => {
     return <tr>
         <td className='report-row'>
             <Button variant="link" size="sm"
-                    onClick={() => props.onEdit(record)}>{record.key}</Button>
-        </td>
-        <td className='report-row'>
-            <Button variant="link" size="sm"
                     onClick={() => props.onEdit(record)}>{record.localName}</Button>
         </td>
         <td className='report-row content-center'>

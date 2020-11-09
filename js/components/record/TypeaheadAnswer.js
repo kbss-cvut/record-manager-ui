@@ -1,15 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {JsonLdObjectUtils, Constants} from "s-forms";
+import {Constants, JsonLdObjectUtils} from "s-forms";
 import JsonLdUtils from "jsonld-utils";
 import Select from 'react-select';
-import {API_URL} from "../../../config";
 import {axiosBackend} from "../../actions";
 import PropTypes from "prop-types";
 
-const fetchTypeAheadValues = async (query) => {
-    const FORM_GEN_POSSIBLE_VALUES_URL = `${API_URL}/rest/formGen/possibleValues`;
-
-    const result = await axiosBackend.get(`${FORM_GEN_POSSIBLE_VALUES_URL}?query=${encodeURIComponent(query)}`);
+const fetchTypeAheadValues = async (endpointURL) => {
+    const result = await axiosBackend.get(endpointURL);
     return result.data;
 };
 
@@ -38,10 +35,10 @@ const TypeaheadAnswer = (props) => {
 
     useEffect(() => {
         if (options.length === 0) {
-            fetchTypeAheadValues(props.possibleValueQuery).then(
+            fetchTypeAheadValues(props.possibleValuesEndpoint).then(
                 d => {
-                        setLoading(false);
-                        setOptions(processTypeaheadOptions(d, intl));
+                    setLoading(false);
+                    setOptions(processTypeaheadOptions(d, intl));
                 }
             );
         }
@@ -73,7 +70,7 @@ const TypeaheadAnswer = (props) => {
 };
 
 TypeaheadAnswer.propTypes = {
-    possibleValueQuery: PropTypes.string.isRequired,
+    possibleValuesEndpoint: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     value: PropTypes.string,
     onChange: PropTypes.func.isRequired
