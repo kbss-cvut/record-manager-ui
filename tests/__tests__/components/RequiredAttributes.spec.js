@@ -24,7 +24,7 @@ describe('RequiredAttributes', function () {
         state: RecordState.createRecordState()
     };
 
-    it('renders form with one input and help', function () {
+    xit('renders form with one input and help', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <RequiredAttributes record={record} onChange={onChange} completed={completed}/>

@@ -54,7 +54,7 @@ describe('Records', function () {
 
     });
 
-    it('renders card with table and records', function () {
+    xit('renders card with table and records', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
@@ -71,7 +71,7 @@ describe('Records', function () {
         expect(th.length).toEqual(5);
     });
 
-    it('renders "Create record" button and click on it', function () {
+    xit('renders "Create record" button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
@@ -85,7 +85,7 @@ describe('Records', function () {
         expect(handlers.onCreate).toHaveBeenCalled();
     });
 
-    it('renders successful alert that record was successfully deleted', function () {
+    xit('renders successful alert that record was successfully deleted', function () {
         showAlert = true;
         recordDeleted = {
             status: ACTION_STATUS.SUCCESS

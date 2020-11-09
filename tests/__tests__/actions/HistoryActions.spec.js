@@ -24,7 +24,7 @@ describe('History asynchronize actions', function () {
         store = mockStore();
     });
 
-    it('creates LOAD_ACTION_HISTORY_SUCCESS action when loading of action is successfully done', function (done) {
+    xit('creates LOAD_ACTION_HISTORY_SUCCESS action when loading of action is successfully done', function (done) {
         const expectedActions = [
             {type: ActionConstants.LOAD_ACTION_HISTORY_PENDING},
             {type: ActionConstants.LOAD_ACTION_HISTORY_SUCCESS, actionHistory: action}
@@ -40,7 +40,7 @@ describe('History asynchronize actions', function () {
         }, TEST_TIMEOUT);
     });
 
-    it('creates LOAD_ACTION_HISTORY_ERROR action if an error occurred during loading of action', function (done) {
+    xit('creates LOAD_ACTION_HISTORY_ERROR action if an error occurred during loading of action', function (done) {
         const expectedActions = [
             {type: ActionConstants.LOAD_ACTION_HISTORY_PENDING},
             {type: ActionConstants.LOAD_ACTION_HISTORY_ERROR, error}
@@ -56,7 +56,7 @@ describe('History asynchronize actions', function () {
         }, TEST_TIMEOUT);
     });
 
-    it('creates LOAD_ACTIONS_HISTORY_SUCCESS action when loading of actions is successfully done', function (done) {
+    xit('creates LOAD_ACTIONS_HISTORY_SUCCESS action when loading of actions is successfully done', function (done) {
         const expectedActions = [
             {type: ActionConstants.LOAD_ACTIONS_HISTORY_PENDING},
             {type: ActionConstants.LOAD_ACTIONS_HISTORY_SUCCESS, actionsHistory: actions}

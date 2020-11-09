@@ -83,7 +83,7 @@ describe('Record', function () {
         expect(alert).not.toBeNull();
     });
 
-    it("renders record's form empty", function () {
+    xit("renders record's form empty", function () {
         const tree = mount(
             <IntlProvider locale="en" {...intlData}>
                 <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}

@@ -59,7 +59,7 @@ describe('RecordTable', function () {
         expect(alert).not.toBeNull();
     });
 
-    it('renders table with headers and columns', function () {
+    xit('renders table with headers and columns', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <RecordTable recordsLoaded={recordsLoaded} handlers={handlers} disableDelete={disableDelete}
@@ -73,7 +73,7 @@ describe('RecordTable', function () {
         expect(td.length).toEqual(10);
     });
 
-    it('renders 2 "Open" buttons and 4 link buttons and click on it', function () {
+    xit('renders 2 "Open" buttons and 4 link buttons and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <RecordTable recordsLoaded={recordsLoaded} handlers={handlers} disableDelete={disableDelete}
