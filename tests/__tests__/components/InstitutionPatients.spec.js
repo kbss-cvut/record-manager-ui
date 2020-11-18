@@ -7,6 +7,7 @@ import enLang from '../../../js/i18n/en';
 describe('InstitutionPatients', function () {
     const intlData = enLang;
     let recordsLoaded,
+        formTypesLoaded = {},
         records,
         onEdit = jest.fn();
 
@@ -16,7 +17,7 @@ describe('InstitutionPatients', function () {
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <InstitutionPatients recordsLoaded={recordsLoaded} onEdit={onEdit}/>
+                <InstitutionPatients recordsLoaded={recordsLoaded} formTypesLoaded={formTypesLoaded} onEdit={onEdit}/>
             </IntlProvider>);
         const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
         expect(cardHeading).not.toBeNull();

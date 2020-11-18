@@ -10,10 +10,12 @@ import RecordRow from "./RecordRow";
 import AlertMessage from "../AlertMessage";
 import Loader from "../Loader";
 import PropTypes from "prop-types";
+import {processTypeaheadOptions} from "./TypeaheadAnswer";
 
 class RecordTable extends React.Component {
     static propTypes = {
         recordsLoaded: PropTypes.object.isRequired,
+        formTypesLoaded: PropTypes.object.isRequired,
         handlers: PropTypes.object.isRequired,
         recordDeleted: PropTypes.object,
         disableDelete: PropTypes.bool,
@@ -79,6 +81,7 @@ class RecordTable extends React.Component {
         return <thead>
         <tr>
             <th className='w-25 content-center'>{this.i18n('records.local-name')}</th>
+            <th className='w-25 content-center'>{this.i18n('records.type')}</th>
             <th className='w-25 content-center'>{this.i18n('records.last-modified')}</th>
             <th className='w-15 content-center'>{this.i18n('records.completion-status')}</th>
             <th className='w-20 content-center'>{this.i18n('actions')}</th>
@@ -87,12 +90,15 @@ class RecordTable extends React.Component {
     }
 
     _renderRows() {
-        const {recordsLoaded, handlers, recordsDeleting} = this.props;
+        const {recordsLoaded, formTypesLoaded, handlers, recordsDeleting, intl} = this.props;
         const records = recordsLoaded.records;
+        const formTypeOptions =
+            formTypesLoaded.formTypes ? processTypeaheadOptions(formTypesLoaded.formTypes, intl) : [];
         let rows = [];
         for (let i = 0, len = records.length; i < len; i++) {
             rows.push(<RecordRow key={records[i].key} record={records[i]} onEdit={handlers.onEdit}
                                  onDelete={this._onDelete}
+                                 formTypeOptions={formTypeOptions}
                                  disableDelete={this.props.disableDelete} deletionLoading={!this.props.disableDelete &&
             !!(recordsDeleting.includes(records[i].key))}/>);
         }

@@ -9,19 +9,23 @@ import RecordTable from '../record/RecordTable';
 import PropTypes from "prop-types";
 
 const InstitutionPatients = (props) => {
-    const {recordsLoaded, onEdit} = props;
+    const {recordsLoaded, formTypesLoaded, onEdit} = props;
 
     return <Card variant='info' className="mt-3">
         <Card.Header className="text-light bg-primary"
                      as="h6">{props.i18n('institution.patients.panel-title')}</Card.Header>
         <Card.Body>
-            <RecordTable recordsLoaded={recordsLoaded} handlers={{onEdit: onEdit}} disableDelete={true}/>
+            <RecordTable recordsLoaded={recordsLoaded}
+                         formTypesLoaded={formTypesLoaded}
+                         handlers={{onEdit: onEdit}}
+                         disableDelete={true}/>
         </Card.Body>
     </Card>;
 };
 
 InstitutionPatients.propTypes = {
     recordsLoaded: PropTypes.object.isRequired,
+    formTypesLoaded: PropTypes.object.isRequired,
     onEdit: PropTypes.func.isRequired
 };
 

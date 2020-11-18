@@ -11,6 +11,7 @@ import withI18n from "../../i18n/withI18n";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {deleteRecord} from "../../actions/RecordActions";
+import {loadFormTypes} from "../../actions/FormTypesActions";
 
 class RecordsController extends React.Component {
     constructor(props) {
@@ -22,6 +23,7 @@ class RecordsController extends React.Component {
 
     componentDidMount() {
         this.props.loadRecords(this.props.currentUser);
+        this.props.loadFormTypes();
     }
 
     _onEditRecord = (record) => {
@@ -48,7 +50,7 @@ class RecordsController extends React.Component {
     };
 
     render() {
-        const {recordsLoaded, recordDeleted, recordsDeleting, currentUser} = this.props;
+        const {formTypesLoaded, recordsLoaded, recordDeleted, recordsDeleting, currentUser} = this.props;
         if (!currentUser) {
             return null;
         }
@@ -58,7 +60,8 @@ class RecordsController extends React.Component {
             onDelete: this._onDeleteRecord
         };
         return <Records recordsLoaded={recordsLoaded} showAlert={this.state.showAlert} handlers={handlers}
-                        recordDeleted={recordDeleted} recordsDeleting={recordsDeleting} currentUser={currentUser}/>;
+                        recordDeleted={recordDeleted} recordsDeleting={recordsDeleting} currentUser={currentUser}
+                        formTypesLoaded={formTypesLoaded}/>;
     }
 }
 
@@ -68,6 +71,7 @@ function mapStateToProps(state) {
     return {
         recordDeleted: state.record.recordDeleted,
         recordsLoaded: state.records.recordsLoaded,
+        formTypesLoaded: state.formTypes.formTypesLoaded,
         recordsDeleting: state.record.recordsDeleting,
         currentUser: state.auth.user
     };
@@ -77,6 +81,7 @@ function mapDispatchToProps(dispatch) {
     return {
         deleteRecord: bindActionCreators(deleteRecord, dispatch),
         loadRecords: bindActionCreators(loadRecords, dispatch),
+        loadFormTypes: bindActionCreators(loadFormTypes, dispatch),
         transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch)
     }
 }

@@ -11,6 +11,7 @@ import HistoryReducer from "./HistoryReducer";
 import * as ActionConstants from "../constants/ActionConstants";
 import StatisticsReducer from "./StatisticsReducer";
 import IntlReducer from './IntlReducer';
+import FormTypesReducer from "./FormTypesReducer";
 
 const rootReducer = (state, action) => {
     if (action.type === ActionConstants.UNAUTH_USER) {
@@ -27,6 +28,7 @@ const appReducer = combineReducers({
     record: RecordReducer,
     router: RouterReducer,
     records: RecordsReducer,
+    formTypes: FormTypesReducer,
     history: HistoryReducer,
     statistics: StatisticsReducer,
     institution: InstitutionReducer,

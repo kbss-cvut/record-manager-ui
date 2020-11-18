@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 
 let RecordRow = (props) => {
     const record = props.record,
+        formTypeOptions = props.formTypeOptions,
         isComplete = RecordValidator.isComplete(record),
         completionTooltip = props.i18n(isComplete ? 'records.completion-status-tooltip.complete' : 'records.completion-status-tooltip.incomplete'),
         deleteButton = props.disableDelete ? null :
@@ -21,6 +22,9 @@ let RecordRow = (props) => {
         <td className='report-row'>
             <Button variant="link" size="sm"
                     onClick={() => props.onEdit(record)}>{record.localName}</Button>
+        </td>
+        <td className='report-row content-center'>
+            {getFormTypeOptionName(record.formType, formTypeOptions)}
         </td>
         <td className='report-row content-center'>
             {formatDate(new Date(record.lastModified ? record.lastModified : record.dateCreated))}
@@ -36,9 +40,18 @@ let RecordRow = (props) => {
     </tr>
 };
 
+const getFormTypeOptionName = (formType, formTypesOptions) => {
+    if (!formType) {
+        return "";
+    }
+    const label = formTypesOptions.find(e => e.id === formType)?.name;
+    return label ? label : formType;
+}
+
 RecordRow.propTypes = {
     i18n: PropTypes.func.isRequired,
     record: PropTypes.object.isRequired,
+    formTypeOptions: PropTypes.array.isRequired,
     onEdit: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     disableDelete: PropTypes.bool.isRequired,

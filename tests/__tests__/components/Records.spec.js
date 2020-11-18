@@ -14,6 +14,7 @@ describe('Records', function () {
         recordsLoaded,
         recordDeleted,
         recordsDeleting = [],
+        formTypesLoaded = {},
         showAlert,
         handlers;
     admin = {
@@ -111,7 +112,9 @@ describe('Records', function () {
             <IntlProvider locale="en" {...intlData}>
                 <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
                          recordDeleted={recordDeleted} handlers={handlers}
-                         recordsDeleting={recordsDeleting} currentUser={admin}/>
+                         recordsDeleting={recordsDeleting} currentUser={admin}
+                         formTypesLoaded={formTypesLoaded}
+                />
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
         expect(alert).not.toBeNull();

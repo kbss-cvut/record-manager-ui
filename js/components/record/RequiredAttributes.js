@@ -25,7 +25,6 @@ class RequiredAttributes extends React.Component {
         const record = this.props.record;
         const possibleValuesEndpoint = `${API_URL}/rest/formGen/formTypes`;
 
-        const formTypeLabel = "Typ záznamu*";
         // If the 'completed' prop is true, the attributes (except for the name) should be read only
         return <div>
             <div className='row'>
@@ -33,7 +32,7 @@ class RequiredAttributes extends React.Component {
                     <HorizontalInput
                         labelWidth={4} inputWidth={8}
                         type='autocomplete' name='formType' value={record.formType}
-                        label={formTypeLabel} onChange={this.props.onChange}
+                        label={this.i18n('records.type') + '*'} onChange={this.props.onChange}
                         possibleValuesEndpoint={possibleValuesEndpoint}
                     />
                 </div>

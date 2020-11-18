@@ -10,7 +10,7 @@ const fetchTypeAheadValues = async (endpointURL) => {
     return result.data;
 };
 
-const processTypeaheadOptions = (options, intl) => {
+export const processTypeaheadOptions = (options, intl) => {
     if (!options) {
         return [];
     }
