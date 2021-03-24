@@ -1,7 +1,4 @@
-const dotenvConfig = require('dotenv-safe').config({
-    allowEmptyValues: [ 'STUDY_MANAGER_BASENAME' ],
-    sample: './.env.example',
-});
+const dotenv = require('dotenv').config()
 
 const {resolve} = require('path');
 const webpack = require('webpack');
@@ -118,9 +115,15 @@ module.exports = (
                 'process.env': {
                     NODE_ENV: ifProd('"production"', '"development"'),
                     NPM_PACKAGE_VERSION: JSON.stringify(process.env.npm_package_version),
-                    ...Object.keys(dotenvConfig.parsed).reduce((acc, key) => {
-                        return {...acc, [key]: JSON.stringify(dotenvConfig.parsed[key])};
+                    // Load env vars from .env file
+                    ...Object.keys(dotenv.parsed).reduce((acc, key) => {
+                        return {...acc, [key]: JSON.stringify(dotenv.parsed[key])};
                     }, {}),
+                    // Load env vars from shell - but only those that start with STUDY_MANAGER_
+                    ...Object.keys(process.env).filter(key => key.startsWith('STUDY_MANAGER_')).reduce((env, key) => {
+                        env[key] = JSON.stringify(process.env[key])
+                        return env
+                    }, {})
                 },
             }),
 
