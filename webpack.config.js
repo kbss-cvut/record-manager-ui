@@ -116,7 +116,7 @@ module.exports = (
                     NODE_ENV: ifProd('"production"', '"development"'),
                     NPM_PACKAGE_VERSION: JSON.stringify(process.env.npm_package_version),
                     // Load env vars from .env file
-                    ...Object.keys(dotenv.parsed).reduce((acc, key) => {
+                    ...Object.keys(dotenv.parsed || {}).reduce((acc, key) => {
                         return {...acc, [key]: JSON.stringify(dotenv.parsed[key])};
                     }, {}),
                     // Load env vars from shell - but only those that start with STUDY_MANAGER_
