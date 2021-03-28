@@ -23,7 +23,7 @@ class RequiredAttributes extends React.Component {
 
     render() {
         const record = this.props.record;
-        const possibleValuesEndpoint = `${API_URL}/rest/formGen/formTypes`;
+        const possibleValuesEndpoint = `${API_URL}/rest/formGen/formTemplates`;
 
         // If the 'completed' prop is true, the attributes (except for the name) should be read only
         return <div>
@@ -31,8 +31,8 @@ class RequiredAttributes extends React.Component {
                 <div className='col-11 col-sm-6'>
                     <HorizontalInput
                         labelWidth={4} inputWidth={8}
-                        type='autocomplete' name='formType' value={record.formType}
-                        label={this.i18n('records.type') + '*'} onChange={this.props.onChange}
+                        type='autocomplete' name='formTemplate' value={record.formTemplate}
+                        label={this.i18n('records.form-template') + '*'} onChange={this.props.onChange}
                         possibleValuesEndpoint={possibleValuesEndpoint}
                     />
                 </div>

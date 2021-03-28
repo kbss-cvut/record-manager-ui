@@ -26,7 +26,7 @@ class Institution extends React.Component {
         institutionSaved: PropTypes.object,
         institutionMembers: PropTypes.object,
         recordsLoaded: PropTypes.object,
-        formTypesLoaded: PropTypes.object,
+        formTemplatesLoaded: PropTypes.object,
         handlers: PropTypes.object.isRequired,
         currentUser: PropTypes.object.isRequired,
         userDeleted: PropTypes.object,
@@ -45,7 +45,7 @@ class Institution extends React.Component {
     };
 
     render() {
-        const {showAlert, currentUser, institution, recordsLoaded, institutionLoaded, institutionSaved, formTypesLoaded} = this.props;
+        const {showAlert, currentUser, institution, recordsLoaded, institutionLoaded, institutionSaved, formTemplatesLoaded} = this.props;
 
         if (institutionLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
@@ -82,7 +82,9 @@ class Institution extends React.Component {
                 </form>
                 {!institution.isNew && this._renderMembers()}
                 {!institution.isNew &&
-                <InstitutionPatients recordsLoaded={recordsLoaded} formTypesLoaded={formTypesLoaded} onEdit={this.props.handlers.onEditPatient}/>}
+                <InstitutionPatients
+                    recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
+                    onEdit={this.props.handlers.onEditPatient} currentUser={currentUser}/>}
             </Card.Body>
         </Card>;
     }

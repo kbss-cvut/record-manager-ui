@@ -8,6 +8,7 @@ import {injectIntl} from "react-intl";
 import Routes from '../../constants/RoutesConstants';
 import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
 import withI18n from "../../i18n/withI18n";
+import {loadFormTemplates} from "../../actions/FormTemplatesActions";
 
 class DashboardController extends React.Component {
     constructor(props) {
@@ -53,6 +54,10 @@ class DashboardController extends React.Component {
         });
     };
 
+    componentDidMount() {
+        this.props.loadFormTemplates();
+    }
+
     render() {
         const handlers = {
             showUsers: this._showUsers,
@@ -75,12 +80,14 @@ export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(
 
 function mapStateToProps(state) {
     return {
-        currentUser: state.auth.user
+        currentUser: state.auth.user,
+        formTemplatesLoaded: state.formTemplates.formTemplatesLoaded
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch)
+        transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),
+        loadFormTemplates: bindActionCreators(loadFormTemplates, dispatch)
     }
 }

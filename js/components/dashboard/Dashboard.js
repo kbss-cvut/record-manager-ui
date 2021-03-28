@@ -2,8 +2,8 @@
 
 import React from "react";
 import withI18n from "../../i18n/withI18n";
-import {injectIntl, FormattedMessage} from "react-intl";
-import {Col, Jumbotron, Container, Row} from "react-bootstrap";
+import {FormattedMessage, injectIntl} from "react-intl";
+import {Col, Container, Jumbotron, Row} from "react-bootstrap";
 import DashboardTile from "./DashboardTile";
 import {ROLE} from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
@@ -22,25 +22,36 @@ class Dashboard extends React.Component {
     }
 
     _renderMainDashboard() {
+        const {
+            formTemplatesLoaded
+        } = this.props;
         return <Container>
             <div>
                 <Row>
-                    <Col md={3} className='dashboard-sector'>
-                        <DashboardTile
-                            onClick={this.props.handlers.createRecord}>{this.i18n('dashboard.create-tile')}</DashboardTile>
-                    </Col>
+                    {this._renderCreateRecordTile()}
                     {this._renderUsersTile()}
                     {this._renderInstitutionsTile()}
-                    <Col md={3} className='dashboard-sector'>
-                        <DashboardTile
-                            onClick={this.props.handlers.showRecords}>{this.i18n('dashboard.records-tile')}</DashboardTile>
-                    </Col>
+                    {this._renderShowRecordsTile()}
                 </Row>
                 <Row>
                     {this._renderStatisticsTile()}
                 </Row>
             </div>
         </Container>;
+    }
+
+    _renderShowRecordsTile() {
+        return <Col md={3} className='dashboard-sector'>
+            <DashboardTile
+                onClick={this.props.handlers.showRecords}>{this.i18n('dashboard.records-tile')}</DashboardTile>
+        </Col>;
+    }
+
+    _renderCreateRecordTile() {
+        return <Col md={3} className='dashboard-sector'>
+            <DashboardTile
+                onClick={this.props.handlers.createRecord}>{this.i18n('dashboard.create-tile')}</DashboardTile>
+        </Col>;
     }
 
     _renderUsersTile() {

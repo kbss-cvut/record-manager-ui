@@ -5,7 +5,7 @@ import {Table} from "react-bootstrap";
 import DeleteItemDialog from "../DeleteItemDialog";
 import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
-import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import RecordRow from "./RecordRow";
 import AlertMessage from "../AlertMessage";
 import Loader from "../Loader";
@@ -15,11 +15,12 @@ import {processTypeaheadOptions} from "./TypeaheadAnswer";
 class RecordTable extends React.Component {
     static propTypes = {
         recordsLoaded: PropTypes.object.isRequired,
-        formTypesLoaded: PropTypes.object.isRequired,
+        formTemplatesLoaded: PropTypes.object.isRequired,
         handlers: PropTypes.object.isRequired,
         recordDeleted: PropTypes.object,
         disableDelete: PropTypes.bool,
-        recordsDeleting: PropTypes.array
+        recordsDeleting: PropTypes.array,
+        currentUser: PropTypes.object.isRequired
     };
 
     static defaultProps = {
@@ -80,8 +81,15 @@ class RecordTable extends React.Component {
     _renderHeader() {
         return <thead>
         <tr>
+            {(this._isAdmin())
+                ? <th className='w-15 content-center'>{this.i18n('records.id')}</th>
+                : ""
+            }
             <th className='w-25 content-center'>{this.i18n('records.local-name')}</th>
-            <th className='w-25 content-center'>{this.i18n('records.type')}</th>
+            {(this._isAdmin())
+                ? <th className='w-25 content-center'>{this.i18n('records.form-template')}</th>
+                : ""
+            }
             <th className='w-25 content-center'>{this.i18n('records.last-modified')}</th>
             <th className='w-15 content-center'>{this.i18n('records.completion-status')}</th>
             <th className='w-20 content-center'>{this.i18n('actions')}</th>
@@ -90,19 +98,24 @@ class RecordTable extends React.Component {
     }
 
     _renderRows() {
-        const {recordsLoaded, formTypesLoaded, handlers, recordsDeleting, intl} = this.props;
+        const {recordsLoaded, formTemplatesLoaded, handlers, recordsDeleting, intl} = this.props;
         const records = recordsLoaded.records;
-        const formTypeOptions =
-            formTypesLoaded.formTypes ? processTypeaheadOptions(formTypesLoaded.formTypes, intl) : [];
+        const formTemplateOptions =
+            formTemplatesLoaded.formTemplates ? processTypeaheadOptions(formTemplatesLoaded.formTemplates, intl) : [];
         let rows = [];
         for (let i = 0, len = records.length; i < len; i++) {
             rows.push(<RecordRow key={records[i].key} record={records[i]} onEdit={handlers.onEdit}
                                  onDelete={this._onDelete}
-                                 formTypeOptions={formTypeOptions}
+                                 formTemplateOptions={formTemplateOptions}
+                                 currentUser={this.props.currentUser}
                                  disableDelete={this.props.disableDelete} deletionLoading={!this.props.disableDelete &&
             !!(recordsDeleting.includes(records[i].key))}/>);
         }
         return rows;
+    }
+
+    _isAdmin() {
+        return this.props.currentUser.role === ROLE.ADMIN;
     }
 }
 

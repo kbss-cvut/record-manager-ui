@@ -138,8 +138,8 @@ export default {
 
         'records.panel-title': 'Records',
         'records.id': 'Id',
-        'records.type': 'Record type',
-        'records.local-name': 'Record name',
+        'records.form-template': 'Template',
+        'records.local-name': 'Name',
         'records.completion-status': 'Completion status',
         'records.completion-status-tooltip.complete': 'All required fields of the record have been filled out.',
         'records.completion-status-tooltip.incomplete': 'Some of the required fields of the record have not yet been filled out.',

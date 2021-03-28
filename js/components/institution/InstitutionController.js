@@ -21,7 +21,7 @@ import {
 import * as EntityFactory from "../../utils/EntityFactory";
 import {loadRecords} from "../../actions/RecordsActions";
 import omit from 'lodash/omit';
-import {loadFormTypes} from "../../actions/FormTypesActions";
+import {loadFormTemplates} from "../../actions/FormTemplatesActions";
 
 class InstitutionController extends React.Component {
     constructor(props) {
@@ -49,7 +49,7 @@ class InstitutionController extends React.Component {
             this.setState({showAlert: true});
             this.props.unloadSavedInstitution();
         }
-        this.props.loadFormTypes();
+        this.props.loadFormTemplates();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -134,7 +134,7 @@ class InstitutionController extends React.Component {
     render() {
         const {
             currentUser, institutionLoaded, institutionSaved, institutionMembers,
-            recordsLoaded, formTypesLoaded, userDeleted
+            recordsLoaded, formTemplatesLoaded, userDeleted
         } = this.props;
         if (!currentUser) {
             return null;
@@ -150,7 +150,7 @@ class InstitutionController extends React.Component {
         };
         return <Institution handlers={handlers} institution={this.state.institution}
                             institutionMembers={institutionMembers}
-                            recordsLoaded={recordsLoaded} formTypesLoaded={formTypesLoaded}
+                            recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
                             showAlert={this.state.showAlert} currentUser={currentUser}
                             institutionLoaded={institutionLoaded} institutionSaved={institutionSaved}
                             userDeleted={userDeleted}
@@ -168,7 +168,7 @@ function mapStateToProps(state) {
         institutionSaved: state.institution.institutionSaved,
         institutionMembers: state.user.institutionMembers,
         recordsLoaded: state.records.recordsLoaded,
-        formTypesLoaded: state.formTypes.formTypesLoaded,
+        formTemplatesLoaded: state.formTemplates.formTemplatesLoaded,
         viewHandlers: state.router.viewHandlers,
         userDeleted: state.user.userDeleted
     };
@@ -183,7 +183,7 @@ function mapDispatchToProps(dispatch) {
         updateInstitution: bindActionCreators(updateInstitution, dispatch),
         loadInstitutionMembers: bindActionCreators(loadInstitutionMembers, dispatch),
         loadRecords: bindActionCreators(loadRecords, dispatch),
-        loadFormTypes: bindActionCreators(loadFormTypes, dispatch),
+        loadFormTemplates: bindActionCreators(loadFormTemplates, dispatch),
         deleteUser: bindActionCreators(deleteUser, dispatch),
         transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),
         unloadInstitutionMembers: bindActionCreators(unloadInstitutionMembers, dispatch)

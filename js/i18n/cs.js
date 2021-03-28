@@ -138,8 +138,8 @@ export default {
 
         'records.panel-title': 'Záznamy',
         'records.id': 'Id',
-        'records.type': 'Typ záznamu',
-        'records.local-name': 'Název záznamu',
+        'records.form-template': 'Šablona',
+        'records.local-name': 'Název',
         'records.completion-status': 'Stav vyplnění',
         'records.completion-status-tooltip.complete': 'Všechny povinné informace ze záznamu byly vyplněny.',
         'records.completion-status-tooltip.incomplete': 'Některé povinné informace ze záznamu ještě nebyly vyplněny.',
