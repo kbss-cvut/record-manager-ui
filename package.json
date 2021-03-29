@@ -23,7 +23,7 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
-    "s-forms": "https://kbss.felk.cvut.cz/dist/s-forms-0.2.1.tgz"
+    "s-forms": "https://kbss.felk.cvut.cz/dist/s-forms-0.2.2.tgz"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
