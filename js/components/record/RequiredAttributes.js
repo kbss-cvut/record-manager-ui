@@ -8,12 +8,15 @@ import {injectIntl} from "react-intl";
 import HorizontalInput from '../HorizontalInput';
 import PropTypes from "prop-types";
 import {API_URL} from "../../../config";
+import {ROLE} from "../../constants/DefaultConstants";
 
 class RequiredAttributes extends React.Component {
     static propTypes = {
         record: PropTypes.object.isRequired,
         onChange: PropTypes.func.isRequired,
-        completed: PropTypes.bool.isRequired
+        completed: PropTypes.bool.isRequired,
+        currentUser: PropTypes.object.isRequired,
+        formTemplate: PropTypes.string
     };
 
     constructor(props) {
@@ -21,22 +24,33 @@ class RequiredAttributes extends React.Component {
         this.i18n = this.props.i18n;
     }
 
+    componentDidMount() {
+        const {record, formTemplate} = this.props;
+
+        if (!record.formTemplate) {
+            if (formTemplate) {
+                record.formTemplate = formTemplate;
+            }
+        }
+    }
+
     render() {
-        const record = this.props.record;
+        const {record, formTemplate} = this.props;
         const possibleValuesEndpoint = `${API_URL}/rest/formGen/formTemplates`;
 
         // If the 'completed' prop is true, the attributes (except for the name) should be read only
         return <div>
-            <div className='row'>
-                <div className='col-11 col-sm-6'>
-                    <HorizontalInput
-                        labelWidth={4} inputWidth={8}
-                        type='autocomplete' name='formTemplate' value={record.formTemplate}
-                        label={this.i18n('records.form-template') + '*'} onChange={this.props.onChange}
-                        possibleValuesEndpoint={possibleValuesEndpoint}
-                    />
+            {this._hideFormTemplateSelection && <div className='row'>
+                    <div className='col-11 col-sm-6'>
+                        <HorizontalInput
+                            labelWidth={4} inputWidth={8}
+                            type='autocomplete' name='formTemplate' value={record.formTemplate || formTemplate}
+                            label={this.i18n('records.form-template') + '*'} onChange={this.props.onChange}
+                            possibleValuesEndpoint={possibleValuesEndpoint}
+                        />
+                    </div>
                 </div>
-            </div>
+            }
             <div className='row'>
                 <div className='col-11 col-sm-6'>
                     <HorizontalInput
@@ -48,6 +62,14 @@ class RequiredAttributes extends React.Component {
                 <HelpIcon text={this.i18n('help.local-name')} glyph="help"/>
             </div>
         </div>
+    }
+
+    _showFormTemplateSelection() {
+        return this._isAdmin() || !this.props.formTemplate
+    }
+
+    _isAdmin() {
+        return this.props.currentUser.role === ROLE.ADMIN
     }
 }
 

@@ -148,8 +148,8 @@ export default {
         'records.delete-tooltip': 'Smazat tento záznam',
         'records.not-found': 'Žádný záznam nebyl nalezen...',
         'records.loading-error': 'Záznam se nepodařilo načíst. {error}',
-        'records.create-tile': 'Vytvořit záznam',
-        'records.opened-study.create-tooltip': 'Vytvořit nový záznam pacienta',
+        'records.create-tile': 'Vytvořit',
+        'records.opened-study.create-tooltip': 'Vytvořit nový záznam',
         'records.closed-study.create-tooltip': 'Studie je uzavřená na přidávání pacientů. Prosím, kontaktujte studijního koordinátora v připadě, že potřebujete přidat nový záznam pacienta.',
 
         'record.panel-title': 'Záznam {identifier}',

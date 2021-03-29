@@ -85,11 +85,12 @@ class MainView extends React.Component {
                                             </NavItem>
                                             : null
                                     }
-                                    <NavItem>
+                                    {user.role === ROLE.ADMIN && <NavItem>
                                         <NavLink className="nav-link"
                                                  isActive={() => path.startsWith(Routes.records.path)}
                                                  to={Routes.records.path}>{this.i18n('main.records-nav')}</NavLink>
                                     </NavItem>
+                                    }
                                     {user.role === ROLE.ADMIN &&
                                     <NavItem>
                                         <NavLink className="nav-link"

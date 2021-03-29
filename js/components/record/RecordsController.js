@@ -12,6 +12,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {deleteRecord} from "../../actions/RecordActions";
 import {loadFormTemplates} from "../../actions/FormTemplatesActions";
+import {extractQueryParam} from "../../utils/Utils"
 
 class RecordsController extends React.Component {
     constructor(props) {
@@ -35,13 +36,16 @@ class RecordsController extends React.Component {
         });
     };
 
-    _onAddRecord = () => {
-        this.props.transitionToWithOpts(Routes.createRecord, {
-            handlers: {
-                onSuccess: Routes.records,
+    _onAddRecord = (formTemplate) => {
+        const opts = {};
+        if (formTemplate) {
+            opts.query = new Map([["formTemplate", formTemplate]]);
+        }
+        opts.handlers = {
+            onSuccess: Routes.records,
                 onCancel: Routes.records
-            }
-        });
+        }
+        this.props.transitionToWithOpts(Routes.createRecord, opts);
     };
 
     _onDeleteRecord = (record) => {
@@ -51,6 +55,7 @@ class RecordsController extends React.Component {
 
     render() {
         const {formTemplatesLoaded, recordsLoaded, recordDeleted, recordsDeleting, currentUser} = this.props;
+        const formTemplate = extractQueryParam(this.props.location.search, "formTemplate");
         if (!currentUser) {
             return null;
         }
@@ -61,6 +66,7 @@ class RecordsController extends React.Component {
         };
         return <Records recordsLoaded={recordsLoaded} showAlert={this.state.showAlert} handlers={handlers}
                         recordDeleted={recordDeleted} recordsDeleting={recordsDeleting} currentUser={currentUser}
+                        formTemplate={formTemplate}
                         formTemplatesLoaded={formTemplatesLoaded}/>;
     }
 }

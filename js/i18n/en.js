@@ -148,8 +148,8 @@ export default {
         'records.delete-tooltip': 'Delete this record',
         'records.not-found': 'No records were found...',
         'records.loading-error': 'Unable to load records. {error}',
-        'records.create-tile': 'Create record',
-        'records.opened-study.create-tooltip': 'Create new patient record',
+        'records.create-tile': 'Create',
+        'records.opened-study.create-tooltip': 'Create new record',
         'records.closed-study.create-tooltip': 'Study is closed for addition of patient records. Please, contact a study coordinator in case you need to add new patient record.',
 
         'record.panel-title': 'Form {identifier}',

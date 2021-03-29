@@ -35,8 +35,12 @@ class DashboardController extends React.Component {
         });
     };
 
-    _showRecords = () => {
-        transitionTo(Routes.records);
+    _showRecords = (formTemplate) => {
+        const opts = {};
+        if (formTemplate) {
+            opts.query = new Map([["formTemplate", formTemplate]]);
+        }
+        this.props.transitionToWithOpts(Routes.records, opts);
     };
 
     _showStatistics = () => {
@@ -70,7 +74,9 @@ class DashboardController extends React.Component {
         };
         return (
             <div>
-                <Dashboard currentUser={this.props.currentUser} handlers={handlers}/>
+                <Dashboard currentUser={this.props.currentUser}
+                           formTemplatesLoaded={this.props.formTemplatesLoaded}
+                           handlers={handlers}/>
             </div>
         );
     }

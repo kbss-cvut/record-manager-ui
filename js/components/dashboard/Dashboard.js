@@ -7,6 +7,8 @@ import {Col, Container, Jumbotron, Row} from "react-bootstrap";
 import DashboardTile from "./DashboardTile";
 import {ROLE} from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
+import {RDFS_LABEL} from "../../constants/Vocabulary";
+import {processTypeaheadOptions} from "../record/TypeaheadAnswer";
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -31,7 +33,7 @@ class Dashboard extends React.Component {
                     {this._renderCreateRecordTile()}
                     {this._renderUsersTile()}
                     {this._renderInstitutionsTile()}
-                    {this._renderShowRecordsTile()}
+                    {this._renderShowRecordsTiles()}
                 </Row>
                 <Row>
                     {this._renderStatisticsTile()}
@@ -40,52 +42,73 @@ class Dashboard extends React.Component {
         </Container>;
     }
 
-    _renderShowRecordsTile() {
-        return <Col md={3} className='dashboard-sector'>
-            <DashboardTile
-                onClick={this.props.handlers.showRecords}>{this.i18n('dashboard.records-tile')}</DashboardTile>
-        </Col>;
+    _renderCreateRecordTile() {
+        return this._isAdmin()
+            ? <Col md={3} className='dashboard-sector'>
+                <DashboardTile
+                    onClick={this.props.handlers.createRecord}>{this.i18n('dashboard.create-tile')}</DashboardTile>
+            </Col>
+            : "";
     }
 
-    _renderCreateRecordTile() {
-        return <Col md={3} className='dashboard-sector'>
+    _renderShowRecordsTiles() {
+        if (this._isAdmin()) {
+            return this._renderShowRecordTile();
+        } else {
+            const formTemplates = this.props.formTemplatesLoaded.formTemplates;
+            if (formTemplates) {
+
+                return processTypeaheadOptions(formTemplates, this.props.intl)
+                    .map((ft, i) => this._renderShowRecordTile(ft, i.toString()))
+            }
+        }
+    }
+
+    _renderShowRecordTile(formTemplate, key) {
+        if (!formTemplate) {
+            return <Col md={3} className='dashboard-sector'>
+                <DashboardTile
+                    onClick={this.props.handlers.showRecords}>{this.i18n('dashboard.records-tile')}</DashboardTile>
+            </Col>
+        }
+        const showRecordsOfTemplate = () => {
+            return this.props.handlers.showRecords(formTemplate.id)
+        }
+
+        return <Col key={key} md={3} className='dashboard-sector'>
             <DashboardTile
-                onClick={this.props.handlers.createRecord}>{this.i18n('dashboard.create-tile')}</DashboardTile>
-        </Col>;
+                onClick={showRecordsOfTemplate}>{formTemplate.name}</DashboardTile>
+        </Col>
     }
 
     _renderUsersTile() {
-        return this.props.currentUser.role === ROLE.ADMIN ?
+        return this._isAdmin() ?
             <Col md={3} className='dashboard-sector'>
                 <DashboardTile
                     onClick={this.props.handlers.showUsers}>{this.i18n('dashboard.users-tile')}</DashboardTile>
             </Col>
-            : <Col md={3} className='dashboard-sector'>
-                <DashboardTile
-                    onClick={this.props.handlers.showMyProfile}>{this.i18n('dashboard.user-tile')}</DashboardTile>
-            </Col>;
+            : "";
     }
 
     _renderInstitutionsTile() {
-        return this.props.currentUser.role === ROLE.ADMIN ?
+        return this._isAdmin() ?
             <Col md={3} className='dashboard-sector'>
                 <DashboardTile
                     onClick={this.props.handlers.showInstitutions}>{this.i18n('dashboard.institutions-tile')}</DashboardTile>
             </Col>
-            : this.props.currentUser.institution ?
-                <Col md={3} className='dashboard-sector'>
-                    <DashboardTile
-                        onClick={this.props.handlers.showMyInstitution}>{this.i18n('dashboard.institution-tile')}</DashboardTile>
-                </Col>
-                : null;
+            : "";
     }
 
     _renderStatisticsTile() {
-        return this.props.currentUser.role === ROLE.ADMIN ?
+        return this._isAdmin() ?
             <Col md={3} className='dashboard-sector'>
                 <DashboardTile
                     onClick={this.props.handlers.showStatistics}>{this.i18n('dashboard.statistics-tile')}</DashboardTile>
             </Col> : null;
+    }
+
+    _isAdmin() {
+        return this.props.currentUser.role === ROLE.ADMIN
     }
 
     render() {
@@ -99,8 +122,9 @@ class Dashboard extends React.Component {
 }
 
 Dashboard.propTypes = {
-    currentUser: PropTypes.object,
-    handlers: PropTypes.object
+    currentUser: PropTypes.object.isRequired,
+    handlers: PropTypes.object.isRequired,
+    formTemplatesLoaded: PropTypes.object.isRequired
 };
 
 export default injectIntl(withI18n(Dashboard));

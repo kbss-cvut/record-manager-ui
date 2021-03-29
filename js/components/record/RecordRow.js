@@ -21,17 +21,15 @@ let RecordRow = (props) => {
             <LoaderSmall/>}</Button>;
 
     const recordKeyItem = isAdmin
-        ? <td className='report-row'>
+        && <td className='report-row'>
             <Button variant="link" size="sm"
                     onClick={() => props.onEdit(record)}>{record.key}</Button>
-        </td>
-        : "";
+        </td>;
 
     const formTemplateItem = isAdmin
-        ? <td className='report-row content-center'>
+        && <td className='report-row content-center'>
             {getFormTemplateOptionName(record.formTemplate, formTemplateOptions)}
-        </td>
-        : "";
+        </td>;
 
     return <tr>
         {recordKeyItem}

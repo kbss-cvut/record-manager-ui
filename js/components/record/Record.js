@@ -3,7 +3,7 @@
 import React from "react";
 import {Button, Card} from "react-bootstrap";
 import PropTypes from "prop-types";
-import {injectIntl, FormattedMessage} from "react-intl";
+import {FormattedMessage, injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import HorizontalInput from "../HorizontalInput";
 import RecordForm from "./RecordForm";
@@ -12,6 +12,7 @@ import RequiredAttributes from "./RequiredAttributes";
 import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderCard, LoaderSmall} from "../Loader";
+import {processTypeaheadOptions} from "./TypeaheadAnswer";
 
 class Record extends React.Component {
     constructor(props) {
@@ -38,7 +39,7 @@ class Record extends React.Component {
     }
 
     render() {
-        const {recordLoaded, recordSaved, showAlert, record} = this.props;
+        const {recordLoaded, recordSaved, showAlert, record, formTemplate, currentUser} = this.props;
 
         if (recordLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
@@ -54,6 +55,8 @@ class Record extends React.Component {
             <Card.Body>
                 <form>
                     <RequiredAttributes record={record} onChange={this._onChange}
+                                        formTemplate={formTemplate}
+                                        currentUser={currentUser}
                                         completed={record.state.isComplete()}/>
                     {this._renderInstitution()}
                     <RecordProvenance record={record}/>
@@ -74,7 +77,12 @@ class Record extends React.Component {
 
     _renderHeader() {
         const identifier = this.props.record && this.props.record.localName ? this.props.record.localName : '';
-        return <span><FormattedMessage id='record.panel-title' values={{identifier}}/></span>;
+        const formTemplateName = this._getFormTemplateName();
+        return <span>{
+            (formTemplateName)
+                ? formTemplateName + ' ' + identifier
+                : <FormattedMessage id='record.panel-title' values={{identifier}}/>
+        }</span>
     }
 
     _renderForm() {
@@ -119,6 +127,28 @@ class Record extends React.Component {
             </div>
         </div>;
     }
+
+    _getFormTemplateName() {
+        const {formTemplatesLoaded, record, intl} = this.props;
+        const formTemplate = this.props.formTemplate || record?.formTemplate;
+        if (formTemplate) {
+            const formTemplateOptions =
+                formTemplatesLoaded.formTemplates
+                    ? processTypeaheadOptions(formTemplatesLoaded.formTemplates, intl)
+                    : [];
+            return formTemplateOptions.find(r => r.id === formTemplate)?.name;
+        }
+    }
+
+    _getPanelTitle() {
+        if (!this._isAdmin() && this.props.formTemplate) {
+            const formTemplateName = this._getFormTemplateName();
+            if (formTemplateName) {
+                return formTemplateName;
+            }
+        }
+        return this.i18n('record.panel-title');
+    }
 }
 
 Record.propTypes = {
@@ -128,7 +158,10 @@ Record.propTypes = {
     recordLoaded: PropTypes.object,
     formgen: PropTypes.object,
     loadFormgen: PropTypes.func,
-    showAlert: PropTypes.bool
+    showAlert: PropTypes.bool,
+    formTemplatesLoaded: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired,
+    formTemplate: PropTypes.string
 };
 
 export default injectIntl(withI18n(Record, {forwardRef: true}), {forwardRef: true});
