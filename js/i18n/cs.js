@@ -212,6 +212,7 @@ export default {
         'Institution with members or patient records cannot be deleted.': 'Instituci se zaměstnanci nebo se záznamy nelze odstranit.',
         'Your browser is not fully supported! Some parts of web may not work properly.': 'Váš prohlížeč není plně podporován! Některé části stránek nemusí fungovat správně.',
         'We recommend using the latest version of ': 'Doporučujeme použít nejnovější verzi ',
-        'or': ' nebo'
+        'or': ' nebo',
+        'error.record.localNameOfRecordIsNotUnique': 'Název není unikátní.'
     }
 };
