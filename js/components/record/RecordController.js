@@ -79,6 +79,8 @@ class RecordController extends React.Component {
         this.setState({saved: true, showAlert: true});
 
         record.question = this.recordComponent.current.getFormData();
+        //TODO
+        record.localName = record.question.subQuestions[0].subQuestions[1].subQuestions[0]?.answers?.[0].textValue;
 
         if (record.isNew) {
             this.props.createRecord(omit(record, 'isNew'), currentUser);
