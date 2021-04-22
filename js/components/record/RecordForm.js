@@ -12,6 +12,9 @@ import {axiosBackend} from "../../actions";
 import {API_URL} from "../../../config";
 import * as Logger from "../../utils/Logger";
 import * as I18nStore from "../../stores/I18nStore";
+import SmartComponents from "s-forms-smart-components/dist/lib";
+
+const componentMapping = SmartComponents.default.getComponentMapping();
 
 class RecordForm extends React.Component {
     constructor(props) {
@@ -82,8 +85,8 @@ class RecordForm extends React.Component {
                 isFormValid={this.props.isFormValid}
                 enableForwardSkip={true}
                 loader={<Loader/>}
-            />
-        </Card>;
+                componentMapRules={componentMapping}
+            />;
     }
 }
 
