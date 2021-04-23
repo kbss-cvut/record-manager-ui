@@ -20,30 +20,30 @@ let RecordRow = (props) => {
                     onClick={() => props.onDelete(record)}>{props.i18n('delete')}{props.deletionLoading &&
             <LoaderSmall/>}</Button>;
 
-    const recordKeyItem = isAdmin
-        && <td className='report-row'>
-            <Button variant="link" size="sm"
-                    onClick={() => props.onEdit(record)}>{record.key}</Button>
-        </td>;
-
-    const formTemplateItem = isAdmin
-        && <td className='report-row content-center'>
-            {getFormTemplateOptionName(record.formTemplate, formTemplateOptions)}
-        </td>;
-
     return <tr>
-        {recordKeyItem}
+        {isAdmin &&
+            <td className='report-row'>
+                <Button variant="link" size="sm"
+                    onClick={() => props.onEdit(record)}>{record.key}</Button>
+            </td>
+        }
         <td className='report-row'>
             <Button variant="link" size="sm"
                     onClick={() => props.onEdit(record)}>{record.localName}</Button>
         </td>
-        {formTemplateItem}
+        {isAdmin &&
+            <td className='report-row content-center'>
+                {getFormTemplateOptionName(record.formTemplate, formTemplateOptions)}
+            </td>
+        }
         <td className='report-row content-center'>
             {formatDate(new Date(record.lastModified ? record.lastModified : record.dateCreated))}
         </td>
-        <td className='report-row content-center'>
-            <HelpIcon text={completionTooltip} glyph={isComplete ? 'ok' : 'remove'}/>
-        </td>
+        { isAdmin &&
+            <td className='report-row content-center'>
+                <HelpIcon text={completionTooltip} glyph={isComplete ? 'ok' : 'remove'}/>
+            </td>
+        }
         <td className='report-row actions'>
             <Button variant='primary' size='sm' title={props.i18n('records.open-tooltip')}
                     onClick={() => props.onEdit(record)}>{props.i18n('open')}</Button>
