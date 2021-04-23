@@ -79,9 +79,7 @@ class RecordController extends React.Component {
         this.setState({saved: true, showAlert: true});
 
         record.question = this.recordComponent.current.getFormData();
-        //TODO
-        record.localName = record.question.subQuestions[0].subQuestions[1].subQuestions[0]?.answers?.[0].textValue;
-
+        record.localName =  this._getLocalName();
         if (record.isNew) {
             this.props.createRecord(omit(record, 'isNew'), currentUser);
         } else {
@@ -107,6 +105,24 @@ class RecordController extends React.Component {
         }
         this.setState({record: update});
     };
+
+    _getLocalName() {
+        // TODO
+        return this.state.record?.question?.subQuestions?.[0]
+            ?.subQuestions?.find( q => q.origin.includes("věci/pojem/název"))
+            ?.subQuestions?.find( q => q.origin.includes("language-czech"))
+            ?.answers?.[0]?.textValue
+    }
+
+    _getMainEntityName() {
+        // TODO
+        const entityName = this.state.record?.question
+            ?.subQuestions?.[0]?.origin
+            .replace(/^.*pojem./, "").replace(/-[^-]*-q-qo/, "").replace("-"," ");
+
+        return entityName.charAt(0).toUpperCase() + entityName.slice(1);
+    }
+
 
     render() {
         const {recordLoaded, recordSaved, currentUser, formgen, loadFormgen, formTemplatesLoaded} = this.props;

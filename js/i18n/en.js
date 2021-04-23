@@ -213,6 +213,7 @@ export default {
         'Your browser is not fully supported! Some parts of web may not work properly.': 'Your browser is not fully supported! Some parts of web may not work properly.',
         'We recommend using the latest version of ': 'We recommend using the latest version of ',
         'or': ' or',
-        'error.record.localNameOfRecordIsNotUnique': 'Name is not unique.'
+        'error.record.localNameOfRecordIsNotUnique': 'Name is not unique.',
+        'error.record.localNameOfRecordIsEmpty': 'Name is empty.'
     }
 };
