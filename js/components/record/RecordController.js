@@ -5,11 +5,18 @@ import {injectIntl} from "react-intl";
 import withI18n from '../../i18n/withI18n';
 import Record from './Record';
 import Routes from "../../constants/RoutesConstants";
-import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
+import {transitionToWithOpts} from '../../utils/Routing';
 import {ACTION_FLAG, ACTION_STATUS} from "../../constants/DefaultConstants";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {createRecord, loadRecord, unloadRecord, updateRecord, loadFormgen, unloadSavedRecord} from "../../actions/RecordActions";
+import {
+    createRecord,
+    loadFormgen,
+    loadRecord,
+    unloadRecord,
+    unloadSavedRecord,
+    updateRecord
+} from "../../actions/RecordActions";
 import * as EntityFactory from "../../utils/EntityFactory";
 import RecordValidator from "../../validation/RecordValidator";
 import * as RecordState from "../../model/RecordState";
@@ -79,7 +86,7 @@ class RecordController extends React.Component {
         this.setState({saved: true, showAlert: true});
 
         record.question = this.recordComponent.current.getFormData();
-        record.localName =  this._getLocalName();
+        record.localName = this._getLocalName();
         if (record.isNew) {
             this.props.createRecord(omit(record, 'isNew'), currentUser);
         } else {
@@ -88,12 +95,18 @@ class RecordController extends React.Component {
     };
 
     _onCancel = () => {
-        const handlers = this.props.viewHandlers[Routes.editRecord.name];
-        if (handlers) {
-            transitionTo(handlers.onCancel);
-        } else {
-            transitionTo(Routes.records);
+        // TODO
+        // const handlers = this.props.viewHandlers[Routes.editRecord.name];
+        // if (handlers) {
+        //     transitionTo(handlers.onCancel);
+        // } else {
+        const opts = {};
+        const formTemplate = this.state.record?.formTemplate
+        if (formTemplate) {
+            opts.query = new Map([["formTemplate", formTemplate]]);
         }
+        this.props.transitionToWithOpts(Routes.records, opts);
+        // }
     };
 
     _onChange = (change) => {
@@ -109,8 +122,8 @@ class RecordController extends React.Component {
     _getLocalName() {
         // TODO
         return this.state.record?.question?.subQuestions?.[0]
-            ?.subQuestions?.find( q => q.origin.includes("věci/pojem/název"))
-            ?.subQuestions?.find( q => q.origin.includes("language-czech"))
+            ?.subQuestions?.find(q => q.origin.includes("věci/pojem/název"))
+            ?.subQuestions?.find(q => q.origin.includes("language-czech"))
             ?.answers?.[0]?.textValue
     }
 
@@ -118,7 +131,7 @@ class RecordController extends React.Component {
         // TODO
         const entityName = this.state.record?.question
             ?.subQuestions?.[0]?.origin
-            .replace(/^.*pojem./, "").replace(/-[^-]*-q-qo/, "").replace("-"," ");
+            .replace(/^.*pojem./, "").replace(/-[^-]*-q-qo/, "").replace("-", " ");
 
         return entityName.charAt(0).toUpperCase() + entityName.slice(1);
     }
@@ -137,17 +150,17 @@ class RecordController extends React.Component {
         };
 
         return <Record
-                ref={this.recordComponent}
-                handlers={handlers}
-                record={this.state.record}
-                recordLoaded={recordLoaded}
-                recordSaved={recordSaved}
-                showAlert={this.state.showAlert}
-                formgen={formgen}
-                loadFormgen={loadFormgen}
-                formTemplatesLoaded={formTemplatesLoaded}
-                formTemplate={formTemplate}
-                currentUser={currentUser}
+            ref={this.recordComponent}
+            handlers={handlers}
+            record={this.state.record}
+            recordLoaded={recordLoaded}
+            recordSaved={recordSaved}
+            showAlert={this.state.showAlert}
+            formgen={formgen}
+            loadFormgen={loadFormgen}
+            formTemplatesLoaded={formTemplatesLoaded}
+            formTemplate={formTemplate}
+            currentUser={currentUser}
         />;
     }
 }
