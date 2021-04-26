@@ -3,11 +3,16 @@ import React from "react";
 import {IntlProvider} from "react-intl";
 import InstitutionPatients from "../../../js/components/institution/InstitutionPatients";
 import enLang from '../../../js/i18n/en';
+import {ROLE} from "../../../js/constants/DefaultConstants";
 
 describe('InstitutionPatients', function () {
     const intlData = enLang;
     let recordsLoaded,
-        formTypesLoaded = {},
+        formTemplatesLoaded = {},
+        currentUser = {
+            username: 'testUser',
+            role: ROLE.DOCTOR
+        },
         records,
         onEdit = jest.fn();
 
@@ -17,7 +22,8 @@ describe('InstitutionPatients', function () {
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <InstitutionPatients recordsLoaded={recordsLoaded} formTypesLoaded={formTypesLoaded} onEdit={onEdit}/>
+                <InstitutionPatients recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
+                                     onEdit={onEdit} currentUser={currentUser} />
             </IntlProvider>);
         const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
         expect(cardHeading).not.toBeNull();

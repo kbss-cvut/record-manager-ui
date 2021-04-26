@@ -119,6 +119,19 @@ export function getPathFromLocation() {
 }
 
 /**
+ * Extracts query parameter value from the specified query string
+ * @param queryString String to extracts params from
+ * @param paramName Name of the parameter to extract
+ * @return extracted parameter value or undefined if the parameter is not present in the query
+ */
+export function extractQueryParam(queryString, paramName) {
+    queryString = decodeURI(queryString); // TODO This is a nasty hack, the problem with encoding seems to be
+                                          // somewhere in thunk
+    const reqexpMatch = queryString.match(new RegExp(paramName + "=([^&]*)"));
+    return reqexpMatch ? reqexpMatch[1] : undefined;
+}
+
+/**
  * Generates a random integer value between 0 and 2^30 (approx. max Java integer / 2).
  *
  * The reason the number is Java max integer / 2 is to accommodate possible increments of the result.

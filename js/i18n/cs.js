@@ -138,8 +138,8 @@ export default {
 
         'records.panel-title': 'Záznamy',
         'records.id': 'Id',
-        'records.type': 'Typ záznamu',
-        'records.local-name': 'Název záznamu',
+        'records.form-template': 'Šablona',
+        'records.local-name': 'Název',
         'records.completion-status': 'Stav vyplnění',
         'records.completion-status-tooltip.complete': 'Všechny povinné informace ze záznamu byly vyplněny.',
         'records.completion-status-tooltip.incomplete': 'Některé povinné informace ze záznamu ještě nebyly vyplněny.',
@@ -148,8 +148,8 @@ export default {
         'records.delete-tooltip': 'Smazat tento záznam',
         'records.not-found': 'Žádný záznam nebyl nalezen...',
         'records.loading-error': 'Záznam se nepodařilo načíst. {error}',
-        'records.create-tile': 'Vytvořit záznam',
-        'records.opened-study.create-tooltip': 'Vytvořit nový záznam pacienta',
+        'records.create-tile': 'Vytvořit',
+        'records.opened-study.create-tooltip': 'Vytvořit nový záznam',
         'records.closed-study.create-tooltip': 'Studie je uzavřená na přidávání pacientů. Prosím, kontaktujte studijního koordinátora v připadě, že potřebujete přidat nový záznam pacienta.',
 
         'record.panel-title': 'Záznam {identifier}',

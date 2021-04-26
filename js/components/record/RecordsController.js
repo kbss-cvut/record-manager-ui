@@ -11,7 +11,8 @@ import withI18n from "../../i18n/withI18n";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {deleteRecord} from "../../actions/RecordActions";
-import {loadFormTypes} from "../../actions/FormTypesActions";
+import {loadFormTemplates} from "../../actions/FormTemplatesActions";
+import {extractQueryParam} from "../../utils/Utils"
 
 class RecordsController extends React.Component {
     constructor(props) {
@@ -23,7 +24,7 @@ class RecordsController extends React.Component {
 
     componentDidMount() {
         this.props.loadRecords(this.props.currentUser);
-        this.props.loadFormTypes();
+        this.props.loadFormTemplates();
     }
 
     _onEditRecord = (record) => {
@@ -35,13 +36,16 @@ class RecordsController extends React.Component {
         });
     };
 
-    _onAddRecord = () => {
-        this.props.transitionToWithOpts(Routes.createRecord, {
-            handlers: {
-                onSuccess: Routes.records,
+    _onAddRecord = (formTemplate) => {
+        const opts = {};
+        if (formTemplate) {
+            opts.query = new Map([["formTemplate", formTemplate]]);
+        }
+        opts.handlers = {
+            onSuccess: Routes.records,
                 onCancel: Routes.records
-            }
-        });
+        }
+        this.props.transitionToWithOpts(Routes.createRecord, opts);
     };
 
     _onDeleteRecord = (record) => {
@@ -50,7 +54,8 @@ class RecordsController extends React.Component {
     };
 
     render() {
-        const {formTypesLoaded, recordsLoaded, recordDeleted, recordsDeleting, currentUser} = this.props;
+        const {formTemplatesLoaded, recordsLoaded, recordDeleted, recordsDeleting, currentUser} = this.props;
+        const formTemplate = extractQueryParam(this.props.location.search, "formTemplate");
         if (!currentUser) {
             return null;
         }
@@ -61,7 +66,8 @@ class RecordsController extends React.Component {
         };
         return <Records recordsLoaded={recordsLoaded} showAlert={this.state.showAlert} handlers={handlers}
                         recordDeleted={recordDeleted} recordsDeleting={recordsDeleting} currentUser={currentUser}
-                        formTypesLoaded={formTypesLoaded}/>;
+                        formTemplate={formTemplate}
+                        formTemplatesLoaded={formTemplatesLoaded}/>;
     }
 }
 
@@ -71,7 +77,7 @@ function mapStateToProps(state) {
     return {
         recordDeleted: state.record.recordDeleted,
         recordsLoaded: state.records.recordsLoaded,
-        formTypesLoaded: state.formTypes.formTypesLoaded,
+        formTemplatesLoaded: state.formTemplates.formTemplatesLoaded,
         recordsDeleting: state.record.recordsDeleting,
         currentUser: state.auth.user
     };
@@ -81,7 +87,7 @@ function mapDispatchToProps(dispatch) {
     return {
         deleteRecord: bindActionCreators(deleteRecord, dispatch),
         loadRecords: bindActionCreators(loadRecords, dispatch),
-        loadFormTypes: bindActionCreators(loadFormTypes, dispatch),
+        loadFormTemplates: bindActionCreators(loadFormTemplates, dispatch),
         transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch)
     }
 }

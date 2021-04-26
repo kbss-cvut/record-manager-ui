@@ -37,6 +37,9 @@ export function transitionToWithOpts(route, options) {
         if (options.params) {
             path = setPathParams(path, options.params);
         }
+        if (options.query) {
+            path = setQueryParams(path, options.query);
+        }
         if (options.payload) {
             dispatch(setTransitionPayload(route.name, options.payload));
         }
@@ -44,10 +47,7 @@ export function transitionToWithOpts(route, options) {
             dispatch(setViewHandlers(route.name, options.handlers));
         }
         execute(route.name);
-        history.push({
-            pathname: path,
-            search: options.query
-        });
+        history.push(path);
     }
 }
 
@@ -59,6 +59,11 @@ function setPathParams(path, params) {
         }
     }
     return path;
+}
+
+function setQueryParams(path, params) {
+    const paramValuePairs = Array.from(params.entries()).map((pair) => pair[0] + "=" + pair[1]);
+    return paramValuePairs.length > 0 ? path + "?" + paramValuePairs.join("&") : path;
 }
 
 export function transitionToHome() {

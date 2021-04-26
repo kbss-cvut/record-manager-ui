@@ -5,7 +5,7 @@ import {Table} from "react-bootstrap";
 import DeleteItemDialog from "../DeleteItemDialog";
 import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
-import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import RecordRow from "./RecordRow";
 import AlertMessage from "../AlertMessage";
 import Loader from "../Loader";
@@ -15,11 +15,13 @@ import {processTypeaheadOptions} from "./TypeaheadAnswer";
 class RecordTable extends React.Component {
     static propTypes = {
         recordsLoaded: PropTypes.object.isRequired,
-        formTypesLoaded: PropTypes.object.isRequired,
+        formTemplate: PropTypes.string,
+        formTemplatesLoaded: PropTypes.object.isRequired,
         handlers: PropTypes.object.isRequired,
         recordDeleted: PropTypes.object,
         disableDelete: PropTypes.bool,
-        recordsDeleting: PropTypes.array
+        recordsDeleting: PropTypes.array,
+        currentUser: PropTypes.object.isRequired
     };
 
     static defaultProps = {
@@ -56,15 +58,16 @@ class RecordTable extends React.Component {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('records.loading-error', {error: recordsLoaded.error.message})}/>
         }
+        const filteredRecords = this._getFormTemplateRecords();
         return <div>
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
                               show={this.state.showDialog} item={this.state.selectedRecord}
                               itemLabel={this._getDeleteLabel()}/>
-            {this.props.recordsLoaded.records.length > 0 ?
+            {filteredRecords.length > 0 ?
                 <Table size="sm" responsive striped bordered hover>
                     {this._renderHeader()}
                     <tbody>
-                    {this._renderRows()}
+                    {this._renderRows(filteredRecords)}
                     </tbody>
                 </Table>
                 :
@@ -80,8 +83,13 @@ class RecordTable extends React.Component {
     _renderHeader() {
         return <thead>
         <tr>
+            {(this._isAdmin())
+                && <th className='w-15 content-center'>{this.i18n('records.id')}</th>
+            }
             <th className='w-25 content-center'>{this.i18n('records.local-name')}</th>
-            <th className='w-25 content-center'>{this.i18n('records.type')}</th>
+            {(this._isAdmin())
+                && <th className='w-25 content-center'>{this.i18n('records.form-template')}</th>
+            }
             <th className='w-25 content-center'>{this.i18n('records.last-modified')}</th>
             <th className='w-15 content-center'>{this.i18n('records.completion-status')}</th>
             <th className='w-20 content-center'>{this.i18n('actions')}</th>
@@ -89,20 +97,34 @@ class RecordTable extends React.Component {
         </thead>
     }
 
-    _renderRows() {
-        const {recordsLoaded, formTypesLoaded, handlers, recordsDeleting, intl} = this.props;
-        const records = recordsLoaded.records;
-        const formTypeOptions =
-            formTypesLoaded.formTypes ? processTypeaheadOptions(formTypesLoaded.formTypes, intl) : [];
+    _renderRows(filteredRecords) {
+        const {formTemplatesLoaded, handlers, recordsDeleting, intl} = this.props;
+        const formTemplateOptions =
+            formTemplatesLoaded.formTemplates ? processTypeaheadOptions(formTemplatesLoaded.formTemplates, intl) : [];
         let rows = [];
-        for (let i = 0, len = records.length; i < len; i++) {
-            rows.push(<RecordRow key={records[i].key} record={records[i]} onEdit={handlers.onEdit}
+        for (let i = 0, len = filteredRecords.length; i < len; i++) {
+            rows.push(<RecordRow key={filteredRecords[i].key} record={filteredRecords[i]} onEdit={handlers.onEdit}
                                  onDelete={this._onDelete}
-                                 formTypeOptions={formTypeOptions}
+                                 formTemplateOptions={formTemplateOptions}
+                                 currentUser={this.props.currentUser}
                                  disableDelete={this.props.disableDelete} deletionLoading={!this.props.disableDelete &&
-            !!(recordsDeleting.includes(records[i].key))}/>);
+            !!(recordsDeleting.includes(filteredRecords[i].key))}/>);
         }
         return rows;
+    }
+
+    _getFormTemplateRecords() {
+        const records = this.props.recordsLoaded.records,
+            formTemplate = this.props.formTemplate;
+
+        if (!formTemplate) {
+            return records;
+        }
+        return records.filter((r) => (r.formTemplate === formTemplate))
+    }
+
+    _isAdmin() {
+        return this.props.currentUser.role === ROLE.ADMIN;
     }
 }
 

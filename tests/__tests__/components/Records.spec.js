@@ -14,7 +14,7 @@ describe('Records', function () {
         recordsLoaded,
         recordDeleted,
         recordsDeleting = [],
-        formTypesLoaded = {},
+        formTemplatesLoaded = {},
         showAlert,
         handlers;
     admin = {
@@ -113,7 +113,7 @@ describe('Records', function () {
                 <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
                          recordDeleted={recordDeleted} handlers={handlers}
                          recordsDeleting={recordsDeleting} currentUser={admin}
-                         formTypesLoaded={formTypesLoaded}
+                         formTemplatesLoaded={formTemplatesLoaded}
                 />
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");

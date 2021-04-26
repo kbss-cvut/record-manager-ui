@@ -4,14 +4,20 @@ import {IntlProvider} from "react-intl";
 import RecordTable from "../../../js/components/record/RecordTable";
 import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
 import enLang from '../../../js/i18n/en';
+import {ROLE} from "../../../js/constants/DefaultConstants";
+
 
 describe('RecordTable', function () {
     const intlData = enLang;
     let records,
         recordsLoaded,
-        formTypesLoaded = {},
+        formTemplatesLoaded = {},
         recordDeleted = {status: ACTION_STATUS.SUCCESS},
         handlers = {onEdit: jest.fn()},
+        currentUser = {
+            username: 'testUser',
+            role: ROLE.DOCTOR
+        },
         disableDelete = true;
 
     records = [
@@ -37,7 +43,9 @@ describe('RecordTable', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <RecordTable recordsLoaded={recordsLoaded} handlers={handlers} disableDelete={disableDelete}
-                             recordDeleted={recordDeleted} formTypesLoaded={formTypesLoaded}/>
+                             recordDeleted={recordDeleted} formTemplatesLoaded={formTemplatesLoaded}
+                             currentUser={currentUser}
+                />
             </IntlProvider>);
         const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'loader-spin');
         expect(result).not.toBeNull();
@@ -53,7 +61,9 @@ describe('RecordTable', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <RecordTable recordsLoaded={recordsLoaded} handlers={handlers} disableDelete={disableDelete}
-                             recordDeleted={recordDeleted} formTypesLoaded={formTypesLoaded}/>
+                             recordDeleted={recordDeleted} formTemplatesLoaded={formTemplatesLoaded}
+                             currentUser={currentUser}
+                />
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
         expect(alert).not.toBeNull();
@@ -63,7 +73,9 @@ describe('RecordTable', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <RecordTable recordsLoaded={recordsLoaded} handlers={handlers} disableDelete={disableDelete}
-                             recordDeleted={recordDeleted} formTypesLoaded={formTypesLoaded}/>
+                             recordDeleted={recordDeleted} formTemplatesLoaded={formTemplatesLoaded}
+                             currentUser={currentUser}
+                />
             </IntlProvider>);
         const table = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'table');
         expect(table).not.toBeNull();
@@ -77,7 +89,9 @@ describe('RecordTable', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <RecordTable recordsLoaded={recordsLoaded} handlers={handlers} disableDelete={disableDelete}
-                             recordDeleted={recordDeleted} formTypesLoaded={formTypesLoaded}/>
+                             recordDeleted={recordDeleted} formTemplatesLoaded={formTemplatesLoaded}
+                             currentUser={currentUser}
+                />
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
         expect(buttons.length).toEqual(6);

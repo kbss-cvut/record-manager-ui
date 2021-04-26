@@ -8,6 +8,7 @@ import {injectIntl} from "react-intl";
 import Routes from '../../constants/RoutesConstants';
 import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
 import withI18n from "../../i18n/withI18n";
+import {loadFormTemplates} from "../../actions/FormTemplatesActions";
 
 class DashboardController extends React.Component {
     constructor(props) {
@@ -34,8 +35,12 @@ class DashboardController extends React.Component {
         });
     };
 
-    _showRecords = () => {
-        transitionTo(Routes.records);
+    _showRecords = (formTemplate) => {
+        const opts = {};
+        if (formTemplate) {
+            opts.query = new Map([["formTemplate", formTemplate]]);
+        }
+        this.props.transitionToWithOpts(Routes.records, opts);
     };
 
     _showStatistics = () => {
@@ -53,6 +58,10 @@ class DashboardController extends React.Component {
         });
     };
 
+    componentDidMount() {
+        this.props.loadFormTemplates();
+    }
+
     render() {
         const handlers = {
             showUsers: this._showUsers,
@@ -65,7 +74,9 @@ class DashboardController extends React.Component {
         };
         return (
             <div>
-                <Dashboard currentUser={this.props.currentUser} handlers={handlers}/>
+                <Dashboard currentUser={this.props.currentUser}
+                           formTemplatesLoaded={this.props.formTemplatesLoaded}
+                           handlers={handlers}/>
             </div>
         );
     }
@@ -75,12 +86,14 @@ export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(
 
 function mapStateToProps(state) {
     return {
-        currentUser: state.auth.user
+        currentUser: state.auth.user,
+        formTemplatesLoaded: state.formTemplates.formTemplatesLoaded
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch)
+        transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),
+        loadFormTemplates: bindActionCreators(loadFormTemplates, dispatch)
     }
 }

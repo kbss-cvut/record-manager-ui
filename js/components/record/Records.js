@@ -9,6 +9,7 @@ import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants
 import AlertMessage from "../AlertMessage";
 import {LoaderSmall} from "../Loader";
 import PropTypes from "prop-types";
+import {processTypeaheadOptions} from "./TypeaheadAnswer";
 
 const STUDY_CLOSED_FOR_ADDITION = false;
 
@@ -19,7 +20,9 @@ class Records extends React.Component {
         recordsDeleting: PropTypes.array,
         showAlert: PropTypes.bool.isRequired,
         handlers: PropTypes.object.isRequired,
-        currentUser: PropTypes.object.isRequired
+        currentUser: PropTypes.object.isRequired,
+        formTemplatesLoaded: PropTypes.object.isRequired,
+        formTemplate: PropTypes.string
     };
 
     constructor(props) {
@@ -28,18 +31,19 @@ class Records extends React.Component {
     }
 
     render() {
-        const {showAlert, recordDeleted} = this.props;
+        const {showAlert, recordDeleted, formTemplate} = this.props;
         const createRecordDisabled =
             STUDY_CLOSED_FOR_ADDITION
-            && (this.props.currentUser.role !== ROLE.ADMIN);
+            && (!this._isAdmin());
         const createRecordTooltip = this.i18n(
             createRecordDisabled
                 ? 'records.closed-study.create-tooltip'
                 : 'records.opened-study.create-tooltip'
         );
+        const onCreateWithFormTemplate = () => this.props.handlers.onCreate(formTemplate);
         return <Card variant='primary'>
             <Card.Header className="text-light bg-primary" as="h6">
-                {this.i18n('records.panel-title')}
+                {this._getPanelTitle()}
                 {this.props.recordsLoaded.records && this.props.recordsLoaded.status === ACTION_STATUS.PENDING &&
                 <LoaderSmall/>}
             </Card.Header>
@@ -49,7 +53,7 @@ class Records extends React.Component {
                     <Button variant='primary' size='sm'
                             disabled={createRecordDisabled}
                             title={createRecordTooltip}
-                            onClick={this.props.handlers.onCreate}>{this.i18n('records.create-tile')}</Button>
+                            onClick={onCreateWithFormTemplate}>{this.i18n('records.create-tile')}</Button>
                 </div>
                 {showAlert && recordDeleted.status === ACTION_STATUS.ERROR &&
                 <AlertMessage type={ALERT_TYPES.DANGER}
@@ -58,6 +62,31 @@ class Records extends React.Component {
                 <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('record.delete-success')}/>}
             </Card.Body>
         </Card>;
+    }
+
+    _getFormTemplateName() {
+        const {formTemplatesLoaded, formTemplate, intl} = this.props;
+        if (formTemplate) {
+            const formTemplateOptions =
+                formTemplatesLoaded.formTemplates
+                    ? processTypeaheadOptions(formTemplatesLoaded.formTemplates, intl)
+                    : [];
+            return formTemplateOptions.find(r => r.id === formTemplate)?.name;
+        }
+    }
+
+    _getPanelTitle() {
+        if (!this._isAdmin() && this.props.formTemplate) {
+            const formTemplateName = this._getFormTemplateName();
+            if (formTemplateName) {
+                return  formTemplateName;
+            }
+        }
+        return this.i18n('records.panel-title');
+    }
+
+    _isAdmin() {
+        return this.props.currentUser.role === ROLE.ADMIN
     }
 }
 

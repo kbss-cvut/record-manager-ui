@@ -2,32 +2,32 @@ import * as ActionConstants from "../constants/ActionConstants";
 import {ACTION_STATUS} from "../constants/DefaultConstants";
 
 const initialState = {
-    formTypesLoaded: {}
+    formTemplatesLoaded: {}
 };
 
 export default function (state = initialState, action) {
     switch (action.type) {
-        case ActionConstants.LOAD_FORM_TYPES_PENDING:
+        case ActionConstants.LOAD_FORM_TEMPLATES_PENDING:
             return {
                 ...state,
-                formTypesLoaded: {
-                    ...state.formTypesLoaded,
+                formTemplatesLoaded: {
+                    ...state.formTemplatesLoaded,
                     status: ACTION_STATUS.PENDING
                 }
             };
-        case ActionConstants.LOAD_FORM_TYPES_SUCCESS:
+        case ActionConstants.LOAD_FORM_TEMPLATES_SUCCESS:
             return {
                 ...state,
-                formTypesLoaded: {
+                formTemplatesLoaded: {
                     status: ACTION_STATUS.SUCCESS,
-                    formTypes: action.formTypes,
+                    formTemplates: action.formTemplates,
                     error: ''
                 }
             };
-        case ActionConstants.LOAD_FORM_TYPES_ERROR:
+        case ActionConstants.LOAD_FORM_TEMPLATES_ERROR:
             return {
                 ...state,
-                formTypesLoaded: {
+                formTemplatesLoaded: {
                     status: ACTION_STATUS.ERROR,
                     error: action.error
                 }

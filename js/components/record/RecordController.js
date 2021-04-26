@@ -14,6 +14,7 @@ import * as EntityFactory from "../../utils/EntityFactory";
 import RecordValidator from "../../validation/RecordValidator";
 import * as RecordState from "../../model/RecordState";
 import omit from 'lodash/omit';
+import {extractQueryParam} from "../../utils/Utils";
 
 class RecordController extends React.Component {
     constructor(props) {
@@ -106,7 +107,8 @@ class RecordController extends React.Component {
     };
 
     render() {
-        const {recordLoaded, recordSaved, currentUser, formgen, loadFormgen} = this.props;
+        const {recordLoaded, recordSaved, currentUser, formgen, loadFormgen, formTemplatesLoaded} = this.props;
+        const formTemplate = extractQueryParam(this.props.location.search, "formTemplate");
         if (!currentUser) {
             return null;
         }
@@ -124,7 +126,11 @@ class RecordController extends React.Component {
                 recordSaved={recordSaved}
                 showAlert={this.state.showAlert}
                 formgen={formgen}
-                loadFormgen={loadFormgen}/>;
+                loadFormgen={loadFormgen}
+                formTemplatesLoaded={formTemplatesLoaded}
+                formTemplate={formTemplate}
+                currentUser={currentUser}
+        />;
     }
 }
 
@@ -137,6 +143,7 @@ function mapStateToProps(state) {
         recordLoaded: state.record.recordLoaded,
         recordSaved: state.record.recordSaved,
         viewHandlers: state.router.viewHandlers,
+        formTemplatesLoaded: state.formTemplates.formTemplatesLoaded,
         formgen: state.record.formgen
     };
 }
