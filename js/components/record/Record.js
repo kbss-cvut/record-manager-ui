@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import {Button, Card} from "react-bootstrap";
+import {Button} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {FormattedMessage, injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
@@ -9,7 +9,7 @@ import HorizontalInput from "../HorizontalInput";
 import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
 import RequiredAttributes from "./RequiredAttributes";
-import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderCard, LoaderSmall} from "../Loader";
 import {processTypeaheadOptions} from "./TypeaheadAnswer";
@@ -50,15 +50,13 @@ class Record extends React.Component {
             return <LoaderCard header={this._renderHeader()} variant='primary'/>;
         }
 
-        return <Card variant='primary'>
-            <Card.Header className="text-light bg-primary" as="h6">{this._renderHeader()}</Card.Header>
-            <Card.Body>
+        return <div className={"record"}>
                 <form>
                     <RequiredAttributes record={record} onChange={this._onChange}
                                         formTemplate={formTemplate}
                                         currentUser={currentUser}
                                         completed={record.state.isComplete()}/>
-                    {this._renderInstitution()}
+                    {this._showInstitution() && this._renderInstitution()}
                     <RecordProvenance record={record}/>
                 </form>
                 {this._renderForm()}
@@ -66,13 +64,12 @@ class Record extends React.Component {
                 {showAlert && recordSaved.status === ACTION_STATUS.ERROR &&
                 <div>
                     <AlertMessage type={ALERT_TYPES.DANGER}
-                                  message={this.props.formatMessage('record.save-error', {error: this.i18n(recordSaved.error.message)})}/>
+                                  message={this.props.formatMessage('record.save-error', {error: this.i18n(recordSaved.error.messageId)})}/>
                     <br/>
                 </div>}
                 {showAlert && recordSaved.status === ACTION_STATUS.SUCCESS &&
                 <div><AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('record.save-success')}/><br/></div>}
-            </Card.Body>
-        </Card>;
+            </div>;
     }
 
     _renderHeader() {
@@ -140,6 +137,10 @@ class Record extends React.Component {
         }
     }
 
+    _showInstitution() {
+        return this._isAdmin();
+    }
+
     _getPanelTitle() {
         if (!this._isAdmin() && this.props.formTemplate) {
             const formTemplateName = this._getFormTemplateName();
@@ -148,6 +149,10 @@ class Record extends React.Component {
             }
         }
         return this.i18n('record.panel-title');
+    }
+
+    _isAdmin() {
+        return this.props.currentUser.role === ROLE.ADMIN
     }
 }
 

@@ -212,6 +212,8 @@ export default {
         'Institution with members or patient records cannot be deleted.': 'Institution with members or records cannot be deleted.',
         'Your browser is not fully supported! Some parts of web may not work properly.': 'Your browser is not fully supported! Some parts of web may not work properly.',
         'We recommend using the latest version of ': 'We recommend using the latest version of ',
-        'or': ' or'
+        'or': ' or',
+        'error.record.localNameOfRecordIsNotUnique': 'Name is not unique.',
+        'error.record.localNameOfRecordIsEmpty': 'Name is empty.'
     }
 };

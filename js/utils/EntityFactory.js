@@ -30,7 +30,7 @@ export function initNewPatientRecord() {
         formTemplate: '',
         complete: false,
         isNew: true,
-        state: RecordState.createInitialState()
+        state: RecordState.createRecordState()
     }
 }
 

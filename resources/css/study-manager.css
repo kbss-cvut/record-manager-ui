@@ -876,3 +876,7 @@ header {
 .list-group-item {
     cursor: pointer;
 }
+
+.answerable-section .form-group .form-check-label {
+    font-size: 1rem;
+}

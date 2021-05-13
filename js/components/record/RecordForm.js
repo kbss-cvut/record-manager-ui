@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import {Card} from 'react-bootstrap';
 import SForms from 's-forms';
 import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
@@ -13,6 +12,9 @@ import {axiosBackend} from "../../actions";
 import {API_URL} from "../../../config";
 import * as Logger from "../../utils/Logger";
 import * as I18nStore from "../../stores/I18nStore";
+import SmartComponents from "s-forms-smart-components/dist/lib";
+
+const componentMapping = SmartComponents.default.getComponentMapping();
 
 class RecordForm extends React.Component {
     constructor(props) {
@@ -74,9 +76,7 @@ class RecordForm extends React.Component {
             return <Loader/>;
         }
 
-        return <Card variant='info'>
-            <Card.Header className="text-light bg-primary" as="h6">{this.i18n('record.form-title')}</Card.Header>
-            <SForms
+        return <SForms
                 ref={this.refForm}
                 form={this.state.form}
                 formData={this.props.record.question}
@@ -85,8 +85,8 @@ class RecordForm extends React.Component {
                 isFormValid={this.props.isFormValid}
                 enableForwardSkip={true}
                 loader={<Loader/>}
-            />
-        </Card>;
+                componentMapRules={componentMapping}
+            />;
     }
 }
 

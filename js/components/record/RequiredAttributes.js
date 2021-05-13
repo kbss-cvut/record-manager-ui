@@ -40,18 +40,18 @@ class RequiredAttributes extends React.Component {
 
         // If the 'completed' prop is true, the attributes (except for the name) should be read only
         return <div>
-            {this._hideFormTemplateSelection && <div className='row'>
-                    <div className='col-11 col-sm-6'>
-                        <HorizontalInput
-                            labelWidth={4} inputWidth={8}
-                            type='autocomplete' name='formTemplate' value={record.formTemplate || formTemplate}
-                            label={this.i18n('records.form-template') + '*'} onChange={this.props.onChange}
-                            possibleValuesEndpoint={possibleValuesEndpoint}
-                        />
-                    </div>
+            {this._showFormTemplateSelection() && <div className='row'>
+                <div className='col-11 col-sm-6'>
+                    <HorizontalInput
+                        labelWidth={4} inputWidth={8}
+                        type='autocomplete' name='formTemplate' value={record.formTemplate || formTemplate}
+                        label={this.i18n('records.form-template') + '*'} onChange={this.props.onChange}
+                        possibleValuesEndpoint={possibleValuesEndpoint}
+                    />
                 </div>
+            </div>
             }
-            <div className='row'>
+            {this._showLocalNameEntry() && <div className='row'>
                 <div className='col-11 col-sm-6'>
                     <HorizontalInput
                         labelWidth={4} inputWidth={8}
@@ -61,11 +61,16 @@ class RequiredAttributes extends React.Component {
                 </div>
                 <HelpIcon text={this.i18n('help.local-name')} glyph="help"/>
             </div>
+            }
         </div>
     }
 
+    _showLocalNameEntry() {
+        return this._isAdmin()
+    }
+
     _showFormTemplateSelection() {
-        return this._isAdmin() || !this.props.formTemplate
+        return this._isAdmin() || !(this.props.record.formTemplate || this.props.formTemplate)
     }
 
     _isAdmin() {
