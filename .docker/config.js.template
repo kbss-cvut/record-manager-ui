@@ -1,0 +1,4 @@
+// Dynamic configuration
+window.__config__ = {
+  API_URL: '${API_URL}'
+}

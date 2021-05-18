@@ -1,5 +1,30 @@
-export const API_URL = process.env.STUDY_MANAGER_API_URL;
-export const APP_TITLE = process.env.STUDY_MANAGER_APP_TITLE;
-export const LANGUAGE = process.env.STUDY_MANAGER_LANGUAGE;
-export const NAVIGATOR_LANGUAGE = JSON.parse(process.env.STUDY_MANAGER_NAVIGATOR_LANGUAGE);
-export const BASENAME = process.env.STUDY_MANAGER_BASENAME;
+/**
+ * Aggregated object of process.env and window.__config__ to allow dynamic configuration
+ */
+const ENV = {
+        ...Object.keys(process.env).reduce((acc, key) => {
+        const strippedKey = key.replace("STUDY_MANAGER_", "");
+        acc[strippedKey] = process.env[key];
+        return acc;
+    }, {}),
+    ...(window).__config__,
+};
+
+/**
+ * Helper to make sure that all envs are defined properly
+ * @param name env variable name
+ * @param defaultValue Default variable name
+ */
+export const getEnv = (name, defaultValue) => {
+    const value = ENV[name] || defaultValue;
+    if (value !== undefined) {
+        return value;
+    }
+    throw new Error(`Missing environment variable: ${name}`);
+};
+
+export const API_URL = getEnv("API_URL");
+export const APP_TITLE = getEnv("APP_TITLE");
+export const LANGUAGE = getEnv("LANGUAGE");
+export const NAVIGATOR_LANGUAGE = JSON.parse(getEnv("NAVIGATOR_LANGUAGE"));
+export const BASENAME = getEnv("BASENAME");
