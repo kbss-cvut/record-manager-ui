@@ -1,6 +1,6 @@
 {
   "name": "study-manager",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Study Manager UI",
   "main": "js/index.js",
   "dependencies": {
@@ -23,8 +23,8 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
-    "s-forms": "https://kbss.felk.cvut.cz/dist/s-forms-0.2.6.tgz",
-    "s-forms-smart-components": "https://kbss.felk.cvut.cz/dist/s-forms-smart-components-0.0.5.tgz"
+    "s-forms": "https://kbss.felk.cvut.cz/dist/s-forms-0.2.7.tgz",
+    "s-forms-smart-components": "https://kbss.felk.cvut.cz/dist/s-forms-smart-components-0.0.10.tgz"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
