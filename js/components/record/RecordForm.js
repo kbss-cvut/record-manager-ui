@@ -14,7 +14,7 @@ import * as Logger from "../../utils/Logger";
 import * as I18nStore from "../../stores/I18nStore";
 import SmartComponents from "s-forms-smart-components/dist/lib";
 
-const componentMapping = SmartComponents.default.getComponentMapping();
+const componentMapping = SmartComponents.getComponentMapping();
 
 class RecordForm extends React.Component {
     constructor(props) {
