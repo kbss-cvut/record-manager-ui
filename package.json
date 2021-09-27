@@ -1,6 +1,6 @@
 {
   "name": "study-manager",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Study Manager UI",
   "main": "js/index.js",
   "dependencies": {
