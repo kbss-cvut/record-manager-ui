@@ -22,6 +22,7 @@ import RecordValidator from "../../validation/RecordValidator";
 import * as RecordState from "../../model/RecordState";
 import omit from 'lodash/omit';
 import {extractQueryParam} from "../../utils/Utils";
+import {withRouter} from "react-router-dom";
 
 class RecordController extends React.Component {
     constructor(props) {
@@ -50,22 +51,27 @@ class RecordController extends React.Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {recordLoaded, recordSaved} = this.props;
 
-        if (this.state.saved && recordLoaded.status !== ACTION_STATUS.PENDING
-            && recordSaved.status === ACTION_STATUS.SUCCESS) {
-            if (recordSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY) {
+        if (prevProps.recordSaved.status === ACTION_STATUS.PENDING
+            && recordSaved.status === ACTION_STATUS.SUCCESS)
+        { // just saved
+
+            if (recordSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY)
+            { // first time saved
                 this.props.transitionToWithOpts(Routes.editRecord, {
                     params: {key: recordSaved.record.key},
                     handlers: {
                         onCancel: Routes.records
                     }
                 });
-            } else {
-                this.setState({saved: false});
+                this.props.loadRecord(recordSaved.record.key);
+            } else
+            { // at least second time saved
                 this.props.loadRecord(this.state.record.key);
             }
-        }
+        } else if (prevProps.recordLoaded.status === ACTION_STATUS.PENDING
+            && recordLoaded.status === ACTION_STATUS.SUCCESS)
+        { // just loaded
 
-        if (prevProps.recordLoaded.status === ACTION_STATUS.PENDING && recordLoaded.status === ACTION_STATUS.SUCCESS) {
             const record = recordLoaded.record;
             record.state = RecordState.createRecordState();
             this.setState({record: record});
@@ -165,7 +171,7 @@ class RecordController extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(RecordController)));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(withRouter(RecordController))));
 
 function mapStateToProps(state) {
     return {

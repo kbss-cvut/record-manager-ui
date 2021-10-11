@@ -50,9 +50,15 @@ export const authRoutes = (
         <Route exact path={Routes.records.path}
                component={requireAuth(RecordsController)}/>
         <Route exact path={Routes.createRecord.path}
-               component={requireAuth(RecordController)}/>
+               render={routeProps => (
+                   <RecordController {...routeProps}/>
+               )}>
+        </Route>
         <Route exact path={Routes.editRecord.path}
-               component={requireAuth(RecordController)}/>
+               render={routeProps => (
+                   <RecordController {...routeProps}/>
+               )}>
+        </Route>
         <Route exact path={Routes.historyActions.path}
                component={requireAuth(HistoryActions)}/>
         <Route exact path={Routes.historyAction.path}

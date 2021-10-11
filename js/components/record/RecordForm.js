@@ -35,7 +35,7 @@ class RecordForm extends React.Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {record} = this.props;
 
-        if (prevProps.record.question !== record.question) {
+        if (prevProps.record.question?.uri !== record.question?.uri) {
             this.loadWizard();
         }
     }
