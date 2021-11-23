@@ -188,7 +188,7 @@ export default {
         'history.non-logged': 'Nepřihlášený uživatel',
 
         'statistics.panel-title': 'Statistika',
-        'statistics.number-of-investigators': 'Počet úřadníků',
+        'statistics.number-of-investigators': 'Počet úředníků',
         'statistics.number-of-processed-records': 'Počet vyplněných záznamů',
         'statistics.loading-error': 'Nepodařilo se načíst statistiky. {error}',
 
