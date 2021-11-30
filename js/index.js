@@ -11,10 +11,6 @@ import {loadUserProfile} from "./actions/AuthActions";
 import {errorLogger, historyLogger} from "./utils/HistoryLogger";
 import App from './App';
 
-import 's-forms/css/s-forms.min.css'
-import 's-forms-smart-components/src/styles/components.css';
-import 'react-datepicker/dist/react-datepicker.css';
-import "intelligent-tree-select/lib/styles.css"
 
 // store initialization
 const createStoreWithMiddleware = composeWithDevTools(

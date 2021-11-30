@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import SForms from 's-forms';
+import SForms, {Constants} from 's-forms';
 import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
 import withI18n from '../../i18n/withI18n';
@@ -13,6 +13,11 @@ import {API_URL} from "../../../config";
 import * as Logger from "../../utils/Logger";
 import * as I18nStore from "../../stores/I18nStore";
 import SmartComponents from "s-forms-smart-components/dist/lib";
+
+import 's-forms/css/s-forms.min.css'
+import 's-forms-smart-components/src/styles/components.css';
+import 'react-datepicker/dist/react-datepicker.css';
+import "intelligent-tree-select/lib/styles.css"
 
 const componentMapping = SmartComponents.getComponentMapping();
 
@@ -67,6 +72,18 @@ class RecordForm extends React.Component {
             'wizard.next': this.i18n('wizard.next'),
             'wizard.previous': this.i18n('wizard.previous'),
         }
+        const options = {
+            i18n,
+            intl: I18nStore.getIntl(),
+            users: [
+                {id: "http://fel.cvut.cz/people/robert-plant", label: "Robert Rostlina"}],
+            currentUser: "http://fel.cvut.cz/people/robert-plant",
+            icons: [
+                {id: Constants.ICONS.QUESTION_HELP, behavior:  Constants.ICON_BEHAVIOR.ON_HOVER},
+                {id: Constants.ICONS.QUESTION_LINK, behavior:  Constants.ICON_BEHAVIOR.ON_HOVER},
+                {id: Constants.ICONS.QUESTION_COMMENTS, behavior: Constants.ICON_BEHAVIOR.ON_HOVER}
+            ]
+        }
 
         if (this.props.formgen.status === ACTION_STATUS.ERROR) {
             return <AlertMessage
@@ -80,7 +97,7 @@ class RecordForm extends React.Component {
                 ref={this.refForm}
                 form={this.state.form}
                 formData={this.props.record.question}
-                options={{i18n, intl: I18nStore.getIntl()}}
+                options={options}
                 fetchTypeAheadValues={this.fetchTypeAheadValues}
                 isFormValid={this.props.isFormValid}
                 enableForwardSkip={true}
