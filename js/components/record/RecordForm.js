@@ -67,6 +67,40 @@ class RecordForm extends React.Component {
         return result.data;
     }
 
+    _getUsersOptions() {
+        const currentUser = this.props.currentUser;
+        console.log(currentUser)
+        return {
+            users: [
+                {id: currentUser.uri, label: currentUser.firstName + " " + currentUser.lastName }
+            ],
+            currentUser: currentUser.uri
+        };
+    }
+
+    _isDevGroupUser() {
+        return this.props.currentUser.emailAddress.includes("devgroup");
+    }
+
+    _getIconsOptions() {
+        if (this._isDevGroupUser()) {
+            return {
+                icons: [
+                    {id: Constants.ICONS.QUESTION_HELP, behavior: Constants.ICON_BEHAVIOR.ON_HOVER},
+                    {id: Constants.ICONS.QUESTION_LINK, behavior: Constants.ICON_BEHAVIOR.ON_HOVER},
+                    {id: Constants.ICONS.QUESTION_COMMENTS, behavior: Constants.ICON_BEHAVIOR.ON_HOVER}
+                ]
+            };
+        }
+
+        return {
+            icons: [
+                {id: Constants.ICONS.QUESTION_HELP, behavior: Constants.ICON_BEHAVIOR.ON_HOVER}
+            ]
+        };
+    }
+
+
     render() {
         const i18n = {
             'wizard.next': this.i18n('wizard.next'),
@@ -75,14 +109,8 @@ class RecordForm extends React.Component {
         const options = {
             i18n,
             intl: I18nStore.getIntl(),
-            users: [
-                {id: "http://fel.cvut.cz/people/robert-plant", label: "Robert Rostlina"}],
-            currentUser: "http://fel.cvut.cz/people/robert-plant",
-            icons: [
-                {id: Constants.ICONS.QUESTION_HELP, behavior:  Constants.ICON_BEHAVIOR.ON_HOVER},
-                {id: Constants.ICONS.QUESTION_LINK, behavior:  Constants.ICON_BEHAVIOR.ON_HOVER},
-                {id: Constants.ICONS.QUESTION_COMMENTS, behavior: Constants.ICON_BEHAVIOR.ON_HOVER}
-            ]
+            ...this._getUsersOptions(),
+            ...this._getIconsOptions()
         }
 
         if (this.props.formgen.status === ACTION_STATUS.ERROR) {
@@ -94,21 +122,22 @@ class RecordForm extends React.Component {
         }
 
         return <SForms
-                ref={this.refForm}
-                form={this.state.form}
-                formData={this.props.record.question}
-                options={options}
-                fetchTypeAheadValues={this.fetchTypeAheadValues}
-                isFormValid={this.props.isFormValid}
-                enableForwardSkip={true}
-                loader={<Loader/>}
-                componentMapRules={componentMapping}
-            />;
+            ref={this.refForm}
+            form={this.state.form}
+            formData={this.props.record.question}
+            options={options}
+            fetchTypeAheadValues={this.fetchTypeAheadValues}
+            isFormValid={this.props.isFormValid}
+            enableForwardSkip={true}
+            loader={<Loader/>}
+            componentMapRules={componentMapping}
+        />;
     }
 }
 
 RecordForm.propTypes = {
     record: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired,
     loadFormgen: PropTypes.func,
     formgen: PropTypes.object,
     isFormValid: PropTypes.func

@@ -91,6 +91,7 @@ class Record extends React.Component {
                 record={record}
                 loadFormgen={loadFormgen}
                 formgen={formgen}
+                currentUser={this.props.currentUser}
                 isFormValid={this.isFormValid}/>
             : null;
     }
