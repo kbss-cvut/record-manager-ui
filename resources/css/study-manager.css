@@ -9,6 +9,11 @@ body {
     font-size: 0.8125rem;
 }
 
+/* TODO workaround for body rule */
+.wizard-step {
+    font-size: 1rem;
+}
+
 #wrap {
     min-height: 100%;
     height: auto;
