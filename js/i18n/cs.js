@@ -213,7 +213,7 @@ export default {
         'Your browser is not fully supported! Some parts of web may not work properly.': 'Váš prohlížeč není plně podporován! Některé části stránek nemusí fungovat správně.',
         'We recommend using the latest version of ': 'Doporučujeme použít nejnovější verzi ',
         'or': ' nebo',
-        'error.record.localNameOfRecordIsNotUnique': 'Formulářové pole \'Název/Česky\' není unikátní napříč všema záznamami.',
+        'error.record.localNameOfRecordIsNotUnique': 'Formulářové pole \'Název/Česky\' není unikátní napříč všemi záznamy.',
         'error.record.localNameOfRecordIsEmpty': 'Formulářové pole \'Název/Česky\' je prázdne.'
     }
 };
