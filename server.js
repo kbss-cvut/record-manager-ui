@@ -4,7 +4,7 @@ const express = require('express');
 const compression = require('compression');
 const fs = require('fs');
 
-const port = process.env.STUDY_MANAGER_PROD_SERVER_PORT || 8080;
+const port = process.env.RECORD_MANAGER_PROD_SERVER_PORT || 8080;
 const host = '0.0.0.0';
 const app = express();
 

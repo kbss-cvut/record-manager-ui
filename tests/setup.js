@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 enzyme.configure({adapter: new Adapter()});
 
 require('dotenv-safe').config({
-    allowEmptyValues: [ 'STUDY_MANAGER_BASENAME' ],
+    allowEmptyValues: [ 'RECORD_MANAGER_BASENAME' ],
     sample: './.env.example',
 })
 global.shallow = shallow;

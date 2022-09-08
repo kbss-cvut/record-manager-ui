@@ -20,13 +20,13 @@ describe('UserTable', function () {
         };
 
     users = [{
-        "uri":"http://vfn.cz/ontologies/study-manager/erter-tert",
+        "uri":"http://onto.fel.cvut.cz/ontologies/record-manager/erter-tert",
         "firstName":"Test2",
         "lastName":"Man",
         "username":"testman2",
         "emailAddress":"test@man.io",
         "types":[
-            "http://vfn.cz/ontologies/study-manager/doctor"
+            "http://onto.fel.cvut.cz/ontologies/record-manager/doctor"
         ]
     }];
 

@@ -10,11 +10,11 @@ const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const apiUrl = process.env.STUDY_MANAGER_API_URL;
-const appTitle = process.env.STUDY_MANAGER_APP_TITLE;
-const devServerPort = process.env.STUDY_MANAGER_DEV_SERVER_PORT;
+const apiUrl = process.env.RECORD_MANAGER_API_URL;
+const appTitle = process.env.RECORD_MANAGER_APP_TITLE;
+const devServerPort = process.env.RECORD_MANAGER_DEV_SERVER_PORT;
 
-console.log('STUDY_MANAGER_API_URL =', apiUrl);
+console.log('RECORD_MANAGER_API_URL =', apiUrl);
 
 module.exports = (
     env = {
@@ -23,7 +23,7 @@ module.exports = (
 ) => {
     const {ifProd, ifNotProd} = getIfUtils(env);
     const isStatic = process.env.STATIC
-    const basename = process.env.STUDY_MANAGER_BASENAME;
+    const basename = process.env.RECORD_MANAGER_BASENAME;
     const version = process.env.npm_package_version;
 
     return {
@@ -33,7 +33,7 @@ module.exports = (
         output: {
             filename: ifProd('bundle.[name].[chunkhash].js', 'bundle.[name].js'),
             chunkFilename: '[name].[chunkhash].js',
-            path: isStatic ? resolve(`../../../target/study-manager-${version}/`) : resolve('build/'),
+            path: isStatic ? resolve(`../../../target/record-manager-${version}/`) : resolve('build/'),
             publicPath: isStatic ? basename : "/",
         },
         resolve: {
@@ -119,8 +119,8 @@ module.exports = (
                     ...Object.keys(dotenv.parsed || {}).reduce((acc, key) => {
                         return {...acc, [key]: JSON.stringify(dotenv.parsed[key])};
                     }, {}),
-                    // Load env vars from shell - but only those that start with STUDY_MANAGER_
-                    ...Object.keys(process.env).filter(key => key.startsWith('STUDY_MANAGER_')).reduce((env, key) => {
+                    // Load env vars from shell - but only those that start with RECORD_MANAGER_
+                    ...Object.keys(process.env).filter(key => key.startsWith('RECORD_MANAGER_')).reduce((env, key) => {
                         env[key] = JSON.stringify(process.env[key])
                         return env
                     }, {})

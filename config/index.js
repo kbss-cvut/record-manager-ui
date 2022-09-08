@@ -3,7 +3,7 @@
  */
 const ENV = {
         ...Object.keys(process.env).reduce((acc, key) => {
-        const strippedKey = key.replace("STUDY_MANAGER_", "");
+        const strippedKey = key.replace("RECORD_MANAGER_", "");
         acc[strippedKey] = process.env[key];
         return acc;
     }, {}),

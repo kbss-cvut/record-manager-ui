@@ -40,7 +40,7 @@ describe('User', function () {
     };
 
     admin = {
-        "uri": "http://vfn.cz/ontologies/study-manager/Admin-Administratorowitch",
+        "uri": "http://onto.fel.cvut.cz/ontologies/record-manager/Admin-Administratorowitch",
         "firstName": "Test1",
         "lastName": "Man",
         "username": "testman1",
@@ -52,13 +52,13 @@ describe('User', function () {
             "emailAddress": "test@institution.io"
         },
         "types": [
-            "http://vfn.cz/ontologies/study-manager/administrator",
-            "http://vfn.cz/ontologies/study-manager/doctor"
+            "http://onto.fel.cvut.cz/ontologies/record-manager/administrator",
+            "http://onto.fel.cvut.cz/ontologies/record-manager/doctor"
         ]
     };
 
     user = {
-        "uri": "http://vfn.cz/ontologies/study-manager/erter-tert",
+        "uri": "http://onto.fel.cvut.cz/ontologies/record-manager/erter-tert",
         "firstName": "Test2",
         "lastName": "Man",
         "username": "testman2",
@@ -68,7 +68,7 @@ describe('User', function () {
             "key": 18691
         },
         "types": [
-            "http://vfn.cz/ontologies/study-manager/doctor"
+            "http://onto.fel.cvut.cz/ontologies/record-manager/doctor"
         ]
     };
 

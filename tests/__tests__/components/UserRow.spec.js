@@ -14,7 +14,7 @@ describe('UserRow', function () {
         onDelete = jest.fn();
 
     user = {
-        "uri": "http://vfn.cz/ontologies/study-manager/Admin-Administratorowitch",
+        "uri": "http://onto.fel.cvut.cz/ontologies/record-manager/Admin-Administratorowitch",
         "firstName": "Test1",
         "lastName": "Man",
         "username": "testman1",
@@ -26,8 +26,8 @@ describe('UserRow', function () {
             "emailAddress": "test@institution.io"
         },
         "types": [
-            "http://vfn.cz/ontologies/study-manager/administrator",
-            "http://vfn.cz/ontologies/study-manager/doctor"
+            "http://onto.fel.cvut.cz/ontologies/record-manager/administrator",
+            "http://onto.fel.cvut.cz/ontologies/record-manager/doctor"
         ]
     };
 

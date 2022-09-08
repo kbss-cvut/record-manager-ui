@@ -10,8 +10,8 @@ describe('AuthReducer', function () {
     const user = {
             username: 'test',
             types:[
-                "http://vfn.cz/ontologies/study-manager/administrator",
-                "http://vfn.cz/ontologies/study-manager/doctor"
+                "http://onto.fel.cvut.cz/ontologies/record-manager/administrator",
+                "http://onto.fel.cvut.cz/ontologies/record-manager/doctor"
             ]},
         error = {
             message: 'An error has occurred.'
