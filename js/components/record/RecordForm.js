@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import SForms, {Constants} from 's-forms';
+import SForms, {Constants} from '@kbss-cvut/s-forms';
 import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
 import withI18n from '../../i18n/withI18n';
@@ -12,10 +12,10 @@ import {axiosBackend} from "../../actions";
 import {API_URL} from "../../../config";
 import * as Logger from "../../utils/Logger";
 import * as I18nStore from "../../stores/I18nStore";
-import SmartComponents from "s-forms-smart-components/dist/lib";
+import SmartComponents from "s-forms-components";
 
-import 's-forms/css/s-forms.min.css'
-import 's-forms-smart-components/src/styles/components.css';
+import "@kbss-cvut/s-forms/dist/s-forms.css";
+import 's-forms-components/dist/s-forms-components.css'
 import 'react-datepicker/dist/react-datepicker.css';
 import "intelligent-tree-select/lib/styles.css"
 

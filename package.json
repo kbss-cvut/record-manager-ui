@@ -4,6 +4,7 @@
   "description": "Record Manager UI",
   "main": "js/index.js",
   "dependencies": {
+    "@kbss-cvut/s-forms": "^0.6.2",
     "axios": "^0.21.1",
     "bowser": "^2.9.0",
     "classnames": "^2.3.1",
@@ -22,8 +23,7 @@
     "redux": "^4.1.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
-    "@kbss-cvut/s-forms": "^0.6.2",
-    "s-forms-components": "^0.1.7"
+    "s-forms-components": "^0.1.8"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
