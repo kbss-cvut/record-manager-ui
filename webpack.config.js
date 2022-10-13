@@ -34,7 +34,7 @@ module.exports = (
             filename: ifProd('bundle.[name].[chunkhash].js', 'bundle.[name].js'),
             chunkFilename: '[name].[chunkhash].js',
             path: isStatic ? resolve(`../../../target/record-manager-${version}/`) : resolve('build/'),
-            publicPath: isStatic ? basename : "/",
+            publicPath: isStatic ? basename : "./",
         },
         resolve: {
             extensions: ['.js', '.jsx', '.json']

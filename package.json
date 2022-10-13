@@ -2,6 +2,7 @@
   "name": "record-manager",
   "version": "0.2.3",
   "description": "Record Manager UI",
+  "homepage": ".",
   "main": "js/index.js",
   "dependencies": {
     "@kbss-cvut/s-forms": "^0.6.2",
