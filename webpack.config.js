@@ -40,7 +40,7 @@ module.exports = (
             extensions: ['.js', '.jsx', '.json']
         },
         devServer: {
-            host: '0.0.0.0',
+            host: 'localhost',
             inline: true,
             port: devServerPort || 8080,
             historyApiFallback: true
