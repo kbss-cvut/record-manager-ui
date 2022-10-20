@@ -12,14 +12,15 @@ import {axiosBackend} from "../../actions";
 import {API_URL} from "../../../config";
 import * as Logger from "../../utils/Logger";
 import * as I18nStore from "../../stores/I18nStore";
-import SmartComponents from "s-forms-components";
+// TODO enable s-forms-components
+// import SmartComponents from "s-forms-components";
 
 import "@kbss-cvut/s-forms/dist/s-forms.css";
-import 's-forms-components/dist/s-forms-components.css'
+// import 's-forms-components/dist/s-forms-components.css'
 import 'react-datepicker/dist/react-datepicker.css';
-import "intelligent-tree-select/lib/styles.css"
+// import "intelligent-tree-select/lib/styles.css"
 
-const componentMapping = SmartComponents.getComponentMapping();
+// const componentMapping = SmartComponents.getComponentMapping();
 
 class RecordForm extends React.Component {
     constructor(props) {
@@ -129,7 +130,7 @@ class RecordForm extends React.Component {
             isFormValid={this.props.isFormValid}
             enableForwardSkip={true}
             loader={<Loader/>}
-            componentMapRules={componentMapping}
+            // componentMapRules={componentMapping}
         />;
     }
 }
