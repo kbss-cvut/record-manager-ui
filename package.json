@@ -5,7 +5,7 @@
   "homepage": ".",
   "main": "js/index.js",
   "dependencies": {
-    "@kbss-cvut/s-forms": "^0.6.3",
+    "@kbss-cvut/s-forms": "^0.6.4",
     "axios": "^0.21.1",
     "bowser": "^2.9.0",
     "classnames": "^2.3.1",
