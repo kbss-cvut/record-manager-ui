@@ -72,7 +72,7 @@ class RecordForm extends React.Component {
         const currentUser = this.props.currentUser;
         return {
             users: [
-                {id: currentUser.uri, label: currentUser.firstName + " " + currentUser.lastName }
+                {id: currentUser.uri, label: currentUser.firstName + " " + currentUser.lastName}
             ],
             currentUser: currentUser.uri
         };
