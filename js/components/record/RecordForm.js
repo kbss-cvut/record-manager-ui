@@ -105,6 +105,8 @@ class RecordForm extends React.Component {
         const i18n = {
             'wizard.next': this.i18n('wizard.next'),
             'wizard.previous': this.i18n('wizard.previous'),
+            "section.expand": this.i18n('section.expand'),
+            "section.collapse": this.i18n('section.collapse'),
         }
         const options = {
             i18n,
