@@ -23,6 +23,7 @@ import * as RecordState from "../../model/RecordState";
 import omit from 'lodash/omit';
 import {extractQueryParam} from "../../utils/Utils";
 import {withRouter} from "react-router-dom";
+import {EXTENSIONS} from "../../../config";
 
 class RecordController extends React.Component {
     constructor(props) {
@@ -126,15 +127,20 @@ class RecordController extends React.Component {
     };
 
     _getLocalName() {
-        // TODO
-        return this.state.record?.question?.subQuestions?.[0]
-            ?.subQuestions?.find(q => q.origin.includes("věci/pojem/název"))
-            ?.subQuestions?.find(q => q.origin.includes("language-czech"))
-            ?.answers?.[0]?.textValue
+        if (EXTENSIONS.split(",").includes("kodi")) { // return name of the record based on answer of specific question
+            return this._getKodiLocaLName();
+        }
+        return "record-" + Date.now();
     }
 
-    _getMainEntityName() {
-        // TODO
+    _getKodiLocaLName() {
+        return this.state.record?.question?.subQuestions?.[0]
+             ?.subQuestions?.find(q => q.origin.includes("věci/pojem/název"))
+             ?.subQuestions?.find(q => q.origin.includes("language-czech"))
+             ?.answers?.[0]?.textValue
+    }
+
+    _getKodiMainEntityName() {
         const entityName = this.state.record?.question
             ?.subQuestions?.[0]?.origin
             .replace(/^.*pojem./, "").replace(/-[^-]*-q-qo/, "").replace("-", " ");

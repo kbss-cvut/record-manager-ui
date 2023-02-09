@@ -28,3 +28,4 @@ export const APP_TITLE = getEnv("APP_TITLE");
 export const LANGUAGE = getEnv("LANGUAGE");
 export const NAVIGATOR_LANGUAGE = JSON.parse(getEnv("NAVIGATOR_LANGUAGE"));
 export const BASENAME = getEnv("BASENAME");
+export const EXTENSIONS = getEnv("EXTENSIONS", "");
