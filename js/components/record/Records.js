@@ -12,6 +12,7 @@ import PropTypes from "prop-types";
 import {processTypeaheadOptions} from "./TypeaheadAnswer";
 
 const STUDY_CLOSED_FOR_ADDITION = false;
+const STUDY_CREATE_AT_MOST_ONE_RECORD = false;
 
 class Records extends React.Component {
     static propTypes = {
@@ -32,6 +33,9 @@ class Records extends React.Component {
 
     render() {
         const {showAlert, recordDeleted, formTemplate} = this.props;
+        const showCreateButton = STUDY_CREATE_AT_MOST_ONE_RECORD
+                ? (!this.props.recordsLoaded.records || (this.props.recordsLoaded.records.length < 1))
+                : true;
         const createRecordDisabled =
             STUDY_CLOSED_FOR_ADDITION
             && (!this._isAdmin());
@@ -50,10 +54,12 @@ class Records extends React.Component {
             <Card.Body>
                 <RecordTable {...this.props}/>
                 <div>
-                    <Button variant='primary' size='sm'
+                    {showCreateButton
+                        ? <Button variant='primary' size='sm'
                             disabled={createRecordDisabled}
                             title={createRecordTooltip}
                             onClick={onCreateWithFormTemplate}>{this.i18n('records.create-tile')}</Button>
+                        : null}
                 </div>
                 {showAlert && recordDeleted.status === ACTION_STATUS.ERROR &&
                 <AlertMessage type={ALERT_TYPES.DANGER}
