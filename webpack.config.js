@@ -26,6 +26,7 @@ module.exports = (
     const isForceBasename = process.env.FORCE_BASENAME;
     const basename = process.env.RECORD_MANAGER_BASENAME;
     const version = process.env.npm_package_version;
+    const appInfo = process.env.RECORD_MANAGER_APP_INFO;
 
     return {
         mode: ifProd('production', 'development'),
@@ -109,6 +110,7 @@ module.exports = (
                 inject: true,
                 minify: true,
                 basename: (isStatic || isForceBasename) ? basename : "",
+                appInfo:  appInfo
             }),
             new InlineManifestWebpackPlugin(),
 
