@@ -23,6 +23,7 @@ module.exports = (
 ) => {
     const {ifProd, ifNotProd} = getIfUtils(env);
     const isStatic = process.env.STATIC
+    const isForceBasename = process.env.FORCE_BASENAME;
     const basename = process.env.RECORD_MANAGER_BASENAME;
     const version = process.env.npm_package_version;
 
@@ -34,7 +35,7 @@ module.exports = (
             filename: ifProd('bundle.[name].[chunkhash].js', 'bundle.[name].js'),
             chunkFilename: '[name].[chunkhash].js',
             path: isStatic ? resolve(`../../../target/record-manager-${version}/`) : resolve('build/'),
-            publicPath: isStatic ? basename : "./",
+            publicPath: (isStatic || isForceBasename) ? basename : "",
         },
         resolve: {
             extensions: ['.js', '.jsx', '.json']
@@ -107,7 +108,7 @@ module.exports = (
                 template: 'index.html',
                 inject: true,
                 minify: true,
-                basename: isStatic ? basename : "",
+                basename: (isStatic || isForceBasename) ? basename : "",
             }),
             new InlineManifestWebpackPlugin(),
 

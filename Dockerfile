@@ -20,11 +20,13 @@ COPY . .
 # BUILD STAGE
 # run NPM build
 FROM test as build
-RUN set -ex; npm run build
+RUN set -ex; FORCE_BASENAME=true RECORD_MANAGER_BASENAME="%RECORD_MANAGER_BASENAME%" npm run build
 
 # RELEASE STAGE
 # Only include the static files in the final image
 FROM nginx:1.17.0-alpine
+
+ENV BASENAME=""
 
 # Copy the react build from Build Stage
 COPY --from=build /usr/src/app/build /var/www
@@ -35,8 +37,11 @@ COPY .docker/error.html /usr/share/nginx/html
 # Copy our custom nginx config
 COPY .docker/nginx.conf /etc/nginx/nginx.conf
 
-# Copy our custom nginx config
+# Copy our custom javascript config template
 COPY .docker/config.js.template /etc/nginx/config.js.template
+
+# Copy our custom html template
+COPY --from=build /usr/src/app/build/index.html /etc/nginx/index.html.template
 
 # from the outside.
 EXPOSE 80
