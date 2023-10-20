@@ -1,10 +1,24 @@
 import axios from 'axios';
 import Routes from "../constants/RoutesConstants";
 import {transitionTo} from "../utils/Routing";
+import {HttpHeaders} from "../constants/DefaultConstants";
+import {getOidcToken} from "../utils/SecurityUtils";
+import {isUsingOidcAuth} from "../utils/OidcUtils";
 
 // Axios instance for communicating with Backend
 export let axiosBackend = axios.create({
     withCredentials: true
+});
+
+axiosBackend.interceptors.request.use((reqConfig) => {
+    if (!isUsingOidcAuth()) {
+        return reqConfig;
+    }
+    if (!reqConfig.headers) {
+        reqConfig.headers = {};
+    }
+    reqConfig.headers[HttpHeaders.AUTHORIZATION] = getOidcToken();
+    return reqConfig;
 });
 
 axiosBackend.interceptors.response.use(
