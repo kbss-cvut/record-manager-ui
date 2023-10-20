@@ -107,10 +107,19 @@ module.exports = (
                 year: new Date().getFullYear(),
                 title: appTitle,
                 template: 'index.html',
+                filename: 'index.html',
                 inject: true,
                 minify: true,
                 basename: (isStatic || isForceBasename) ? basename : "",
                 appInfo:  appInfo
+            }),
+            new HtmlWebpackPlugin({
+                template: 'oidc-signin-callback.html',
+                filename: 'oidc-signin-callback.html'
+            }),
+            new HtmlWebpackPlugin({
+                template: 'oidc-silent-callback.html',
+                filename: 'oidc-silent-callback.html'
             }),
             new InlineManifestWebpackPlugin(),
 
