@@ -7,6 +7,7 @@ module.exports = {
     transform: {
         '^.+\\.(js|jsx)$': 'babel-jest'
     },
+    transformIgnorePatterns: ["node_modules/(?!@kbss-cvut)/"],
     reporters: ['default'],
     "moduleNameMapper": {
         "\\.(css)$": "<rootDir>/tests/__mocks__/styleMock.js"

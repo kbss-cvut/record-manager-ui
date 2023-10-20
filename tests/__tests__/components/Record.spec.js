@@ -3,7 +3,7 @@
 import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-dom/test-utils';
-import {ACTION_STATUS} from "../../../js/constants/DefaultConstants";
+import {ACTION_STATUS, ROLE} from "../../../js/constants/DefaultConstants";
 import Record from "../../../js/components/record/Record";
 import * as RecordState from "../../../js/model/RecordState";
 import enLang from '../../../js/i18n/en';
@@ -16,6 +16,7 @@ describe('Record', function () {
         showAlert,
         recordLoaded,
         formgen = {},
+        currentUser,
         handlers = {
             onSave: jest.fn(),
             onCancel: jest.fn(),
@@ -41,6 +42,11 @@ describe('Record', function () {
             isNew: true,
             state: RecordState.createInitialState()
         };
+        currentUser = {
+            firstName: "Test",
+            lastName: "User",
+            role: ROLE.DOCTOR
+        };
     });
 
     record = {
@@ -60,7 +66,7 @@ describe('Record', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Record ref={null} handlers={handlers} record={null} recordLoaded={recordLoaded}
-                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
+                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen} currentUser={currentUser} formTemplatesLoaded={{}}/>
             </IntlProvider>);
         const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'loader-spin');
         expect(result).not.toBeNull();
@@ -77,17 +83,17 @@ describe('Record', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Record ref={null} handlers={handlers} record={record} recordLoaded={recordLoaded}
-                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
+                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen} currentUser={currentUser} formTemplatesLoaded={{}}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
         expect(alert).not.toBeNull();
     });
 
-    xit("renders record's form empty", function () {
+    it("renders record's form empty", function () {
         const tree = mount(
             <IntlProvider locale="en" {...intlData}>
                 <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
-                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
+                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen} currentUser={currentUser} formTemplatesLoaded={{}}/>
             </IntlProvider>
         );
         const result = tree.find('input');
@@ -106,7 +112,7 @@ describe('Record', function () {
         const tree = mount(
             <IntlProvider locale="en" {...intlData}>
                 <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
-                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
+                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen} currentUser={currentUser} formTemplatesLoaded={{}}/>
             </IntlProvider>
         );
         let buttons = tree.find("Button");
@@ -122,7 +128,7 @@ describe('Record', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
-                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
+                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen} currentUser={currentUser} formTemplatesLoaded={{}}/>
             </IntlProvider>
         );
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-success");
@@ -141,7 +147,7 @@ describe('Record', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
-                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
+                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen} currentUser={currentUser} formTemplatesLoaded={{}}/>
             </IntlProvider>
         );
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
@@ -156,7 +162,7 @@ describe('Record', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Record ref={null} handlers={handlers} record={newRecord} recordLoaded={recordLoaded}
-                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen}/>
+                        recordSaved={recordSaved} showAlert={showAlert} formgen={formgen} currentUser={currentUser} formTemplatesLoaded={{}}/>
             </IntlProvider>);
         const loader = TestUtils.findRenderedDOMComponentWithClass(tree, "loader");
         expect(loader).not.toBeNull();
