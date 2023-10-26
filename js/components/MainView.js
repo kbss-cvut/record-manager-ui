@@ -15,6 +15,8 @@ import * as Constants from "../constants/DefaultConstants";
 import {LoaderMask} from "./Loader";
 import {NavLink, withRouter} from 'react-router-dom';
 import {IfGranted} from "react-authorization";
+import {transitionTo, transitionToWithOpts} from "../utils/Routing";
+import {isUsingOidcAuth, userProfileLink} from "../utils/OidcUtils";
 
 class MainView extends React.Component {
     constructor(props) {
@@ -42,6 +44,14 @@ class MainView extends React.Component {
         const unsupportedBrowserElem = document.getElementById("unsupported-browser");
         if (unsupportedBrowserElem) {
             unsupportedBrowserElem.remove();
+        }
+    }
+
+    onProfileClick() {
+        if (isUsingOidcAuth()) {
+            window.location = userProfileLink();
+        } else {
+            transitionToWithOpts(Routes.editUser, {params: {username: this.props.user.username}});
         }
     }
 
@@ -114,9 +124,9 @@ class MainView extends React.Component {
                                 <Nav>
                                     <NavDropdown className="pr-0" id='logout' title={name}>
                                         <DropdownItem
-                                            onClick={() => this.props.history.push(Routes.users.path + '/' + user.username)}>{this.i18n('main.my-profile')}</DropdownItem>
+                                            onClick={() => this.onProfileClick()}>{this.i18n('main.my-profile')}</DropdownItem>
                                         <DropdownItem
-                                            onClick={() => this.props.history.push(Routes.logout.path)}>{this.i18n('main.logout')}</DropdownItem>
+                                            onClick={() => transitionTo(Routes.logout)}>{this.i18n('main.logout')}</DropdownItem>
                                     </NavDropdown>
 
                                 </Nav>

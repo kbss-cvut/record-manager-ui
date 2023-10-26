@@ -51,6 +51,10 @@ function resolveUrl() {
   return loc.protocol + "//" + loc.host + loc.pathname;
 }
 
+export const userProfileLink = () => {
+  return `${getEnv("AUTH_SERVER_URL")}/account`;
+}
+
 /**
  * Helper to generate redirect Uri
  */
