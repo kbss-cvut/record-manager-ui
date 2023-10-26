@@ -14,6 +14,7 @@ import {loadUserProfile} from "../actions/AuthActions";
 import * as Constants from "../constants/DefaultConstants";
 import {LoaderMask} from "./Loader";
 import {NavLink, withRouter} from 'react-router-dom';
+import {IfGranted} from "react-authorization";
 
 class MainView extends React.Component {
     constructor(props) {
@@ -29,11 +30,12 @@ class MainView extends React.Component {
     _renderUsers() {
         const path = this.props.location.pathname;
 
-        return this.props.user.role === ROLE.ADMIN ?
+        return <IfGranted expected={ROLE.ADMIN} actual={this.props.user.role}>
             <NavItem>
                 <NavLink to={Routes.users.path} isActive={() => path.startsWith(Routes.users.path)}
                          className="nav-link">{this.i18n('main.users-nav')}</NavLink>
-            </NavItem> : null
+            </NavItem>
+        </IfGranted>;
     }
 
     removeUnsupportedBrowserWarning() {
@@ -86,25 +88,27 @@ class MainView extends React.Component {
                                             </NavItem>
                                             : null
                                     }
-                                    {user.role === ROLE.ADMIN && <NavItem>
-                                        <NavLink className="nav-link"
-                                                 isActive={() => path.startsWith(Routes.records.path)}
-                                                 to={Routes.records.path}>{this.i18n('main.records-nav')}</NavLink>
-                                    </NavItem>
-                                    }
-                                    {user.role === ROLE.ADMIN &&
-                                    <NavItem>
-                                        <NavLink className="nav-link"
-                                                 isActive={() => path.startsWith(Routes.statistics.path)}
-                                                 to={Routes.statistics.path}>{this.i18n('statistics.panel-title')}</NavLink>
-                                    </NavItem>
-                                    }
-                                    {user.role === ROLE.ADMIN &&
-                                    <NavItem>
-                                        <NavLink className="nav-link"
-                                                 isActive={() => path.startsWith(Routes.historyActions.path)}
-                                                 to={Routes.historyActions.path}>{this.i18n('main.history')}</NavLink>
-                                    </NavItem>}
+                                    <IfGranted expected={ROLE.ADMIN} actual={user.role}>
+                                        <NavItem>
+                                            <NavLink className="nav-link"
+                                                     isActive={() => path.startsWith(Routes.records.path)}
+                                                     to={Routes.records.path}>{this.i18n('main.records-nav')}</NavLink>
+                                        </NavItem>
+                                    </IfGranted>
+                                    <IfGranted expected={ROLE.ADMIN} actual={user.role}>
+                                        <NavItem>
+                                            <NavLink className="nav-link"
+                                                     isActive={() => path.startsWith(Routes.statistics.path)}
+                                                     to={Routes.statistics.path}>{this.i18n('statistics.panel-title')}</NavLink>
+                                        </NavItem>
+                                    </IfGranted>
+                                    <IfGranted expected={ROLE.ADMIN} actual={user.role}>
+                                        <NavItem>
+                                            <NavLink className="nav-link"
+                                                     isActive={() => path.startsWith(Routes.historyActions.path)}
+                                                     to={Routes.historyActions.path}>{this.i18n('main.history')}</NavLink>
+                                        </NavItem>
+                                    </IfGranted>
                                 </Nav>
 
                                 <Nav>
