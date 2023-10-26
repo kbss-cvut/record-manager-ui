@@ -51,7 +51,7 @@ export function userAuthError(error) {
 export function logout() {
     //console.log("Logouting user");
     return function (dispatch) {
-        axiosBackend.post(`${API_URL}/j_spring_security_logout`).then(() => {
+        return axiosBackend.post(`${API_URL}/j_spring_security_logout`).then(() => {
             dispatch(unauthUser());
             //Logger.log('User successfully logged out.');
         }).catch(() => {

@@ -1,29 +1,24 @@
-'use strict';
-
-import React from "react";
-import withI18n from "../../i18n/withI18n";
-import {injectIntl} from "react-intl";
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
+import React, {useContext} from "react";
+import {useDispatch} from "react-redux";
 import {logout} from "../../actions/AuthActions";
 import {transitionTo} from "../../utils/Routing";
 import Routes from "../../constants/RoutesConstants";
+import {isUsingOidcAuth} from "../../utils/OidcUtils";
+import {AuthContext} from "../misc/oidc/OidcAuthWrapper";
 
-class Logout extends React.Component {
-    componentDidMount() {
-        this.props.logout();
-        transitionTo(Routes.login);
-    }
+const Logout = () => {
+    const dispatch = useDispatch();
+    const authCtx = useContext(AuthContext);
+    React.useEffect(() => {
+        if (isUsingOidcAuth()) {
+            authCtx.logout();
+        }
+        dispatch(logout()).then(() => {
+            transitionTo(Routes.login);
+        });
+    });
 
-    render() {
-        return null;
-    }
+    return null;
 }
 
-export default connect(null, mapDispatchToProps)(injectIntl(withI18n(Logout)));
-
-function mapDispatchToProps(dispatch) {
-    return {
-        logout: bindActionCreators(logout, dispatch)
-    }
-}
+export default Logout;

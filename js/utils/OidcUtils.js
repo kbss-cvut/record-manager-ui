@@ -38,7 +38,7 @@ export const getOidcConfig = () => {
       baseUrl
     )}`,
     silent_redirect_uri: `${baseUrl}/oidc-silent-callback`,
-    post_logout_redirect_uri: `${baseUrl}#${Routes.logout.path}`,
+    post_logout_redirect_uri: `${baseUrl}/${Routes.dashboard.path}`,
     response_type: "code",
     loadUserInfo: true,
     automaticSilentRenew: true,
