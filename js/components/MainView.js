@@ -13,7 +13,7 @@ import {ACTION_STATUS, ROLE} from "../constants/DefaultConstants";
 import {loadUserProfile} from "../actions/AuthActions";
 import * as Constants from "../constants/DefaultConstants";
 import {LoaderMask} from "./Loader";
-import {NavLink} from 'react-router-dom';
+import {NavLink, withRouter} from 'react-router-dom';
 
 class MainView extends React.Component {
     constructor(props) {
@@ -127,7 +127,7 @@ class MainView extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(MainView)));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(withRouter(MainView))));
 
 function mapStateToProps(state) {
     return {
