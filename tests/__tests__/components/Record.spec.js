@@ -8,6 +8,8 @@ import Record from "../../../js/components/record/Record";
 import * as RecordState from "../../../js/model/RecordState";
 import enLang from '../../../js/i18n/en';
 
+jest.mock("../../../js/components/record/TypeaheadAnswer", () =>() => <input />);
+
 describe('Record', function () {
     const intlData = enLang;
     let record,
