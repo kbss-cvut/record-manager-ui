@@ -22,6 +22,7 @@ class MainView extends React.Component {
     }
 
     componentDidMount() {
+        this.props.loadUserProfile();
         I18nStore.setIntl(this.props.intl);
     }
 
@@ -53,7 +54,7 @@ class MainView extends React.Component {
             return (<div>{unauthRoutes}</div>);
         }
         const user = this.props.user;
-        const name = user.firstName.substr(0, 1) + '. ' + user.lastName;
+        const name = user.firstName.substring(0, 1) + '. ' + user.lastName;
         const path = this.props.location.pathname;
 
         return (
