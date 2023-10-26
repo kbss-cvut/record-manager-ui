@@ -24,7 +24,10 @@ module.exports = (
     const {ifProd, ifNotProd} = getIfUtils(env);
     const isStatic = process.env.STATIC
     const isForceBasename = process.env.FORCE_BASENAME;
-    const basename = process.env.RECORD_MANAGER_BASENAME;
+    let basename = process.env.RECORD_MANAGER_BASENAME || "";
+    if (basename.charAt(basename.length - 1) === "/") {
+        basename = basename.substring(0, basename.length - 1);
+    }
     const version = process.env.npm_package_version;
     const appInfo = process.env.RECORD_MANAGER_APP_INFO;
 
@@ -36,7 +39,7 @@ module.exports = (
             filename: ifProd('bundle.[name].[chunkhash].js', 'bundle.[name].js'),
             chunkFilename: '[name].[chunkhash].js',
             path: isStatic ? resolve(`../../../target/record-manager-${version}/`) : resolve('build/'),
-            publicPath: (isStatic || isForceBasename) ? basename : "",
+            publicPath: (isStatic || isForceBasename) ? `${basename}/` : "",
         },
         resolve: {
             extensions: ['.js', '.jsx', '.json']
@@ -107,19 +110,10 @@ module.exports = (
                 year: new Date().getFullYear(),
                 title: appTitle,
                 template: 'index.html',
-                filename: 'index.html',
                 inject: true,
                 minify: true,
                 basename: (isStatic || isForceBasename) ? basename : "",
                 appInfo:  appInfo
-            }),
-            new HtmlWebpackPlugin({
-                template: 'oidc-signin-callback.html',
-                filename: 'oidc-signin-callback.html'
-            }),
-            new HtmlWebpackPlugin({
-                template: 'oidc-silent-callback.html',
-                filename: 'oidc-silent-callback.html'
             }),
             new InlineManifestWebpackPlugin(),
 

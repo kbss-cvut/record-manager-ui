@@ -2,6 +2,16 @@
 
 import {getEnv} from "../../config";
 import Routes from "../constants/RoutesConstants";
+import {UserManager} from "oidc-client";
+
+// Singleton UserManager instance
+let userManager;
+export const getUserManager = () => {
+  if (!userManager) {
+    userManager = new UserManager(getOidcConfig());
+  }
+  return userManager;
+};
 
 /**
  * Base64 encoding helper
@@ -24,10 +34,10 @@ export const getOidcConfig = () => {
   return {
     authority: getEnv("AUTH_SERVER_URL"),
     client_id: clientId,
-    redirect_uri: `${baseUrl}/oidc-signin-callback.html?forward_uri=${encodeForwardUri(
+    redirect_uri: `${baseUrl}/oidc-signin-callback?forward_uri=${encodeForwardUri(
       baseUrl
     )}`,
-    silent_redirect_uri: `${baseUrl}/oidc-silent-callback.html`,
+    silent_redirect_uri: `${baseUrl}/oidc-silent-callback`,
     post_logout_redirect_uri: `${baseUrl}#${Routes.logout.path}`,
     response_type: "code",
     loadUserInfo: true,
@@ -45,7 +55,7 @@ function resolveUrl() {
  * Helper to generate redirect Uri
  */
 export const generateRedirectUri = (forwardUri) => {
-  return `${resolveUrl()}/oidc-signin-callback.html?forward_uri=${encodeForwardUri(
+  return `${resolveUrl()}/oidc-signin-callback?forward_uri=${encodeForwardUri(
     forwardUri
   )}`;
 };

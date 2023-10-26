@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState,} from "react";
-import {UserManager} from "oidc-client";
-import {generateRedirectUri, getOidcConfig} from "../../../utils/OidcUtils";
+import {generateRedirectUri, getUserManager} from "../../../utils/OidcUtils";
 
 // Taken from https://github.com/datagov-cz/assembly-line-shared but using a different config processing mechanism
 
@@ -13,15 +12,6 @@ const useThrow = () => {
       }),
     [setState]
   );
-};
-
-// Singleton UserManager instance
-let userManager;
-const getUserManager = () => {
-  if (!userManager) {
-    userManager = new UserManager(getOidcConfig());
-  }
-  return userManager;
 };
 
 /**
