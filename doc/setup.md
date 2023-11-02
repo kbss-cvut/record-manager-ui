@@ -16,4 +16,3 @@ Uses `.env` to configure options like:
 - internationalization settings
 
 See `.env.example` for detailed description of options.
-

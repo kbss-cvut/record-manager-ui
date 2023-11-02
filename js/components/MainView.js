@@ -13,7 +13,10 @@ import {ACTION_STATUS, ROLE} from "../constants/DefaultConstants";
 import {loadUserProfile} from "../actions/AuthActions";
 import * as Constants from "../constants/DefaultConstants";
 import {LoaderMask} from "./Loader";
-import {NavLink} from 'react-router-dom';
+import {NavLink, withRouter} from 'react-router-dom';
+import {IfGranted} from "react-authorization";
+import {transitionTo, transitionToWithOpts} from "../utils/Routing";
+import {isUsingOidcAuth, userProfileLink} from "../utils/OidcUtils";
 
 class MainView extends React.Component {
     constructor(props) {
@@ -22,23 +25,33 @@ class MainView extends React.Component {
     }
 
     componentDidMount() {
+        this.props.loadUserProfile();
         I18nStore.setIntl(this.props.intl);
     }
 
     _renderUsers() {
         const path = this.props.location.pathname;
 
-        return this.props.user.role === ROLE.ADMIN ?
+        return <IfGranted expected={ROLE.ADMIN} actual={this.props.user.role}>
             <NavItem>
                 <NavLink to={Routes.users.path} isActive={() => path.startsWith(Routes.users.path)}
                          className="nav-link">{this.i18n('main.users-nav')}</NavLink>
-            </NavItem> : null
+            </NavItem>
+        </IfGranted>;
     }
 
     removeUnsupportedBrowserWarning() {
         const unsupportedBrowserElem = document.getElementById("unsupported-browser");
         if (unsupportedBrowserElem) {
             unsupportedBrowserElem.remove();
+        }
+    }
+
+    onProfileClick() {
+        if (isUsingOidcAuth()) {
+            window.location = userProfileLink();
+        } else {
+            transitionToWithOpts(Routes.editUser, {params: {username: this.props.user.username}});
         }
     }
 
@@ -53,7 +66,7 @@ class MainView extends React.Component {
             return (<div>{unauthRoutes}</div>);
         }
         const user = this.props.user;
-        const name = user.firstName.substr(0, 1) + '. ' + user.lastName;
+        const name = user.firstName.substring(0, 1) + '. ' + user.lastName;
         const path = this.props.location.pathname;
 
         return (
@@ -85,33 +98,35 @@ class MainView extends React.Component {
                                             </NavItem>
                                             : null
                                     }
-                                    {user.role === ROLE.ADMIN && <NavItem>
-                                        <NavLink className="nav-link"
-                                                 isActive={() => path.startsWith(Routes.records.path)}
-                                                 to={Routes.records.path}>{this.i18n('main.records-nav')}</NavLink>
-                                    </NavItem>
-                                    }
-                                    {user.role === ROLE.ADMIN &&
-                                    <NavItem>
-                                        <NavLink className="nav-link"
-                                                 isActive={() => path.startsWith(Routes.statistics.path)}
-                                                 to={Routes.statistics.path}>{this.i18n('statistics.panel-title')}</NavLink>
-                                    </NavItem>
-                                    }
-                                    {user.role === ROLE.ADMIN &&
-                                    <NavItem>
-                                        <NavLink className="nav-link"
-                                                 isActive={() => path.startsWith(Routes.historyActions.path)}
-                                                 to={Routes.historyActions.path}>{this.i18n('main.history')}</NavLink>
-                                    </NavItem>}
+                                    <IfGranted expected={ROLE.ADMIN} actual={user.role}>
+                                        <NavItem>
+                                            <NavLink className="nav-link"
+                                                     isActive={() => path.startsWith(Routes.records.path)}
+                                                     to={Routes.records.path}>{this.i18n('main.records-nav')}</NavLink>
+                                        </NavItem>
+                                    </IfGranted>
+                                    <IfGranted expected={ROLE.ADMIN} actual={user.role}>
+                                        <NavItem>
+                                            <NavLink className="nav-link"
+                                                     isActive={() => path.startsWith(Routes.statistics.path)}
+                                                     to={Routes.statistics.path}>{this.i18n('statistics.panel-title')}</NavLink>
+                                        </NavItem>
+                                    </IfGranted>
+                                    <IfGranted expected={ROLE.ADMIN} actual={user.role}>
+                                        <NavItem>
+                                            <NavLink className="nav-link"
+                                                     isActive={() => path.startsWith(Routes.historyActions.path)}
+                                                     to={Routes.historyActions.path}>{this.i18n('main.history')}</NavLink>
+                                        </NavItem>
+                                    </IfGranted>
                                 </Nav>
 
                                 <Nav>
                                     <NavDropdown className="pr-0" id='logout' title={name}>
                                         <DropdownItem
-                                            onClick={() => this.props.history.push(Routes.users.path + '/' + user.username)}>{this.i18n('main.my-profile')}</DropdownItem>
+                                            onClick={() => this.onProfileClick()}>{this.i18n('main.my-profile')}</DropdownItem>
                                         <DropdownItem
-                                            onClick={() => this.props.history.push(Routes.logout.path)}>{this.i18n('main.logout')}</DropdownItem>
+                                            onClick={() => transitionTo(Routes.logout)}>{this.i18n('main.logout')}</DropdownItem>
                                     </NavDropdown>
 
                                 </Nav>
@@ -127,7 +142,7 @@ class MainView extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(MainView)));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(withRouter(MainView))));
 
 function mapStateToProps(state) {
     return {
