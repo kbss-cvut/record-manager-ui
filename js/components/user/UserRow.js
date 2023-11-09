@@ -4,6 +4,7 @@ import withI18n from "../../i18n/withI18n";
 import {Button} from "react-bootstrap";
 import {LoaderSmall} from "../Loader";
 import PropTypes from "prop-types";
+import IfInternalAuth from "../misc/oidc/IfInternalAuth";
 
 let UserRow = (props) => {
     const user = props.user;
@@ -17,13 +18,15 @@ let UserRow = (props) => {
         <td className='report-row'>{user.username}</td>
         <td className='report-row'>{user.institution ? user.institution.name : ''}</td>
         <td className='report-row'>{user.emailAddress}</td>
-        <td className='report-row actions'>
-            <Button variant='primary' size='sm' title={props.i18n('users.open-tooltip')}
-                    onClick={() => props.onEdit(props.user)}>{props.i18n('open')}</Button>
-            <Button variant='warning' size='sm' title={props.i18n('users.delete-tooltip')}
-                    onClick={() => props.onDelete(props.user)}>{props.i18n('delete')}
-                {props.deletionLoading && <LoaderSmall/>}</Button>
-        </td>
+        <IfInternalAuth>
+            <td className='report-row actions'>
+                <Button variant='primary' size='sm' title={props.i18n('users.open-tooltip')}
+                        onClick={() => props.onEdit(props.user)}>{props.i18n('open')}</Button>
+                <Button variant='warning' size='sm' title={props.i18n('users.delete-tooltip')}
+                        onClick={() => props.onDelete(props.user)}>{props.i18n('delete')}
+                    {props.deletionLoading && <LoaderSmall/>}</Button>
+            </td>
+        </IfInternalAuth>
     </tr>;
 };
 

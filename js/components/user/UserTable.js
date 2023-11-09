@@ -8,6 +8,7 @@ import withI18n from "../../i18n/withI18n";
 import UserRow from "./UserRow";
 import {ACTION_STATUS} from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
+import IfInternalAuth from "../misc/oidc/IfInternalAuth";
 
 class UserTable extends React.Component {
     static propTypes = {
@@ -68,7 +69,9 @@ class UserTable extends React.Component {
             <th className='w-20 content-center'>{this.i18n('login.username')}</th>
             <th className='w-20 content-center'>{this.i18n('institution.name')}</th>
             <th className='w-20 content-center'>{this.i18n('users.email')}</th>
-            <th className='w-20 content-center'>{this.i18n('actions')}</th>
+            <IfInternalAuth>
+                <th className='w-20 content-center'>{this.i18n('actions')}</th>
+            </IfInternalAuth>
         </tr>
         </thead>;
     }
