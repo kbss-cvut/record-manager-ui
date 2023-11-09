@@ -9,6 +9,7 @@ import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderCard, LoaderSmall} from "../Loader";
 import PropTypes from "prop-types";
+import IfInternalAuth from "../misc/oidc/IfInternalAuth";
 
 class Users extends React.Component {
     static propTypes = {
@@ -38,15 +39,17 @@ class Users extends React.Component {
             </Card.Header>
             <Card.Body>
                 <UserTable users={usersLoaded.users} {...this.props}/>
-                <div>
-                    <Button variant='primary' size='sm'
-                            onClick={this.props.handlers.onCreate}>{this.i18n('users.create-user')}</Button>
-                </div>
+                <IfInternalAuth>
+                    <div>
+                        <Button variant='primary' size='sm'
+                                onClick={this.props.handlers.onCreate}>{this.i18n('users.create-user')}</Button>
+                    </div>
+                </IfInternalAuth>
                 {showAlert && userDeleted.status === ACTION_STATUS.ERROR &&
-                <AlertMessage type={ALERT_TYPES.DANGER}
-                              message={this.props.formatMessage('user.delete-error', {error: this.i18n(this.props.userDeleted.error.message)})}/>}
+                    <AlertMessage type={ALERT_TYPES.DANGER}
+                                  message={this.props.formatMessage('user.delete-error', {error: this.i18n(this.props.userDeleted.error.message)})}/>}
                 {showAlert && userDeleted.status === ACTION_STATUS.SUCCESS &&
-                <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.delete-success')}/>}
+                    <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.delete-success')}/>}
             </Card.Body>
         </Card>;
     }
