@@ -48,7 +48,12 @@ export const getOidcConfig = () => {
 
 function resolveUrl() {
   const loc = window.location;
-  return loc.protocol + "//" + loc.host + loc.pathname;
+  let url = loc.protocol + "//" + loc.host;
+  const basename = getEnv("BASENAME");
+  if (basename !== "/" && basename !== "./") {
+    url += basename;
+  }
+  return url;
 }
 
 export const userProfileLink = () => {
