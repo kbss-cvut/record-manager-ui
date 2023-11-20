@@ -63,6 +63,8 @@ services:
     build:
       context: ./db-server
     container_name: ${RECORD_SET_NAME:-rm}-db-server
+    environment:
+      GDB_JAVA_OPTS: -Dgraphdb.external-url=http://localhost:$PORT$RECORD_MANAGER_BASENAME/db-server
     ports:
       - "7200:7200"
     restart: always
