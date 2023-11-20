@@ -1,0 +1,73 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: ${RECORD_SET_NAME:-rm}-nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/error.html:/usr/share/nginx/html/error.html
+    ports:
+      - "${PORT:-1235}:80"
+    restart: always
+    depends_on:
+      - record-manager
+      - record-manager-server
+      - s-pipes-engine
+      - db-server
+  record-manager:
+    image: ghcr.io/kbss-cvut/kbss-cvut/record-manager-ui:latest
+    container_name: ${RECORD_SET_NAME:-rm}-record-manager
+    ports:
+      - "4000:80"
+    restart: always
+    depends_on:
+      - record-manager-server
+    environment:
+      API_URL: "${RECORD_MANAGER_SERVER_URL}"
+      APP_INFO: "${RECORD_MANAGER_APP_INFO:-}"
+      APP_TITLE: "${RECORD_MANAGER_APP_TITLE:-Record manager}"
+      LANGUAGE: "${LANGUAGE:-en}"
+      NAVIGATOR_LANGUAGE: "false"
+      BASENAME: "${RECORD_MANAGER_BASENAME:-/record-manager}"
+
+  record-manager-server:
+    image: ghcr.io/kbss-cvut/kbss-cvut/record-manager:latest
+    container_name: ${RECORD_SET_NAME:-rm}-record-manager-server
+    ports:
+      - "3000:8080"
+    restart: always
+    depends_on:
+      - s-pipes-engine
+      - db-server
+    environment:
+      appContext: "http://localhost:${PORT:-1235}/record-manager/"
+      repositoryUrl: "http://db-server:7200/repositories/record-manager-app"
+      formGenRepositoryUrl: "http://db-server:7200/repositories/record-manager-formgen"
+      formGenServiceUrl: "${FORMGEN_SERVICE_URL}"
+
+  s-pipes-engine:
+    image: ghcr.io/kbss-cvut/s-pipes/s-pipes-engine:latest
+    container_name: ${RECORD_SET_NAME:-rm}-s-pipes-engine
+    ports:
+      - "8889:8080"
+    restart: always
+    depends_on:
+      - db-server
+    environment:
+      FORMGEN_REPOSITORY_URL: "http://db-server:7200/repositories/record-manager-formgen"
+    volumes:
+      - ./s-pipes-engine/scripts:/scripts/root
+
+  db-server:
+    build:
+      context: ./db-server
+    container_name: ${RECORD_SET_NAME:-rm}-db-server
+    ports:
+      - "7200:7200"
+    restart: always
+    volumes:
+      - db-server:/opt/graphdb/home
+
+volumes:
+  db-server: 
