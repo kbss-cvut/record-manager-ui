@@ -1,0 +1,436 @@
+# baseURI: http://onto.fel.cvut.cz/ontologies/record-manager/form-generation
+
+@prefix : <http://onto.fel.cvut.cz/ontologies/record-manager/form-generation/> .
+@prefix doc: <http://onto.fel.cvut.cz/ontologies/documentation/> .
+@prefix form: <http://onto.fel.cvut.cz/ontologies/form/> .
+@prefix form-lt: <http://onto.fel.cvut.cz/ontologies/form-layout/> .
+@prefix kbss-module: <http://onto.fel.cvut.cz/ontologies/lib/module/> .
+@prefix km-rdf4j: <http://onto.fel.cvut.cz/ontologies/lib/module/rdf4j/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sm: <http://topbraid.org/sparqlmotion#> .
+@prefix sml: <http://topbraid.org/sparqlmotionlib#> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix spif: <http://spinrdf.org/spif#> .
+@prefix spin: <http://spinrdf.org/spin#> .
+@prefix spl: <http://spinrdf.org/spl#> .
+@prefix form-lib: <http://onto.fel.cvut.cz/ontologies/form-lib/> .
+@prefix form-mod: <http://onto.fel.cvut.cz/ontologies/form-mod/> .
+@prefix rm-gen: <http://onto.fel.cvut.cz/ontologies/record-manager/form-generation/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+<http://onto.fel.cvut.cz/ontologies/form-generation>
+  a owl:Ontology ;
+  owl:imports <http://onto.fel.cvut.cz/ontologies/form-layout> ;
+  owl:imports <http://onto.fel.cvut.cz/ontologies/s-pipes-lib> ;
+.
+
+
+rm-gen:bind-form-endpoint-url
+  a sml:BindWithConstant ;
+  sm:next form-mod:bind-sample-form-service-url ;
+  sm:outputVariable "formEndpointUrl" ;
+  sml:value [
+      sp:varName "formGenRepositoryUrl" ;
+    ] ;
+.
+
+
+form-mod:bind-sample-form-service-url
+  a sml:BindWithConstant ;
+  sm:next form-mod:retrieve-sample-form ;
+  sm:outputVariable "sampleFormServiceUrl" ;
+  sml:value [
+      a sp:iri ;
+      sp:arg1 [
+          a sp:concat ;
+          sp:arg1 [
+              a sp:str ;
+              sp:arg1 [
+                  sp:varName "formEndpointUrl" ;
+                ] ;
+            ] ;
+          sp:arg2 "?default-graph-uri=" ;
+          sp:arg3 [
+              a sp:encode_for_uri ;
+              sp:arg1 [
+                  a sp:str ;
+                  sp:arg1 [
+                      sp:varName "formTemplate" ;
+                    ] ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+.
+
+
+form-mod:bind-default-record-graphId
+  a sml:BindWithConstant ;
+  sm:next form-mod:bind-record-service-url ;
+  sm:outputVariable "boundRecordGraphId" ;
+  sml:value [
+      a sp:coalesce ;
+      sp:arg1 [
+          sp:varName "recordGraphId" ;
+        ] ;
+      sp:arg2 "http://not-existing-record-graph" ;
+    ] ;
+.
+
+form-mod:bind-record-service-url
+  a sml:BindWithConstant ;
+  sm:next form-mod:retrieve-saved-record-data ;
+  sm:outputVariable "recordServiceUrl" ;
+  sml:value [
+      a sp:iri ;
+      sp:arg1 [
+          a sp:concat ;
+          sp:arg1 [
+              a sp:str ;
+              sp:arg1 [
+                  sp:varName "formGenRepositoryUrl" ;
+                ] ;
+            ] ;
+          sp:arg2 "?default-graph-uri=" ;
+          sp:arg3 [
+              a sp:encode_for_uri ;
+              sp:arg1 [
+                  a sp:str ;
+                  sp:arg1 [
+                      sp:varName "boundRecordGraphId" ;
+                    ] ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+.
+
+
+form-mod:retrieve-sample-form
+  a sml:ApplyConstruct ;
+  kbss-module:has-output-graph-constraint [
+      a sp:Ask ;
+      sp:text """# 0 -  there is a question without origin
+ASK WHERE {
+    ?q a doc:question .
+    FILTER NOT EXISTS {
+        ?q form:has-question-origin ?o .
+    }
+}""" ;
+    ] ;
+  kbss-module:has-output-graph-constraint [
+      a sp:Ask ;
+      sp:text """# 1 - there is an answer without origin
+ASK WHERE {
+    ?q a doc:answer .
+    FILTER NOT EXISTS {
+        ?q form:has-answer-origin ?o .
+    }
+}""" ;
+    ] ;
+  sm:next form-mod:annotate-sample-questions ;
+  sm:next form-mod:rename-form-entities ;
+  sml:constructQuery [
+      a sp:Construct ;
+      sp:text """CONSTRUCT {
+    ?s ?p ?o .
+}
+WHERE {
+    SERVICE ?sampleFormServiceUrl {
+        ?s ?p ?o .
+    } .
+}""" ;
+    ] ;
+  sml:replace false ;
+.
+
+
+form-mod:bind-form-key
+  a sml:BindWithConstant ;
+  sm:next form-mod:attach-answer-origins ;
+  sm:outputVariable "formKey" ;
+  sml:value [
+      a sp:struuid ;
+    ] ;
+.
+
+
+form-mod:retrieve-saved-record-data
+  a sml:ApplyConstruct ;
+  sm:next form-mod:attach-answer-origins ;
+  sm:next :bind-form-template ;
+  kbss-module:has-output-graph-constraint [
+      a sp:Ask ;
+      sp:text """# there is a question without origin
+ASK WHERE {
+    ?q a doc:question .
+    FILTER NOT EXISTS {
+        ?q form:has-question-origin ?o .
+    }
+}""" ;
+    ] ;
+  sml:constructQuery [
+      a sp:Construct ;
+      sp:text """CONSTRUCT {
+    ?s ?p ?o .
+}
+WHERE {
+    FILTER(bound(?recordServiceUrl))
+    OPTIONAL {
+    SERVICE ?recordServiceUrl {
+        ?s ?p ?o .
+    }
+    }
+}""" ;
+    ] ;
+  sml:replace true ;
+.
+
+
+:bind-form-template
+  a sml:BindBySelect ;
+  sm:next form-mod:bind-sample-form-service-url ;
+  sml:selectQuery [
+      a sp:Select ;
+      sp:text """SELECT ?formTemplate
+WHERE {
+    OPTIONAL {
+         ?r <http://onto.fel.cvut.cz/ontologies/record-manager/has-form-template> ?formTemplateStr .
+    }
+    BIND (COALESCE(?_DformTemplate, str(?formTemplateStr)) AS ?formTemplate) .
+}""" ;
+    ] ;
+.
+
+
+
+form-mod:annotate-sample-questions
+  a sml:ApplyConstruct ;
+  sm:next form-mod:attach-origin-metadata ;
+  sml:constructQuery [
+      a sp:Construct ;
+      sp:text """CONSTRUCT {
+    ?q form:has-context \"sample-question\" .
+}
+WHERE {
+    ?q a doc:question .
+}""" ;
+    ] ;
+.
+
+
+form-mod:attach-answer-origins
+  a sml:ApplyConstruct ;
+  kbss-module:has-output-graph-constraint [
+      a sp:Ask ;
+      sp:text """# there is an answer without origin
+ASK WHERE {
+    ?a a doc:answer .
+    FILTER NOT EXISTS {
+        ?a form:has-answer-origin ?o .
+    }
+}""" ;
+    ] ;
+  sm:next form-mod:attach-origin-metadata ;
+  sml:constructQuery [
+      a sp:Construct ;
+      sp:text """CONSTRUCT {
+    ?a form:has-answer-origin ?aOrigin .
+}
+WHERE {
+    ?a a doc:answer .
+    FILTER NOT EXISTS {
+        ?a form:has-answer-origin ?aOriginNotBound .
+    }
+    BIND (URI(CONCAT(str(doc:answer), \"/\", ?formKey, \"/\", MD5(str(?a)), \"-ao\")) AS ?aOrigin) .
+}""" ;
+    ] ;
+.
+
+
+form-mod:attach-origin-metadata
+  a kbss-module:construct-form-metadata ;
+  kbss-module:has-output-graph-constraint [
+      a sp:Ask ;
+      sp:text """# there are two question from sample form that have same origin path
+# TODO remove: same constraint is checked in generate-abrax function
+ASK WHERE {
+    ?q1 form:has-context \"sample-question\" .
+    ?q1 form:has-origin-path-id ?originPath .
+    ?q2 form:has-context \"sample-question\" .
+    ?q2 form:has-origin-path-id ?originPath .
+    FILTER (?q1 != ?q2)
+}""" ;
+    ] ;
+  kbss-module:has-output-graph-constraint [
+      a sp:Ask ;
+      sp:text """# there is no clone of data question within sample form
+ASK WHERE {
+    ?dataQ a doc:question .
+    ?dataQ form:has-origin-path-id ?originPath .
+    FILTER NOT EXISTS {
+        ?dataQ form:has-context \"sample-question\" .
+    } .
+    FILTER NOT EXISTS {
+        ?sampleNotBoundQ form:has-origin-path-id ?originPath .
+        FILTER (?sampleNotBoundQ != ?dataQ) .
+    }
+}""" ;
+    ] ;
+  sm:next form-mod:attach-cross-form-clones ;
+  sml:replace false ;
+.
+
+
+form-mod:attach-cross-form-clones
+  a sml:ApplyConstruct ;
+  kbss-module:has-output-graph-constraint [
+      a sp:Ask ;
+      sp:text """# there is no clone of data question within sample form
+ASK WHERE {
+    ?dataQ form:has-origin-path-id ?originPath .
+    ?dataQ a doc:question .
+    FILTER NOT EXISTS {
+        ?dataQ form:has-context \"sample-question\" .
+    } .
+    FILTER NOT EXISTS {
+        ?dataQ form:is-cross-form-clone-of-question ?sampleQ .
+    }
+}""" ;
+    ] ;
+  sm:next form-mod:construct-answers ;
+  sm:next form-mod:filter-origin-path-id ;
+  sml:constructQuery [
+      a sp:Construct ;
+      sp:text """CONSTRUCT {
+    ?dataQ form:is-cross-form-clone-of-question ?sampleQ .
+}
+WHERE {
+    ?dataQ form:has-origin-path-id ?originPath .
+    ?sampleQ form:has-origin-path-id ?originPath .
+    ?sampleQ form:has-context \"sample-question\" .
+    FILTER NOT EXISTS {
+        ?dataQ form:has-context \"sample-question\" .
+    }
+}""" ;
+    ] ;
+.
+
+
+form-mod:filter-origin-path-id
+  a sml:ApplyConstruct ;
+  sm:next form-mod:rename-form-entities ;
+  sml:constructQuery [
+      a sp:Construct ;
+      sp:text """CONSTRUCT {
+    ?sampleQ form:has-origin-path-id ?pathId .
+}
+WHERE {
+    ?sampleQ form:has-context \"sample-question\" .
+    ?sampleQ form:has-origin-path-id ?pathId .
+}""" ;
+    ] ;
+  sml:replace true ;
+.
+
+
+form-mod:construct-answers
+  a sml:ApplyConstruct ;
+  sm:next form-mod:rename-form-entities ;
+  sml:constructQuery [
+      a sp:Construct ;
+      sp:text """CONSTRUCT {
+    ?sampleQ doc:has_answer ?a .
+    ?a ?p ?o .
+}
+WHERE {
+    ?dataQ form:is-cross-form-clone-of-question ?sampleQ .
+    ?dataQ doc:has_answer ?a .
+    OPTIONAL {
+        ?a ?p ?o .
+    } .
+}""" ;
+    ] ;
+  sml:replace true ;
+.
+
+
+form-mod:rename-form-entities
+  a sml:ApplyConstruct ;
+  sm:next form-mod:clone-form_Return ;
+  kbss-module:has-output-graph-constraint [
+      a sp:Ask ;
+      sp:text """# there are 2 questions that point to same answer
+ASK WHERE {
+    ?q1 a doc:question .
+    ?q1 doc:has_answer ?a .
+    ?q2 a doc:question .
+    ?q2 doc:has_answer ?a .
+    FILTER (?q1 != ?q2) .
+}""" ;
+    ] ;
+  kbss-module:has-output-graph-constraint [
+      a sp:Ask ;
+      sp:text """# there is a question with two answers
+ASK WHERE {
+    ?q a doc:question .
+    ?q doc:has_answer ?a1 .
+    ?q doc:has_answer ?a2 .
+    FILTER (?a1 != ?a2) .
+}""" ;
+    ] ;
+  sml:constructQuery [
+      a sp:Construct ;
+      sp:text """# 0 - duplicate form entity related data
+CONSTRUCT {
+    ?newS ?p ?newO .
+}
+WHERE {
+    ?s ?p ?o .
+    OPTIONAL {
+        ?s a ?sEntityType .
+        FILTER ((?sEntityType = doc:question) || (?sEntityType = doc:answer)) .
+    } .
+    OPTIONAL {
+        ?o a ?oEntityType .
+        FILTER ((?oEntityType = doc:question) || (?oEntityType = doc:answer)) .
+    } .
+    BIND (IF((?sEntityType = doc:question), \"-q\", \"-a\") AS ?sSufix) .
+    BIND (IF((?oEntityType = doc:question), \"-q\", \"-a\") AS ?oSufix) .
+    BIND (COALESCE(URI(CONCAT(str(?sEntityType), \"/\", ?formKey, \"/\", MD5(str(?s)), ?sSufix)), ?s) AS ?newS) .
+    BIND (COALESCE(URI(CONCAT(str(?oEntityType), \"/\", ?formKey, \"/\", MD5(str(?o)), ?oSufix)), ?o) AS ?newO)
+}""" ;
+    ] ;
+  sml:replace true ;
+.
+
+
+form-mod:clone-form_Return
+  a sml:ReturnRDF ;
+  sml:serialization sml:JSONLD ;
+  rdfs:label "clone-form" ;
+.
+
+
+rm-gen:clone-form
+  a sm:Function ;
+  sm:returnModule form-mod:clone-form_Return ;
+  rdfs:subClassOf sm:Functions ;
+.
+
+
+form:has-context
+  a rdf:Property ;
+  rdfs:label "has context" ;
+.
+
+
+form:is-cross-form-clone-of-question
+  a owl:ObjectProperty ;
+  rdfs:comment "Question within subject of this relation is clone of question within object of this relation accross multiple forms." ;
+  rdfs:domain doc:question ;
+  rdfs:range doc:question ;
+.
