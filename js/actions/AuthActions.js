@@ -2,13 +2,16 @@ import {axiosBackend} from "./index";
 import {transitionToHome} from "../utils/Routing";
 import * as ActionConstants from "../constants/ActionConstants";
 import {API_URL} from '../../config';
+import {IMPERSONATOR_TYPE} from "../constants/Vocabulary";
+import {IMPERSONATE_LOGOUT_SUCCESS, IMPERSONATE_PENDING} from "../constants/ActionConstants";
+import {MediaType} from "../constants/DefaultConstants";
 
 export function login(username, password) {
     return function (dispatch) {
         dispatch(userAuthPending());
         axiosBackend.post(`${API_URL}/j_spring_security_check`, `username=${username}&password=${password}`,
             {
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                headers: {'Content-Type': MediaType.FORM_URLENCODED}
             }).then((response) => {
             const data = response.data;
             if (!data.success || !data.loggedIn) {
@@ -49,15 +52,29 @@ export function userAuthError(error) {
 }
 
 export function logout() {
-    //console.log("Logouting user");
-    return function (dispatch) {
+    return function (dispatch, getState) {
+        if (getState().auth.user.types.indexOf(IMPERSONATOR_TYPE) !== -1) {
+            return logoutImpersonator(dispatch);
+        }
         return axiosBackend.post(`${API_URL}/j_spring_security_logout`).then(() => {
             dispatch(unauthUser());
-            //Logger.log('User successfully logged out.');
-        }).catch(() => {
-            //Logger.error('Logout failed. Status: ' + error.status);
+        }).catch((error) => {
+            dispatch(userAuthError(error.response.data));
         });
     }
+}
+
+function logoutImpersonator(dispatch) {
+    dispatch({type: IMPERSONATE_PENDING});
+    return axiosBackend.post(`${API_URL}/rest/users/impersonate/logout`)
+        .then(() => {
+            dispatch({type: IMPERSONATE_LOGOUT_SUCCESS});
+            transitionToHome();
+            window.location.reload();
+        })
+        .catch((error) => {
+            dispatch(userAuthError(error.response.data));
+        });
 }
 
 export function unauthUser() {

@@ -111,3 +111,7 @@ export const SCRIPT_ERROR = 'SCRIPT_ERROR';
 export const HttpHeaders = {
     AUTHORIZATION: "Authorization"
 }
+
+export const MediaType = {
+    FORM_URLENCODED: "x-www-form-urlencoded"
+}

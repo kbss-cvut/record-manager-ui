@@ -1,8 +1,9 @@
-import {ACTION_FLAG, ROLE} from "../constants/DefaultConstants";
+import {ACTION_FLAG, MediaType, ROLE} from "../constants/DefaultConstants";
 import {axiosBackend} from "./index";
 import * as ActionConstants from "../constants/ActionConstants";
 import {loadUsers} from "./UsersActions";
 import {API_URL} from '../../config';
+import {transitionToHome} from "../utils/Routing";
 
 export function createUser(user) {
     //console.log("Creating user: ", user);
@@ -253,9 +254,11 @@ export function deleteInvitationOption(username) {
 export function impersonate(username) {
     return function (dispatch) {
         dispatch({type: ActionConstants.IMPERSONATE_PENDING});
-        axiosBackend.post(`${API_URL}/rest/users/impersonate`, username, {headers: {"Content-Type": "text/plain"}}).then(() => {
+        axiosBackend.post(`${API_URL}/rest/users/impersonate`, `username=${username}`, {
+            headers: {'Content-Type': MediaType.FORM_URLENCODED}
+        }).then(() => {
             dispatch({type: ActionConstants.IMPERSONATE_SUCCESS, username});
-
+            transitionToHome();
             window.location.reload();
         }).catch((error) => {
             dispatch({type: ActionConstants.IMPERSONATE_ERROR, error: error.response.data});
