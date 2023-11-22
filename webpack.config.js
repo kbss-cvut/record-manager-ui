@@ -1,13 +1,10 @@
-const dotenv = require('dotenv').config()
-
-const {resolve} = require('path');
+const dotenv = require('dotenv').config();
+const { resolve } = require('path');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const {getIfUtils, removeEmpty} = require('webpack-config-utils');
-const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const apiUrl = process.env.RECORD_MANAGER_API_URL;
@@ -16,39 +13,41 @@ const devServerPort = process.env.RECORD_MANAGER_DEV_SERVER_PORT;
 
 console.log('RECORD_MANAGER_API_URL =', apiUrl);
 
-module.exports = (
-    env = {
-        dev: true,
-    },
-) => {
-    const {ifProd, ifNotProd} = getIfUtils(env);
-    const isStatic = process.env.STATIC
+module.exports = (env = {}) => {
+    const isStatic = process.env.STATIC;
     const isForceBasename = process.env.FORCE_BASENAME;
-    let basename = process.env.RECORD_MANAGER_BASENAME || "";
-    if (basename.charAt(basename.length - 1) === "/") {
+    let basename = process.env.RECORD_MANAGER_BASENAME || '';
+    if (basename.charAt(basename.length - 1) === '/') {
         basename = basename.substring(0, basename.length - 1);
     }
     const version = process.env.npm_package_version;
     const appInfo = process.env.RECORD_MANAGER_APP_INFO;
 
     return {
-        mode: ifProd('production', 'development'),
+        mode: env.production ? 'production' : 'development',
         context: resolve('js'),
         entry: ['core-js/stable/object/assign', 'core-js/stable/promise', './index.js'],
         output: {
-            filename: ifProd('bundle.[name].[chunkhash].js', 'bundle.[name].js'),
-            chunkFilename: '[name].[chunkhash].js',
+            filename: env.production ? 'bundle.[name].[contenthash].js' : 'bundle.[name].js',
+            chunkFilename: '[name].[contenthash].js',
             path: isStatic ? resolve(`../../../target/record-manager-${version}/`) : resolve('build/'),
-            publicPath: (isStatic || isForceBasename) ? `${basename}/` : "",
+            publicPath: (isStatic || isForceBasename) ? `${basename}/` : '',
         },
         resolve: {
-            extensions: ['.js', '.jsx', '.json']
+            extensions: ['.js', '.jsx', '.json'],
+            alias: {
+                // Provide an alias for the problematic import
+                'react-bootstrap/Card': resolve(__dirname, 'node_modules/react-bootstrap/esm/Card.js'),
+            },
         },
         devServer: {
             host: 'localhost',
-            inline: true,
             port: devServerPort || 8080,
-            historyApiFallback: true
+            historyApiFallback: true,
+            static: {
+                directory: resolve('build'),
+                publicPath: '/',
+            },
         },
         devtool: 'source-map',
         optimization: {
@@ -74,24 +73,22 @@ module.exports = (
                 {
                     test: /\.css$/,
                     use: [
-                        {
-                            loader: 'style-loader',
-                        },
-                        {
-                            loader: 'css-loader',
-                        },
+                        'style-loader',
+                        'css-loader',
                         {
                             loader: 'postcss-loader',
                             options: {
-                                plugins: [
-                                    ifProd(cssnano({preset: 'default'}), cssnano({discardComments: {removeAll: true}})),
-                                    autoprefixer(),
-                                ],
+                                postcssOptions: {
+                                    plugins: [
+                                        env.production ? cssnano({ preset: 'default' }) : cssnano({ discardComments: { removeAll: true } }),
+                                        autoprefixer(),
+                                    ],
+                                },
                             },
                         },
                     ],
                 },
-            ]
+            ],
         },
         stats: {
             colors: true,
@@ -99,37 +96,32 @@ module.exports = (
             chunks: false,
             modules: false,
         },
-        plugins: removeEmpty([
-            new webpack.optimize.ModuleConcatenationPlugin(),
-            ifNotProd(new webpack.NoEmitOnErrorsPlugin()),
-            ifNotProd(new webpack.NamedModulesPlugin()),
-            ifNotProd(new webpack.HotModuleReplacementPlugin()),
+        plugins: [
 
             new HtmlWebpackPlugin({
-                version: ifProd(version, "Dev"),
+                version: env.production ? version : 'Dev',
                 year: new Date().getFullYear(),
                 title: appTitle,
                 template: 'index.html',
                 inject: true,
-                minify: true,
-                basename: (isStatic || isForceBasename) ? basename : "",
-                appInfo:  appInfo
+                minify: env.production,
+                basename: (isStatic || isForceBasename) ? basename : '',
+                appInfo: appInfo,
             }),
-            new InlineManifestWebpackPlugin(),
 
             new webpack.DefinePlugin({
                 'process.env': {
-                    NODE_ENV: ifProd('"production"', '"development"'),
+                    NODE_ENV: JSON.stringify(env.production ? 'production' : 'development'),
                     NPM_PACKAGE_VERSION: JSON.stringify(process.env.npm_package_version),
                     // Load env vars from .env file
                     ...Object.keys(dotenv.parsed || {}).reduce((acc, key) => {
-                        return {...acc, [key]: JSON.stringify(dotenv.parsed[key])};
+                        return { ...acc, [key]: JSON.stringify(dotenv.parsed[key]) };
                     }, {}),
                     // Load env vars from shell - but only those that start with RECORD_MANAGER_
                     ...Object.keys(process.env).filter(key => key.startsWith('RECORD_MANAGER_')).reduce((env, key) => {
-                        env[key] = JSON.stringify(process.env[key])
-                        return env
-                    }, {})
+                        env[key] = JSON.stringify(process.env[key]);
+                        return env;
+                    }, {}),
                 },
             }),
 
@@ -144,10 +136,10 @@ module.exports = (
                 [
                     {
                         from: resolve('./resources'),
-                    }
+                    },
                 ],
-                {copyUnmodified: true},
+                { copyUnmodified: true },
             ),
-        ])
+        ],
     };
 };
