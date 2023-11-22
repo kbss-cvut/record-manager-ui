@@ -1,0 +1,378 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix doc: <http://onto.fel.cvut.cz/ontologies/documentation/> .
+@prefix ex1: <https://example.org/sfc-example-1/> .
+@prefix form: <http://onto.fel.cvut.cz/ontologies/form/> .
+@prefix form-lt: <http://onto.fel.cvut.cz/ontologies/form-layout/> .
+@prefix form-t: <http://onto.fel.cvut.cz/ontologies/form-template/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex1:as-show-advanced-888 a doc:question ;
+    rdfs:label "show advanced" ;
+    form-lt:has-layout-class "checkbox" ;
+    form:has-question-origin ex1:as-show-advanced-888-qo ;
+    form:show-advanced-question true .
+
+ex1:form-root a doc:question ;
+    a form:form-template ;
+    rdfs:label "Form example 1" ;
+    rdfs:comment "First example of a form" ;
+    doc:has_related_question ex1:age-1063,
+        ex1:answerable-section-with-advanced-switch,
+        ex1:cena-6557,
+        ex1:ma-vlastnika-section-777,
+        ex1:mena-8088,
+        ex1:non-answerable-section-with-advanced-switch,
+        ex1:parent-section-1590,
+        ex1:provozovatel-section-666,
+        ex1:test-section-666 ;
+    form-lt:has-layout-class "form" ;
+    form:has-question-origin ex1:form-root-qo .
+
+ex1:jeste-specifickejsi-podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem rdfs:label "Ještě specifickejší podtřída fyzické osoby s velice dlouhým názvem" ;
+    owl:disjointWith ex1:pravnicka-osoba ;
+    skos:broader ex1:podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem .
+
+ex1:mena-cz rdfs:label "Kč" ;
+    rdfs:comment "Česká koruna" .
+
+ex1:mena-sr rdfs:label "Sk" ;
+    rdfs:comment "Slovenská koruna" .
+
+ex1:answerable-section-with-advanced-switch a doc:question ;
+    rdfs:label "Answerable section with advanced switch" ;
+    doc:has_related_question ex1:show-advanced-question-test-advanced-switch,
+        ex1:test-5279,
+        ex1:test-field-3888 ;
+    form-lt:has-layout-class "answerable",
+        "checkbox",
+        "collapsed",
+        "section" ;
+    form:has-identifying-question "test-5279" ;
+    form:has-preceding-question ex1:non-answerable-section-with-advanced-switch ;
+    form:has-question-origin ex1:answerable-section-with-advanced-switch-qo ;
+    dc:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
+
+ex1:first-name-9402 a doc:question ;
+    rdfs:label "Jméno" ;
+    form-lt:has-layout-class "text" ;
+    form:has-datatype <foaf:givenName> ;
+    form:has-pattern "([A-Za-z]+)" ;
+    form:has-preceding-question ex1:title-7183 ;
+    form:has-question-origin ex1:first-name-9402-qo .
+
+ex1:form-condition-test-advanced-switch a form:condition ;
+    form-t:has-importance <ft:advanced> ;
+    form:accepts-answer-value true ;
+    form:has-tested-question ex1:show-advanced-question-test-advanced-switch .
+
+ex1:form-condition-test-advanced-switch-na a form:condition ;
+    form-t:has-importance <ft:advanced> ;
+    form:accepts-answer-value true ;
+    form:has-tested-question ex1:show-advanced-question-test-advanced-switch-na .
+
+ex1:last-name-6610 a doc:question ;
+    rdfs:label "Příjmení" ;
+    form-lt:has-layout-class "text" ;
+    form:has-datatype <foaf:familyName> ;
+    form:has-pattern "([A-Za-z]+)" ;
+    form:has-question-origin ex1:last-name-6610-qo .
+
+ex1:ma-vlastnika-section-777 a doc:question ;
+    rdfs:label "Má vlastníka" ;
+    form-lt:has-layout-class "type-ahead" ;
+    form:has-non-selectable-value "fyzicka-osoba" ;
+    form:has-possible-value "fyzicka-osoba",
+        "fyzicka-osoba--chytra",
+        "fyzicka-osoba--hloupa",
+        "fyzicka-osoba--nezletila",
+        "jeste-specifickejsi-podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem",
+        "podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem",
+        "pravnicka-osoba" ;
+    form:has-question-origin ex1:ma-vlastnika-section-777-qo .
+
+ex1:mena-8088 a doc:question ;
+    rdfs:label "Měna" ;
+    form-lt:has-layout-class "type-ahead" ;
+    form:has-possible-value "mena-cz",
+        "mena-sr" ;
+    form:has-question-origin ex1:mena-8088-qo .
+
+ex1:podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem rdfs:label "Podtřída fyzické osoby s velice dlouhým názvem" ;
+    owl:disjointWith ex1:pravnicka-osoba ;
+    skos:broader ex1:fyzicka-osoba .
+
+ex1:provozovatel-fyzicka-osoba-condition a form:condition,
+        form:or-condition ;
+    form:accepts-answer-value ex1:fyzicka-osoba ;
+    form:has-sub-condition ex1:provozovatel-fyzicka-osoba-condition-1,
+        ex1:provozovatel-fyzicka-osoba-condition-2 ;
+    form:has-tested-question ex1:provozovatel-section-666 .
+
+ex1:provozovatel-fyzicka-osoba-condition-1 a form:condition ;
+    form:accepts-answer-value ex1:fyzicka-osoba,
+        ex1:fyzicka-osoba--chytra,
+        ex1:fyzicka-osoba--hloupa,
+        ex1:fyzicka-osoba--nezletila ;
+    form:has-tested-question ex1:ps-type-1 .
+
+ex1:provozovatel-fyzicka-osoba-condition-2 a form:condition ;
+    form:accepts-answer-value ex1:fyzicka-osoba,
+        ex1:fyzicka-osoba--chytra,
+        ex1:fyzicka-osoba--hloupa,
+        ex1:fyzicka-osoba--nezletila ;
+    form:has-tested-question ex1:ps-type-2 .
+
+ex1:provozovatel-fyzicka-osoba-s-iq-condition a form:or-condition ;
+    form:has-sub-condition ex1:provozovatel-fyzicka-osoba-s-iq-condition-1,
+        ex1:provozovatel-fyzicka-osoba-s-iq-condition-2 .
+
+ex1:provozovatel-fyzicka-osoba-s-iq-condition-1 a form:condition ;
+    form:accepts-answer-value ex1:fyzicka-osoba--chytra,
+        ex1:fyzicka-osoba--hloupa ;
+    form:has-tested-question ex1:ps-type-1 .
+
+ex1:provozovatel-fyzicka-osoba-s-iq-condition-2 a form:condition ;
+    form:accepts-answer-value ex1:fyzicka-osoba--chytra,
+        ex1:fyzicka-osoba--hloupa ;
+    form:has-tested-question ex1:ps-type-2 .
+
+ex1:provozovatel-fyzicka-osoba-s-vekom-condition a form:or-condition ;
+    form:has-sub-condition ex1:provozovatel-fyzicka-osoba-s-vekom-condition-1,
+        ex1:provozovatel-fyzicka-osoba-s-vekom-condition-2 .
+
+ex1:provozovatel-fyzicka-osoba-s-vekom-condition-1 a form:condition ;
+    form:accepts-answer-value ex1:fyzicka-osoba--nezletila ;
+    form:has-tested-question ex1:ps-type-1 .
+
+ex1:provozovatel-fyzicka-osoba-s-vekom-condition-2 a form:condition ;
+    form:accepts-answer-value ex1:fyzicka-osoba--nezletila ;
+    form:has-tested-question ex1:ps-type-2 .
+
+ex1:provozovatel-pravnicka-osoba-condition a form:or-condition ;
+    form:has-sub-condition ex1:provozovatel-pravnicka-osoba-condition-1,
+        ex1:provozovatel-pravnicka-osoba-condition-2 .
+
+ex1:provozovatel-pravnicka-osoba-condition-1 a form:condition ;
+    form:accepts-answer-value ex1:pravnicka-osoba ;
+    form:has-tested-question ex1:ps-type-1 .
+
+ex1:provozovatel-pravnicka-osoba-condition-2 a form:condition ;
+    form:accepts-answer-value ex1:pravnicka-osoba ;
+    form:has-tested-question ex1:ps-type-2 .
+
+ex1:ps-age-452 a doc:question ;
+    rdfs:label "Age" ;
+    form-lt:has-layout-class "text" ;
+    form:has-question-origin ex1:ps-age-452-qo ;
+    form:is-relevant-if ex1:provozovatel-fyzicka-osoba-s-vekom-condition .
+
+ex1:ps-cin-452 a doc:question ;
+    rdfs:label "CIN" ;
+    form-lt:has-layout-class "text" ;
+    form:has-question-origin ex1:ps-cin-452-qo ;
+    form:is-relevant-if ex1:provozovatel-pravnicka-osoba-condition ;
+    dc:description "Company identification number" .
+
+ex1:ps-iq-452 a doc:question ;
+    rdfs:label "IQ" ;
+    form-lt:has-layout-class "text" ;
+    form:has-question-origin ex1:ps-iq-452-qo ;
+    form:is-relevant-if ex1:provozovatel-fyzicka-osoba-s-iq-condition .
+
+ex1:ps-name-452 a doc:question ;
+    rdfs:label "Jméno" ;
+    form-lt:has-layout-class "text" ;
+    form:has-question-origin ex1:ps-name-452-qo ;
+    form:is-relevant-if ex1:provozovatel-fyzicka-osoba-condition .
+
+ex1:sectionfoo-1592 a doc:question ;
+    rdfs:label "Celé jméno" ;
+    doc:has_related_question ex1:first-name-9402,
+        ex1:last-name-6610,
+        ex1:title-7183 ;
+    form-lt:has-layout-class "name" ;
+    form:has-composite-pattern "?1 ?2 ?3" ;
+    form:has-composite-variables "first-name-9402",
+        "last-name-6610",
+        "title-7183" ;
+    form:has-datatype <foaf:name> ;
+    form:has-pattern "^(?:([A-Za-z]{1,4}\\.) )?(.+) (.+)$" ;
+    form:has-preceding-question ex1:test-field-3887 ;
+    form:has-question-origin ex1:sectionfoo-1592-qo ;
+    form:requires-answer true .
+
+ex1:test-5278 a doc:question ;
+    rdfs:label "Identifikátor" ;
+    form-lt:has-layout-class "text" ;
+    form:has-question-origin ex1:test-5278-qo .
+
+ex1:test-5279 a doc:question ;
+    rdfs:label "Identifier" ;
+    form-lt:has-layout-class "emphasise-on-relevant",
+        "text" ;
+    form-t:has-importance <ft:advanced> ;
+    form:has-question-origin ex1:test-5279-qo ;
+    form:is-relevant-if ex1:form-condition-test-advanced-switch .
+
+ex1:test-5279-na a doc:question ;
+    rdfs:label "Identifier" ;
+    form-lt:has-layout-class "emphasise-on-relevant",
+        "text" ;
+    form-t:has-importance <ft:advanced> ;
+    form:has-question-origin ex1:test-5279-na-qo ;
+    form:is-relevant-if ex1:form-condition-test-advanced-switch-na .
+
+ex1:test-field-3888 a doc:question ;
+    rdfs:label "Field test" ;
+    form-lt:has-layout-class "text" ;
+    form:has-question-origin ex1:test-field-3888-qo ;
+    dc:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
+
+ex1:test-field-3888-na a doc:question ;
+    rdfs:label "Field test" ;
+    form-lt:has-layout-class "text" ;
+    form:has-question-origin ex1:test-field-3888-na-qo ;
+    dc:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
+
+ex1:age-1063 a doc:question ;
+    rdfs:label "Age" ;
+    form-lt:has-layout-class "text" ;
+    form-lt:initial-input-length 5 ;
+    form:has-datatype xsd:int ;
+    form:has-question-origin ex1:age-1063-qo ;
+    form:has-unit "years" .
+
+ex1:cena-6557 a doc:question ;
+    rdfs:label "Cena" ;
+    form-lt:has-layout-class "text" ;
+    form:has-datatype xsd:int ;
+    form:has-preceding-question ex1:age-1063 ;
+    form:has-question-origin ex1:cena-6557-qo ;
+    form:has-unit-of-measure-question "mena-8088" ;
+    dc:description "Tohle je cena s měnou" .
+
+ex1:non-answerable-section-with-advanced-switch a doc:question ;
+    rdfs:label "Simple section with advanced switch" ;
+    doc:has_related_question ex1:show-advanced-question-test-advanced-switch-na,
+        ex1:test-5279-na,
+        ex1:test-field-3888-na ;
+    form-lt:has-layout-class "checkbox",
+        "collapsed",
+        "section" ;
+    form:has-identifying-question "test-5279-na" ;
+    form:has-preceding-question ex1:test-section-666 ;
+    form:has-question-origin ex1:non-answerable-section-with-advanced-switch-qo ;
+    dc:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
+
+ex1:parent-section-1590 a doc:question ;
+    rdfs:label "Vlastník" ;
+    doc:has_related_question ex1:sectionfoo-1592,
+        ex1:test-field-3887 ;
+    form-lt:has-layout-class "section" ;
+    form:has-identifying-question "test-field-3887" ;
+    form:has-preceding-question ex1:cena-6557 ;
+    form:has-question-origin ex1:parent-section-1590-qo .
+
+ex1:provozovatel-section-666 a doc:question ;
+    rdfs:label "Má provozovatele" ;
+    doc:has_related_question ex1:ps-age-452,
+        ex1:ps-cin-452,
+        ex1:ps-iq-452,
+        ex1:ps-name-452,
+        ex1:ps-type-1,
+        ex1:ps-type-2 ;
+    form-lt:has-layout-class "answerable",
+        "section",
+        "type-question" ;
+    form:has-non-selectable-value "fyzicka-osoba" ;
+    form:has-possible-value "fyzicka-osoba",
+        "fyzicka-osoba--chytra",
+        "fyzicka-osoba--hloupa",
+        "fyzicka-osoba--nezletila",
+        "jeste-specifickejsi-podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem",
+        "podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem",
+        "pravnicka-osoba" ;
+    form:has-question-origin ex1:provozovatel-section-666-qo ;
+    form:has-type-question "ps-type-1",
+        "ps-type-2" .
+
+ex1:show-advanced-question-test-advanced-switch a doc:question ;
+    rdfs:label "Advanced switch test" ;
+    form-lt:has-layout-class "checkbox" ;
+    form:has-comment [ a form:comment ;
+            form:has-author <http://fel.cvut.cz/people/miroslav-blasko> ;
+            form:has-comment-value "Another comment" ;
+            form:has-timestamp "1636065441831" ],
+        [ a form:comment ;
+            form:has-author <http://fel.cvut.cz/people/max-chopart> ;
+            form:has-comment-value "Some comment" ;
+            form:has-timestamp "1636061441831" ] ;
+    form:has-question-origin ex1:form-show-advanced-question ;
+    form:show-advanced-question true ;
+    dc:description "Advanced switch test" .
+
+ex1:show-advanced-question-test-advanced-switch-na a doc:question ;
+    rdfs:label "Advanced switch test" ;
+    form-lt:has-layout-class "checkbox" ;
+    form:has-comment [ a form:comment ;
+            form:has-author <http://fel.cvut.cz/people/max-chopart> ;
+            form:has-comment-value "Some comment" ;
+            form:has-timestamp "1636061441831" ],
+        [ a form:comment ;
+            form:has-author <http://fel.cvut.cz/people/miroslav-blasko> ;
+            form:has-comment-value "Another comment" ;
+            form:has-timestamp "1636065441831" ] ;
+    form:has-question-origin ex1:form-show-advanced-question ;
+    form:show-advanced-question true ;
+    dc:description "Advanced switch test" .
+
+ex1:test-field-3887 a doc:question ;
+    rdfs:label "Popis vlastníka" ;
+    form-lt:has-layout-class "text" ;
+    form:has-question-origin ex1:test-field-3887-qo .
+
+ex1:test-section-666 a doc:question ;
+    rdfs:label "Sekce s identifikátorem" ;
+    doc:has_related_question ex1:test-5278 ;
+    form-lt:has-layout-class "answerable",
+        "checkbox",
+        "section" ;
+    form:has-identifying-question "test-5278" ;
+    form:has-preceding-question ex1:parent-section-1590 ;
+    form:has-question-origin ex1:test-section-666-qo ;
+    dc:description "test" .
+
+ex1:title-7183 a doc:question ;
+    rdfs:label "Titul" ;
+    form-lt:has-layout-class "text" ;
+    form:has-question-origin ex1:title-7183-qo .
+
+ex1:fyzicka-osoba--hloupa rdfs:label "Fyzická osoba hloupá" ;
+    owl:disjointWith ex1:fyzicka-osoba--chytra,
+        ex1:pravnicka-osoba ;
+    skos:broader ex1:fyzicka-osoba .
+
+ex1:fyzicka-osoba--nezletila rdfs:label "Fyzická osoba nezletilá" ;
+    owl:disjointWith ex1:pravnicka-osoba ;
+    skos:broader ex1:fyzicka-osoba .
+
+ex1:fyzicka-osoba--chytra rdfs:label "Fyzická osoba chytrá" ;
+    owl:disjointWith ex1:pravnicka-osoba ;
+    skos:broader ex1:fyzicka-osoba .
+
+ex1:ps-type-1 a doc:question ;
+    rdfs:label "PS type 1" ;
+    form:has-question-origin ex1:ps-type-1-qo .
+
+ex1:ps-type-2 a doc:question ;
+    rdfs:label "PS type 2" ;
+    form:has-question-origin ex1:ps-type-2-qo .
+
+ex1:fyzicka-osoba rdfs:label "Fyzická osoba" ;
+    owl:disjointWith ex1:pravnicka-osoba .
+
+ex1:pravnicka-osoba rdfs:label "Právnická osoba" .
+
