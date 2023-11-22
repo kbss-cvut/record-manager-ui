@@ -5,7 +5,7 @@
   "homepage": ".",
   "main": "js/index.js",
   "dependencies": {
-    "@kbss-cvut/s-forms": "0.7.1-alpha-bdb3c5e.0",
+    "@kbss-cvut/s-forms": "^0.7.1-beta-c22f5eb.0",
     "axios": "^0.21.1",
     "bowser": "^2.9.0",
     "classnames": "^2.3.1",
@@ -73,9 +73,9 @@
     "webpack-dev-server": "^4.15.1"
   },
   "scripts": {
-    "dev": "webpack serve --config ./webpack.config.js",
-    "build": "webpack --config ./webpack.config.js",
-    "server": "node server.js",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --env.dev --config ./webpack.config.js",
+    "build": "cross-env NODE_ENV=production webpack --env.prod -p --config ./webpack.config.js",
+    "start": "node server.js",
     "build:static": "cross-env NODE_ENV=production STATIC=true webpack --env.prod -p --config ./webpack.config.js",
     "test": "jest",
     "lint": "eslint js",
