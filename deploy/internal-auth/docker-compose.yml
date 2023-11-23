@@ -12,7 +12,7 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/error.html:/usr/share/nginx/html/error.html
     ports:
-      - "${PORT:-1235}:80"
+      - "127.0.0.1:${PORT:-1235}:80"
     restart: always
     depends_on:
       - record-manager
