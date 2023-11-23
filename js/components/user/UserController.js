@@ -14,11 +14,12 @@ import {setTransitionPayload} from "../../actions/RouterActions";
 import {
     deleteInvitationOption,
     createUser, generateUsername, impersonate, loadUser, sendInvitation, unloadSavedUser, unloadUser,
-    updateUser
+    updateUser, oidcImpersonate
 } from "../../actions/UserActions";
 import * as UserFactory from "../../utils/EntityFactory";
 import omit from 'lodash/omit';
 import {getRole} from "../../utils/Utils";
+import {isUsingOidcAuth} from "../../utils/OidcUtils";
 
 class UserController extends React.Component {
     constructor(props) {
@@ -141,7 +142,11 @@ class UserController extends React.Component {
 
     _impersonate = () => {
         this.setState({impersonated: true, showAlert: false});
-        this.props.impersonate(this.state.user.username);
+        if (isUsingOidcAuth()) {
+            this.props.oidcImpersonate(this.state.user.username);
+        } else {
+            this.props.impersonate(this.state.user.username);
+        }
     };
 
     render() {
@@ -201,6 +206,7 @@ function mapDispatchToProps(dispatch) {
         generateUsername: bindActionCreators(generateUsername, dispatch),
         sendInvitation: bindActionCreators(sendInvitation, dispatch),
         deleteInvitationOption: bindActionCreators(deleteInvitationOption, dispatch),
-        impersonate: bindActionCreators(impersonate, dispatch)
+        impersonate: bindActionCreators(impersonate, dispatch),
+        oidcImpersonate: bindActionCreators(oidcImpersonate, dispatch),
     }
 }

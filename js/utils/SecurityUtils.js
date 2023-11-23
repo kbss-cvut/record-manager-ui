@@ -6,6 +6,10 @@ export function getOidcToken() {
     return `${identity?.token_type} ${identity?.access_token}`;
 }
 
+export function saveOidcToken(token) {
+    sessionStorage.setItem(getOidcIdentityStorageKey(), JSON.stringify(token));
+}
+
 export function clearToken() {
     sessionStorage.removeItem(getOidcIdentityStorageKey());
 }
