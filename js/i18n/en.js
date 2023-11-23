@@ -57,6 +57,7 @@ export default {
         'main.logout': 'Logout',
         'main.my-profile': 'My profile',
         'main.history': 'History',
+        'main.impersonating': 'Impersonating',
 
         'dashboard.welcome': 'Hello {name}, Welcome to ' + Constants.APP_NAME + '.',
         'dashboard.create-tile': 'Create record',

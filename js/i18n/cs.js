@@ -57,6 +57,7 @@ export default {
         'main.logout': 'Odhlásit se',
         'main.my-profile': 'Můj profil',
         'main.history': 'Historie',
+        'main.impersonating': 'Přihlášen jako',
 
         'dashboard.welcome': 'Dobrý den, {name}, vítejte v ' + Constants.APP_NAME + '.',
         'dashboard.create-tile': 'Vytvořit záznam',

@@ -113,5 +113,5 @@ export const HttpHeaders = {
 }
 
 export const MediaType = {
-    FORM_URLENCODED: "x-www-form-urlencoded"
+    FORM_URLENCODED: "application/x-www-form-urlencoded"
 }

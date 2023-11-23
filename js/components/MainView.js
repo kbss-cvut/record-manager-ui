@@ -17,6 +17,7 @@ import {NavLink, withRouter} from 'react-router-dom';
 import {IfGranted} from "react-authorization";
 import {transitionTo, transitionToWithOpts} from "../utils/Routing";
 import {isUsingOidcAuth, userProfileLink} from "../utils/OidcUtils";
+import ImpersonatorBadge from "./ImpersonatorBadge";
 
 class MainView extends React.Component {
     constructor(props) {
@@ -122,6 +123,7 @@ class MainView extends React.Component {
                                 </Nav>
 
                                 <Nav>
+                                    <ImpersonatorBadge/>
                                     <NavDropdown className="pr-0" id='logout' title={name}>
                                         <DropdownItem
                                             onClick={() => this.onProfileClick()}>{this.i18n('main.my-profile')}</DropdownItem>
