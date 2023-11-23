@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   record-manager:
-    image: 'ghcr.io/kbss-cvut/kbss-cvut/record-manager-ui:latest'
+    image: ghcr.io/kbss-cvut/kbss-cvut/record-manager-ui:latest
     ports:
       - "127.0.0.1:3000:80"
     depends_on:
@@ -20,9 +20,7 @@ services:
       FORCE_BASENAME: "true"
 
   record-manager-server:
-    build: .
-    image: record-manager-server
-    container_name: record-manager-server
+    image: ghcr.io/kbss-cvut/kbss-cvut/record-manager:latest
     ports:
       - "127.0.0.1:8080:8080"
     depends_on:
@@ -38,7 +36,7 @@ services:
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI: "http://auth-server:8080/realms/record-manager/protocol/openid-connect/certs"
 
   s-pipes-engine:
-    image: "ghcr.io/kbss-cvut/s-pipes/s-pipes-engine:latest"
+    image: ghcr.io/kbss-cvut/s-pipes/s-pipes-engine:latest
     ports:
       - "127.0.0.1:8081:8080"
     depends_on:
@@ -61,7 +59,7 @@ services:
     volumes:
       - auth-server-db:/var/lib/postgresql/data
   auth-server:
-    image: "ghcr.io/kbss-cvut/keycloak-graphdb-user-replicator/keycloak-graphdb:latest"
+    image: ghcr.io/kbss-cvut/keycloak-graphdb-user-replicator/keycloak-graphdb:latest
     command:
       - start --import-realm
     environment:
