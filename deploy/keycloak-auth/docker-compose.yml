@@ -3,6 +3,7 @@ version: '3.9'
 services:
   record-manager:
     image: ghcr.io/kbss-cvut/kbss-cvut/record-manager-ui:latest
+    container_name: ${RECORD_SET_NAME:-rm}-record-manager
     ports:
       - "127.0.0.1:3000:80"
     depends_on:
@@ -21,6 +22,7 @@ services:
 
   record-manager-server:
     image: ghcr.io/kbss-cvut/kbss-cvut/record-manager:latest
+    container_name: ${RECORD_SET_NAME:-rm}-record-manager-server
     ports:
       - "127.0.0.1:8080:8080"
     depends_on:
@@ -37,6 +39,7 @@ services:
 
   s-pipes-engine:
     image: ghcr.io/kbss-cvut/s-pipes/s-pipes-engine:latest
+    container_name: ${RECORD_SET_NAME:-rm}-s-pipes-engine
     ports:
       - "127.0.0.1:8081:8080"
     depends_on:
@@ -44,6 +47,7 @@ services:
   db-server:
     build:
       context: db-server
+    container_name: ${RECORD_SET_NAME:-rm}-db-server
     environment:
       GDB_JAVA_OPTS: "-Ddefault.min.distinct.threshold=67108864"
     ports:
@@ -52,6 +56,7 @@ services:
       - data:/opt/graphdb/home
   auth-server-db:
     image: postgres:13
+    container_name: ${RECORD_SET_NAME:-rm}-auth-server-db
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
@@ -60,6 +65,7 @@ services:
       - auth-server-db:/var/lib/postgresql/data
   auth-server:
     image: ghcr.io/kbss-cvut/keycloak-graphdb-user-replicator/keycloak-graphdb:latest
+    container_name: ${RECORD_SET_NAME:-rm}-auth-server
     command:
       - start --import-realm
     environment:
