@@ -77,7 +77,7 @@ services:
       DB_PASSWORD: keycloak
       DB_SCHEMA: "public"
       DB_SERVER_URL: "http://db-server:7200"
-      DB_SERVER_REPOSITORY_ID: "record-manager"
+      DB_SERVER_REPOSITORY_ID: "record-manager-app"
       REPOSITORY_LANGUAGE: "en"
       VOCABULARY_USER_TYPE: "http://onto.fel.cvut.cz/ontologies/record-manager/user"
       VOCABULARY_USER_FIRST_NAME: "http://xmlns.com/foaf/0.1/firstName"
