@@ -1,4 +1,8 @@
-version: '3'
+version: '3.9'
+
+# Provide access to record-manager-ui that runs locally in dev mode
+x-access-for-local-development: &local-dev-env
+    cors.allowedOrigins: "http://localhost:3000"
 
 services:
   nginx:
@@ -18,8 +22,8 @@ services:
   record-manager:
     image: ghcr.io/kbss-cvut/kbss-cvut/record-manager-ui:latest
     container_name: ${RECORD_SET_NAME:-rm}-record-manager
-    ports:
-      - "4000:80"
+    expose:
+      - "80"
     restart: always
     depends_on:
       - record-manager-server
@@ -34,13 +38,14 @@ services:
   record-manager-server:
     image: ghcr.io/kbss-cvut/kbss-cvut/record-manager:latest
     container_name: ${RECORD_SET_NAME:-rm}-record-manager-server
-    ports:
-      - "3000:8080"
+    expose:
+      - "8080"  
     restart: always
     depends_on:
       - s-pipes-engine
       - db-server
     environment:
+      <<: *local-dev-env
       appContext: "http://localhost:${PORT:-1235}/record-manager/"
       repositoryUrl: "http://db-server:7200/repositories/record-manager-app"
       formGenRepositoryUrl: "http://db-server:7200/repositories/record-manager-formgen"
@@ -49,8 +54,8 @@ services:
   s-pipes-engine:
     image: ghcr.io/kbss-cvut/s-pipes/s-pipes-engine:latest
     container_name: ${RECORD_SET_NAME:-rm}-s-pipes-engine
-    ports:
-      - "8889:8080"
+    expose:
+      - "8080"  
     restart: always
     depends_on:
       - db-server
@@ -65,8 +70,8 @@ services:
     container_name: ${RECORD_SET_NAME:-rm}-db-server
     environment:
       GDB_JAVA_OPTS: -Dgraphdb.external-url=http://localhost:$PORT$RECORD_MANAGER_BASENAME/db-server
-    ports:
-      - "7200:7200"
+    expose:
+      - "7200"  
     restart: always
     volumes:
       - db-server:/opt/graphdb/home
