@@ -9,7 +9,7 @@ module.exports = {
     "@babel/preset-env",
     {
       "targets": {
-        "node": 18, // If you are running on Node.js
+        "node": 18,
         "browsers": "last 2 versions, > 0.2%, ie 11, not dead"
       },
       "useBuiltIns": "usage",

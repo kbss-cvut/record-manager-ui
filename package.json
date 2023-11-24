@@ -5,11 +5,12 @@
   "homepage": ".",
   "main": "js/index.js",
   "dependencies": {
-    "@kbss-cvut/s-forms": "^0.7.1-beta-c22f5eb.0",
+    "@kbss-cvut/s-forms": "file:/home/chopamax/Projects/kbss/s-forms/kbss-cvut-s-forms-0.7.0.tgz",
     "axios": "^0.21.1",
     "bowser": "^2.9.0",
     "classnames": "^2.3.1",
     "history": "^4.10.1",
+    "jsonld": "^8.3.1",
     "jsonld-utils": "https://kbss.felk.cvut.cz/dist/jsonld-utils-0.0.11.tgz",
     "lodash": "^4.17.15",
     "oidc-client": "^1.11.5",
@@ -27,6 +28,7 @@
     "redux": "^4.1.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
+    "tsort": "^0.0.1",
     "util": "^0.12.5"
   },
   "devDependencies": {

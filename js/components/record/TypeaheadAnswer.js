@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {Constants, JsonLdObjectUtils} from "@kbss-cvut/s-forms";
+import {Constants} from "@kbss-cvut/s-forms";
 import JsonLdUtils from "jsonld-utils";
 import Select from 'react-select';
 import {axiosBackend} from "../../actions";
 import PropTypes from "prop-types";
+import JsonLdObjectUtils from "../../utils/JsonLdObjectUtils";
 
 const fetchTypeAheadValues = async (endpointURL) => {
     const result = await axiosBackend.get(endpointURL);
@@ -21,7 +22,10 @@ export const processTypeaheadOptions = (options, intl) => {
     // sort by property
     JsonLdObjectUtils.orderPreservingToplogicalSort(options, Constants.HAS_PRECEDING_VALUE);
 
+    // return true
+
     return JsonLdUtils.processTypeaheadOptions(options, intl);
+    // return options
 };
 
 
@@ -59,7 +63,7 @@ const TypeaheadAnswer = (props) => {
             isLoading={isLoading}
             isClearable={true}
             isDisabled={isLoading}
-            value={options.filter((option) => option.id === props.value)}
+            value={options[0]}
             placeholder={''}
             getOptionLabel={(option) => option.name}
             getOptionValue={(option) => option.id}

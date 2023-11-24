@@ -15,6 +15,8 @@ import {login} from "../../actions/AuthActions";
 import {LoaderSmall} from "../Loader";
 import {deviceIsMobile, deviceIsSupported} from "../../utils/Utils";
 import * as SupportedDevices from "../../constants/SupportedDevices";
+import JsonLdUtils from "jsonld-utils";
+import {Constants} from "@kbss-cvut/s-forms";
 
 class Login extends React.Component {
     constructor(props) {
@@ -68,6 +70,13 @@ class Login extends React.Component {
     }
 
     render() {
+        console.log("hello")
+        console.log(JsonLdUtils)
+        console.log(JsonLdUtils.hasValue({
+            "@type": "http://onto.fel.cvut.cz/ontologies/documentation/question",
+            "http://onto.fel.cvut.cz/ontologies/form-layout/has-layout-class": "form"}), Constants.LAYOUT_CLASS,
+            Constants.LAYOUT.FORM)
+        // console.log(JsonLdUtils.hasValue())
         return (
             <Card variant='info' className="login-panel">
                 <Card.Header className="text-light bg-primary" as="h6">{this.i18n('login.title')}</Card.Header>
