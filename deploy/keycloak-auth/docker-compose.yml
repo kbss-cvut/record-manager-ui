@@ -36,6 +36,7 @@ services:
       SECURITY_PROVIDER: "oidc"
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI: "http://localhost:8088/realms/record-manager"
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI: "http://auth-server:8080/realms/record-manager/protocol/openid-connect/certs"
+      SERVER_SERVLET_CONTEXTPATH: "/record-manager-server"
 
   s-pipes-engine:
     image: ghcr.io/kbss-cvut/s-pipes/s-pipes-engine:latest
