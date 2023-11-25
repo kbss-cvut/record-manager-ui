@@ -66,7 +66,7 @@ services:
 
   db-server:
     build:
-      context: ./db-server
+      context: ../shared/db-server
     container_name: ${RECORD_SET_NAME:-rm}-db-server
     environment:
       GDB_JAVA_OPTS: -Dgraphdb.external-url=http://localhost:$PORT$RECORD_MANAGER_BASENAME/db-server
