@@ -8,11 +8,15 @@ ENV GRAPHDB_INSTALL_DIR=/opt/graphdb/dist
 
 WORKDIR ${GRAPHDB_HOME}
 
-# Copy repository config
-COPY repo-config /repo-config
-COPY repo-init.sh ${GRAPHDB_INSTALL_DIR}/repo-init.sh
+# Install libs related to RDF processing
+RUN apk add py3-rdflib
+RUN apk add perl-uri
+
+# Copy initialization data and repository config
+COPY init-data /root/graphdb-import
+COPY init-config /repo-config
+COPY bin/* ${GRAPHDB_INSTALL_DIR}/bin/
 
 EXPOSE 7200
 
-CMD ${GRAPHDB_INSTALL_DIR}/repo-init.sh /repo-config ${GRAPHDB_HOME} & ${GRAPHDB_INSTALL_DIR}/bin/graphdb -Dgraphdb.home=${GRAPHDB_HOME}
-
+CMD ${GRAPHDB_INSTALL_DIR}/bin/repo-init.sh /repo-config ${GRAPHDB_HOME} & ${GRAPHDB_INSTALL_DIR}/bin/graphdb -Dgraphdb.home=${GRAPHDB_HOME} -Dgraphdb.logback=${GRAPHDB_INSTALL_DIR}/conf/logback.xml
