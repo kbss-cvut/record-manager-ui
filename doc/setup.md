@@ -25,11 +25,11 @@ of the dependent services.
 
 ### Set up with Internal Authorization
 
-This setup is described in [Running with Dockerized Services and Internal Authorization](./development.md#running-with-dockerized-services-and-internal-authorization).
+The deployment is based on [docker-compose.yml](../deploy/internal-auth/docker-compose.yml) and described in [Running with Dockerized Services and Internal Authorization](./development.md#running-with-dockerized-services-and-internal-authorization).
 
 ### Set up with Keycloak Authorization
 
-The deployment is pretty much self-contained. It sets up the corresponding repositories, imports a realm where clients
+The deployment is pretty much self-contained based on [docker-compose.yml](../deploy/keycloak-auth/docker-compose.yml). It sets up the corresponding repositories, imports a realm where clients
 are configured for both the Record Manager backend and frontend. All the services (except PostgreSQL used by Keycloak) 
 in the deployment export their ports to the host system, so ensure the following ports are available on your system: 
 3000, 8080, 8081, 8088.
