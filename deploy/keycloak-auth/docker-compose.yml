@@ -47,7 +47,7 @@ services:
       - db-server
   db-server:
     build:
-      context: db-server
+      context: ../shared/db-server
     container_name: ${RECORD_SET_NAME:-rm}-db-server
     environment:
       GDB_JAVA_OPTS: "-Ddefault.min.distinct.threshold=67108864"
