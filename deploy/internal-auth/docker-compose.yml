@@ -33,7 +33,7 @@ services:
     depends_on:
       - record-manager-server
     environment:
-      API_URL: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${RECORD_MANAGER_ROOT_PATH:-/record-manager}/record-manager-server"
+      API_URL: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${RECORD_MANAGER_ROOT_PATH:-/record-manager}/services/record-manager-server"
       APP_INFO: "${RECORD_MANAGER_APP_INFO:-}"
       APP_TITLE: "${RECORD_MANAGER_APP_TITLE:-Record Manager}"
       LANGUAGE: "${LANGUAGE:-en}"
@@ -74,7 +74,7 @@ services:
       context: ../shared/db-server
     container_name: ${RECORD_SET_NAME:-rm}-db-server
     environment:
-      GDB_JAVA_OPTS: "-Dgraphdb.external-url=${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${RECORD_MANAGER_ROOT_PATH:-/record-manager}/db-server"
+      GDB_JAVA_OPTS: "-Dgraphdb.external-url=${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${RECORD_MANAGER_ROOT_PATH:-/record-manager}/services/db-server"
     expose:
       - "7200"  
     restart: always
