@@ -9,16 +9,21 @@ services:
     image: nginx:latest
     container_name: ${RECORD_SET_NAME:-rm}-nginx
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/error.html:/usr/share/nginx/html/error.html
+      - ./nginx/template-variables.conf:/etc/nginx/templates/variables.conf.template:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/error.html:/usr/share/nginx/html/error.html:ro
     ports:
-      - "127.0.0.1:${PORT:-1235}:80"
+      - "127.0.0.1:${INTERNAL_HOST_PORT:-1235}:80"
     restart: always
     depends_on:
       - record-manager
       - record-manager-server
       - s-pipes-engine
       - db-server
+    environment:
+      RECORD_MANAGER_ORIGIN: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}"
+      RECORD_MANAGER_ROOT_PATH: "${RECORD_MANAGER_ROOT_PATH:-/record-manager}"
+
   record-manager:
     image: ghcr.io/kbss-cvut/kbss-cvut/record-manager-ui:latest
     container_name: ${RECORD_SET_NAME:-rm}-record-manager
@@ -28,12 +33,12 @@ services:
     depends_on:
       - record-manager-server
     environment:
-      API_URL: "${RECORD_MANAGER_SERVER_URL}"
+      API_URL: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${RECORD_MANAGER_ROOT_PATH:-/record-manager}/record-manager-server"
       APP_INFO: "${RECORD_MANAGER_APP_INFO:-}"
-      APP_TITLE: "${RECORD_MANAGER_APP_TITLE:-Record manager}"
+      APP_TITLE: "${RECORD_MANAGER_APP_TITLE:-Record Manager}"
       LANGUAGE: "${LANGUAGE:-en}"
       NAVIGATOR_LANGUAGE: "false"
-      BASENAME: "${RECORD_MANAGER_BASENAME:-/record-manager}"
+      BASENAME: "${RECORD_MANAGER_ROOT_PATH:-/record-manager}"
 
   record-manager-server:
     image: ghcr.io/kbss-cvut/kbss-cvut/record-manager:latest
@@ -46,7 +51,7 @@ services:
       - db-server
     environment:
       <<: *local-dev-env
-      appContext: "http://localhost:${PORT:-1235}/record-manager/"
+      appContext: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${RECORD_MANAGER_ROOT_PATH:-/record-manager}"
       repositoryUrl: "http://db-server:7200/repositories/record-manager-app"
       formGenRepositoryUrl: "http://db-server:7200/repositories/record-manager-formgen"
       formGenServiceUrl: "${FORMGEN_SERVICE_URL}"
@@ -69,7 +74,7 @@ services:
       context: ../shared/db-server
     container_name: ${RECORD_SET_NAME:-rm}-db-server
     environment:
-      GDB_JAVA_OPTS: -Dgraphdb.external-url=http://localhost:$PORT$RECORD_MANAGER_BASENAME/db-server
+      GDB_JAVA_OPTS: "-Dgraphdb.external-url=${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${RECORD_MANAGER_ROOT_PATH:-/record-manager}/db-server"
     expose:
       - "7200"  
     restart: always

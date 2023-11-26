@@ -27,6 +27,31 @@ of the dependent services.
 
 The deployment is based on [docker-compose.yml](../deploy/internal-auth/docker-compose.yml) and described in [Running with Dockerized Services and Internal Authorization](./development.md#running-with-dockerized-services-and-internal-authorization).
 
+By default, if no `.env` is provided the application runs at `http://locahost:1235/record-manager`.
+
+#### Set up behind reverse proxy
+
+It is possible to set up Record Manager behind reverse proxy using variables:
+- `PUBLIC_ORIGIN` -- Public origin of URL where Record Manager UI will run, e.g. `https://kbss.fel.cvut.cz`, `http://kbss.fel.cvut.cz:8080`, `http://localhost`.
+- `RECORD_MANAGER_ROOT_PATH` - Path to Record Manager UI (by default it is set to "/record-manager").
+
+Example set up with reverse proxy:
+1) create `.env` file with following variables:
+```
+PUBLIC_ORIGIN=http://localhost
+RECORD_MANAGER_ROOT_PATH=/record-manager-example
+```
+2) set up apache2 reverse proxy on the host computer:
+```
+<VirtualHost *:80>
+        <Location /record-manager-example>
+                ProxyPass http://localhost:1235/record-manager nocanon
+                ProxyPassReverse http://localhost:1235/record-manager
+        </Location>
+</VirtualHost>
+```
+3) run the Record Manager UI at http://localhost/record-manager-example
+
 ### Set up with Keycloak Authorization
 
 The deployment is pretty much self-contained based on [docker-compose.yml](../deploy/keycloak-auth/docker-compose.yml). It sets up the corresponding repositories, imports a realm where clients
