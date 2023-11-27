@@ -13,7 +13,7 @@ RUN apk add py3-rdflib
 RUN apk add perl-uri
 
 # Copy initialization data and repository config
-COPY init-data /root/graphdb-import
+#COPY init-data /root/graphdb-import
 COPY init-config /repo-config
 COPY bin/* ${GRAPHDB_INSTALL_DIR}/bin/
 
