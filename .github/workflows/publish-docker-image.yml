@@ -3,6 +3,8 @@ name: Publish Docker Image
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
 env:
   # Last fragment of identifier of the docker image
@@ -13,7 +15,8 @@ env:
 
 jobs:
   build-and-publish:
-
+    # Skip if PR is from a fork
+    if: github.event_name != 'pull_request' || github.event.repository.full_name == github.event.pull_request.head.repo.full_name
     runs-on: ubuntu-latest
 
     steps:
