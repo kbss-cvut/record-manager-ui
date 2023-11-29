@@ -54,6 +54,7 @@ services:
     ports:
       - "127.0.0.1:7200:7200"
     volumes:
+      - ../shared/db-server/init-data/forms:/root/graphdb-import/forms:ro
       - data:/opt/graphdb/home
   auth-server-db:
     image: postgres:13
