@@ -5,7 +5,7 @@
   "homepage": ".",
   "main": "js/index.js",
   "dependencies": {
-    "@kbss-cvut/s-forms": "^0.6.4",
+    "@kbss-cvut/s-forms": "^0.7.1-alpha-19ec00f.0",
     "axios": "^0.21.1",
     "bowser": "^2.9.0",
     "classnames": "^2.3.1",
@@ -25,12 +25,13 @@
     "react-router-dom": "^5.2.0",
     "redux": "^4.1.0",
     "redux-devtools-extension": "^2.13.9",
-    "redux-thunk": "^2.3.0",
-    "s-forms-components": "^0.1.8"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-transform-modules-commonjs": "^7.23.3",
+    "@babel/plugin-transform-nullish-coalescing-operator": "^7.23.4",
     "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.1",
