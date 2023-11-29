@@ -1,4 +1,6 @@
-import {getOidcIdentityStorageKey} from "./OidcUtils";
+import {getOidcIdentityStorageKey, isUsingOidcAuth} from "./OidcUtils";
+import {sanitizeArray} from "./Utils";
+import {IMPERSONATOR_TYPE} from "../constants/Vocabulary";
 
 export function getOidcToken() {
     const identityData = sessionStorage.getItem(getOidcIdentityStorageKey());
@@ -12,4 +14,9 @@ export function saveOidcToken(token) {
 
 export function clearToken() {
     sessionStorage.removeItem(getOidcIdentityStorageKey());
+}
+
+export function isImpersonator(currentUser) {
+    // When using OIDC, the access token does not contain any info that the current user is being impersonated
+    return !isUsingOidcAuth() && sanitizeArray(currentUser.types).indexOf(IMPERSONATOR_TYPE) !== -1;
 }
