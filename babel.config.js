@@ -2,7 +2,9 @@ module.exports = {
   "plugins": [
     "lodash",
     "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-transform-runtime"
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-transform-nullish-coalescing-operator",
+    "@babel/plugin-transform-modules-commonjs"
   ],
   "presets": [
     [
