@@ -282,3 +282,7 @@ export function formatDateWithMilliseconds(timestamp) {
         ("00" + date.getMinutes()).slice(-2) + ":" +
         ("00" + date.getSeconds()).slice(-2) + ("00" + date.getMilliseconds()).slice(-2);
 }
+
+export function sanitizeArray(arr) {
+    return arr ? (Array.isArray(arr) ? arr : [arr]) : [];
+}

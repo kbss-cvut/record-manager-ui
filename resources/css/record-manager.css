@@ -283,116 +283,6 @@ td.actions button {
     right: 0;
 }
 
-.factors-gantt {
-    width: 100%;
-    height: 350px;
-}
-
-.gantt_container {
-    border-radius: 3px;
-}
-
-.gantt-zoom {
-    border: 1px solid #cecece;
-    border-top: none;
-    border-radius: 3px;
-    overflow: hidden;
-}
-
-.gantt-zoom-label {
-    margin: 10px 0;
-}
-
-/*.gantt_grid_head_add {*/
-/*background-image: none;*/
-/*cursor: default;*/
-/*pointer-events: none;*/
-/*}*/
-
-.gantt-link-causes {
-    background-color: #ff0000;
-}
-
-.gantt-link-contributes_to {
-    background-color: #FFDE11;
-}
-
-.gantt-link-mitigates {
-    background-color: #00ff00;
-}
-
-.gantt-link-prevents {
-    background-color: #00A000;
-}
-
-/* Causes */
-.gantt_task_link.gantt-link-causes .gantt_line_wrapper div {
-    background-color: #ff0000;
-}
-
-.gantt_task_link.gantt-link-causes:hover .gantt_line_wrapper div {
-    box-shadow: 0 0 10px 0 #ff0000;
-}
-
-.gantt_task_link.gantt-link-causes .gantt_link_arrow_right {
-    border-left-color: #ff0000;
-}
-
-.gantt_task_link.gantt-link-causes .gantt_link_arrow_left {
-    border-right-color: #ff0000;
-}
-
-/* Contributes to */
-.gantt_task_link.gantt-link-contributes .gantt_line_wrapper div {
-    background-color: #FFDE11;
-}
-
-.gantt_task_link.gantt-link-contributes:hover .gantt_line_wrapper div {
-    box-shadow: 0 0 10px 0 #FFDE11;
-}
-
-.gantt_task_link.gantt-link-contributes .gantt_link_arrow_right {
-    border-left-color: #FFDE11;
-}
-
-.gantt_task_link.gantt-link-contributes .gantt_link_arrow_left {
-    border-right-color: #FFDE11;
-}
-
-/* Mitigates */
-.gantt_task_link.gantt-link-mitigates .gantt_line_wrapper div {
-    background-color: #00ff00;
-}
-
-.gantt_task_link.gantt-link-mitigates:hover .gantt_line_wrapper div {
-    box-shadow: 0 0 10px 0 #00ff00;
-}
-
-.gantt_task_link.gantt-link-mitigates .gantt_link_arrow_right {
-    border-left-color: #00ff00;
-}
-
-.gantt_task_link.gantt-link-mitigates .gantt_link_arrow_left {
-    border-right-color: #00ff00;
-}
-
-/* Prevents */
-.gantt_task_link.gantt-link-prevents .gantt_line_wrapper div {
-    background-color: #00A000;
-}
-
-.gantt_task_link.gantt-link-prevents:hover .gantt_line_wrapper div {
-    box-shadow: 0 0 10px 0 #00A000;
-}
-
-.gantt_task_link.gantt-link-prevents .gantt_link_arrow_right {
-    border-left-color: #00A000;
-}
-
-.gantt_task_link.gantt-link-prevents .gantt_link_arrow_left {
-    border-right-color: #00A000;
-}
-
 /* Overriding bootstrap primary panel border color */
 .panel-primary {
     border-color: #bce8f1;
@@ -889,4 +779,11 @@ header {
 
 .answerable-section .form-group .form-check-label {
     font-size: 1rem;
+}
+
+.nav-badge {
+    height: fit-content;
+    padding: 0.25rem;
+    margin-top: auto;
+    margin-bottom: auto;
 }

@@ -71,13 +71,11 @@ const mockStore = configureMockStore(middlewares);
 describe('Auth asynchronize actions', function () {
     let store,
         mockApi;
-    const user = {username: 'test', password: 'testPassword'},
-        users = [{username: 'test1'}, {username: 'test2'}],
+    const user = {username: 'test', password: 'testPassword', types: []},
         error = {
             "message": "An error has occurred.",
             "requestUri": "/rest/users/xxx"
-        },
-        username = 'test';
+        };
 
     beforeEach(() => {
         mockApi = new MockAdapter(axiosBackend);
@@ -135,6 +133,7 @@ describe('Auth asynchronize actions', function () {
         const expectedActions = [
             {type: ActionConstants.UNAUTH_USER}
         ];
+        store.getState().auth = {user};
 
         mockApi.onPost(`${API_URL}/j_spring_security_logout`).reply(200);
 
