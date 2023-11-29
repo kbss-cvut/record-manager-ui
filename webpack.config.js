@@ -70,6 +70,11 @@ module.exports = (
                     exclude: /node_modules/,
                     use: ['babel-loader'],
                 },
+                {
+                    test: /\.(js|jsx)$/,
+                    include: /node_modules\/intelligent-tree-select/,
+                    use: ['babel-loader'],
+                },
 
                 {
                     test: /\.css$/,

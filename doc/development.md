@@ -5,8 +5,23 @@ This file contains info for contributors to the Record Manager UI codebase.
 ## Running in Development Mode
 
 To configure the application use [Setup Guide](./setup.md).
-To run application in development mode use `npm run dev`. 
+To run the application in development mode use `npm run dev`. 
 By default, the application is accessible from http://localhost:3000.
+
+### Running with Dockerized Services and Internal Authorization
+
+This section describes the development scenario when developer uses 
+[dockerized services with internal authorization](../deploy/internal-auth/docker-compose.yml) to develop.
+All the services, including dockerized record-manager-ui, run by default at URL starting with `http://localhost:1235/record-manager`.
+To attach simultaneously frontend for the development use setup from [.env.internal-auth](../.env.internal-auth), 
+e.g., by running `ln -s .env.internal-auth .env;  npm run dev`.
+
+### Running with all Services in Development Mode
+
+This section describes the development scenario when the developer runs all dependent services in development mode.
+By default,  Record Manager UI runs at `http://localhost:3000` while Record Manager Server runs at different port.
+This requires setting up the CORS policy of the server appropriately, i.e., configuring `config.properties` 
+to contain `security.sameSite=None` and set up also `cors.allowedOrigin` if needed.
 
 ## Add Configuration Parameters
 
