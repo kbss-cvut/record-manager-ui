@@ -38,11 +38,17 @@ done
 
 
 DATA_DIR=/root/graphdb-import
+REPO_NAME="record-manager-formgen"
 
 ls ${DATA_DIR}/forms/*.ttl | while read DATA_FILE; do
-	REPO_NAME="record-manager-formgen"
 	CONTEXT=`$SCRIPT_DIR/get-rdf-subject-by-type.py $DATA_FILE 'http://onto.fel.cvut.cz/ontologies/form/form-template' | sed 's/[<>]//g'`
 
 	echo "INFO: Deploying form templates ${DATA_FILE} into ${CONTEXT}."
 	$SCRIPT_DIR/rdf4j-deploy-context.sh -R -C 'text/turtle' -s http://localhost:7200 -r ${REPO_NAME} -c ${CONTEXT} ${DATA_FILE}
+done
+
+ls ${DATA_DIR}/forms/*.trig | while read DATA_FILE; do
+
+	echo "INFO: Deploying possible values from file ${DATA_FILE}."
+	$SCRIPT_DIR/rdf4j-deploy-context.sh -C 'application/trig' -s http://localhost:7200 -r ${REPO_NAME} ${DATA_FILE}
 done
