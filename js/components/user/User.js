@@ -143,7 +143,7 @@ class User extends React.Component {
                            disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
                            onClick={() => this._onSaveAndSendEmail()} className="d-inline-flex"
                            title={this.i18n('required')}>{this.i18n('save-and-send-email')}
-                {!UserValidator.isValid(user) && <HelpIcon text={this.i18n('required')} glyph="help"/>}
+                {!UserValidator.isValid(user) && <HelpIcon text={this.i18n('required')} className="align-self-center"/>}
                 {userSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
             </Button>
         } else {
@@ -259,7 +259,7 @@ class User extends React.Component {
                                 title={this.i18n('required')}>
                             {this.i18n('save')}
                             {!UserValidator.isValid(user) &&
-                            <HelpIcon className="align-self-center" text={this.i18n('required')} glyph="help"/>}
+                            <HelpIcon className="align-self-center" text={this.i18n('required')}/>}
                             {userSaved.status === ACTION_STATUS.PENDING &&
                             <LoaderSmall/>}
                         </Button>

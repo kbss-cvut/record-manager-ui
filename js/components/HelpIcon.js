@@ -35,4 +35,8 @@ HelpIcon.propTypes = {
     glyph: PropTypes.string
 };
 
+HelpIcon.defaultProps = {
+    glyph: "help"
+};
+
 export default HelpIcon;
