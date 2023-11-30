@@ -115,3 +115,8 @@ export const HttpHeaders = {
 export const MediaType = {
     FORM_URLENCODED: "application/x-www-form-urlencoded"
 }
+
+export const EXTENSION_CONSTANTS = {
+    SUPPLIER: "supplier",
+    OPERATOR: "operator"
+}
