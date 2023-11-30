@@ -36,6 +36,7 @@ export default {
         'reject': 'Odmítnout',
         'accept':'Přijmout',
         'complete': 'Dokončit',
+        'publish': 'Publikovat',
 
         'login.title': Constants.APP_NAME + ' - Přihlášení',
         'login.username': 'Uživatelské jméno',

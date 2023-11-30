@@ -5,11 +5,12 @@ import {Button, Card} from "react-bootstrap";
 import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import RecordTable from "./RecordTable";
-import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ALERT_TYPES, EXTENSION_CONSTANTS, ROLE} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderSmall} from "../Loader";
 import PropTypes from "prop-types";
 import {processTypeaheadOptions} from "./TypeaheadAnswer";
+import {EXTENSIONS} from "../../../config";
 
 const STUDY_CLOSED_FOR_ADDITION = false;
 const STUDY_CREATE_AT_MOST_ONE_RECORD = false;
@@ -36,6 +37,9 @@ class Records extends React.Component {
         const showCreateButton = STUDY_CREATE_AT_MOST_ONE_RECORD
                 ? (!this.props.recordsLoaded.records || (this.props.recordsLoaded.records.length < 1))
                 : true;
+        const showPublishButton =
+            this.props.currentUser.role === ROLE.ADMIN
+            && EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR;
         const createRecordDisabled =
             STUDY_CLOSED_FOR_ADDITION
             && (!this._isAdmin());
@@ -55,10 +59,13 @@ class Records extends React.Component {
                 <RecordTable {...this.props}/>
                 <div>
                     {showCreateButton
-                        ? <Button variant='primary' size='sm'
+                        ? <Button className="mx-1" variant='primary' size='sm'
                             disabled={createRecordDisabled}
                             title={createRecordTooltip}
                             onClick={onCreateWithFormTemplate}>{this.i18n('records.create-tile')}</Button>
+                        : null}
+                    {showPublishButton ?
+                        <Button className="mx-1" variant='success' size='sm'>{this.i18n('publish')}</Button>
                         : null}
                 </div>
                 {showAlert && recordDeleted.status === ACTION_STATUS.ERROR &&
