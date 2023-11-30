@@ -90,7 +90,7 @@ export const ACTION_STATUS = {
 
 export const ROLE = {
     ADMIN: 'Admin',
-    DOCTOR: 'Doctor'
+    DOCTOR: 'Regular User'
 };
 
 export const PAGINATION_DIRECTION = {
