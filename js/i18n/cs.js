@@ -33,6 +33,9 @@ export default {
         'please-wait': 'Prosím, čekejte...',
         'actions': 'Akce',
         'required': 'Políčka označená * jsou povinná',
+        'reject': 'Odmítnout',
+        'accept':'Přijmout',
+        'complete': 'Dokončit',
 
         'login.title': Constants.APP_NAME + ' - Přihlášení',
         'login.username': 'Uživatelské jméno',

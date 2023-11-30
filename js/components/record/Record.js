@@ -122,12 +122,12 @@ class Record extends React.Component {
         return <>
             {EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER &&
                 <>
-                    <Button className="mx-1" variant='danger' size='sm'>Reject</Button>
-                    <Button className="mx-1" variant='success' size='sm'>Accept</Button>
+                    <Button className="mx-1" variant='danger' size='sm'>{this.i18n('reject')}</Button>
+                    <Button className="mx-1" variant='success' size='sm'>{this.i18n('accept')}</Button>
                 </>
             }
             {EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR &&
-                <Button className="mx-1" variant='success' size='sm'>Complete</Button>}
+                <Button className="mx-1" variant='success' size='sm'>{this.i18n('complete')}</Button>}
         </>;
     }
 
