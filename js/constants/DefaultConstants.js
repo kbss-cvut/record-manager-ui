@@ -68,7 +68,7 @@ export const INPUT_LENGTH_THRESHOLD = 70;
 
 export const PASSWORD_LENGTH = 4;
 
-export const RECORD_REQUIRED_FIELDS = ['localName'];
+export const RECORD_REQUIRED_FIELDS = ['localName', 'completed'];
 
 export const ALERT_TYPES = {
     INFO: 'info',

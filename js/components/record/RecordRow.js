@@ -41,7 +41,7 @@ let RecordRow = (props) => {
         </td>
         { isAdmin &&
             <td className='report-row content-center'>
-                <HelpIcon text={completionTooltip} glyph={isComplete ? 'ok' : 'remove'}/>
+                <HelpIcon text={completionTooltip} glyph={isComplete ? 'ok' : 'progress'}/>
             </td>
         }
         <td className='report-row actions'>

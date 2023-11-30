@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import {FaQuestionCircle} from 'react-icons/fa';
 import {FaCheck} from 'react-icons/fa';
 import {FaTimes} from 'react-icons/fa';
+import {FaTasks} from "react-icons/fa";
 
 const HelpIcon = (props) => {
     const tooltip = <Tooltip id='help-tooltip'>{props.text}</Tooltip>;
@@ -18,6 +19,8 @@ const HelpIcon = (props) => {
                 return <FaCheck className={'ok-icon ' + props.className}/>;
             case "remove":
                 return <FaTimes className={'remove-icon ' + props.className}/>;
+            case "progress":
+                return <FaTasks className={'progress-icon ' + props.className}/>;
             default:
                 return null;
         }
