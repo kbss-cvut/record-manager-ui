@@ -33,6 +33,9 @@ export default {
         'please-wait': 'Please wait...',
         'actions': 'Actions',
         'required': 'Fields marked with * are required',
+        'reject': 'Reject',
+        'accept':'Accept',
+        'complete': 'Complete',
 
         'login.title': Constants.APP_NAME + ' - Login',
         'login.username': 'Username',
