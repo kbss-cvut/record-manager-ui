@@ -9,10 +9,11 @@ import HorizontalInput from "../HorizontalInput";
 import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
 import RequiredAttributes from "./RequiredAttributes";
-import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ALERT_TYPES, EXTENSION_CONSTANTS, ROLE} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderCard, LoaderSmall} from "../Loader";
 import {processTypeaheadOptions} from "./TypeaheadAnswer";
+import {EXTENSIONS} from "../../../config";
 
 class Record extends React.Component {
     constructor(props) {
@@ -105,15 +106,29 @@ class Record extends React.Component {
         const {record, recordSaved, formgen} = this.props;
 
         return <div className="mt-3 text-center">
-            <Button variant='success' size='sm'
+            {this._renderRoleSpecificButtons()}
+            <Button className="mx-1" variant='success' size='sm'
                     disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
-                    || !this.state.isFormValid || !record.state.isComplete()}
+                        || !this.state.isFormValid || !record.state.isComplete()}
                     onClick={this.props.handlers.onSave}>
                 {this.i18n('save')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
             </Button>
-            <Button variant='link' size='sm'
+            <Button className="mx-1" variant='link' size='sm'
                     onClick={this.props.handlers.onCancel}>{this.i18n('cancel')}</Button>
         </div>
+    }
+
+    _renderRoleSpecificButtons() {
+        return <>
+            {EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER &&
+                <>
+                    <Button className="mx-1" variant='danger' size='sm'>Reject</Button>
+                    <Button className="mx-1" variant='success' size='sm'>Accept</Button>
+                </>
+            }
+            {EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR &&
+                <Button className="mx-1" variant='success' size='sm'>Complete</Button>}
+        </>;
     }
 
     _renderInstitution() {
