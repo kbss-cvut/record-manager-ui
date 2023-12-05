@@ -52,7 +52,7 @@ class MainView extends React.Component {
         if (isUsingOidcAuth()) {
             window.location = userProfileLink();
         } else {
-            transitionToWithOpts(Routes.editUser, {params: {username: this.props.user.username}});
+            this.props.transitionToWithOpts(Routes.editUser, {params: {username: this.props.user.username}});
         }
     }
 
@@ -157,6 +157,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        loadUserProfile: bindActionCreators(loadUserProfile, dispatch)
+        loadUserProfile: bindActionCreators(loadUserProfile, dispatch),
+        transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch)
     }
 }
