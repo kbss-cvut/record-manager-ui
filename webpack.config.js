@@ -72,7 +72,7 @@ module.exports = (
                 },
                 {
                     test: /\.(js|jsx)$/,
-                    include: /node_modules\/intelligent-tree-select/,
+                    include: /node_modules[\/\\]intelligent-tree-select/,
                     use: ['babel-loader'],
                 },
 
