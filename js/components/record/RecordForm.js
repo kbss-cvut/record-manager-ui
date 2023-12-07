@@ -114,6 +114,13 @@ class RecordForm extends React.Component {
             ...this._getUsersOptions(),
             ...this._getIconsOptions()
         }
+        const componentsOptions= {
+            dateTimeAnswer: {
+                dateFormat: "dd-MM-yy",
+                timeFormat: "HH:mm",
+                dateTimeFormat: "dd-MM-yy HH:mm:ss",
+            },
+        }
 
         if (this.props.formgen.status === ACTION_STATUS.ERROR) {
             return <AlertMessage
@@ -128,6 +135,7 @@ class RecordForm extends React.Component {
             form={this.state.form}
             formData={this.props.record.question}
             options={options}
+            componentsOptions={componentsOptions}
             fetchTypeAheadValues={this.fetchTypeAheadValues}
             isFormValid={this.props.isFormValid}
             enableForwardSkip={true}
