@@ -44,6 +44,7 @@ class RequiredAttributes extends React.Component {
                 <div className='col-11 col-sm-6'>
                     <HorizontalInput
                         labelWidth={4} inputWidth={8}
+                        isDisabled={!!record.formTemplate}
                         type='autocomplete' name='formTemplate' value={record.formTemplate || formTemplate}
                         label={this.i18n('records.form-template') + '*'} onChange={this.props.onChange}
                         possibleValuesEndpoint={possibleValuesEndpoint}
