@@ -54,7 +54,7 @@ RECORD_MANAGER_ROOT_PATH=/record-manager-example
 
 ### Set up with Keycloak Authorization
 
-The deployment is pretty much self-contained based on [docker-compose.yml](../deploy/keycloak-auth/docker-compose.yml). It sets up the corresponding repositories, imports a realm where clients
+The deployment is pretty much self-contained based on [docker-compose.yml](../deploy/keycloak-auth-no-proxy/docker-compose.yml). It sets up the corresponding repositories, imports a realm where clients
 are configured for both the Record Manager backend and frontend. All the services (except PostgreSQL used by Keycloak) 
 in the deployment export their ports to the host system, so ensure the following ports are available on your system: 
 3000, 8080, 8081, 8088.
