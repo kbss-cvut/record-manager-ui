@@ -121,7 +121,7 @@ class RecordForm extends React.Component {
             return <AlertMessage
                 type={ALERT_TYPES.DANGER}
                 message={this.props.formatMessage('record.load-form-error', {error: this.props.formgen.error.message})}/>;
-        } else if (this.props.formgen.status === ACTION_STATUS.PENDING || !this.state.form) {
+        } else if (!!this.props.record.formTemplate && (this.props.formgen.status === ACTION_STATUS.PENDING || !this.state.form)) {
             return <Loader/>;
         }
 
