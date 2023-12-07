@@ -34,14 +34,16 @@ class RecordForm extends React.Component {
     }
 
     componentDidMount() {
-        this.props.loadFormgen(ACTION_STATUS.PENDING);
-        this.loadWizard();
+        if(this.props.record.formTemplate) {
+            this.props.loadFormgen(ACTION_STATUS.PENDING);
+            this.loadWizard();
+        }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {record} = this.props;
-
-        if (prevProps.record.question?.uri !== record.question?.uri) {
+        if(record.formTemplate && record.formTemplate != prevProps.record.formTemplate) {
+            this.props.loadFormgen(ACTION_STATUS.PENDING);
             this.loadWizard();
         }
     }
