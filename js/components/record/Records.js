@@ -54,20 +54,16 @@ class Records extends React.Component {
             </Card.Header>
             <Card.Body>
                 <RecordTable {...this.props}/>
-                <div className="row">
-                    <div className="col-10">
-                        {showCreateButton
-                            ? <Button variant='primary' size='sm'
-                                      disabled={createRecordDisabled}
-                                      title={createRecordTooltip}
-                                      onClick={onCreateWithFormTemplate}>{this.i18n('records.create-tile')}</Button>
-                            : null}
-                    </div>
-                    <div className="col-2">
-                        {showExportButton ?
-                            <Button className="mx-1" variant='primary' size='sm'>{this.i18n('export')}</Button>
-                            : null}
-                    </div>
+                <div className="d-flex justify-content-between">
+                    {showCreateButton
+                        ? <Button variant='primary' size='sm'
+                                  disabled={createRecordDisabled}
+                                  title={createRecordTooltip}
+                                  onClick={onCreateWithFormTemplate}>{this.i18n('records.create-tile')}</Button>
+                        : null}
+                    {showExportButton ?
+                        <Button className="mx-1" variant='primary' size='sm'>{this.i18n('export')}</Button>
+                        : null}
                 </div>
                 {showAlert && recordDeleted.status === ACTION_STATUS.ERROR &&
                 <AlertMessage type={ALERT_TYPES.DANGER}
