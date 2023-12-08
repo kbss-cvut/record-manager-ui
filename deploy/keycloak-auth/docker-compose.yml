@@ -74,7 +74,7 @@ services:
     environment:
       FORMGEN_REPOSITORY_URL: "http://db-server:7200/repositories/record-manager-formgen"
     volumes:
-      - ../shared/s-pipes-engine/scripts:/scripts/root
+      - ../shared/s-pipes-engine/scripts:/scripts/root:ro
 
   db-server:
     build:
