@@ -93,7 +93,7 @@ class User extends React.Component {
         if (user.isNew || (currentUser.username !== user.username && currentUser.role !== ROLE.ADMIN)) {
             return null;
         } else {
-            return <Button style={{margin: '0 0.3em 0 0'}} variant='primary' size='sm' ref='submit'
+            return <Button style={{margin: '0 0.3em 0 0'}} variant='primary' size='sm' ref='submit' hidden={true}
                            onClick={handlers.onPasswordChange}>{this.i18n('user.password-change')}</Button>;
         }
     }
@@ -191,13 +191,13 @@ class User extends React.Component {
                     <div className='row'>
                         <div className='col-12 col-sm-6'>
                             <HorizontalInput type='text' name='firstName' label={`${this.i18n('user.first-name')}*`}
-                                             disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username}
+                                             disabled={true}
                                              value={user.firstName} labelWidth={3} inputWidth={8}
                                              onChange={this._onChange}/>
                         </div>
                         <div className='col-12 col-sm-6'>
                             <HorizontalInput type='text' name='lastName' label={`${this.i18n('user.last-name')}*`}
-                                             disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username}
+                                             disabled={true}
                                              value={user.lastName} labelWidth={3} inputWidth={8}
                                              onChange={this._onChange}/>
                         </div>
@@ -205,13 +205,13 @@ class User extends React.Component {
                     <div className='row'>
                         <div className='col-12 col-sm-6'>
                             <HorizontalInput type='text' name='username' label={`${this.i18n('user.username')}*`}
-                                             disabled={!user.isNew} labelWidth={3} inputWidth={8}
+                                             disabled={true} labelWidth={3} inputWidth={8}
                                              value={user.username} onChange={this._onChange}
                                              iconRight={user.isNew ? generateButton : null}/>
                         </div>
                         <div className='col-12 col-sm-6'>
                             <HorizontalInput type='email' name='emailAddress' label={`${this.i18n('users.email')}*`}
-                                             disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username}
+                                             disabled={true}
                                              value={user.emailAddress} labelWidth={3} inputWidth={8}
                                              onChange={this._onChange}/>
                         </div>
@@ -232,7 +232,7 @@ class User extends React.Component {
                         <div className='col-12 col-sm-6'>
                             <HorizontalInput type='select' name='role' label={`${this.i18n('user.role')}*`}
                                              onChange={this._onAdminStatusChange}
-                                             disabled={currentUser.role !== ROLE.ADMIN}
+                                             disabled={true}
                                              value={user.types && getRole(user)}
                                              labelWidth={3} inputWidth={8}>
                                 {this._generateRolesOptions()}
@@ -252,7 +252,7 @@ class User extends React.Component {
                         {this._impersonateButton()}
                         {this._passwordChange()}
                         {this._saveAndSendEmailButton()}
-                        {(currentUser.role === ROLE.ADMIN || currentUser.username === user.username) &&
+                        {currentUser.role === ROLE.ADMIN &&
                         <Button variant='success' size='sm' ref='submit' className="d-inline-flex"
                                 disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
                                 onClick={() => this._onSave()}
@@ -264,7 +264,7 @@ class User extends React.Component {
                             <LoaderSmall/>}
                         </Button>
                         }
-                        <Button variant='link' size='sm' onClick={handlers.onCancel}>
+                        <Button variant='link' size='sm' onClick={handlers.onCancel} hidden={true}>
                             {this.i18n(this.props.backToInstitution ? 'users.back-to-institution' : 'cancel')}
                         </Button>
                     </div>
