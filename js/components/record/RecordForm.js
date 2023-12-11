@@ -34,14 +34,16 @@ class RecordForm extends React.Component {
     }
 
     componentDidMount() {
-        this.props.loadFormgen(ACTION_STATUS.PENDING);
-        this.loadWizard();
+        if(this.props.record.formTemplate) {
+            this.props.loadFormgen(ACTION_STATUS.PENDING);
+            this.loadWizard();
+        }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {record} = this.props;
-
-        if (prevProps.record.question?.uri !== record.question?.uri) {
+        if(record.formTemplate && record.formTemplate != prevProps.record.formTemplate) {
+            this.props.loadFormgen(ACTION_STATUS.PENDING);
             this.loadWizard();
         }
     }
@@ -119,7 +121,7 @@ class RecordForm extends React.Component {
             return <AlertMessage
                 type={ALERT_TYPES.DANGER}
                 message={this.props.formatMessage('record.load-form-error', {error: this.props.formgen.error.message})}/>;
-        } else if (this.props.formgen.status === ACTION_STATUS.PENDING || !this.state.form) {
+        } else if (!!this.props.record.formTemplate && (this.props.formgen.status === ACTION_STATUS.PENDING || !this.state.form)) {
             return <Loader/>;
         }
 

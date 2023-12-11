@@ -58,7 +58,7 @@ const TypeaheadAnswer = (props) => {
             isSearchable={true}
             isLoading={isLoading}
             isClearable={true}
-            isDisabled={isLoading}
+            isDisabled={isLoading || (props.isDisabled === true) }
             value={options.filter((option) => option.id === props.value)}
             placeholder={''}
             getOptionLabel={(option) => option.name}
@@ -73,7 +73,8 @@ TypeaheadAnswer.propTypes = {
     possibleValuesEndpoint: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     value: PropTypes.string,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    isDisabled: PropTypes.bool
 };
 
 export default TypeaheadAnswer;
