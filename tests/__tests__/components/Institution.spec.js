@@ -188,7 +188,7 @@ describe('Institution', function () {
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-        expect(buttons.length).toEqual(3);
+        expect(buttons.length).toEqual(4);
 
         TestUtils.Simulate.click(buttons[1]); // cancel
         expect(handlers.onCancel).toHaveBeenCalled();

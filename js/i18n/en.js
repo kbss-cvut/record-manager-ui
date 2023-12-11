@@ -33,6 +33,7 @@ export default {
         'please-wait': 'Please wait...',
         'actions': 'Actions',
         'required': 'Fields marked with * are required',
+        'export': 'Export',
 
         'login.title': Constants.APP_NAME + ' - Login',
         'login.username': 'Username',

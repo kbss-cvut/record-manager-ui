@@ -33,6 +33,7 @@ export default {
         'please-wait': 'Prosím, čekejte...',
         'actions': 'Akce',
         'required': 'Políčka označená * jsou povinná',
+        'export': 'Export',
 
         'login.title': Constants.APP_NAME + ' - Přihlášení',
         'login.username': 'Uživatelské jméno',
