@@ -125,7 +125,7 @@ class RecordForm extends React.Component {
             return <Loader/>;
         }
 
-        return <SForms
+        return !!this.state.form && <SForms
             ref={this.refForm}
             form={this.state.form}
             formData={this.props.record.question}

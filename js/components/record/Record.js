@@ -64,7 +64,7 @@ class Record extends React.Component {
                     {this._showInstitution() && this._renderInstitution()}
                     <RecordProvenance record={record}/>
                 </form>
-                {record.formTemplate && this._renderForm()}
+                {this._renderForm()}
                 {this._renderButtons()}
                 {showAlert && recordSaved.status === ACTION_STATUS.ERROR &&
                 <div>
