@@ -34,7 +34,7 @@ By default,  Record Manager UI runs at `http://localhost:3000` while Record Mana
 This requires setting up the CORS policy of the server appropriately, i.e., configuring `config.properties` 
 to contain `security.sameSite=None` and set up also `cors.allowedOrigin` if needed.
 
-## Add Configuration Parameters
+## Adding Configuration Parameters
 
 When runtime configuration parameters are added to the application, they also need to be added to Docker processing so
 that environment variables can be used to set the variables. The following needs to be done:
