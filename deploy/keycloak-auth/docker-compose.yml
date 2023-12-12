@@ -39,10 +39,10 @@ services:
       LANGUAGE: "${LANGUAGE:-en}"
       NAVIGATOR_LANGUAGE: "false"
       BASENAME: "${RECORD_MANAGER_ROOT_PATH:-/record-manager}"
-      EXTENSION: "${RECORD_MANAGER_EXTENSIONS:-supplier}"
       AUTHENTICATION: "oidc"
       AUTH_SERVER_URL: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${RECORD_MANAGER_ROOT_PATH:-/record-manager}/services/auth/realms/record-manager"
       AUTH_CLIENT_ID: "record-manager"
+      EXTENSION: "${RECORD_MANAGER_EXTENSIONS:-supplier}"
 
   record-manager-server:
     image: ghcr.io/kbss-cvut/kbss-cvut/record-manager:latest
