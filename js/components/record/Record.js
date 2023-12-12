@@ -41,6 +41,11 @@ class Record extends React.Component {
     render() {
         const {recordLoaded, recordSaved, showAlert, record, formTemplate, currentUser} = this.props;
 
+        if (!record?.formTemplate) {
+            if (formTemplate) {
+                record.formTemplate = formTemplate;
+            }
+        }
         if (recordLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('record.load-error', {error: this.props.recordLoaded.error.message})}/>;
@@ -59,7 +64,7 @@ class Record extends React.Component {
                     {this._showInstitution() && this._renderInstitution()}
                     <RecordProvenance record={record}/>
                 </form>
-                {record.formTemplate && this._renderForm()}
+                {this._renderForm()}
                 {this._renderButtons()}
                 {showAlert && recordSaved.status === ACTION_STATUS.ERROR &&
                 <div>

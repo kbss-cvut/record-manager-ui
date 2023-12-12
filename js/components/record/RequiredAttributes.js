@@ -24,16 +24,6 @@ class RequiredAttributes extends React.Component {
         this.i18n = this.props.i18n;
     }
 
-    componentDidMount() {
-        const {record, formTemplate} = this.props;
-
-        if (!record.formTemplate) {
-            if (formTemplate) {
-                record.formTemplate = formTemplate;
-            }
-        }
-    }
-
     render() {
         const {record, formTemplate} = this.props;
         const possibleValuesEndpoint = `${API_URL}/rest/formGen/formTemplates`;
