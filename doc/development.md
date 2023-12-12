@@ -16,6 +16,17 @@ All the services, including dockerized record-manager-ui, run by default at URL 
 To attach simultaneously frontend for the development use setup from [.env.internal-auth](../.env.internal-auth), 
 e.g., by running `ln -s .env.internal-auth .env;  npm run dev`.
 
+### Running with Dockerized Services and Keycloak Authorization
+
+This section describes the development scenario when developer uses 
+[dockerized services with keycloak authorization](../deploy/keycloak-auth/docker-compose.yml) to develop.
+All the services, including dockerized record-manager-ui, run by default at URL starting with `http://localhost:1235/record-manager`.
+To attach simultaneously frontend for the development use setup from [.env.keyclaok-auth](../.env.keyclaok-auth), 
+e.g., by running `ln -s .env.keycloak-auth .env;  npm run dev`.
+
+`npm run dev` starts developement version of record-manager-ui at `http://localhost:3000`. In order to login to through keycloak `record-manager` realm needs to be configured: open the `record-manager` realm, under _Clients_ open the `record-manager` client and set 
+_Valid redirect URIs_ (by default it should be `http://localhost:3000/*`) and _Web Origins_ (by default it should be `http://localhost:3000`).
+
 ### Running with all Services in Development Mode
 
 This section describes the development scenario when the developer runs all dependent services in development mode.
