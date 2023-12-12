@@ -149,6 +149,9 @@ class UserController extends React.Component {
         }
     };
 
+    //TODO: Implement redirection to keycloak
+    _onRedirect = () => {};
+
     render() {
         const {
             currentUser, userSaved, userLoaded, institutionsLoaded,
@@ -165,7 +168,8 @@ class UserController extends React.Component {
             generateUsername: this._generateUsername,
             sendInvitation: this._sendInvitation,
             impersonate: this._impersonate,
-            deleteInvitationOption: this._deleteInvitationOption
+            deleteInvitationOption: this._deleteInvitationOption,
+            onKeycloakRedirect: this._onRedirect
         };
         return <User user={this.state.user} handlers={handlers} backToInstitution={this.institution !== null}
                      userSaved={userSaved} showAlert={this.state.showAlert} userLoaded={userLoaded}
