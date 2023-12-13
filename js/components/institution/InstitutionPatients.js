@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {Card} from 'react-bootstrap';
+import {Button, Card} from 'react-bootstrap';
 
 import withI18n from '../../i18n/withI18n';
 import {injectIntl} from "react-intl";
@@ -20,6 +20,9 @@ const InstitutionPatients = (props) => {
                          handlers={{onEdit: onEdit}}
                          disableDelete={true}
                          currentUser={currentUser}/>
+            <div className="d-flex justify-content-end">
+                <Button className="mx-1" variant='primary' size='sm'>{props.i18n('export')}</Button>
+            </div>
         </Card.Body>
     </Card>;
 };

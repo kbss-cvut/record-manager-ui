@@ -33,13 +33,14 @@ class Records extends React.Component {
     }
 
     render() {
-        const {showAlert, recordDeleted, formTemplate} = this.props;
+        const {showAlert, recordDeleted, formTemplate, recordsLoaded} = this.props;
         const showCreateButton = STUDY_CREATE_AT_MOST_ONE_RECORD
                 ? (!this.props.recordsLoaded.records || (this.props.recordsLoaded.records.length < 1))
                 : true;
         const showPublishButton =
             this.props.currentUser.role === ROLE.ADMIN
             && EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR;
+        const showExportButton = !!recordsLoaded.records;
         const createRecordDisabled =
             STUDY_CLOSED_FOR_ADDITION
             && (!this._isAdmin());
@@ -57,12 +58,15 @@ class Records extends React.Component {
             </Card.Header>
             <Card.Body>
                 <RecordTable {...this.props}/>
-                <div>
+                <div className="d-flex justify-content-between">
                     {showCreateButton
                         ? <Button className="mx-1" variant='primary' size='sm'
                             disabled={createRecordDisabled}
                             title={createRecordTooltip}
                             onClick={onCreateWithFormTemplate}>{this.i18n('records.create-tile')}</Button>
+                        : null}
+                    {showExportButton ?
+                        <Button className="mx-1" variant='primary' size='sm'>{this.i18n('export')}</Button>
                         : null}
                     {showPublishButton ?
                         <Button className="mx-1" variant='success' size='sm'

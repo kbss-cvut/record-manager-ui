@@ -42,6 +42,11 @@ class Record extends React.Component {
     render() {
         const {recordLoaded, recordSaved, showAlert, record, formTemplate, currentUser} = this.props;
 
+        if (!record?.formTemplate) {
+            if (formTemplate) {
+                record.formTemplate = formTemplate;
+            }
+        }
         if (recordLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
                                  message={this.props.formatMessage('record.load-error', {error: this.props.recordLoaded.error.message})}/>;

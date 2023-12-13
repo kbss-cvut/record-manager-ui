@@ -1,61 +1,94 @@
 version: '3.9'
 
+# Provide access to record-manager-ui that runs locally in dev mode
+x-access-for-local-development: &local-dev-env
+    cors.allowedOrigins: "http://localhost:3000"
+
 services:
+  nginx:
+    image: nginx:latest
+    container_name: ${RECORD_SET_NAME:-rm}-nginx
+    volumes:
+      - ./nginx/template-variables.conf:/etc/nginx/templates/variables.conf.template:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/error.html:/usr/share/nginx/html/error.html:ro
+    ports:
+      - "127.0.0.1:${INTERNAL_HOST_PORT:-1235}:80"
+    restart: always
+    depends_on:
+      - record-manager
+      - record-manager-server
+      - s-pipes-engine
+      - db-server
+    environment:
+      RECORD_MANAGER_ORIGIN: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}"
+      RECORD_MANAGER_ROOT_PATH: "${RECORD_MANAGER_ROOT_PATH:-/record-manager}"
+
   record-manager:
     image: ghcr.io/kbss-cvut/kbss-cvut/record-manager-ui:latest
     container_name: ${RECORD_SET_NAME:-rm}-record-manager
-    ports:
-      - "127.0.0.1:3000:80"
+    expose:
+      - "80"
+    restart: always
     depends_on:
       - record-manager-server
     environment:
-      APP_TITLE: "Record Manager"
-      BASENAME: "./"
-      LANGUAGE: "cs"
-      NAVIGATOR_LANGUAGE: "true"
-      API_URL: "http://localhost:8080/record-manager-server"
-      APP_INFO: "<a href=\"https://github.com/kbss-cvut\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"KBSS CVUT v Praze\">© KBSS CVUT v Praze, 2023</a>"
+      API_URL: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${RECORD_MANAGER_ROOT_PATH:-/record-manager}/services/record-manager-server"
+      APP_INFO: "${RECORD_MANAGER_APP_INFO:-}"
+      APP_TITLE: "${RECORD_MANAGER_APP_TITLE:-Record Manager}"
+      LANGUAGE: "${LANGUAGE:-en}"
+      NAVIGATOR_LANGUAGE: "false"
+      BASENAME: "${RECORD_MANAGER_ROOT_PATH:-/record-manager}"
       AUTHENTICATION: "oidc"
-      AUTH_SERVER_URL: "http://localhost:8088/realms/record-manager"
-      AUTH_CLIENT_ID: "record-manager-ui"
-      FORCE_BASENAME: "true"
+      AUTH_SERVER_URL: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${RECORD_MANAGER_ROOT_PATH:-/record-manager}/services/auth/realms/record-manager"
+      AUTH_CLIENT_ID: "record-manager"
+      EXTENSION: "${RECORD_MANAGER_EXTENSIONS:-supplier}"
 
   record-manager-server:
     image: ghcr.io/kbss-cvut/kbss-cvut/record-manager:latest
     container_name: ${RECORD_SET_NAME:-rm}-record-manager-server
-    ports:
-      - "127.0.0.1:8080:8080"
+    expose:
+      - "8080"  
+    restart: always
     depends_on:
       - s-pipes-engine
       - db-server
-      - auth-server
     environment:
-      REPOSITORYURL: "http://db-server:7200/repositories/record-manager-app"
-      FORMGENREPOSITORYURL: "http://db-server:7200/repositories/record-manager-formgen"
-      FORMGENSERVICEURL: "http://s-pipes-engine:8080/s-pipes/service?_pId=clone&sgovRepositoryUrl=https%3A%2F%2Fgraphdb.onto.fel.cvut.cz%2Frepositories%2Fkodi-slovnik-gov-cz"
+      <<: *local-dev-env
+      appContext: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${RECORD_MANAGER_ROOT_PATH:-/record-manager}"
+      repositoryUrl: "http://db-server:7200/repositories/record-manager-app"
+      formGenRepositoryUrl: "http://db-server:7200/repositories/record-manager-formgen"
+      formGenServiceUrl: "${FORMGEN_SERVICE_URL}"
       SECURITY_PROVIDER: "oidc"
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI: "http://localhost:8088/realms/record-manager"
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${RECORD_MANAGER_ROOT_PATH:-/record-manager}/services/auth/realms/record-manager"
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI: "http://auth-server:8080/realms/record-manager/protocol/openid-connect/certs"
-      SERVER_SERVLET_CONTEXTPATH: "/record-manager-server"
 
   s-pipes-engine:
     image: ghcr.io/kbss-cvut/s-pipes/s-pipes-engine:latest
     container_name: ${RECORD_SET_NAME:-rm}-s-pipes-engine
-    ports:
-      - "127.0.0.1:8081:8080"
+    expose:
+      - "8080"  
+    restart: always
     depends_on:
       - db-server
+    environment:
+      FORMGEN_REPOSITORY_URL: "http://db-server:7200/repositories/record-manager-formgen"
+    volumes:
+      - ../shared/s-pipes-engine/scripts:/scripts/root:ro
+
   db-server:
     build:
       context: ../shared/db-server
     container_name: ${RECORD_SET_NAME:-rm}-db-server
     environment:
-      GDB_JAVA_OPTS: "-Ddefault.min.distinct.threshold=67108864"
-    ports:
-      - "127.0.0.1:7200:7200"
+      GDB_JAVA_OPTS: "-Dgraphdb.external-url=${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${RECORD_MANAGER_ROOT_PATH:-/record-manager}/services/db-server"
+    expose:
+      - "7200"  
+    restart: always
     volumes:
       - ../shared/db-server/init-data/forms:/root/graphdb-import/forms:ro
-      - data:/opt/graphdb/home
+      - db-server:/opt/graphdb/home
+
   auth-server-db:
     image: postgres:13
     container_name: ${RECORD_SET_NAME:-rm}-auth-server-db
@@ -65,15 +98,16 @@ services:
       POSTGRES_PASSWORD: keycloak
     volumes:
       - auth-server-db:/var/lib/postgresql/data
+
   auth-server:
     image: ghcr.io/kbss-cvut/keycloak-graphdb-user-replicator/keycloak-graphdb:latest
     container_name: ${RECORD_SET_NAME:-rm}-auth-server
     command:
-      - start --import-realm
+      - start --import-realm --features="token-exchange,admin-fine-grained-authz"
     environment:
       KC_IMPORT: realm-export.json
-      KC_HOSTNAME_URL: "http://localhost:8088"
-      KC_HOSTNAME_ADMIN_URL: "http://localhost:8088"
+      KC_HOSTNAME_URL: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${RECORD_MANAGER_ROOT_PATH:-/record-manager}/services/auth/"
+      KC_HOSTNAME_ADMIN_URL: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${RECORD_MANAGER_ROOT_PATH:-/record-manager}/services/auth/"
       KC_HOSTNAME_STRICT_BACKCHANNEL: false
       KC_HTTP_ENABLED: true
       KEYCLOAK_ADMIN: ${KC_ADMIN_USER}
@@ -94,15 +128,15 @@ services:
       VOCABULARY_USER_EMAIL: "http://xmlns.com/foaf/0.1/mbox"
       ADD_ACCOUNTS: false
       REALM_ID: "record-manager"
-    ports:
-      - "127.0.0.1:8088:8080"
+    expose:
+      - "8080"
     volumes:
       - auth-server:/opt/keycloak/data
-      - ./keycloak:/opt/keycloak/data/import
+      - ../shared/keycloak:/opt/keycloak/data/import
     depends_on:
       - auth-server-db
 
 volumes:
-  data:
+  db-server:
   auth-server:
   auth-server-db:

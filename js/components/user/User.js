@@ -14,6 +14,7 @@ import {LoaderCard, LoaderSmall} from "../Loader";
 import HelpIcon from "../HelpIcon";
 import PropTypes from "prop-types";
 import {FaRandom} from 'react-icons/fa';
+import {isUsingOidcAuth} from "../../utils/OidcUtils";
 
 class User extends React.Component {
     static propTypes = {
@@ -88,13 +89,33 @@ class User extends React.Component {
         });
     };
 
-    _passwordChange() {
+    _passwordChangeButton() {
         const {user, currentUser, handlers} = this.props;
+        if (isUsingOidcAuth()) {
+            return null;
+        }
         if (user.isNew || (currentUser.username !== user.username && currentUser.role !== ROLE.ADMIN)) {
             return null;
         } else {
             return <Button style={{margin: '0 0.3em 0 0'}} variant='primary' size='sm' ref='submit'
-                           onClick={handlers.onPasswordChange}>{this.i18n('user.password-change')}</Button>;
+                           onClick={handlers.onPasswordChange}>
+                {this.i18n('user.password-change')}
+            </Button>;
+        }
+    }
+
+    _externalEditUserButton() {
+        const {user, currentUser, handlers} = this.props;
+        if (!isUsingOidcAuth()) {
+            return null;
+        }
+        if (user.isNew || (currentUser.username !== user.username && currentUser.role !== ROLE.ADMIN)) {
+            return null;
+        } else {
+            return <Button style={{margin: '0 0.3em 0 0'}} variant='primary' size='sm' ref='submit'
+                           onClick={handlers.onKeycloakRedirect}>
+                {this.i18n('user.edit')}
+            </Button>;
         }
     }
 
@@ -191,13 +212,13 @@ class User extends React.Component {
                     <div className='row'>
                         <div className='col-12 col-sm-6'>
                             <HorizontalInput type='text' name='firstName' label={`${this.i18n('user.first-name')}*`}
-                                             disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username}
+                                             disabled={isUsingOidcAuth()}
                                              value={user.firstName} labelWidth={3} inputWidth={8}
                                              onChange={this._onChange}/>
                         </div>
                         <div className='col-12 col-sm-6'>
                             <HorizontalInput type='text' name='lastName' label={`${this.i18n('user.last-name')}*`}
-                                             disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username}
+                                             disabled={isUsingOidcAuth()}
                                              value={user.lastName} labelWidth={3} inputWidth={8}
                                              onChange={this._onChange}/>
                         </div>
@@ -205,13 +226,14 @@ class User extends React.Component {
                     <div className='row'>
                         <div className='col-12 col-sm-6'>
                             <HorizontalInput type='text' name='username' label={`${this.i18n('user.username')}*`}
-                                             disabled={!user.isNew} labelWidth={3} inputWidth={8}
+                                             disabled={!user.isNew || isUsingOidcAuth()}
+                                             labelWidth={3} inputWidth={8}
                                              value={user.username} onChange={this._onChange}
                                              iconRight={user.isNew ? generateButton : null}/>
                         </div>
                         <div className='col-12 col-sm-6'>
                             <HorizontalInput type='email' name='emailAddress' label={`${this.i18n('users.email')}*`}
-                                             disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username}
+                                             disabled={isUsingOidcAuth()}
                                              value={user.emailAddress} labelWidth={3} inputWidth={8}
                                              onChange={this._onChange}/>
                         </div>
@@ -232,8 +254,8 @@ class User extends React.Component {
                         <div className='col-12 col-sm-6'>
                             <HorizontalInput type='select' name='role' label={`${this.i18n('user.role')}*`}
                                              onChange={this._onAdminStatusChange}
-                                             disabled={currentUser.role !== ROLE.ADMIN}
-                                             value={user.types && getRole(user)}
+                                             disabled={isUsingOidcAuth() || (currentUser.role !== ROLE.ADMIN)}
+                                             value={isUsingOidcAuth() ? true : user.types && getRole(user)}
                                              labelWidth={3} inputWidth={8}>
                                 {this._generateRolesOptions()}
                             </HorizontalInput>
@@ -250,19 +272,20 @@ class User extends React.Component {
                     }
                     <div className="buttons-line-height mt-3 text-center">
                         {this._impersonateButton()}
-                        {this._passwordChange()}
-                        {this._saveAndSendEmailButton()}
-                        {(currentUser.role === ROLE.ADMIN || currentUser.username === user.username) &&
-                        <Button variant='success' size='sm' ref='submit' className="d-inline-flex"
-                                disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
-                                onClick={() => this._onSave()}
-                                title={this.i18n('required')}>
-                            {this.i18n('save')}
-                            {!UserValidator.isValid(user) &&
-                            <HelpIcon className="align-self-center" text={this.i18n('required')}/>}
-                            {userSaved.status === ACTION_STATUS.PENDING &&
-                            <LoaderSmall/>}
-                        </Button>
+                        {this._passwordChangeButton()}
+                        {this._externalEditUserButton()}
+                        {!isUsingOidcAuth() && this._saveAndSendEmailButton()}
+                        {(currentUser.role === ROLE.ADMIN || currentUser.username === user.username)  &&
+                            <Button variant='success' size='sm' ref='submit' className="d-inline-flex"
+                                    disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
+                                    onClick={() => this._onSave()}
+                                    title={this.i18n('required')}>
+                                {this.i18n('save')}
+                                {!UserValidator.isValid(user) &&
+                                    <HelpIcon className="align-self-center" text={this.i18n('required')}/>}
+                                {userSaved.status === ACTION_STATUS.PENDING &&
+                                    <LoaderSmall/>}
+                            </Button>
                         }
                         <Button variant='link' size='sm' onClick={handlers.onCancel}>
                             {this.i18n(this.props.backToInstitution ? 'users.back-to-institution' : 'cancel')}

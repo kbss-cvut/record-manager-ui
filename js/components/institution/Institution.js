@@ -68,7 +68,7 @@ class Institution extends React.Component {
                         <div className='col-12 col-sm-6'>
                             <HorizontalInput
                                 type='text' name='emailAddress' label={this.i18n('institution.email')}
-                                value={institution.emailAddress} readOnly={currentUser.role !== ROLE.ADMIN}
+                                value={institution.emailAddress || ""} readOnly={currentUser.role !== ROLE.ADMIN}
                                 onChange={this._onChange} labelWidth={3} inputWidth={8}/>
                         </div>
                     </div>

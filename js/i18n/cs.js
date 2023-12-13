@@ -36,6 +36,7 @@ export default {
         'reject': 'Odmítnout',
         'complete': 'Dokončit',
         'publish': 'Publikovat',
+        'export': 'Export',
 
         'login.title': Constants.APP_NAME + ' - Přihlášení',
         'login.username': 'Uživatelské jméno',
@@ -118,6 +119,7 @@ export default {
         'user.delete-invitation-option-error': 'Nepodařilo se smazat možnost pozvání uživatele do studie. {error}',
         'user.impersonate': 'Impersonace',
         'user.impersonate-error': 'Impersonace se nepodařila. {error}',
+        'user.edit': 'Upravit profil uživatele',
 
         'institutions.panel-title': 'Instituce',
         'institutions.create-institution': 'Vytvořit instituci',

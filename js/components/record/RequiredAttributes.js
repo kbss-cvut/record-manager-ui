@@ -24,16 +24,6 @@ class RequiredAttributes extends React.Component {
         this.i18n = this.props.i18n;
     }
 
-    componentDidMount() {
-        const {record, formTemplate} = this.props;
-
-        if (!record.formTemplate) {
-            if (formTemplate) {
-                record.formTemplate = formTemplate;
-            }
-        }
-    }
-
     render() {
         const {record, formTemplate} = this.props;
         const possibleValuesEndpoint = `${API_URL}/rest/formGen/formTemplates`;
@@ -44,6 +34,7 @@ class RequiredAttributes extends React.Component {
                 <div className='col-11 col-sm-6'>
                     <HorizontalInput
                         labelWidth={4} inputWidth={8}
+                        isDisabled={!!record.formTemplate}
                         type='autocomplete' name='formTemplate' value={record.formTemplate || formTemplate}
                         label={this.i18n('records.form-template') + '*'} onChange={this.props.onChange}
                         possibleValuesEndpoint={possibleValuesEndpoint}

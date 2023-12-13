@@ -68,7 +68,7 @@ class Dashboard extends React.Component {
         if (!formTemplate) {
             return <Col md={3} className='dashboard-sector'>
                 <DashboardTile
-                    onClick={this.props.handlers.showRecords}>{this.i18n('dashboard.records-tile')}</DashboardTile>
+                    onClick={() => this.props.handlers.showRecords()}>{this.i18n('dashboard.records-tile')}</DashboardTile>
             </Col>
         }
         const showRecordsOfTemplate = () => {

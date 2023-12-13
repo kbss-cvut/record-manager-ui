@@ -418,8 +418,8 @@
           "attributes": {}
         }
       ],
-      "record-manager": [],
-      "record-manager-ui": []
+      "record-manager-server": [],
+      "record-manager": []
     }
   },
   "groups": [],
@@ -547,7 +547,9 @@
       "redirectUris": [
         "/realms/record-manager/account/*"
       ],
-      "webOrigins": [],
+      "webOrigins": [
+        "http://localhost"
+      ],
       "notBefore": 0,
       "bearerOnly": false,
       "consentRequired": false,
@@ -705,9 +707,9 @@
     },
     {
       "id": "34eebec0-1e19-4eab-af04-8729a1de47f4",
-      "clientId": "record-manager",
-      "name": "Record Manager",
-      "description": "Record Manager backend",
+      "clientId": "record-manager-server",
+      "name": "Record Manager Server",
+      "description": "Record Manager server",
       "rootUrl": "",
       "adminUrl": "",
       "baseUrl": "",
@@ -758,21 +760,21 @@
     },
     {
       "id": "d6e815c8-6fd6-4ef6-acf7-2c099b5010fc",
-      "clientId": "record-manager-ui",
-      "name": "Record Manager UI",
+      "clientId": "record-manager",
+      "name": "Record Manager",
       "description": "Record Manager frontend",
-      "rootUrl": "http://localhost:3000",
-      "adminUrl": "http://localhost:3000",
-      "baseUrl": "http://localhost:3000",
+      "rootUrl": "http://localhost",
+      "adminUrl": "http://localhost",
+      "baseUrl": "http://localhost",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "http://localhost:3000/*"
+        "http://localhost/*"
       ],
       "webOrigins": [
-        "http://localhost:3000"
+        "http://localhost"
       ],
       "notBefore": 0,
       "bearerOnly": false,

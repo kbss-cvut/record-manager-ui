@@ -59,6 +59,9 @@ let RecordRow = (props) => {
             <Button variant="link" size="sm"
                     onClick={() => props.onEdit(record)}>{record.localName}</Button>
         </td>
+        {isAdmin && 
+              <td className='report-row'>{record.institution.name}</td>
+        }
         {isAdmin &&
             <td className='report-row content-center'>
                 {getFormTemplateOptionName(record.formTemplate, formTemplateOptions)}
