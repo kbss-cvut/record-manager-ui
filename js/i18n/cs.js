@@ -147,6 +147,8 @@ export default {
         'records.completion-status': 'Stav vyplnění',
         'records.completion-status-tooltip.complete': 'Všechny povinné informace ze záznamu byly vyplněny.',
         'records.completion-status-tooltip.incomplete': 'Některé povinné informace ze záznamu ještě nebyly vyplněny.',
+        'records.completion-status-tooltip.rejected': 'Formulář byl odmítnut',
+        'records.completion-status-tooltip.published': 'Formulář byl zveřejněn',
         'records.last-modified': 'Naposledy upraveno',
         'records.open-tooltip': 'Zobrazit či upravit tento záznam',
         'records.delete-tooltip': 'Smazat tento záznam',
