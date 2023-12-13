@@ -212,7 +212,7 @@ class User extends React.Component {
                     <div className='row'>
                         <div className='col-12 col-sm-6'>
                             <HorizontalInput type='text' name='username' label={`${this.i18n('user.username')}*`}
-                                             disabled={!user.isNew && isUsingOidcAuth()}
+                                             disabled={!user.isNew || isUsingOidcAuth()}
                                              labelWidth={3} inputWidth={8}
                                              value={user.username} onChange={this._onChange}
                                              iconRight={user.isNew ? generateButton : null}/>
