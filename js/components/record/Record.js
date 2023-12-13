@@ -119,17 +119,23 @@ class Record extends React.Component {
     }
 
     _renderRoleSpecificButtons() {
+        const {record, recordSaved, formgen} = this.props;
+
         return <>
             {EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER &&
                 <Button className="mx-1" variant='danger' size='sm'
+                        disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
+                            || !this.state.isFormValid || !record.state.isComplete()}
                         onClick={this.props.handlers.onReject}>
-                    {this.i18n('reject')}
+                    {this.i18n('reject')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
                 </Button>
             }
             {EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR &&
                 <Button className="mx-1" variant='success' size='sm'
+                        disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
+                            || !this.state.isFormValid || !record.state.isComplete()}
                         onClick={this.props.handlers.onComplete}>
-                    {this.i18n('complete')}
+                    {this.i18n('complete')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
                 </Button>}
         </>;
     }
