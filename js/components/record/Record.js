@@ -9,7 +9,7 @@ import HorizontalInput from "../HorizontalInput";
 import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
 import RequiredAttributes from "./RequiredAttributes";
-import {ACTION_STATUS, ALERT_TYPES, EXTENSION_CONSTANTS, ROLE} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ALERT_TYPES, EXTENSION_CONSTANTS, RECORD_PHASE, ROLE} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderCard, LoaderSmall} from "../Loader";
 import {processTypeaheadOptions} from "./TypeaheadAnswer";
@@ -120,7 +120,7 @@ class Record extends React.Component {
             {EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER &&
                 <Button className="mx-1" variant='danger' size='sm'
                         disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
-                            || !this.state.isFormValid || !record.state.isComplete()}
+                            || !this.state.isFormValid || !record.state.isComplete()|| record.phase === RECORD_PHASE.REJECTED}
                         onClick={this.props.handlers.onReject}>
                     {this.i18n('reject')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
                 </Button>
@@ -128,7 +128,7 @@ class Record extends React.Component {
             {EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR &&
                 <Button className="mx-1" variant='success' size='sm'
                         disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
-                            || !this.state.isFormValid || !record.state.isComplete()}
+                            || !this.state.isFormValid || !record.state.isComplete() || record.phase === RECORD_PHASE.COMPLETED}
                         onClick={this.props.handlers.onComplete}>
                     {this.i18n('complete')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
                 </Button>}
