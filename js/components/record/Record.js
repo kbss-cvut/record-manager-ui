@@ -116,13 +116,16 @@ class Record extends React.Component {
     _renderRoleSpecificButtons() {
         return <>
             {EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER &&
-                <>
-                    <Button className="mx-1" variant='danger' size='sm'>{this.i18n('reject')}</Button>
-                    <Button className="mx-1" variant='success' size='sm'>{this.i18n('accept')}</Button>
-                </>
+                <Button className="mx-1" variant='danger' size='sm'
+                        onClick={this.props.handlers.onReject}>
+                    {this.i18n('reject')}
+                </Button>
             }
             {EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR &&
-                <Button className="mx-1" variant='success' size='sm'>{this.i18n('complete')}</Button>}
+                <Button className="mx-1" variant='success' size='sm'
+                        onClick={this.props.handlers.onComplete}>
+                    {this.i18n('complete')}
+                </Button>}
         </>;
     }
 

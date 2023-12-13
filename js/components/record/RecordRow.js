@@ -7,7 +7,7 @@ import withI18n from "../../i18n/withI18n";
 import RecordValidator from "../../validation/RecordValidator";
 import {LoaderSmall} from "../Loader";
 import PropTypes from "prop-types";
-import {ROLE} from "../../constants/DefaultConstants";
+import {RECORD_PHASE, ROLE} from "../../constants/DefaultConstants";
 
 let RecordRow = (props) => {
     const record = props.record,
@@ -18,7 +18,15 @@ let RecordRow = (props) => {
         deleteButton = props.disableDelete ? null :
             <Button variant='warning' size='sm' title={props.i18n('records.delete-tooltip')}
                     onClick={() => props.onDelete(record)}>{props.i18n('delete')}{props.deletionLoading &&
-            <LoaderSmall/>}</Button>;
+            <LoaderSmall/>}</Button>,
+        recordPhase = props.record.phase;
+
+    const getGlyph = () => {
+        if (recordPhase === RECORD_PHASE.OPEN) return "to-do";
+        if (recordPhase === RECORD_PHASE.COMPLETED) return "ok";
+        if (recordPhase === RECORD_PHASE.PUBLISHED) return "envelope";
+        if (recordPhase === RECORD_PHASE.REJECTED) return "remove";
+    }
 
     return <tr>
         {isAdmin &&
@@ -41,7 +49,7 @@ let RecordRow = (props) => {
         </td>
         { isAdmin &&
             <td className='report-row content-center'>
-                <HelpIcon text={completionTooltip} glyph={isComplete ? 'ok' : 'progress'}/>
+                <HelpIcon text={completionTooltip} glyph={getGlyph()}/>
             </td>
         }
         <td className='report-row actions'>

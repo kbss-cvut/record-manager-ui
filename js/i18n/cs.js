@@ -34,7 +34,6 @@ export default {
         'actions': 'Akce',
         'required': 'Políčka označená * jsou povinná',
         'reject': 'Odmítnout',
-        'accept':'Přijmout',
         'complete': 'Dokončit',
         'publish': 'Publikovat',
 

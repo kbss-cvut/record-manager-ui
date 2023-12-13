@@ -34,7 +34,6 @@ export default {
         'actions': 'Actions',
         'required': 'Fields marked with * are required',
         'reject': 'Reject',
-        'accept':'Accept',
         'complete': 'Complete',
         'publish': 'Publish',
 

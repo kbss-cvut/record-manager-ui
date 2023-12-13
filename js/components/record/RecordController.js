@@ -6,7 +6,7 @@ import withI18n from '../../i18n/withI18n';
 import Record from './Record';
 import Routes from "../../constants/RoutesConstants";
 import {transitionToWithOpts} from '../../utils/Routing';
-import {ACTION_FLAG, ACTION_STATUS} from "../../constants/DefaultConstants";
+import {ACTION_FLAG, ACTION_STATUS, RECORD_PHASE} from "../../constants/DefaultConstants";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {
@@ -126,6 +126,27 @@ class RecordController extends React.Component {
         this.setState({record: update});
     };
 
+    _onComplete = () => {
+        this._handlePhaseChange(RECORD_PHASE.COMPLETED);
+    };
+
+    _onReject = () => {
+        this._handlePhaseChange(RECORD_PHASE.REJECTED);
+    };
+
+    _handlePhaseChange = (newPhase) => {
+        const currentUser = this.props.currentUser;
+
+        this.setState((prevState) => {
+            const update = {...prevState.record};
+            update.phase = newPhase;
+            return {record: update};
+        }, () => {
+            const updatedRecord = this.state.record;
+            this.props.updateRecord(updatedRecord, currentUser);
+        });
+    };
+
     _getLocalName() {
         if (EXTENSIONS.split(",").includes("kodi")) { // return name of the record based on answer of specific question
             return this._getKodiLocaLName();
@@ -158,7 +179,9 @@ class RecordController extends React.Component {
         const handlers = {
             onSave: this._onSave,
             onCancel: this._onCancel,
-            onChange: this._onChange
+            onChange: this._onChange,
+            onComplete: this._onComplete,
+            onReject: this._onReject
         };
 
         return <Record

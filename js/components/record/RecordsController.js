@@ -10,9 +10,10 @@ import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {deleteRecord} from "../../actions/RecordActions";
+import {deleteRecord, updateRecord} from "../../actions/RecordActions";
 import {loadFormTemplates} from "../../actions/FormTemplatesActions";
 import {extractQueryParam} from "../../utils/Utils"
+import {RECORD_PHASE} from "../../constants/DefaultConstants";
 
 class RecordsController extends React.Component {
     constructor(props) {
@@ -53,6 +54,25 @@ class RecordsController extends React.Component {
         this.setState({showAlert: true});
     };
 
+    _onPublishRecords = async () => {
+        const currentUser = this.props.currentUser;
+
+        this.setState({
+            records: this.props.recordsLoaded.records
+        }, async () => {
+            const updatedRecords = this.state.records.map(async (record) => {
+                if (record.phase === RECORD_PHASE.COMPLETED) {
+                    const updatedRecord = {...record, phase: RECORD_PHASE.PUBLISHED};
+                    await this.props.updateRecord(updatedRecord, currentUser);
+                    return updatedRecord;
+                }
+            });
+
+            return await Promise.all(updatedRecords);
+        })
+
+    };
+
     render() {
         const {formTemplatesLoaded, recordsLoaded, recordDeleted, recordsDeleting, currentUser} = this.props;
         const formTemplate = extractQueryParam(this.props.location.search, "formTemplate");
@@ -62,7 +82,8 @@ class RecordsController extends React.Component {
         const handlers = {
             onEdit: this._onEditRecord,
             onCreate: this._onAddRecord,
-            onDelete: this._onDeleteRecord
+            onDelete: this._onDeleteRecord,
+            onPublish: this._onPublishRecords
         };
         return <Records recordsLoaded={recordsLoaded} showAlert={this.state.showAlert} handlers={handlers}
                         recordDeleted={recordDeleted} recordsDeleting={recordsDeleting} currentUser={currentUser}
@@ -86,6 +107,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         deleteRecord: bindActionCreators(deleteRecord, dispatch),
+        updateRecord: bindActionCreators(updateRecord, dispatch),
         loadRecords: bindActionCreators(loadRecords, dispatch),
         loadFormTemplates: bindActionCreators(loadFormTemplates, dispatch),
         transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch)
