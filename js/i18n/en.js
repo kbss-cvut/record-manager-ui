@@ -148,6 +148,8 @@ export default {
         'records.completion-status': 'Completion status',
         'records.completion-status-tooltip.complete': 'All required fields of the record have been filled out.',
         'records.completion-status-tooltip.incomplete': 'Some of the required fields of the record have not yet been filled out.',
+        'records.completion-status-tooltip.rejected': 'The form was rejected',
+        'records.completion-status-tooltip.published': 'The form has been published',
         'records.last-modified': 'Last modified',
         'records.open-tooltip': 'View and edit the record',
         'records.delete-tooltip': 'Delete this record',

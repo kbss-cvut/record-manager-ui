@@ -4,7 +4,6 @@ import HelpIcon from "../HelpIcon";
 import {Button} from "react-bootstrap";
 import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
-import RecordValidator from "../../validation/RecordValidator";
 import {LoaderSmall} from "../Loader";
 import PropTypes from "prop-types";
 import {RECORD_PHASE, ROLE} from "../../constants/DefaultConstants";
@@ -12,21 +11,42 @@ import {RECORD_PHASE, ROLE} from "../../constants/DefaultConstants";
 let RecordRow = (props) => {
     const record = props.record,
         formTemplateOptions = props.formTemplateOptions,
-        isComplete = RecordValidator.isComplete(record),
-        completionTooltip = props.i18n(isComplete ? 'records.completion-status-tooltip.complete' : 'records.completion-status-tooltip.incomplete'),
+        recordPhase = props.record.phase,
         isAdmin = props.currentUser.role === ROLE.ADMIN,
         deleteButton = props.disableDelete ? null :
             <Button variant='warning' size='sm' title={props.i18n('records.delete-tooltip')}
                     onClick={() => props.onDelete(record)}>{props.i18n('delete')}{props.deletionLoading &&
-            <LoaderSmall/>}</Button>,
-        recordPhase = props.record.phase;
+            <LoaderSmall/>}</Button>;
 
     const getGlyph = () => {
-        if (recordPhase === RECORD_PHASE.OPEN) return "to-do";
-        if (recordPhase === RECORD_PHASE.COMPLETED) return "ok";
-        if (recordPhase === RECORD_PHASE.PUBLISHED) return "envelope";
-        if (recordPhase === RECORD_PHASE.REJECTED) return "remove";
-    }
+        switch (recordPhase) {
+            case RECORD_PHASE.OPEN:
+                return 'to-do';
+            case RECORD_PHASE.COMPLETED:
+                return 'ok';
+            case RECORD_PHASE.PUBLISHED:
+                return 'envelope';
+            case RECORD_PHASE.REJECTED:
+                return 'remove';
+            default:
+                return '';
+        }
+    };
+
+    const getCompletionStatusTooltip = () => {
+        switch (recordPhase) {
+            case RECORD_PHASE.COMPLETED:
+                return props.i18n('records.completion-status-tooltip.complete');
+            case RECORD_PHASE.OPEN:
+                return props.i18n('records.completion-status-tooltip.incomplete');
+            case RECORD_PHASE.REJECTED:
+                return props.i18n('records.completion-status-tooltip.rejected');
+            case RECORD_PHASE.PUBLISHED:
+                return props.i18n('records.completion-status-tooltip.published');
+            default:
+                return "";
+        }
+    };
 
     return <tr>
         {isAdmin &&
@@ -52,7 +72,7 @@ let RecordRow = (props) => {
         </td>
         { isAdmin &&
             <td className='report-row content-center'>
-                <HelpIcon text={completionTooltip} glyph={getGlyph()}/>
+                <HelpIcon text={getCompletionStatusTooltip()} glyph={getGlyph()}/>
             </td>
         }
         <td className='report-row actions'>
@@ -62,9 +82,6 @@ let RecordRow = (props) => {
         </td>
     </tr>
 };
-
-const isAdvancedView = {}
-
 
 const getFormTemplateOptionName = (formTemplate, formTemplatesOptions) => {
     if (!formTemplate) {
