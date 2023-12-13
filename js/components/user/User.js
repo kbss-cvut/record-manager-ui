@@ -89,18 +89,32 @@ class User extends React.Component {
         });
     };
 
-    _passwordChange() {
+    _passwordChangeButton() {
         const {user, currentUser, handlers} = this.props;
+        if (isUsingOidcAuth()) {
+            return null;
+        }
         if (user.isNew || (currentUser.username !== user.username && currentUser.role !== ROLE.ADMIN)) {
             return null;
         } else {
             return <Button style={{margin: '0 0.3em 0 0'}} variant='primary' size='sm' ref='submit'
-                           onClick={isUsingOidcAuth() ?
-                               handlers.onKeycloakRedirect :
-                               handlers.onPasswordChange}>
-                {isUsingOidcAuth() ?
-                    this.i18n('user.edit') :
-                    this.i18n('user.password-change')}
+                           onClick={handlers.onPasswordChange}>
+                {this.i18n('user.password-change')}
+            </Button>;
+        }
+    }
+
+    _externalEditUserButton() {
+        const {user, currentUser, handlers} = this.props;
+        if (!isUsingOidcAuth()) {
+            return null;
+        }
+        if (user.isNew || (currentUser.username !== user.username && currentUser.role !== ROLE.ADMIN)) {
+            return null;
+        } else {
+            return <Button style={{margin: '0 0.3em 0 0'}} variant='primary' size='sm' ref='submit'
+                           onClick={handlers.onKeycloakRedirect}>
+                {this.i18n('user.edit')}
             </Button>;
         }
     }
@@ -258,27 +272,24 @@ class User extends React.Component {
                     }
                     <div className="buttons-line-height mt-3 text-center">
                         {this._impersonateButton()}
-                        {this._passwordChange()}
-                        {!isUsingOidcAuth() &&
-                            <>
-                                {this._saveAndSendEmailButton()}
-                                {currentUser.role === ROLE.ADMIN || currentUser.username === user.username &&
-                                    <Button variant='success' size='sm' ref='submit' className="d-inline-flex"
-                                            disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
-                                            onClick={() => this._onSave()}
-                                            title={this.i18n('required')}>
-                                        {this.i18n('save')}
-                                        {!UserValidator.isValid(user) &&
-                                            <HelpIcon className="align-self-center" text={this.i18n('required')}/>}
-                                        {userSaved.status === ACTION_STATUS.PENDING &&
-                                            <LoaderSmall/>}
-                                    </Button>
-                                }
-                                <Button variant='link' size='sm' onClick={handlers.onCancel}>
-                                    {this.i18n(this.props.backToInstitution ? 'users.back-to-institution' : 'cancel')}
-                                </Button>
-                            </>
+                        {this._passwordChangeButton()}
+                        {this._externalEditUserButton()}
+                        {!isUsingOidcAuth() && this._saveAndSendEmailButton()}
+                        {(currentUser.role === ROLE.ADMIN || currentUser.username === user.username)  &&
+                            <Button variant='success' size='sm' ref='submit' className="d-inline-flex"
+                                    disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
+                                    onClick={() => this._onSave()}
+                                    title={this.i18n('required')}>
+                                {this.i18n('save')}
+                                {!UserValidator.isValid(user) &&
+                                    <HelpIcon className="align-self-center" text={this.i18n('required')}/>}
+                                {userSaved.status === ACTION_STATUS.PENDING &&
+                                    <LoaderSmall/>}
+                            </Button>
                         }
+                        <Button variant='link' size='sm' onClick={handlers.onCancel}>
+                            {this.i18n(this.props.backToInstitution ? 'users.back-to-institution' : 'cancel')}
+                        </Button>
                     </div>
                     {showAlert && userSaved.status === ACTION_STATUS.ERROR &&
                     <AlertMessage type={ALERT_TYPES.DANGER}
