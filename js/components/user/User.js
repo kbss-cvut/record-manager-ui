@@ -240,8 +240,8 @@ class User extends React.Component {
                         <div className='col-12 col-sm-6'>
                             <HorizontalInput type='select' name='role' label={`${this.i18n('user.role')}*`}
                                              onChange={this._onAdminStatusChange}
-                                             disabled={true}
-                                             value={user.types && getRole(user)}
+                                             disabled={currentUser.role !== ROLE.ADMIN}
+                                             value={isUsingOidcAuth() ? true : user.types && getRole(user)}
                                              labelWidth={3} inputWidth={8}>
                                 {this._generateRolesOptions()}
                             </HorizontalInput>
