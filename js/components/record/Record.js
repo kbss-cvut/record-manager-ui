@@ -106,38 +106,36 @@ class Record extends React.Component {
         const {record, recordSaved, formgen} = this.props;
 
         return <div className="mt-3 text-center">
-            {this._renderRoleSpecificButtons()}
+            <Button className="mx-1" variant='danger' size='sm'
+                    disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
+                        || !this.state.isFormValid || !record.state.isComplete()|| record.phase === RECORD_PHASE.REJECTED}
+                    hidden={record.phase === RECORD_PHASE.COMPLETED ||
+                        EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR}
+                    onClick={this.props.handlers.onReject}>
+                {this.i18n('reject')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
+            </Button>
+
+            <Button className="mx-1" variant='success' size='sm'
+                    disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
+                        || !this.state.isFormValid || !record.state.isComplete() || record.phase === RECORD_PHASE.COMPLETED}
+                    hidden={record.phase === RECORD_PHASE.COMPLETED ||
+                        record.phase === RECORD_PHASE.PUBLISHED}
+                    onClick={this.props.handlers.onComplete}>
+                {this.i18n('complete')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
+            </Button>
+
             <Button className="mx-1" variant='success' size='sm'
                     disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
                         || !this.state.isFormValid || !record.state.isComplete()}
+                    hidden={(record.phase === RECORD_PHASE.COMPLETED && !this._isAdmin()) ||
+                        record.phase === RECORD_PHASE.PUBLISHED}
                     onClick={this.props.handlers.onSave}>
                 {this.i18n('save')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
             </Button>
             <Button className="mx-1" variant='link' size='sm'
+                    hidden={record.phase === RECORD_PHASE.COMPLETED || record.phase === RECORD_PHASE.PUBLISHED}
                     onClick={this.props.handlers.onCancel}>{this.i18n('cancel')}</Button>
         </div>
-    }
-
-    _renderRoleSpecificButtons() {
-        const {record, recordSaved, formgen} = this.props;
-
-        return <>
-            {EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER &&
-                <Button className="mx-1" variant='danger' size='sm'
-                        disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
-                            || !this.state.isFormValid || !record.state.isComplete()|| record.phase === RECORD_PHASE.REJECTED}
-                        onClick={this.props.handlers.onReject}>
-                    {this.i18n('reject')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
-                </Button>
-            }
-            {EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR &&
-                <Button className="mx-1" variant='success' size='sm'
-                        disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
-                            || !this.state.isFormValid || !record.state.isComplete() || record.phase === RECORD_PHASE.COMPLETED}
-                        onClick={this.props.handlers.onComplete}>
-                    {this.i18n('complete')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
-                </Button>}
-        </>;
     }
 
     _renderInstitution() {
