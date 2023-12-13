@@ -259,22 +259,26 @@ class User extends React.Component {
                     <div className="buttons-line-height mt-3 text-center">
                         {this._impersonateButton()}
                         {this._passwordChange()}
-                        {this._saveAndSendEmailButton()}
-                        {currentUser.role === ROLE.ADMIN &&
-                        <Button variant='success' size='sm' ref='submit' className="d-inline-flex"
-                                disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
-                                onClick={() => this._onSave()}
-                                title={this.i18n('required')}>
-                            {this.i18n('save')}
-                            {!UserValidator.isValid(user) &&
-                            <HelpIcon className="align-self-center" text={this.i18n('required')}/>}
-                            {userSaved.status === ACTION_STATUS.PENDING &&
-                            <LoaderSmall/>}
-                        </Button>
+                        {!isUsingOidcAuth() &&
+                            <>
+                                {this._saveAndSendEmailButton()}
+                                {currentUser.role === ROLE.ADMIN || currentUser.username === user.username &&
+                                    <Button variant='success' size='sm' ref='submit' className="d-inline-flex"
+                                            disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
+                                            onClick={() => this._onSave()}
+                                            title={this.i18n('required')}>
+                                        {this.i18n('save')}
+                                        {!UserValidator.isValid(user) &&
+                                            <HelpIcon className="align-self-center" text={this.i18n('required')}/>}
+                                        {userSaved.status === ACTION_STATUS.PENDING &&
+                                            <LoaderSmall/>}
+                                    </Button>
+                                }
+                                <Button variant='link' size='sm' onClick={handlers.onCancel}>
+                                    {this.i18n(this.props.backToInstitution ? 'users.back-to-institution' : 'cancel')}
+                                </Button>
+                            </>
                         }
-                        <Button variant='link' size='sm' onClick={handlers.onCancel} hidden={true}>
-                            {this.i18n(this.props.backToInstitution ? 'users.back-to-institution' : 'cancel')}
-                        </Button>
                     </div>
                     {showAlert && userSaved.status === ACTION_STATUS.ERROR &&
                     <AlertMessage type={ALERT_TYPES.DANGER}
