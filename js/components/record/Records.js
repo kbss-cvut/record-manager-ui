@@ -66,7 +66,10 @@ class Records extends React.Component {
                                   onClick={onCreateWithFormTemplate}>{this.i18n('records.create-tile')}</Button>
                         : null}
                     {showPublishButton ?
-                        <Button className="mx-1" variant='success' size='sm'>{this.i18n('publish')}</Button>
+                        <Button className="mx-1" variant='success' size='sm'
+                                onClick={this.props.handlers.onPublish}>
+                            {this.i18n('publish')}
+                        </Button>
                         : null}
                     <ExportRecordsDropdown onExport={this.props.handlers.onExport} records={recordsLoaded.records}/>
                 </div>

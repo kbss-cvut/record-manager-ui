@@ -123,3 +123,11 @@ export const EXTENSION_CONSTANTS = {
     SUPPLIER: "supplier",
     OPERATOR: "operator"
 }
+
+export const RECORD_PHASE = {
+    OPEN: 'open',
+    VALID: 'valid',
+    COMPLETED: 'completed',
+    PUBLISHED: 'published',
+    REJECTED: 'rejected'
+}
