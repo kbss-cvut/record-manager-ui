@@ -87,6 +87,7 @@ class RecordTable extends React.Component {
                 && <th className='w-15 content-center'>{this.i18n('records.id')}</th>
             }
             <th className='w-25 content-center'>{this.i18n('records.local-name')}</th>
+            <th className='w-25 content-center'>{this.i18n('institution.panel-title')}</th>
             {(this._isAdmin())
                 && <th className='w-25 content-center'>{this.i18n('records.form-template')}</th>
             }
