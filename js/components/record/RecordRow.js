@@ -70,11 +70,10 @@ let RecordRow = (props) => {
         <td className='report-row content-center'>
             {formatDate(new Date(record.lastModified ? record.lastModified : record.dateCreated))}
         </td>
-        { isAdmin &&
-            <td className='report-row content-center'>
-                <HelpIcon text={getCompletionStatusTooltip()} glyph={getGlyph()}/>
-            </td>
-        }
+        <td className='report-row content-center'>
+            <HelpIcon text={getCompletionStatusTooltip()} glyph={getGlyph()}/>
+        </td>
+
         <td className='report-row actions'>
             <Button variant='primary' size='sm' title={props.i18n('records.open-tooltip')}
                     onClick={() => props.onEdit(record)}>{props.i18n('open')}</Button>
