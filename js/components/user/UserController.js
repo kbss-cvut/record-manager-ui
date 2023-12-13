@@ -19,7 +19,7 @@ import {
 import * as UserFactory from "../../utils/EntityFactory";
 import omit from 'lodash/omit';
 import {getRole} from "../../utils/Utils";
-import {isUsingOidcAuth} from "../../utils/OidcUtils";
+import {isUsingOidcAuth, userProfileLink} from "../../utils/OidcUtils";
 
 class UserController extends React.Component {
     constructor(props) {
@@ -149,8 +149,11 @@ class UserController extends React.Component {
         }
     };
 
-    //TODO: Implement redirection to keycloak
-    _onRedirect = () => {};
+    _onRedirect = () => {
+        if (isUsingOidcAuth()) {
+            window.location = userProfileLink();
+        }
+    }
 
     render() {
         const {
