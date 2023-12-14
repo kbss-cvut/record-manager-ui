@@ -89,7 +89,7 @@ class User extends React.Component {
         });
     };
 
-    _passwordChange() {
+    _passwordChangeButton() {
         const {user, currentUser, handlers} = this.props;
         if (user.isNew || (currentUser.username !== user.username && currentUser.role !== ROLE.ADMIN)) {
             return null;
@@ -99,7 +99,7 @@ class User extends React.Component {
         }
     }
 
-    _redirectToKeycloak() {
+    _redirectToKeycloakButton() {
         const {user, currentUser, handlers} = this.props;
         if (user.isNew || (currentUser.username !== user.username)) {
             return null;
@@ -265,8 +265,8 @@ class User extends React.Component {
                     <div className="buttons-line-height mt-3 text-center">
                         {this._impersonateButton()}
                         {isUsingOidcAuth() ?
-                            this._redirectToKeycloak() :
-                            this._passwordChange()}
+                            this._redirectToKeycloakButton() :
+                            this._passwordChangeButton()}
                         {this._saveAndSendEmailButton()}
                         {(currentUser.role === ROLE.ADMIN || currentUser.username === user.username) &&
                         <Button variant='success' size='sm' ref='submit' className="d-inline-flex"
