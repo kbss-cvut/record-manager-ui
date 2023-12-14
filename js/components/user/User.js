@@ -89,13 +89,33 @@ class User extends React.Component {
         });
     };
 
-    _passwordChange() {
+    _passwordChangeButton() {
         const {user, currentUser, handlers} = this.props;
+        if (isUsingOidcAuth()) {
+            return null;
+        }
         if (user.isNew || (currentUser.username !== user.username && currentUser.role !== ROLE.ADMIN)) {
             return null;
         } else {
             return <Button style={{margin: '0 0.3em 0 0'}} variant='primary' size='sm' ref='submit'
-                           onClick={handlers.onPasswordChange}>{this.i18n('user.password-change')}</Button>;
+                           onClick={handlers.onPasswordChange}>
+                {this.i18n('user.password-change')}
+            </Button>;
+        }
+    }
+
+    _externalEditUserButton() {
+        const {user, currentUser, handlers} = this.props;
+        if (!isUsingOidcAuth()) {
+            return null;
+        }
+        if (user.isNew || (currentUser.username !== user.username && currentUser.role !== ROLE.ADMIN)) {
+            return null;
+        } else {
+            return <Button style={{margin: '0 0.3em 0 0'}} variant='primary' size='sm' ref='submit'
+                           onClick={handlers.onKeycloakRedirect}>
+                {this.i18n('user.edit')}
+            </Button>;
         }
     }
 
