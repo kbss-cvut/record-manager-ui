@@ -115,7 +115,7 @@ export default {
         'user.delete-invitation-option-error': 'Nepodařilo se smazat možnost pozvání uživatele do studie. {error}',
         'user.impersonate': 'Impersonace',
         'user.impersonate-error': 'Impersonace se nepodařila. {error}',
-        'user.edit': 'Upravit profil uživatele',
+        'user.edit': 'Upravit profil',
 
         'institutions.panel-title': 'Instituce',
         'institutions.create-institution': 'Vytvořit instituci',

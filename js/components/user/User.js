@@ -101,7 +101,7 @@ class User extends React.Component {
 
     _redirectToKeycloak() {
         const {user, currentUser, handlers} = this.props;
-        if (user.isNew || (currentUser.username !== user.username && currentUser.role !== ROLE.ADMIN)) {
+        if (user.isNew || (currentUser.username !== user.username)) {
             return null;
         } else {
             return <Button style={{margin: '0 0.3em 0 0'}} variant='primary' size='sm' ref='submit'
