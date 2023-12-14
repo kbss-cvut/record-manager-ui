@@ -19,7 +19,7 @@ import {
 import * as UserFactory from "../../utils/EntityFactory";
 import omit from 'lodash/omit';
 import {getRole} from "../../utils/Utils";
-import {isUsingOidcAuth} from "../../utils/OidcUtils";
+import {isUsingOidcAuth, userProfileLink} from "../../utils/OidcUtils";
 
 class UserController extends React.Component {
     constructor(props) {
@@ -149,6 +149,12 @@ class UserController extends React.Component {
         }
     };
 
+    _onRedirect = () => {
+        if (isUsingOidcAuth()) {
+            window.location = userProfileLink();
+        }
+    }
+
     render() {
         const {
             currentUser, userSaved, userLoaded, institutionsLoaded,
@@ -162,6 +168,7 @@ class UserController extends React.Component {
             onCancel: this._onCancel,
             onChange: this._onChange,
             onPasswordChange: this._onPasswordChange,
+            onKeycloakRedirect: this._onRedirect,
             generateUsername: this._generateUsername,
             sendInvitation: this._sendInvitation,
             impersonate: this._impersonate,
