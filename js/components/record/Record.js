@@ -57,25 +57,25 @@ class Record extends React.Component {
         }
 
         return <div className={"record"}>
-                <form>
-                    <RequiredAttributes record={record} onChange={this._onChange}
-                                        formTemplate={formTemplate}
-                                        currentUser={currentUser}
-                                        completed={record.state.isComplete()}/>
-                    {this._showInstitution() && this._renderInstitution()}
-                    <RecordProvenance record={record}/>
-                </form>
-                {this._renderForm()}
-                {this._renderButtons()}
-                {showAlert && recordSaved.status === ACTION_STATUS.ERROR &&
+            <form>
+                <RequiredAttributes record={record} onChange={this._onChange}
+                                    formTemplate={formTemplate}
+                                    currentUser={currentUser}
+                                    completed={record.state.isComplete()}/>
+                {this._showInstitution() && this._renderInstitution()}
+                <RecordProvenance record={record}/>
+            </form>
+            {this._renderForm()}
+            {this._renderButtons()}
+            {showAlert && recordSaved.status === ACTION_STATUS.ERROR &&
                 <div>
                     <AlertMessage type={ALERT_TYPES.DANGER}
                                   message={this.props.formatMessage('record.save-error', {error: this.i18n(recordSaved.error.messageId)})}/>
                     <br/>
                 </div>}
-                {showAlert && recordSaved.status === ACTION_STATUS.SUCCESS &&
+            {showAlert && recordSaved.status === ACTION_STATUS.SUCCESS &&
                 <div><AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('record.save-success')}/><br/></div>}
-            </div>;
+        </div>;
     }
 
     _renderHeader() {
@@ -106,23 +106,23 @@ class Record extends React.Component {
         const {record, recordSaved, formgen} = this.props;
 
         return <div className="mt-3 text-center">
-            <Button className="mx-1" variant='danger' size='sm'
-                    disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
-                        || !this.state.isFormValid || !record.state.isComplete()|| record.phase === RECORD_PHASE.REJECTED}
-                    hidden={record.phase === RECORD_PHASE.COMPLETED ||
-                        EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR}
-                    onClick={this.props.handlers.onReject}>
-                {this.i18n('reject')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
-            </Button>
+            {record.phase === RECORD_PHASE.COMPLETED
+                || EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR
+                && <Button className="mx-1" variant='danger' size='sm'
+                           disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
+                               || !this.state.isFormValid || !record.state.isComplete() || record.phase === RECORD_PHASE.REJECTED}
+                           onClick={this.props.handlers.onReject}>
+                    {this.i18n('reject')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
+                </Button>}
 
-            <Button className="mx-1" variant='success' size='sm'
-                    disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
-                        || !this.state.isFormValid || !record.state.isComplete() || record.phase === RECORD_PHASE.COMPLETED}
-                    hidden={record.phase === RECORD_PHASE.COMPLETED ||
-                        record.phase === RECORD_PHASE.PUBLISHED}
-                    onClick={this.props.handlers.onComplete}>
-                {this.i18n('complete')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
-            </Button>
+            {record.phase === RECORD_PHASE.COMPLETED
+                || record.phase === RECORD_PHASE.PUBLISHED
+                && <Button className="mx-1" variant='success' size='sm'
+                           disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
+                               || !this.state.isFormValid || !record.state.isComplete() || record.phase === RECORD_PHASE.COMPLETED}
+                           onClick={this.props.handlers.onComplete}>
+                    {this.i18n('complete')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
+                </Button>}
 
             <Button className="mx-1" variant='success' size='sm'
                     disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING

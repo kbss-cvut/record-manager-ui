@@ -110,6 +110,7 @@ describe('Record', function () {
         }
     });
 
+    //TODO (after migrating to React 18): Create test cases for different extension (operator and supplier cases)
     it('renders "Save" and "Cancel" buttons', function () {
         const tree = mount(
             <IntlProvider locale="en" {...intlData}>
@@ -156,6 +157,7 @@ describe('Record', function () {
         expect(alert).not.toBeNull();
     });
 
+    //TODO (after migrating to React 18): Create test cases for different extension (operator and supplier cases, adding complete & reject buttons)
     it('renders loading spinner in "Save" button on saving', function () {
         recordSaved = {
             ...recordSaved,
