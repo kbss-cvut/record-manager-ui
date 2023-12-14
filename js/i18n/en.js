@@ -116,7 +116,7 @@ export default {
         'user.delete-invitation-option-error': 'Unable to delete option to invite user to study. {error}',
         'user.impersonate': 'Impersonate',
         'user.impersonate-error': 'Unable to impersonate. {error}',
-        'user.edit': 'Edit user profile',
+        'user.edit': 'Edit profile',
 
         'institutions.panel-title': 'Institutions',
         'institutions.create-institution': 'Create institution',
