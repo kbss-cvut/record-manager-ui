@@ -5,7 +5,7 @@ import React from 'react';
 import Records from "./Records";
 import Routes from "../../constants/RoutesConstants";
 import {transitionToWithOpts} from "../../utils/Routing";
-import {loadRecords} from "../../actions/RecordsActions";
+import {exportRecords, loadRecords} from "../../actions/RecordsActions";
 import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import {connect} from "react-redux";
@@ -54,7 +54,7 @@ class RecordsController extends React.Component {
     };
 
     _onExportRecords = (exportType) => {
-
+        this.props.exportRecords(exportType);
     };
 
     render() {
@@ -92,7 +92,8 @@ function mapDispatchToProps(dispatch) {
     return {
         deleteRecord: bindActionCreators(deleteRecord, dispatch),
         loadRecords: bindActionCreators(loadRecords, dispatch),
+        exportRecords: bindActionCreators(exportRecords, dispatch),
         loadFormTemplates: bindActionCreators(loadFormTemplates, dispatch),
-        transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch)
+        transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),
     }
 }

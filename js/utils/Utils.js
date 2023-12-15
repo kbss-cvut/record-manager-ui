@@ -286,3 +286,25 @@ export function formatDateWithMilliseconds(timestamp) {
 export function sanitizeArray(arr) {
     return arr ? (Array.isArray(arr) ? arr : [arr]) : [];
 }
+
+/**
+ * Ensures that file download using Ajax triggers browser file save mechanism.
+ *
+ * Adapted from https://github.com/kennethjiang/js-file-download/blob/master/file-download.js
+ * @param data The downloaded data
+ * @param filename Name of the file
+ * @param mimeType Type of data
+ */
+export function fileDownload(data, filename, mimeType = "application/octet-stream") {
+    const blob = new Blob([data], {type: mimeType});
+    const blobURL = window.URL.createObjectURL(blob);
+    const tempLink = document.createElement("a");
+    tempLink.style.display = "none";
+    tempLink.href = blobURL;
+    tempLink.setAttribute("download", filename);
+
+    document.body.appendChild(tempLink);
+    tempLink.click();
+    document.body.removeChild(tempLink);
+    window.URL.revokeObjectURL(blobURL);
+}

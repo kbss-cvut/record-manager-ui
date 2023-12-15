@@ -19,7 +19,7 @@ import {
     updateInstitution
 } from "../../actions/InstitutionActions";
 import * as EntityFactory from "../../utils/EntityFactory";
-import {loadRecords} from "../../actions/RecordsActions";
+import {exportRecords, loadRecords} from "../../actions/RecordsActions";
 import omit from 'lodash/omit';
 import {loadFormTemplates} from "../../actions/FormTemplatesActions";
 
@@ -126,7 +126,8 @@ class InstitutionController extends React.Component {
     };
 
     _onExportRecords = (exportType) => {
-        // TODO
+        const institutionKey = this.state.institution.key;
+        this.props.exportRecords(exportType, institutionKey);
     };
 
     _onAddNewUser = (institution) => {
@@ -191,6 +192,7 @@ function mapDispatchToProps(dispatch) {
         loadFormTemplates: bindActionCreators(loadFormTemplates, dispatch),
         deleteUser: bindActionCreators(deleteUser, dispatch),
         transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),
-        unloadInstitutionMembers: bindActionCreators(unloadInstitutionMembers, dispatch)
+        unloadInstitutionMembers: bindActionCreators(unloadInstitutionMembers, dispatch),
+        exportRecords: bindActionCreators(exportRecords, dispatch)
     }
 }

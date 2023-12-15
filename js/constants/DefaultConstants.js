@@ -109,7 +109,8 @@ export const STATISTICS_TYPE = {
 export const SCRIPT_ERROR = 'SCRIPT_ERROR';
 
 export const HttpHeaders = {
-    AUTHORIZATION: "Authorization"
+    AUTHORIZATION: "Authorization",
+    CONTENT_DISPOSITION: "content-disposition"
 }
 
 export const MediaType = {
