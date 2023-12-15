@@ -19,7 +19,7 @@ import {
     updateInstitution
 } from "../../actions/InstitutionActions";
 import * as EntityFactory from "../../utils/EntityFactory";
-import {loadRecords} from "../../actions/RecordsActions";
+import {exportRecords, loadRecords} from "../../actions/RecordsActions";
 import omit from 'lodash/omit';
 import {loadFormTemplates} from "../../actions/FormTemplatesActions";
 
@@ -125,6 +125,11 @@ class InstitutionController extends React.Component {
         this.props.transitionToWithOpts(Routes.editRecord, {params: {key: patient.key}});
     };
 
+    _onExportRecords = (exportType) => {
+        const institutionKey = this.state.institution.key;
+        this.props.exportRecords(exportType, institutionKey);
+    };
+
     _onAddNewUser = (institution) => {
         this.props.transitionToWithOpts(Routes.createUser, {
             payload: {institution: institution}
@@ -146,6 +151,7 @@ class InstitutionController extends React.Component {
             onEditUser: this._onEditUser,
             onAddNewUser: this._onAddNewUser,
             onEditPatient: this._onEditPatient,
+            onExportRecords: this._onExportRecords,
             onDelete: this._onDeleteUser
         };
         return <Institution handlers={handlers} institution={this.state.institution}
@@ -186,6 +192,7 @@ function mapDispatchToProps(dispatch) {
         loadFormTemplates: bindActionCreators(loadFormTemplates, dispatch),
         deleteUser: bindActionCreators(deleteUser, dispatch),
         transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),
-        unloadInstitutionMembers: bindActionCreators(unloadInstitutionMembers, dispatch)
+        unloadInstitutionMembers: bindActionCreators(unloadInstitutionMembers, dispatch),
+        exportRecords: bindActionCreators(exportRecords, dispatch)
     }
 }

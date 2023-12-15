@@ -33,7 +33,6 @@ export default {
         'please-wait': 'Prosím, čekejte...',
         'actions': 'Akce',
         'required': 'Políčka označená * jsou povinná',
-        'export': 'Export',
 
         'login.title': Constants.APP_NAME + ' - Přihlášení',
         'login.username': 'Uživatelské jméno',
@@ -154,6 +153,9 @@ export default {
         'records.create-tile': 'Vytvořit',
         'records.opened-study.create-tooltip': 'Vytvořit nový záznam',
         'records.closed-study.create-tooltip': 'Studie je uzavřená na přidávání pacientů. Prosím, kontaktujte studijního koordinátora v připadě, že potřebujete přidat nový záznam pacienta.',
+        'records.export': 'Export',
+        'records.export.excel': 'Export do MS Excel',
+        'records.export.json': 'Export do JSON',
 
         'record.panel-title': 'Záznam {identifier}',
         'record.form-title': 'Detail',

@@ -14,7 +14,8 @@ describe('InstitutionPatients', function () {
             role: ROLE.DOCTOR
         },
         records,
-        onEdit = jest.fn();
+        onEdit = jest.fn(),
+        onExport = jest.fn();
 
     it('renders card', function () {
         recordsLoaded = {
@@ -23,7 +24,7 @@ describe('InstitutionPatients', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <InstitutionPatients recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
-                                     onEdit={onEdit} currentUser={currentUser} />
+                                     onEdit={onEdit} onExport={onExport} currentUser={currentUser} />
             </IntlProvider>);
         const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
         expect(cardHeading).not.toBeNull();

@@ -45,7 +45,15 @@ class Institution extends React.Component {
     };
 
     render() {
-        const {showAlert, currentUser, institution, recordsLoaded, institutionLoaded, institutionSaved, formTemplatesLoaded} = this.props;
+        const {
+            showAlert,
+            currentUser,
+            institution,
+            recordsLoaded,
+            institutionLoaded,
+            institutionSaved,
+            formTemplatesLoaded
+        } = this.props;
 
         if (institutionLoaded.status === ACTION_STATUS.ERROR) {
             return <AlertMessage type={ALERT_TYPES.DANGER}
@@ -75,16 +83,17 @@ class Institution extends React.Component {
                     {this._renderAddedDate()}
                     {this._renderButtons()}
                     {showAlert && institutionSaved.status === ACTION_STATUS.ERROR &&
-                    <AlertMessage type={ALERT_TYPES.DANGER}
-                                  message={this.props.formatMessage('institution.save-error', {error: institutionSaved.error.message})}/>}
+                        <AlertMessage type={ALERT_TYPES.DANGER}
+                                      message={this.props.formatMessage('institution.save-error', {error: institutionSaved.error.message})}/>}
                     {showAlert && institutionSaved.status === ACTION_STATUS.SUCCESS &&
-                    <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('institution.save-success')}/>}
+                        <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('institution.save-success')}/>}
                 </form>
                 {!institution.isNew && this._renderMembers()}
                 {!institution.isNew &&
-                <InstitutionPatients
-                    recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
-                    onEdit={this.props.handlers.onEditPatient} currentUser={currentUser}/>}
+                    <InstitutionPatients
+                        recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
+                        onEdit={this.props.handlers.onEditPatient} onExport={this.props.handlers.onExportRecords}
+                        currentUser={currentUser}/>}
             </Card.Body>
         </Card>;
     }
@@ -117,7 +126,7 @@ class Institution extends React.Component {
                     disabled={!InstitutionValidator.isValid(this.props.institution) || this.props.institutionSaved.status === ACTION_STATUS.PENDING}
                     onClick={handlers.onSave} className="d-inline-flex">{this.i18n('save')}
                 {!InstitutionValidator.isValid(this.props.institution) &&
-                <HelpIcon className="align-self-center" text={this.i18n('required')} glyph="help"/>}
+                    <HelpIcon className="align-self-center" text={this.i18n('required')} glyph="help"/>}
                 {institutionSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}</Button>
             <Button variant='link' size='sm' onClick={handlers.onCancel}>{this.i18n('cancel')}</Button>
         </div>;

@@ -33,7 +33,6 @@ export default {
         'please-wait': 'Please wait...',
         'actions': 'Actions',
         'required': 'Fields marked with * are required',
-        'export': 'Export',
 
         'login.title': Constants.APP_NAME + ' - Login',
         'login.username': 'Username',
@@ -154,6 +153,9 @@ export default {
         'records.create-tile': 'Create',
         'records.opened-study.create-tooltip': 'Create new record',
         'records.closed-study.create-tooltip': 'Study is closed for addition of patient records. Please, contact a study coordinator in case you need to add new patient record.',
+        'records.export': 'Export',
+        'records.export.excel': 'Export to MS Excel',
+        'records.export.json': 'Export to JSON',
 
         'record.panel-title': 'Form {identifier}',
         'record.form-title': 'Details',

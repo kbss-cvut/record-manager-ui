@@ -109,9 +109,12 @@ export const STATISTICS_TYPE = {
 export const SCRIPT_ERROR = 'SCRIPT_ERROR';
 
 export const HttpHeaders = {
-    AUTHORIZATION: "Authorization"
+    AUTHORIZATION: "Authorization",
+    CONTENT_DISPOSITION: "content-disposition"
 }
 
 export const MediaType = {
-    FORM_URLENCODED: "application/x-www-form-urlencoded"
+    FORM_URLENCODED: "application/x-www-form-urlencoded",
+    EXCEL: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    JSON: "application/json"
 }

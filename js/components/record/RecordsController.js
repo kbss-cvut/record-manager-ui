@@ -5,7 +5,7 @@ import React from 'react';
 import Records from "./Records";
 import Routes from "../../constants/RoutesConstants";
 import {transitionToWithOpts} from "../../utils/Routing";
-import {loadRecords} from "../../actions/RecordsActions";
+import {exportRecords, loadRecords} from "../../actions/RecordsActions";
 import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import {connect} from "react-redux";
@@ -53,6 +53,10 @@ class RecordsController extends React.Component {
         this.setState({showAlert: true});
     };
 
+    _onExportRecords = (exportType) => {
+        this.props.exportRecords(exportType);
+    };
+
     render() {
         const {formTemplatesLoaded, recordsLoaded, recordDeleted, recordsDeleting, currentUser} = this.props;
         const formTemplate = extractQueryParam(this.props.location.search, "formTemplate");
@@ -62,7 +66,8 @@ class RecordsController extends React.Component {
         const handlers = {
             onEdit: this._onEditRecord,
             onCreate: this._onAddRecord,
-            onDelete: this._onDeleteRecord
+            onDelete: this._onDeleteRecord,
+            onExport: this._onExportRecords
         };
         return <Records recordsLoaded={recordsLoaded} showAlert={this.state.showAlert} handlers={handlers}
                         recordDeleted={recordDeleted} recordsDeleting={recordsDeleting} currentUser={currentUser}
@@ -87,7 +92,8 @@ function mapDispatchToProps(dispatch) {
     return {
         deleteRecord: bindActionCreators(deleteRecord, dispatch),
         loadRecords: bindActionCreators(loadRecords, dispatch),
+        exportRecords: bindActionCreators(exportRecords, dispatch),
         loadFormTemplates: bindActionCreators(loadFormTemplates, dispatch),
-        transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch)
+        transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),
     }
 }

@@ -1,19 +1,17 @@
-'use strict';
-
 import React from 'react';
-import {Button, Card} from 'react-bootstrap';
-
-import withI18n from '../../i18n/withI18n';
-import {injectIntl} from "react-intl";
+import {Card} from 'react-bootstrap';
 import RecordTable from '../record/RecordTable';
 import PropTypes from "prop-types";
+import ExportRecordsDropdown from "../record/ExportRecordsDropdown";
+import {useI18n} from "../../hooks/useI18n";
 
 const InstitutionPatients = (props) => {
-    const {recordsLoaded, formTemplatesLoaded, onEdit, currentUser} = props;
+    const {recordsLoaded, formTemplatesLoaded, onEdit, onExport, currentUser} = props;
+    const {i18n} = useI18n();
 
     return <Card variant='info' className="mt-3">
         <Card.Header className="text-light bg-primary"
-                     as="h6">{props.i18n('institution.patients.panel-title')}</Card.Header>
+                     as="h6">{i18n('institution.patients.panel-title')}</Card.Header>
         <Card.Body>
             <RecordTable recordsLoaded={recordsLoaded}
                          formTemplatesLoaded={formTemplatesLoaded}
@@ -21,7 +19,7 @@ const InstitutionPatients = (props) => {
                          disableDelete={true}
                          currentUser={currentUser}/>
             <div className="d-flex justify-content-end">
-                <Button className="mx-1" variant='primary' size='sm'>{props.i18n('export')}</Button>
+                <ExportRecordsDropdown onExport={onExport} records={recordsLoaded.records}/>
             </div>
         </Card.Body>
     </Card>;
@@ -31,7 +29,8 @@ InstitutionPatients.propTypes = {
     recordsLoaded: PropTypes.object.isRequired,
     formTemplatesLoaded: PropTypes.object.isRequired,
     onEdit: PropTypes.func.isRequired,
+    onExport: PropTypes.func.isRequired,
     currentUser: PropTypes.object.isRequired
 };
 
-export default injectIntl(withI18n(InstitutionPatients));
+export default InstitutionPatients;
