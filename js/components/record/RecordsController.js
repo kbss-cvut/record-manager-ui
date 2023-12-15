@@ -53,6 +53,10 @@ class RecordsController extends React.Component {
         this.setState({showAlert: true});
     };
 
+    _onExportRecords = (exportType) => {
+
+    };
+
     render() {
         const {formTemplatesLoaded, recordsLoaded, recordDeleted, recordsDeleting, currentUser} = this.props;
         const formTemplate = extractQueryParam(this.props.location.search, "formTemplate");
@@ -62,7 +66,8 @@ class RecordsController extends React.Component {
         const handlers = {
             onEdit: this._onEditRecord,
             onCreate: this._onAddRecord,
-            onDelete: this._onDeleteRecord
+            onDelete: this._onDeleteRecord,
+            onExport: this._onExportRecords
         };
         return <Records recordsLoaded={recordsLoaded} showAlert={this.state.showAlert} handlers={handlers}
                         recordDeleted={recordDeleted} recordsDeleting={recordsDeleting} currentUser={currentUser}
