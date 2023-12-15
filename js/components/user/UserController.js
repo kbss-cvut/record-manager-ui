@@ -168,6 +168,7 @@ class UserController extends React.Component {
             onCancel: this._onCancel,
             onChange: this._onChange,
             onPasswordChange: this._onPasswordChange,
+            onKeycloakRedirect: this._onRedirect,
             generateUsername: this._generateUsername,
             sendInvitation: this._sendInvitation,
             impersonate: this._impersonate,
