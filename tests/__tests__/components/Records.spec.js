@@ -49,7 +49,8 @@ describe('Records', function () {
         handlers = {
             onEdit: jest.fn(),
             onCreate: jest.fn(),
-            onDelete: jest.fn()
+            onDelete: jest.fn(),
+            onExport: jest.fn()
         };
 
     });

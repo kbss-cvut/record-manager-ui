@@ -125,6 +125,10 @@ class InstitutionController extends React.Component {
         this.props.transitionToWithOpts(Routes.editRecord, {params: {key: patient.key}});
     };
 
+    _onExportRecords = (exportType) => {
+        // TODO
+    };
+
     _onAddNewUser = (institution) => {
         this.props.transitionToWithOpts(Routes.createUser, {
             payload: {institution: institution}
@@ -146,6 +150,7 @@ class InstitutionController extends React.Component {
             onEditUser: this._onEditUser,
             onAddNewUser: this._onAddNewUser,
             onEditPatient: this._onEditPatient,
+            onExportRecords: this._onExportRecords,
             onDelete: this._onDeleteUser
         };
         return <Institution handlers={handlers} institution={this.state.institution}

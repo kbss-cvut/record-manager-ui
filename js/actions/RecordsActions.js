@@ -40,3 +40,7 @@ export function loadRecordsError(error) {
         error
     }
 }
+
+export function exportRecords(exportType, institutionKey) {
+
+}

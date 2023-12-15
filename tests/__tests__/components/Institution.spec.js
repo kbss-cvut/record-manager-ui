@@ -17,7 +17,9 @@ describe('Institution', function () {
         admin,
         user,
         institutionMembers = {},
-        recordsLoaded = {},
+        recordsLoaded = {
+        records: []
+        },
         formTemplatesLoaded = {},
         handlers = {
             onSave: jest.fn(),
@@ -26,7 +28,8 @@ describe('Institution', function () {
             onEditUser: jest.fn(),
             onAddNewUser: jest.fn(),
             onDelete: jest.fn(),
-            onEditPatient: jest.fn()
+            onEditPatient: jest.fn(),
+            onExportRecords: jest.fn()
         };
 
     user = {
@@ -65,7 +68,7 @@ describe('Institution', function () {
         };
         recordsLoaded = {
             status: ACTION_STATUS.SUCCESS,
-            records: {}
+            records: []
         };
     });
 
@@ -188,7 +191,7 @@ describe('Institution', function () {
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-        expect(buttons.length).toEqual(4);
+        expect(buttons.length).toEqual(3);
 
         TestUtils.Simulate.click(buttons[1]); // cancel
         expect(handlers.onCancel).toHaveBeenCalled();
