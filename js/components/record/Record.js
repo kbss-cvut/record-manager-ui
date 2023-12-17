@@ -9,10 +9,11 @@ import HorizontalInput from "../HorizontalInput";
 import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
 import RequiredAttributes from "./RequiredAttributes";
-import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ALERT_TYPES, EXTENSION_CONSTANTS, RECORD_PHASE, ROLE} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderCard, LoaderSmall} from "../Loader";
 import {processTypeaheadOptions} from "./TypeaheadAnswer";
+import {EXTENSIONS} from "../../../config";
 
 class Record extends React.Component {
     constructor(props) {
@@ -56,25 +57,25 @@ class Record extends React.Component {
         }
 
         return <div className={"record"}>
-                <form>
-                    <RequiredAttributes record={record} onChange={this._onChange}
-                                        formTemplate={formTemplate}
-                                        currentUser={currentUser}
-                                        completed={record.state.isComplete()}/>
-                    {this._showInstitution() && this._renderInstitution()}
-                    <RecordProvenance record={record}/>
-                </form>
-                {this._renderForm()}
-                {this._renderButtons()}
-                {showAlert && recordSaved.status === ACTION_STATUS.ERROR &&
+            <form>
+                <RequiredAttributes record={record} onChange={this._onChange}
+                                    formTemplate={formTemplate}
+                                    currentUser={currentUser}
+                                    completed={record.state.isComplete()}/>
+                {this._showInstitution() && this._renderInstitution()}
+                <RecordProvenance record={record}/>
+            </form>
+            {this._renderForm()}
+            {this._renderButtons()}
+            {showAlert && recordSaved.status === ACTION_STATUS.ERROR &&
                 <div>
                     <AlertMessage type={ALERT_TYPES.DANGER}
                                   message={this.props.formatMessage('record.save-error', {error: this.i18n(recordSaved.error.messageId)})}/>
                     <br/>
                 </div>}
-                {showAlert && recordSaved.status === ACTION_STATUS.SUCCESS &&
+            {showAlert && recordSaved.status === ACTION_STATUS.SUCCESS &&
                 <div><AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('record.save-success')}/><br/></div>}
-            </div>;
+        </div>;
     }
 
     _renderHeader() {
@@ -105,13 +106,34 @@ class Record extends React.Component {
         const {record, recordSaved, formgen} = this.props;
 
         return <div className="mt-3 text-center">
-            <Button variant='success' size='sm'
+            {record.phase === RECORD_PHASE.COMPLETED
+                || EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR
+                && <Button className="mx-1" variant='danger' size='sm'
+                           disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
+                               || !this.state.isFormValid || !record.state.isComplete() || record.phase === RECORD_PHASE.REJECTED}
+                           onClick={this.props.handlers.onReject}>
+                    {this.i18n('reject')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
+                </Button>}
+
+            {record.phase === RECORD_PHASE.COMPLETED
+                || record.phase === RECORD_PHASE.PUBLISHED
+                && <Button className="mx-1" variant='success' size='sm'
+                           disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
+                               || !this.state.isFormValid || !record.state.isComplete() || record.phase === RECORD_PHASE.COMPLETED}
+                           onClick={this.props.handlers.onComplete}>
+                    {this.i18n('complete')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
+                </Button>}
+
+            <Button className="mx-1" variant='success' size='sm'
                     disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
-                    || !this.state.isFormValid || !record.state.isComplete()}
+                        || !this.state.isFormValid || !record.state.isComplete()}
+                    hidden={(record.phase === RECORD_PHASE.COMPLETED && !this._isAdmin()) ||
+                        record.phase === RECORD_PHASE.PUBLISHED}
                     onClick={this.props.handlers.onSave}>
                 {this.i18n('save')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
             </Button>
-            <Button variant='link' size='sm'
+            <Button className="mx-1" variant='link' size='sm'
+                    hidden={record.phase === RECORD_PHASE.COMPLETED || record.phase === RECORD_PHASE.PUBLISHED}
                     onClick={this.props.handlers.onCancel}>{this.i18n('cancel')}</Button>
         </div>
     }
