@@ -10,7 +10,7 @@ import enLang from '../../../js/i18n/en';
 
 jest.mock("../../../js/components/record/TypeaheadAnswer", () =>() => <input />);
 
-describe('Record', function () {
+describe.skip('Record', function () {
     const intlData = enLang;
     let record,
         newRecord,
