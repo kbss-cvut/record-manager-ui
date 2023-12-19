@@ -47,7 +47,7 @@ class RequiredAttributes extends React.Component {
                     <HorizontalInput
                         labelWidth={4} inputWidth={8}
                         type='text' name='localName' value={record.localName}
-                        label={this.i18n('records.local-name') + '*'} onChange={this.props.onChange}
+                        label={this.i18n('records.local-name')} onChange={this.props.onChange}
                     />
                 </div>
                 <HelpIcon text={this.i18n('help.local-name')} glyph="help"/>
