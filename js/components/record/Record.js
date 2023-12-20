@@ -106,8 +106,8 @@ class Record extends React.Component {
         const {record, recordSaved, formgen} = this.props;
 
         return <div className="mt-3 text-center">
-            {record.phase === RECORD_PHASE.COMPLETED
-                || EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR
+            {EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER
+                && (!record.isNew) && (record.phase === RECORD_PHASE.OPEN || this._isAdmin())
                 && <Button className="mx-1" variant='danger' size='sm'
                            disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
                                || !this.state.isFormValid || !record.state.isComplete() || record.phase === RECORD_PHASE.REJECTED}
@@ -115,8 +115,8 @@ class Record extends React.Component {
                     {this.i18n('reject')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
                 </Button>}
 
-            {record.phase === RECORD_PHASE.COMPLETED
-                || record.phase === RECORD_PHASE.PUBLISHED
+            {(EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER || EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR)
+                && (!record.isNew) && (record.phase === RECORD_PHASE.OPEN || this._isAdmin())
                 && <Button className="mx-1" variant='success' size='sm'
                            disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
                                || !this.state.isFormValid || !record.state.isComplete() || record.phase === RECORD_PHASE.COMPLETED}
@@ -127,13 +127,12 @@ class Record extends React.Component {
             <Button className="mx-1" variant='success' size='sm'
                     disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
                         || !this.state.isFormValid || !record.state.isComplete()}
-                    hidden={(record.phase === RECORD_PHASE.COMPLETED && !this._isAdmin()) ||
-                        record.phase === RECORD_PHASE.PUBLISHED}
+                    hidden={!this._isAdmin()
+                        && ([RECORD_PHASE.COMPLETED, RECORD_PHASE.REJECTED, RECORD_PHASE.PUBLISHED].includes(record.phase))}
                     onClick={this.props.handlers.onSave}>
                 {this.i18n('save')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
             </Button>
             <Button className="mx-1" variant='link' size='sm'
-                    hidden={record.phase === RECORD_PHASE.COMPLETED || record.phase === RECORD_PHASE.PUBLISHED}
                     onClick={this.props.handlers.onCancel}>{this.i18n('cancel')}</Button>
         </div>
     }

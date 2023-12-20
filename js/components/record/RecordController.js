@@ -107,14 +107,18 @@ class RecordController extends React.Component {
         // if (handlers) {
         //     transitionTo(handlers.onCancel);
         // } else {
+        this._transitionToRecords();
+        // }
+    };
+
+    _transitionToRecords() {
         const opts = {};
         const formTemplate = this.state.record?.formTemplate
         if (formTemplate) {
             opts.query = new Map([["formTemplate", formTemplate]]);
         }
         this.props.transitionToWithOpts(Routes.records, opts);
-        // }
-    };
+    }
 
     _onChange = (change) => {
         const update = {...this.state.record, ...change};
@@ -128,23 +132,21 @@ class RecordController extends React.Component {
 
     _onComplete = () => {
         this._handlePhaseChange(RECORD_PHASE.COMPLETED);
+        this._transitionToRecords();
     };
 
     _onReject = () => {
         this._handlePhaseChange(RECORD_PHASE.REJECTED);
+        this._transitionToRecords();
     };
 
     _handlePhaseChange = (newPhase) => {
         const currentUser = this.props.currentUser;
+        const update = {...this.state.record, phase: newPhase};
 
-        this.setState((prevState) => {
-            const update = {...prevState.record};
-            update.phase = newPhase;
-            return {record: update};
-        }, () => {
-            const updatedRecord = this.state.record;
-            this.props.updateRecord(updatedRecord, currentUser);
-        });
+        this.setState({ record: update });
+
+        this.props.updateRecord(update, currentUser);
     };
 
     _getLocalName() {
