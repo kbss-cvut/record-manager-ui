@@ -60,3 +60,13 @@ export function exportRecords(exportType, institutionKey) {
         });
     }
 }
+
+export function importRecords(file) {
+    return (dispatch) => {
+        dispatch(asyncRequest(ActionConstants.IMPORT_RECORDS_PENDING));
+        return file.text().then(content => {
+            return axiosBackend.post(`${API_URL}/rest/records/import`, JSON.parse(content))
+        }).then(() => dispatch(asyncSuccess(ActionConstants.IMPORT_RECORDS_SUCCESS)))
+            .catch(error => dispatch(asyncError(ActionConstants.IMPORT_RECORDS_ERROR, error.response.data)));
+    };
+}

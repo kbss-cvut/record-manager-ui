@@ -161,6 +161,8 @@ export default {
         'records.export': 'Export',
         'records.export.excel': 'Export do MS Excel',
         'records.export.json': 'Export do JSON',
+        'records.import.dialog.title': 'Import záznamů',
+        'records.import.dropzone.label': 'Přetáhněte sem soubor myší, nebo klikněte pro výběr pomocí dialogu',
 
         'record.panel-title': 'Záznam {identifier}',
         'record.form-title': 'Detail',

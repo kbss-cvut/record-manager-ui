@@ -787,3 +787,37 @@ header {
     margin-top: auto;
     margin-bottom: auto;
 }
+
+.file-upload-dropzone {
+    min-height: calc(4em + 0.75rem + 2px);
+    border: 1px solid #ced4da;
+    border-radius: 0.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+}
+
+.file-upload-dropzone.active {
+    min-height: calc(4em + 0.75rem + 2px);
+    border-radius: 0.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+    border: 1px solid #007bff;
+}
+
+.file-upload-dropzone .placeholder-text {
+    color: #6c757d;
+}
+
+.file-upload-dropzone.active .placeholder-text {
+    color: #007bff;
+}
+
+.file-upload-dropzone .icon-container {
+    margin-top: -0.5rem;
+}

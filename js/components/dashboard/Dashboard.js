@@ -7,14 +7,22 @@ import {Col, Container, Jumbotron, Row} from "react-bootstrap";
 import DashboardTile from "./DashboardTile";
 import {ROLE} from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
-import {RDFS_LABEL} from "../../constants/Vocabulary";
 import {processTypeaheadOptions} from "../record/TypeaheadAnswer";
+import ImportRecordsDialog from "../record/ImportRecordsDialog";
 
 class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.i18n = this.props.i18n;
+        this.state = {
+            importDialogOpen: false
+        };
     }
+
+    onImportRecords = (file) => {
+        this.props.handlers.importRecords(file);
+        this.setState({importDialogOpen: false});
+    };
 
     renderTitle() {
         return <h5 className='formatted-message-size'>
@@ -24,18 +32,16 @@ class Dashboard extends React.Component {
     }
 
     _renderMainDashboard() {
-        const {
-            formTemplatesLoaded
-        } = this.props;
         return <Container>
             <div>
                 <Row>
                     {this._renderCreateRecordTile()}
-                    {this._renderUsersTile()}
-                    {this._renderInstitutionsTile()}
+                    {this._renderImportRecordsTile()}
                     {this._renderShowRecordsTiles()}
                 </Row>
                 <Row>
+                    {this._renderUsersTile()}
+                    {this._renderInstitutionsTile()}
                     {this._renderStatisticsTile()}
                 </Row>
             </div>
@@ -49,6 +55,13 @@ class Dashboard extends React.Component {
                     onClick={this.props.handlers.createRecord}>{this.i18n('dashboard.create-tile')}</DashboardTile>
             </Col>
             : "";
+    }
+
+    _renderImportRecordsTile() {
+        return <Col md={3} className='dashboard-sector'>
+            <DashboardTile
+                onClick={() => this.setState({importDialogOpen: true})}>{this.i18n('records.import.dialog.title')}</DashboardTile>
+        </Col>
     }
 
     _renderShowRecordsTiles() {
@@ -114,6 +127,9 @@ class Dashboard extends React.Component {
     render() {
         return (
             <Jumbotron>
+                <ImportRecordsDialog show={this.state.importDialogOpen}
+                                     onCancel={() => this.setState({importDialogOpen: false})}
+                                     onSubmit={this.onImportRecords}/>
                 {this.renderTitle()}
                 {this._renderMainDashboard()}
             </Jumbotron>

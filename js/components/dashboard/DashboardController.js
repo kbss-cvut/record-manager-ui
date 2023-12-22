@@ -9,6 +9,7 @@ import Routes from '../../constants/RoutesConstants';
 import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
 import withI18n from "../../i18n/withI18n";
 import {loadFormTemplates} from "../../actions/FormTemplatesActions";
+import {importRecords} from "../../actions/RecordsActions";
 
 class DashboardController extends React.Component {
     constructor(props) {
@@ -58,6 +59,10 @@ class DashboardController extends React.Component {
         });
     };
 
+    _importRecords = (file) => {
+        this.props.importRecords(file);
+    }
+
     componentDidMount() {
         this.props.loadFormTemplates();
     }
@@ -68,6 +73,7 @@ class DashboardController extends React.Component {
             showInstitutions: this._showInstitutions,
             showRecords: this._showRecords,
             createRecord: this._createRecord,
+            importRecords: this._importRecords,
             showMyInstitution: this._showMyInstitution,
             showMyProfile: this._showMyProfile,
             showStatistics: this._showStatistics
@@ -94,6 +100,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),
-        loadFormTemplates: bindActionCreators(loadFormTemplates, dispatch)
+        loadFormTemplates: bindActionCreators(loadFormTemplates, dispatch),
+        importRecords: bindActionCreators(importRecords, dispatch)
     }
 }
