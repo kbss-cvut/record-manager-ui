@@ -48,6 +48,8 @@ let RecordRow = (props) => {
         }
     };
 
+    const phaseGlyph = getGlyph();
+
     return <tr>
         {isAdmin &&
             <td className='report-row'>
@@ -71,7 +73,7 @@ let RecordRow = (props) => {
             {formatDate(new Date(record.lastModified ? record.lastModified : record.dateCreated))}
         </td>
         <td className='report-row content-center'>
-            <HelpIcon text={getCompletionStatusTooltip()} glyph={getGlyph()}/>
+            {phaseGlyph ? <HelpIcon text={getCompletionStatusTooltip()} glyph={getGlyph()}/> : "N/A"}
         </td>
 
         <td className='report-row actions'>
