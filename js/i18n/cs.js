@@ -161,6 +161,7 @@ export default {
         'records.export': 'Export',
         'records.export.excel': 'Export do MS Excel',
         'records.export.json': 'Export do JSON',
+        'records.import': 'Import',
         'records.import.dialog.title': 'Import záznamů',
         'records.import.dropzone.label': 'Přetáhněte sem soubor myší, nebo klikněte pro výběr pomocí dialogu',
         'records.import.partialSuccess.message': '{importedCount, plural, one {Importován #} few {Importovány #} other {Importováno #}} z {totalCount, plural, one {# záznamu} other {# záznamů}}. Detaily naleznete v logu serveru.',

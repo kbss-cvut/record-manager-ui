@@ -13,6 +13,7 @@ import {processTypeaheadOptions} from "./TypeaheadAnswer";
 import {EXTENSIONS} from "../../../config";
 import ExportRecordsDropdown from "./ExportRecordsDropdown";
 import {isAdmin} from "../../utils/SecurityUtils";
+import ImportRecordsDialog from "./ImportRecordsDialog";
 
 const STUDY_CLOSED_FOR_ADDITION = false;
 const STUDY_CREATE_AT_MOST_ONE_RECORD = false;
@@ -32,6 +33,22 @@ class Records extends React.Component {
     constructor(props) {
         super(props);
         this.i18n = this.props.i18n;
+        this.state = {
+            showImportDialog: false
+        };
+    }
+
+    openImportDialog = () => {
+        this.setState({showImportDialog: true});
+    }
+
+    closeImportDialog = () => {
+        this.setState({showImportDialog: false});
+    }
+
+    onImport = (file) => {
+        this.props.handlers.onImport(file);
+        this.closeImportDialog();
     }
 
     render() {
@@ -59,19 +76,25 @@ class Records extends React.Component {
             </Card.Header>
             <Card.Body>
                 <RecordTable {...this.props}/>
+                <ImportRecordsDialog show={this.state.showImportDialog} onSubmit={this.onImport}
+                                     onCancel={this.closeImportDialog}/>
                 <div className="d-flex justify-content-between">
-                    {showCreateButton
-                        ? <Button className="mx-1" variant='primary' size='sm'
-                                  disabled={createRecordDisabled}
-                                  title={createRecordTooltip}
-                                  onClick={onCreateWithFormTemplate}>{this.i18n('records.create-tile')}</Button>
-                        : null}
-                    {showPublishButton ?
-                        <Button className="mx-1" variant='success' size='sm'
-                                onClick={this.props.handlers.onPublish}>
-                            {this.i18n('publish')}
-                        </Button>
-                        : null}
+                    <div>
+                        {showCreateButton
+                            ? <Button className="mr-1" variant='primary' size='sm'
+                                      disabled={createRecordDisabled}
+                                      title={createRecordTooltip}
+                                      onClick={onCreateWithFormTemplate}>{this.i18n('records.create-tile')}</Button>
+                            : null}
+                        <Button className='mx-1' variant='primary' size='sm'
+                                onClick={this.openImportDialog}>{this.i18n('records.import')}</Button>
+                        {showPublishButton ?
+                            <Button className="mx-1" variant='success' size='sm'
+                                    onClick={this.props.handlers.onPublish}>
+                                {this.i18n('publish')}
+                            </Button>
+                            : null}
+                    </div>
                     <ExportRecordsDropdown onExport={this.props.handlers.onExport} records={recordsLoaded.records}/>
                 </div>
                 {showAlert && recordDeleted.status === ACTION_STATUS.ERROR &&
