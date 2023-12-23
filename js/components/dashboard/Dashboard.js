@@ -1,14 +1,12 @@
-'use strict';
-
 import React from "react";
 import withI18n from "../../i18n/withI18n";
 import {FormattedMessage, injectIntl} from "react-intl";
 import {Col, Container, Jumbotron, Row} from "react-bootstrap";
 import DashboardTile from "./DashboardTile";
-import {ROLE} from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
 import {processTypeaheadOptions} from "../record/TypeaheadAnswer";
 import ImportRecordsDialog from "../record/ImportRecordsDialog";
+import {isAdmin} from "../../utils/SecurityUtils";
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -121,7 +119,7 @@ class Dashboard extends React.Component {
     }
 
     _isAdmin() {
-        return this.props.currentUser.role === ROLE.ADMIN
+        return isAdmin(this.props.currentUser);
     }
 
     render() {

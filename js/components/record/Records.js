@@ -5,13 +5,14 @@ import {Button, Card} from "react-bootstrap";
 import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import RecordTable from "./RecordTable";
-import {ACTION_STATUS, ALERT_TYPES, EXTENSION_CONSTANTS, ROLE} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ALERT_TYPES, EXTENSION_CONSTANTS} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderSmall} from "../Loader";
 import PropTypes from "prop-types";
 import {processTypeaheadOptions} from "./TypeaheadAnswer";
 import {EXTENSIONS} from "../../../config";
 import ExportRecordsDropdown from "./ExportRecordsDropdown";
+import {isAdmin} from "../../utils/SecurityUtils";
 
 const STUDY_CLOSED_FOR_ADDITION = false;
 const STUDY_CREATE_AT_MOST_ONE_RECORD = false;
@@ -39,11 +40,11 @@ class Records extends React.Component {
             ? (!recordsLoaded.records || (recordsLoaded.records.length < 1))
             : true;
         const showPublishButton =
-            this.props.currentUser.role === ROLE.ADMIN
+            isAdmin(this.props.currentUser)
             && EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR;
         const createRecordDisabled =
             STUDY_CLOSED_FOR_ADDITION
-            && (!this._isAdmin());
+            && (!isAdmin(this.props.currentUser));
         const createRecordTooltip = this.i18n(
             createRecordDisabled
                 ? 'records.closed-study.create-tooltip'
@@ -94,17 +95,13 @@ class Records extends React.Component {
     }
 
     _getPanelTitle() {
-        if (!this._isAdmin() && this.props.formTemplate) {
+        if (!isAdmin(this.props.currentUser) && this.props.formTemplate) {
             const formTemplateName = this._getFormTemplateName();
             if (formTemplateName) {
                 return formTemplateName;
             }
         }
         return this.i18n('records.panel-title');
-    }
-
-    _isAdmin() {
-        return this.props.currentUser.role === ROLE.ADMIN
     }
 }
 

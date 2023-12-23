@@ -5,12 +5,13 @@ import {Button, Card} from "react-bootstrap";
 import withI18n from "../../i18n/withI18n";
 import {injectIntl} from "react-intl";
 import HorizontalInput from "../HorizontalInput";
-import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import UserValidator from "../../validation/UserValidator";
 import {LoaderSmall} from "../Loader";
 import HelpIcon from "../HelpIcon";
 import PropTypes from "prop-types";
+import {isAdmin} from "../../utils/SecurityUtils";
 
 class PasswordChange extends React.Component {
     static propTypes = {
@@ -84,7 +85,7 @@ class PasswordChange extends React.Component {
                         </div>
                     </div>
                     <div className="mt-3 text-center">
-                        {currentUser.role === ROLE.ADMIN &&
+                        {isAdmin(currentUser) &&
                         <Button style={{margin: '0 0.3em 0 0'}} variant='success' size='sm' ref='submit'
                                 onClick={() => this._onSaveWithEmail()} className="d-inline-flex"
                                 disabled={!UserValidator.isPasswordValid(password) || passwordChange.status === ACTION_STATUS.PENDING}>

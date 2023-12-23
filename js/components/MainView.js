@@ -18,6 +18,7 @@ import {IfGranted} from "react-authorization";
 import {transitionTo, transitionToWithOpts} from "../utils/Routing";
 import {isUsingOidcAuth, userProfileLink} from "../utils/OidcUtils";
 import ImpersonatorBadge from "./ImpersonatorBadge";
+import {isAdmin} from "../utils/SecurityUtils";
 
 class MainView extends React.Component {
     constructor(props) {
@@ -83,7 +84,7 @@ class MainView extends React.Component {
                             <Navbar.Collapse className="justify-content-between">
                                 <Nav>
                                     {this._renderUsers()}
-                                    {user.role === ROLE.ADMIN ?
+                                    {isAdmin(user) ?
                                         <NavItem>
                                             <NavLink to={Routes.institutions.path}
                                                      isActive={() => path.startsWith(Routes.institutions.path)}

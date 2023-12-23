@@ -1,6 +1,7 @@
 import {getOidcIdentityStorageKey, isUsingOidcAuth} from "./OidcUtils";
 import {sanitizeArray} from "./Utils";
 import {IMPERSONATOR_TYPE} from "../constants/Vocabulary";
+import {ROLE} from "../constants/DefaultConstants";
 
 export function getOidcToken() {
     const identityData = sessionStorage.getItem(getOidcIdentityStorageKey());
@@ -14,6 +15,10 @@ export function saveOidcToken(token) {
 
 export function clearToken() {
     sessionStorage.removeItem(getOidcIdentityStorageKey());
+}
+
+export function isAdmin(currentUser) {
+    return currentUser.role === ROLE.ADMIN;
 }
 
 export function isImpersonator(currentUser) {

@@ -4,6 +4,7 @@ import * as Constants from "../constants/DefaultConstants";
 import {ROLE} from "../constants/DefaultConstants";
 import * as Vocabulary from "../constants/Vocabulary";
 import * as supportedDevices from "../constants/SupportedDevices";
+import {isAdmin} from "./SecurityUtils";
 
 /**
  * Common propositions that should not be capitalized
@@ -230,7 +231,7 @@ export function generatePassword() {
  * @return {*|boolean}
  */
 export function canLoadInstitutionsPatients(institutionKey, currentUser) {
-    return currentUser != null && (currentUser.role === ROLE.ADMIN || (currentUser.institution != null && currentUser.institution.key === institutionKey));
+    return currentUser != null && (isAdmin(currentUser) || (currentUser.institution != null && currentUser.institution.key === institutionKey));
 }
 
 export function deviceIsMobile() {
