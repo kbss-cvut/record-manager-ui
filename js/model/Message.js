@@ -7,11 +7,11 @@ export const MessageType = {
 
 export default class Message {
 
-    constructor(data, type = MessageType.INFO) {
+    constructor(data) {
         this.mMessage = data.message;
         this.mMessageId = data.messageId;
         this.mValues = data.values;
-        this.mType = type;
+        this.mType = data.type || MessageType.INFO;
         this.mTimetamp = Date.now();
     }
 
