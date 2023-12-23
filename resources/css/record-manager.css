@@ -821,3 +821,45 @@ header {
 .file-upload-dropzone .icon-container {
     margin-top: -0.5rem;
 }
+
+.message-container {
+    width: 25%;
+    min-width: 220px;
+    height: 25%;
+    position: fixed;
+    top: 60px;
+    right: 10px;
+    margin: auto;
+    z-index: 1030;
+}
+
+@media screen and (min-width: 768px) {
+    .message-container {
+        top: 50px;
+        right: 20px;
+    }
+}
+
+.messages-0 {
+    height: 0;
+}
+
+.messages-1 {
+    height: 4.125rem;
+}
+
+.messages-2 {
+    height: 8.25rem;
+}
+
+.messages-3 {
+    height: 12.375rem;
+}
+
+.messages-4 {
+    height: 16.5rem;
+}
+
+.messages-5 {
+    height: 20.625rem;
+}

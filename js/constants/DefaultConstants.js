@@ -7,19 +7,10 @@ export const APP_NAME = APP_TITLE;
 export const HOME_ROUTE = Routes.dashboard;
 
 /**
- * Types of message published by the MessageStore
- */
-export const MESSAGE_TYPE = {
-    SUCCESS: 'success',
-    INFO: 'info',
-    WARNING: 'warning',
-    ERROR: 'danger'
-};
-
-/**
  * Duration for which a message is by default displayed by the messaging UI.
  */
 export const MESSAGE_DURATION = 5000;
+export const MESSAGE_DISPLAY_COUNT = 5;
 
 /**
  * Sorting glyph icons
