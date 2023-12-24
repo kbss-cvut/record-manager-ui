@@ -78,7 +78,7 @@ class RecordsController extends React.Component {
     };
 
     _onImportRecords = (file) => {
-        this.props.importRecords(file);
+        return this.props.importRecords(file);
     };
 
     render() {

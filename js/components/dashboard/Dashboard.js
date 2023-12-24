@@ -7,6 +7,8 @@ import PropTypes from "prop-types";
 import {processTypeaheadOptions} from "../record/TypeaheadAnswer";
 import ImportRecordsDialog from "../record/ImportRecordsDialog";
 import {isAdmin} from "../../utils/SecurityUtils";
+import {trackPromise} from "react-promise-tracker";
+import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -18,7 +20,7 @@ class Dashboard extends React.Component {
     }
 
     onImportRecords = (file) => {
-        this.props.handlers.importRecords(file);
+        trackPromise(this.props.handlers.importRecords(file), "dashboard");
         this.setState({importDialogOpen: false});
     };
 
@@ -125,6 +127,7 @@ class Dashboard extends React.Component {
     render() {
         return (
             <Jumbotron>
+                <PromiseTrackingMask area="dashboard" coverViewport={true}/>
                 <ImportRecordsDialog show={this.state.importDialogOpen}
                                      onCancel={() => this.setState({importDialogOpen: false})}
                                      onSubmit={this.onImportRecords}/>

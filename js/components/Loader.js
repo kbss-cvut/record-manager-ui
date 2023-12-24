@@ -1,5 +1,6 @@
 import React from 'react';
 import {Card} from "react-bootstrap";
+import {findReturnStatement} from "eslint-plugin-react/lib/util/ast";
 
 const Loader = () => (
     <div className="loader-spin">
@@ -16,6 +17,14 @@ export default Loader;
 
 export const LoaderMask = () => (
     <div className='mask'>
+        <div className='spinner-container'>
+            <Loader/>
+        </div>
+    </div>
+);
+
+export const ContainerLoaderMask = () => (
+    <div className='mask-container'>
         <div className='spinner-container'>
             <Loader/>
         </div>

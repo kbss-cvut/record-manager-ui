@@ -60,7 +60,7 @@ class DashboardController extends React.Component {
     };
 
     _importRecords = (file) => {
-        this.props.importRecords(file);
+        return this.props.importRecords(file);
     }
 
     componentDidMount() {

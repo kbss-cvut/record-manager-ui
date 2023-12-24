@@ -14,6 +14,8 @@ import {EXTENSIONS} from "../../../config";
 import ExportRecordsDropdown from "./ExportRecordsDropdown";
 import {isAdmin} from "../../utils/SecurityUtils";
 import ImportRecordsDialog from "./ImportRecordsDialog";
+import PromiseTrackingMask from "../misc/PromiseTrackingMask";
+import {trackPromise} from "react-promise-tracker";
 
 const STUDY_CLOSED_FOR_ADDITION = false;
 const STUDY_CREATE_AT_MOST_ONE_RECORD = false;
@@ -47,7 +49,7 @@ class Records extends React.Component {
     }
 
     onImport = (file) => {
-        this.props.handlers.onImport(file);
+        trackPromise(this.props.handlers.onImport(file), "records");
         this.closeImportDialog();
     }
 
@@ -69,6 +71,7 @@ class Records extends React.Component {
         );
         const onCreateWithFormTemplate = () => this.props.handlers.onCreate(formTemplate);
         return <Card variant='primary'>
+            <PromiseTrackingMask area="records"/>
             <Card.Header className="text-light bg-primary" as="h6">
                 {this._getPanelTitle()}
                 {recordsLoaded.records && recordsLoaded.status === ACTION_STATUS.PENDING &&
