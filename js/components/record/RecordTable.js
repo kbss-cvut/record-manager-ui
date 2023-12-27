@@ -5,12 +5,13 @@ import {Table} from "react-bootstrap";
 import DeleteItemDialog from "../DeleteItemDialog";
 import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
-import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import RecordRow from "./RecordRow";
 import AlertMessage from "../AlertMessage";
 import Loader from "../Loader";
 import PropTypes from "prop-types";
 import {processTypeaheadOptions} from "./TypeaheadAnswer";
+import {isAdmin} from "../../utils/SecurityUtils";
 
 class RecordTable extends React.Component {
     static propTypes = {
@@ -81,16 +82,17 @@ class RecordTable extends React.Component {
     }
 
     _renderHeader() {
+        const admin = isAdmin(this.props.currentUser);
         return <thead>
         <tr>
-            {(this._isAdmin())
+            {(admin)
                 && <th className='w-15 content-center'>{this.i18n('records.id')}</th>
             }
             <th className='w-25 content-center'>{this.i18n('records.local-name')}</th>
-            {(this._isAdmin())
+            {(admin)
                   && <th className='w-25 content-center'>{this.i18n('institution.panel-title')}</th>
             }
-            {(this._isAdmin())
+            {(admin)
                 && <th className='w-25 content-center'>{this.i18n('records.form-template')}</th>
             }
             <th className='w-25 content-center'>{this.i18n('records.last-modified')}</th>
@@ -124,10 +126,6 @@ class RecordTable extends React.Component {
             return records;
         }
         return records.filter((r) => (r.formTemplate === formTemplate))
-    }
-
-    _isAdmin() {
-        return this.props.currentUser.role === ROLE.ADMIN;
     }
 }
 

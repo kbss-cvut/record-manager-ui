@@ -4,6 +4,8 @@ import {axiosBackend} from "./index";
 import {API_URL} from '../../config';
 import {asyncError, asyncRequest, asyncSuccess} from "./AsyncActionUtils";
 import {fileDownload} from "../utils/Utils";
+import {publishMessage} from "./MessageActions";
+import Message, {MessageType} from "../model/Message";
 
 export function loadRecords(currentUser, institutionKey = null) {
     //console.log("Loading records");
@@ -59,4 +61,41 @@ export function exportRecords(exportType, institutionKey) {
             dispatch(asyncError(ActionConstants.EXPORT_RECORDS_ERROR, error.response.data));
         });
     }
+}
+
+export function importRecords(file) {
+    return (dispatch, getState) => {
+        dispatch(asyncRequest(ActionConstants.IMPORT_RECORDS_PENDING));
+        return file.text().then(content => {
+            return axiosBackend.post(`${API_URL}/rest/records/import`, JSON.parse(content))
+        }).then((resp) => {
+            dispatch(asyncSuccess(ActionConstants.IMPORT_RECORDS_SUCCESS));
+            dispatch(loadRecords(getState().auth.user));
+            if (resp.data.importedCount < resp.data.totalCount) {
+                dispatch(publishMessage(new Message({
+                    messageId: "records.import.partialSuccess.message",
+                    values: {
+                        importedCount: resp.data.importedCount,
+                        totalCount: resp.data.totalCount
+                    },
+                    type: MessageType.INFO
+                })))
+            } else {
+                dispatch(publishMessage(new Message({
+                    messageId: "records.import.success.message",
+                    values: {
+                        importedCount: resp.data.importedCount
+                    },
+                    type: MessageType.SUCCESS
+                })))
+            }
+        })
+            .catch(error => {
+                dispatch(publishMessage(new Message({
+                    messageId: "records.import.error.message",
+                    type: MessageType.ERROR
+                })))
+                return dispatch(asyncError(ActionConstants.IMPORT_RECORDS_ERROR, error.response.data));
+            });
+    };
 }

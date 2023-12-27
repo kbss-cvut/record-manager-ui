@@ -15,6 +15,7 @@ import HelpIcon from "../HelpIcon";
 import PropTypes from "prop-types";
 import {FaRandom} from 'react-icons/fa';
 import {isUsingOidcAuth} from "../../utils/OidcUtils";
+import {isAdmin} from "../../utils/SecurityUtils";
 
 class User extends React.Component {
     static propTypes = {
@@ -91,7 +92,7 @@ class User extends React.Component {
 
     _passwordChangeButton() {
         const {user, currentUser, handlers} = this.props;
-        if (user.isNew || (currentUser.username !== user.username && currentUser.role !== ROLE.ADMIN)) {
+        if (user.isNew || (currentUser.username !== user.username && !isAdmin(currentUser))) {
             return null;
         } else {
             return <Button style={{margin: '0 0.3em 0 0'}} variant='primary' size='sm' ref='submit'
@@ -111,7 +112,7 @@ class User extends React.Component {
 
     _sendInvitationButton() {
         const {user, handlers, currentUser, invitationSent, invitationDelete} = this.props;
-        if (user.isInvited === false && currentUser.role === ROLE.ADMIN) {
+        if (user.isInvited === false && isAdmin(currentUser)) {
             return <h4 className="invite-to-study-text content-center"
                        style={{margin: '0 0 15px 0'}}>{this.i18n('user.invite-to-study-text')}
                 <Button variant='warning' size='sm' ref='submit'
@@ -135,7 +136,7 @@ class User extends React.Component {
 
     _impersonateButton() {
         const {user, currentUser, handlers, impersonation} = this.props;
-        if (!user.isNew && currentUser.role === ROLE.ADMIN && getRole(user) !== ROLE.ADMIN) {
+        if (!user.isNew && isAdmin(currentUser) && getRole(user) !== ROLE.ADMIN) {
             return <Button style={{margin: '0 0.3em 0 0'}} variant='danger' size='sm' ref='submit'
                            disabled={impersonation.status === ACTION_STATUS.PENDING}
                            onClick={handlers.impersonate}>
@@ -149,7 +150,7 @@ class User extends React.Component {
 
     _saveAndSendEmailButton() {
         const {user, currentUser, userSaved} = this.props;
-        if (!user.isNew && currentUser.role === ROLE.ADMIN && currentUser.username !== user.username) {
+        if (!user.isNew && isAdmin(currentUser) && currentUser.username !== user.username) {
             return <Button style={{margin: '0 0.3em 0 0'}} variant='success' size='sm' ref='submit'
                            disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
                            onClick={() => this._onSaveAndSendEmail()} className="d-inline-flex"
@@ -209,7 +210,7 @@ class User extends React.Component {
                         </div>
                         <div className='col-12 col-sm-6'>
                             <HorizontalInput type='text' name='lastName' label={`${this.i18n('user.last-name')}*`}
-                                             disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username
+                                             disabled={!isAdmin(currentUser) && currentUser.username !== user.username
                                                  || isUsingOidcAuth()}
                                              value={user.lastName} labelWidth={3} inputWidth={8}
                                              onChange={this._onChange}/>
@@ -224,19 +225,19 @@ class User extends React.Component {
                         </div>
                         <div className='col-12 col-sm-6'>
                             <HorizontalInput type='email' name='emailAddress' label={`${this.i18n('users.email')}*`}
-                                             disabled={currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username
+                                             disabled={!isAdmin(currentUser) && currentUser.username !== user.username
                                                  || isUsingOidcAuth()}
                                              value={user.emailAddress} labelWidth={3} inputWidth={8}
                                              onChange={this._onChange}/>
                         </div>
                     </div>
                     <div className='row'>
-                        {currentUser.role === ROLE.ADMIN &&
+                        {isAdmin(currentUser) &&
                         <div className='col-12 col-sm-6'>
                             <HorizontalInput type='select' name='institution'
                                              label={`${this.i18n('institution.panel-title')}*`}
                                              onChange={this._onInstitutionSelected}
-                                             disabled={currentUser.role !== ROLE.ADMIN}
+                                             disabled={!isAdmin(currentUser)}
                                              value={user.institution ? user.institution.uri : ''}
                                              labelWidth={3} inputWidth={8}>
                                 {this._generateInstitutionsOptions()}
@@ -246,7 +247,7 @@ class User extends React.Component {
                         <div className='col-12 col-sm-6'>
                             <HorizontalInput type='select' name='role' label={`${this.i18n('user.role')}*`}
                                              onChange={this._onAdminStatusChange}
-                                             disabled={currentUser.role !== ROLE.ADMIN || isUsingOidcAuth()}
+                                             disabled={!isAdmin(currentUser) || isUsingOidcAuth()}
                                              value={user.types && getRole(user)}
                                              labelWidth={3} inputWidth={8}>
                                 {this._generateRolesOptions()}
@@ -268,7 +269,7 @@ class User extends React.Component {
                             this._redirectToKeycloakButton() :
                             this._passwordChangeButton()}
                         {this._saveAndSendEmailButton()}
-                        {(currentUser.role === ROLE.ADMIN || currentUser.username === user.username) &&
+                        {(isAdmin(currentUser) || currentUser.username === user.username) &&
                         <Button variant='success' size='sm' ref='submit' className="d-inline-flex"
                                 disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
                                 onClick={() => this._onSave()}

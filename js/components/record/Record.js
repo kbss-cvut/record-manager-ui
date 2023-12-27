@@ -9,11 +9,12 @@ import HorizontalInput from "../HorizontalInput";
 import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
 import RequiredAttributes from "./RequiredAttributes";
-import {ACTION_STATUS, ALERT_TYPES, EXTENSION_CONSTANTS, RECORD_PHASE, ROLE} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ALERT_TYPES, EXTENSION_CONSTANTS, RECORD_PHASE} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
 import {LoaderCard, LoaderSmall} from "../Loader";
 import {processTypeaheadOptions} from "./TypeaheadAnswer";
 import {EXTENSIONS} from "../../../config";
+import {isAdmin} from "../../utils/SecurityUtils";
 
 class Record extends React.Component {
     constructor(props) {
@@ -179,7 +180,7 @@ class Record extends React.Component {
     }
 
     _isAdmin() {
-        return this.props.currentUser.role === ROLE.ADMIN
+        return isAdmin(this.props.currentUser);
     }
 }
 

@@ -161,6 +161,12 @@ export default {
         'records.export': 'Export',
         'records.export.excel': 'Export to MS Excel',
         'records.export.json': 'Export to JSON',
+        'records.import': 'Import',
+        'records.import.dialog.title': 'Import records',
+        'records.import.dropzone.label': 'Drag & drop a file here, or click to select file',
+        'records.import.partialSuccess.message': 'Imported {importedCount} out of {totalCount, plural, one {# record} other {# records}}. Check server log for details.',
+        'records.import.success.message': 'Successfully imported all {importedCount, plural, one {# record} other {# records}}.',
+        'records.import.error.message': 'Record import failed. Check the server log for details.',
 
         'record.panel-title': 'Form {identifier}',
         'record.form-title': 'Details',

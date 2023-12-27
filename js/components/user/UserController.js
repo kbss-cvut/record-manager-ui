@@ -9,17 +9,25 @@ import {transitionTo, transitionToWithOpts} from '../../utils/Routing';
 import {loadInstitutions} from "../../actions/InstitutionsActions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
+import {ACTION_FLAG, ACTION_STATUS} from "../../constants/DefaultConstants";
 import {setTransitionPayload} from "../../actions/RouterActions";
 import {
+    createUser,
     deleteInvitationOption,
-    createUser, generateUsername, impersonate, loadUser, sendInvitation, unloadSavedUser, unloadUser,
-    updateUser, oidcImpersonate
+    generateUsername,
+    impersonate,
+    loadUser,
+    oidcImpersonate,
+    sendInvitation,
+    unloadSavedUser,
+    unloadUser,
+    updateUser
 } from "../../actions/UserActions";
 import * as UserFactory from "../../utils/EntityFactory";
 import omit from 'lodash/omit';
 import {getRole} from "../../utils/Utils";
 import {isUsingOidcAuth, userProfileLink} from "../../utils/OidcUtils";
+import {isAdmin} from "../../utils/SecurityUtils";
 
 class UserController extends React.Component {
     constructor(props) {
@@ -33,7 +41,7 @@ class UserController extends React.Component {
     }
 
     componentDidMount() {
-        if (this.props.currentUser.role === ROLE.ADMIN && !this.props.institutionsLoaded.institutions) {
+        if (isAdmin(this.props.currentUser) && !this.props.institutionsLoaded.institutions) {
             this.props.loadInstitutions();
         }
         if (!this.state.user) {
@@ -103,7 +111,7 @@ class UserController extends React.Component {
         } else if (this.institution) {
             this.props.transitionToWithOpts(Routes.editInstitution, {params: {key: this.institution.key}});
         } else {
-            transitionTo(this.props.currentUser.role === ROLE.ADMIN ? Routes.users : Routes.dashboard);
+            transitionTo(isAdmin(this.props.currentUser) ? Routes.users : Routes.dashboard);
         }
     };
 
@@ -172,8 +180,7 @@ class UserController extends React.Component {
             generateUsername: this._generateUsername,
             sendInvitation: this._sendInvitation,
             impersonate: this._impersonate,
-            deleteInvitationOption: this._deleteInvitationOption,
-            onKeycloakRedirect: this._onRedirect
+            deleteInvitationOption: this._deleteInvitationOption
         };
         return <User user={this.state.user} handlers={handlers} backToInstitution={this.institution !== null}
                      userSaved={userSaved} showAlert={this.state.showAlert} userLoaded={userLoaded}

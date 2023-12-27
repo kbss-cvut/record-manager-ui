@@ -5,10 +5,11 @@ import {Button, Card, Table} from 'react-bootstrap';
 import {injectIntl} from "react-intl";
 import withI18n from '../../i18n/withI18n';
 import DeleteItemDialog from "../DeleteItemDialog";
-import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import Loader, {LoaderSmall} from "../Loader";
 import AlertMessage from "../AlertMessage";
 import PropTypes from "prop-types";
+import {isAdmin} from "../../utils/SecurityUtils";
 
 class InstitutionMembers extends React.Component {
     constructor(props) {
@@ -72,7 +73,7 @@ class InstitutionMembers extends React.Component {
                     :
                     <p className="font-italic">{this.i18n('institution.members.not-found')}</p>
                 }
-                {currentUser.role === ROLE.ADMIN &&
+                {isAdmin(currentUser) &&
                 <div className="btn-toolbar">
                     <Button variant='primary' size="sm" onClick={() => onAddNewUser(institution)}>
                         {this.i18n('users.add-new-user')}
@@ -86,7 +87,7 @@ class InstitutionMembers extends React.Component {
                 <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.delete-success')}/>}
             </Card.Body>
         </Card>;
-    };
+    }
 
     _renderRows() {
         const {institution, onEditUser, currentUser, userDeleted} = this.props;
@@ -104,7 +105,7 @@ class InstitutionMembers extends React.Component {
                             onClick={() => onEditUser(member, institution)}>
                         {this.i18n('open')}
                     </Button>
-                    {currentUser.role === ROLE.ADMIN &&
+                    {isAdmin(currentUser) &&
                     <Button variant='warning' size='sm' title={this.i18n('users.delete-tooltip')}
                             onClick={() => this._onDelete(member)}>
                         {this.i18n('delete')}{deletionLoading && <LoaderSmall/>}

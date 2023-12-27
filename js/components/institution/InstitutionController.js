@@ -7,21 +7,22 @@ import withI18n from "../../i18n/withI18n";
 import Routes from "../../constants/RoutesConstants";
 import {transitionTo, transitionToWithOpts} from "../../utils/Routing";
 import {connect} from "react-redux";
-import {ACTION_FLAG, ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
+import {ACTION_FLAG, ACTION_STATUS} from "../../constants/DefaultConstants";
 import {bindActionCreators} from "redux";
 import {
-    unloadSavedInstitution
+    createInstitution,
+    loadInstitution,
+    unloadInstitution,
+    unloadSavedInstitution,
+    updateInstitution
 } from "../../actions/InstitutionActions";
 import {canLoadInstitutionsPatients} from "../../utils/Utils";
 import {deleteUser, loadInstitutionMembers, unloadInstitutionMembers} from "../../actions/UserActions";
-import {
-    createInstitution, loadInstitution, unloadInstitution,
-    updateInstitution
-} from "../../actions/InstitutionActions";
 import * as EntityFactory from "../../utils/EntityFactory";
 import {exportRecords, loadRecords} from "../../actions/RecordsActions";
 import omit from 'lodash/omit';
 import {loadFormTemplates} from "../../actions/FormTemplatesActions";
+import {isAdmin} from "../../utils/SecurityUtils";
 
 class InstitutionController extends React.Component {
     constructor(props) {
@@ -98,7 +99,7 @@ class InstitutionController extends React.Component {
         const handlers = this.props.viewHandlers[Routes.editInstitution.name];
         if (handlers) {
             transitionTo(handlers.onCancel);
-        } else if (this.props.currentUser.role === ROLE.ADMIN) {
+        } else if (isAdmin(this.props.currentUser)) {
             transitionTo(Routes.institutions);
         } else {
             transitionTo(Routes.dashboard);

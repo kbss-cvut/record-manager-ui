@@ -6,13 +6,14 @@ import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import {LoaderSmall} from "../Loader";
 import PropTypes from "prop-types";
-import {RECORD_PHASE, ROLE} from "../../constants/DefaultConstants";
+import {RECORD_PHASE} from "../../constants/DefaultConstants";
+import {isAdmin} from "../../utils/SecurityUtils";
 
 let RecordRow = (props) => {
     const record = props.record,
         formTemplateOptions = props.formTemplateOptions,
         recordPhase = props.record.phase,
-        isAdmin = props.currentUser.role === ROLE.ADMIN,
+        admin = isAdmin(props.currentUser),
         deleteButton = props.disableDelete ? null :
             <Button variant='warning' size='sm' title={props.i18n('records.delete-tooltip')}
                     onClick={() => props.onDelete(record)}>{props.i18n('delete')}{props.deletionLoading &&
@@ -48,8 +49,10 @@ let RecordRow = (props) => {
         }
     };
 
+    const phaseGlyph = getGlyph();
+
     return <tr>
-        {isAdmin &&
+        {admin &&
             <td className='report-row'>
                 <Button variant="link" size="sm"
                     onClick={() => props.onEdit(record)}>{record.key}</Button>
@@ -59,10 +62,10 @@ let RecordRow = (props) => {
             <Button variant="link" size="sm"
                     onClick={() => props.onEdit(record)}>{record.localName}</Button>
         </td>
-        {isAdmin && 
+        {admin &&
               <td className='report-row'>{record.institution.name}</td>
         }
-        {isAdmin &&
+        {admin &&
             <td className='report-row content-center'>
                 {getFormTemplateOptionName(record.formTemplate, formTemplateOptions)}
             </td>
@@ -71,7 +74,7 @@ let RecordRow = (props) => {
             {formatDate(new Date(record.lastModified ? record.lastModified : record.dateCreated))}
         </td>
         <td className='report-row content-center'>
-            <HelpIcon text={getCompletionStatusTooltip()} glyph={getGlyph()}/>
+            {phaseGlyph ? <HelpIcon text={getCompletionStatusTooltip()} glyph={getGlyph()}/> : "N/A"}
         </td>
 
         <td className='report-row actions'>

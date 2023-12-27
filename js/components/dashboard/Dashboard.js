@@ -1,20 +1,28 @@
-'use strict';
-
 import React from "react";
 import withI18n from "../../i18n/withI18n";
 import {FormattedMessage, injectIntl} from "react-intl";
 import {Col, Container, Jumbotron, Row} from "react-bootstrap";
 import DashboardTile from "./DashboardTile";
-import {ROLE} from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
-import {RDFS_LABEL} from "../../constants/Vocabulary";
 import {processTypeaheadOptions} from "../record/TypeaheadAnswer";
+import ImportRecordsDialog from "../record/ImportRecordsDialog";
+import {isAdmin} from "../../utils/SecurityUtils";
+import {trackPromise} from "react-promise-tracker";
+import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 
 class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.i18n = this.props.i18n;
+        this.state = {
+            importDialogOpen: false
+        };
     }
+
+    onImportRecords = (file) => {
+        trackPromise(this.props.handlers.importRecords(file), "dashboard");
+        this.setState({importDialogOpen: false});
+    };
 
     renderTitle() {
         return <h5 className='formatted-message-size'>
@@ -24,18 +32,16 @@ class Dashboard extends React.Component {
     }
 
     _renderMainDashboard() {
-        const {
-            formTemplatesLoaded
-        } = this.props;
         return <Container>
             <div>
                 <Row>
                     {this._renderCreateRecordTile()}
-                    {this._renderUsersTile()}
-                    {this._renderInstitutionsTile()}
+                    {this._renderImportRecordsTile()}
                     {this._renderShowRecordsTiles()}
                 </Row>
                 <Row>
+                    {this._renderUsersTile()}
+                    {this._renderInstitutionsTile()}
                     {this._renderStatisticsTile()}
                 </Row>
             </div>
@@ -49,6 +55,13 @@ class Dashboard extends React.Component {
                     onClick={this.props.handlers.createRecord}>{this.i18n('dashboard.create-tile')}</DashboardTile>
             </Col>
             : "";
+    }
+
+    _renderImportRecordsTile() {
+        return <Col md={3} className='dashboard-sector'>
+            <DashboardTile
+                onClick={() => this.setState({importDialogOpen: true})}>{this.i18n('records.import.dialog.title')}</DashboardTile>
+        </Col>
     }
 
     _renderShowRecordsTiles() {
@@ -108,12 +121,16 @@ class Dashboard extends React.Component {
     }
 
     _isAdmin() {
-        return this.props.currentUser.role === ROLE.ADMIN
+        return isAdmin(this.props.currentUser);
     }
 
     render() {
         return (
             <Jumbotron>
+                <PromiseTrackingMask area="dashboard" coverViewport={true}/>
+                <ImportRecordsDialog show={this.state.importDialogOpen}
+                                     onCancel={() => this.setState({importDialogOpen: false})}
+                                     onSubmit={this.onImportRecords}/>
                 {this.renderTitle()}
                 {this._renderMainDashboard()}
             </Jumbotron>

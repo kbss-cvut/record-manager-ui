@@ -1,10 +1,10 @@
-import {ACTION_FLAG, MediaType, ROLE} from "../constants/DefaultConstants";
+import {ACTION_FLAG, MediaType} from "../constants/DefaultConstants";
 import {axiosBackend} from "./index";
 import * as ActionConstants from "../constants/ActionConstants";
 import {loadUsers} from "./UsersActions";
 import {API_URL, getEnv} from '../../config';
 import {transitionToHome} from "../utils/Routing";
-import {getOidcToken, saveOidcToken} from "../utils/SecurityUtils";
+import {getOidcToken, isAdmin, saveOidcToken} from "../utils/SecurityUtils";
 
 export function createUser(user) {
     //console.log("Creating user: ", user);
@@ -29,7 +29,7 @@ export function updateUser(user, currentUser, sendEmail = true) {
             ...user
         }).then(() => {
             dispatch(saveUserSuccess(user, ACTION_FLAG.UPDATE_ENTITY));
-            if (currentUser.role === ROLE.ADMIN) {
+            if (isAdmin(currentUser)) {
                 dispatch(loadUsers());
             }
         }).catch((error) => {

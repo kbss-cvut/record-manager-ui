@@ -13,8 +13,6 @@ const HelpIcon = (props) => {
 
     const icon = () => {
         switch (props.glyph) {
-            case "help":
-                return <FaQuestionCircle className={'help-icon ' + props.className}/>;
             case "ok":
                 return <FaCheck className={'ok-icon ' + props.className}/>;
             case "remove":
@@ -22,9 +20,9 @@ const HelpIcon = (props) => {
             case "to-do":
                 return <FaTasks className={'to-do-icon ' + props.className}/>;
             case "envelope":
-                return  <FaEnvelope className={'publish-icon' + props.className}/>
+                return  <FaEnvelope className={'publish-icon ' + props.className}/>
             default:
-                return null;
+                return <FaQuestionCircle className={'help-icon ' + props.className}/>;
         }
     }
 
