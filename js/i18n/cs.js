@@ -166,6 +166,7 @@ export default {
         'records.import.dropzone.label': 'Přetáhněte sem soubor myší, nebo klikněte pro výběr pomocí dialogu',
         'records.import.partialSuccess.message': '{importedCount, plural, one {Importován #} few {Importovány #} other {Importováno #}} z {totalCount, plural, one {# záznamu} other {# záznamů}}. Detaily naleznete v logu serveru.',
         'records.import.success.message': 'Úspěšně {importedCount, plural, one {importován # záznam} few {importovány všechny # záznamy} other {importováno všech # záznamů}}.',
+        'records.import.error.message': 'Import záznamů byl neúspěšný. Více informací najdete v logu serveru.',
 
         'record.panel-title': 'Záznam {identifier}',
         'record.form-title': 'Detail',

@@ -64,12 +64,13 @@ export function exportRecords(exportType, institutionKey) {
 }
 
 export function importRecords(file) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         dispatch(asyncRequest(ActionConstants.IMPORT_RECORDS_PENDING));
         return file.text().then(content => {
             return axiosBackend.post(`${API_URL}/rest/records/import`, JSON.parse(content))
         }).then((resp) => {
             dispatch(asyncSuccess(ActionConstants.IMPORT_RECORDS_SUCCESS));
+            dispatch(loadRecords(getState().auth.user));
             if (resp.data.importedCount < resp.data.totalCount) {
                 dispatch(publishMessage(new Message({
                     messageId: "records.import.partialSuccess.message",
@@ -89,6 +90,12 @@ export function importRecords(file) {
                 })))
             }
         })
-            .catch(error => dispatch(asyncError(ActionConstants.IMPORT_RECORDS_ERROR, error.response.data)));
+            .catch(error => {
+                dispatch(publishMessage(new Message({
+                    messageId: "records.import.error.message",
+                    type: MessageType.ERROR
+                })))
+                return dispatch(asyncError(ActionConstants.IMPORT_RECORDS_ERROR, error.response.data));
+            });
     };
 }
