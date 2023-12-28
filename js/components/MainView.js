@@ -127,10 +127,10 @@ class MainView extends React.Component {
                                 <Nav>
                                     <ImpersonatorBadge/>
                                     <NavDropdown className="pr-0" id='logout' title={name}>
-                                        <DropdownItem
-                                            onClick={() => this.onProfileClick()}>{this.i18n('main.my-profile')}</DropdownItem>
-                                        <DropdownItem
-                                            onClick={() => transitionTo(Routes.logout)}>{this.i18n('main.logout')}</DropdownItem>
+                                        <NavDropdown.Item
+                                            onClick={() => this.onProfileClick()}>{this.i18n('main.my-profile')}</NavDropdown.Item>
+                                        <NavDropdown.Item
+                                            onClick={() => transitionTo(Routes.logout)}>{this.i18n('main.logout')}</NavDropdown.Item>
                                     </NavDropdown>
 
                                 </Nav>
