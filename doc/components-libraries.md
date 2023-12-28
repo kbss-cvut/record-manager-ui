@@ -2,6 +2,10 @@
 
 This file contains notes on how selected components and libraries are used so that the application uses a consistent set of patterns.
 
+## React Bootstrap
+
+Using react-bootstrap 1.x which is based on Bootstrap 4. Here is a [link to docs](https://react-bootstrap-v4.netlify.app/components/alerts).
+
 ## Messages
 
 Instead of dedicated _Alert_ managed by each component, a _Messages_ component has been added that displays messages and notifications in the top right
