@@ -1,6 +1,6 @@
 import React from "react";
 import {IntlProvider} from "react-intl";
-import {Route, Router} from "react-router-dom";
+import {Route, Router, Switch} from "react-router-dom";
 import MainView from "./components/MainView";
 import {connect} from "react-redux";
 import {history} from "./utils/Routing";
@@ -13,9 +13,11 @@ import {isUsingOidcAuth} from "./utils/OidcUtils";
 const App = (props) => {
     return <IntlProvider {...props.intl}>
         <Router history={history} basename={BASENAME}>
-            <Route path='/oidc-signin-callback' component={OidcSignInCallback}/>
-            <Route path='/oidc-silent-callback' component={OidcSilentCallback}/>
-            <Route path='/' component={isUsingOidcAuth() ? OidcMainView : MainView}/>
+            <Switch>
+                <Route exact={true} path='/oidc-signin-callback' component={OidcSignInCallback}/>
+                <Route exact={true} path='/oidc-silent-callback' component={OidcSilentCallback}/>
+                <Route path='/' component={isUsingOidcAuth() ? OidcMainView : MainView}/>
+            </Switch>
         </Router>
     </IntlProvider>;
 }
