@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState,} from "react";
 import {generateRedirectUri, getUserManager} from "../../../utils/OidcUtils";
-import {log} from "../../../utils/Logger";
 
 // Taken from https://github.com/datagov-cz/assembly-line-shared but using a different config processing mechanism
 
@@ -38,7 +37,6 @@ const OidcAuthWrapper = ({
         setUser(u);
       } else {
         // User not authenticated -> trigger auth flow
-        log("User not authenticated, triggering sign in.");
         return userManager.signinRedirect({
           redirect_uri: generateRedirectUri(location.href),
         });
