@@ -15,12 +15,12 @@ echo "INFO: Running initializer for Record Manager repositories ..."
 echo "INFO: Waiting for GraphDB to start up..."
 sleep 15s
 
-ls ${SOURCE_DIR}/*-config.ttl | while read REPO_CONFIG_FILE; do 
-	
+ls ${SOURCE_DIR}/*-config.ttl | while read REPO_CONFIG_FILE; do
+
 	REPO_NAME=`$SCRIPT_DIR/get-value-of-rdf-property.py $REPO_CONFIG_FILE 'http://www.openrdf.org/config/repository#repositoryID'`
 
 	if [ -z "$REPO_NAME" ]; then
-    		echo "ERROR: Could not parse repository name from file $REPO_CONFIG_FILE" 
+    		echo "ERROR: Could not parse repository name from file $REPO_CONFIG_FILE"
     		exit 1
 	fi
 

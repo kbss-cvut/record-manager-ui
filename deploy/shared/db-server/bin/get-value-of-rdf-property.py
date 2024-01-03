@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import sys       
+import sys
 from rdflib import Graph, URIRef
 
 def log(message):
@@ -50,16 +50,16 @@ def main():
 
     file_path = sys.argv[1]
     rdf_property = URIRef(sys.argv[2])
-                           
+
     g = load_rdf_graph(file_path)
-                                                  
+
     # Query for subjects with the specified property
     query = f"""
-        SELECT ?subject ?value                      
+        SELECT ?subject ?value
         WHERE {{
             ?subject <{rdf_property}> ?value.
-        }}      
-    """                                          
+        }}
+    """
     results = g.query(query)
 
     check_property_has_single_value(results, rdf_property)
@@ -68,6 +68,6 @@ def main():
         subject, value = row
         print(f"{value}")
 
-if __name__ == "__main__":                                  
+if __name__ == "__main__":
     main()
 
