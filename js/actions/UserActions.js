@@ -274,7 +274,6 @@ export function oidcImpersonate(username) {
             client_id: getEnv("AUTH_CLIENT_ID"),
             grant_type: "urn:ietf:params:oauth:grant-type:token-exchange",
             requested_subject: username,
-            requested_token_type: "urn:ietf:params:oauth:token-type:refresh_token",
             subject_token: getOidcToken().access_token
         }), {
             headers: {'Content-Type': MediaType.FORM_URLENCODED}
