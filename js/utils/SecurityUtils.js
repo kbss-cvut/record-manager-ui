@@ -5,8 +5,7 @@ import {ROLE} from "../constants/DefaultConstants";
 
 export function getOidcToken() {
     const identityData = sessionStorage.getItem(getOidcIdentityStorageKey());
-    const identity = identityData ? JSON.parse(identityData) : null;
-    return `${identity?.token_type} ${identity?.access_token}`;
+    return identityData ? JSON.parse(identityData) : {};
 }
 
 export function saveOidcToken(token) {

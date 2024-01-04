@@ -274,12 +274,16 @@ export function oidcImpersonate(username) {
             client_id: getEnv("AUTH_CLIENT_ID"),
             grant_type: "urn:ietf:params:oauth:grant-type:token-exchange",
             requested_subject: username,
-            subject_token: getOidcToken().substring("Bearer ".length)   // Extract only the token value
+            requested_token_type: "urn:ietf:params:oauth:token-type:refresh_token",
+            subject_token: getOidcToken().access_token
         }), {
             headers: {'Content-Type': MediaType.FORM_URLENCODED}
         }).then((resp) => {
             dispatch({type: ActionConstants.IMPERSONATE_SUCCESS, username});
-            saveOidcToken(resp.data);
+            // Store the current user (impersonator)'s id token for later logout
+            const impersonatorIdToken = getOidcToken().id_token;
+            const impersonatorData = Object.assign({}, resp.data, {impersonatorIdToken: impersonatorIdToken});
+            saveOidcToken(impersonatorData);
             transitionToHome();
             window.location.reload();
         }).catch((error) => {
