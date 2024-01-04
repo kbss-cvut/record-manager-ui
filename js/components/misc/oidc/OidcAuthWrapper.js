@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState,} from "react";
 import {generateRedirectUri, getUserManager} from "../../../utils/OidcUtils";
+import {getOidcToken} from "../../../utils/SecurityUtils";
 
 // Taken from https://github.com/datagov-cz/assembly-line-shared but using a different config processing mechanism
 
@@ -84,7 +85,13 @@ const OidcAuthWrapper = ({
 
   const logout = useCallback(() => {
     const handleLogout = async () => {
-      await userManager.signoutRedirect();
+      const user = await userManager.getUser();
+      const args = {};
+      if (!user.id_token) {
+        // Explicitly set id_token_hint when it is missing. It means we are impersonating another user
+        args.id_token_hint = getOidcToken().impersonatorIdToken;
+      }
+      await userManager.signoutRedirect(args);
     };
     handleLogout();
   }, [userManager]);

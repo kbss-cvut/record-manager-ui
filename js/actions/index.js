@@ -17,7 +17,7 @@ axiosBackend.interceptors.request.use((reqConfig) => {
     if (!reqConfig.headers) {
         reqConfig.headers = {};
     }
-    reqConfig.headers[HttpHeaders.AUTHORIZATION] = getOidcToken();
+    reqConfig.headers[HttpHeaders.AUTHORIZATION] = `Bearer ${getOidcToken().access_token}`;
     return reqConfig;
 });
 
