@@ -23,14 +23,14 @@ import {exportRecords, loadRecords} from "../../actions/RecordsActions";
 import omit from 'lodash/omit';
 import {loadFormTemplates} from "../../actions/FormTemplatesActions";
 import {isAdmin} from "../../utils/SecurityUtils";
+import {trackPromise} from "react-promise-tracker";
 
 class InstitutionController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             institution: this._isNew() ? EntityFactory.initNewInstitution() : null,
-            saved: false,
-            showAlert: false
+            saved: false
         };
     }
 
@@ -47,7 +47,6 @@ class InstitutionController extends React.Component {
             }
         }
         if (this.props.institutionSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY && this.props.institutionSaved.status === ACTION_STATUS.SUCCESS) {
-            this.setState({showAlert: true});
             this.props.unloadSavedInstitution();
         }
         this.props.loadFormTemplates();
@@ -87,11 +86,11 @@ class InstitutionController extends React.Component {
 
     _onSave = () => {
         const institution = this.state.institution;
-        this.setState({saved: true, showAlert: true});
+        this.setState({saved: true});
         if (institution.isNew || (this._isNew() && this.props.institutionSaved.status === ACTION_STATUS.ERROR)) {
-            this.props.createInstitution(omit(institution, 'isNew'));
+            trackPromise(this.props.createInstitution(omit(institution, 'isNew')), "institution");
         } else {
-            this.props.updateInstitution(institution);
+            trackPromise(this.props.updateInstitution(institution), "institution");
         }
     };
 
@@ -158,7 +157,7 @@ class InstitutionController extends React.Component {
         return <Institution handlers={handlers} institution={this.state.institution}
                             institutionMembers={institutionMembers}
                             recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
-                            showAlert={this.state.showAlert} currentUser={currentUser}
+                            currentUser={currentUser}
                             institutionLoaded={institutionLoaded} institutionSaved={institutionSaved}
                             userDeleted={userDeleted}
         />;

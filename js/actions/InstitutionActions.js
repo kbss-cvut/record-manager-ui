@@ -53,6 +53,7 @@ export function loadInstitution(key) {
             dispatch(loadInstitutionSuccess(response.data));
         }).catch((error) => {
             dispatch(loadInstitutionError(error.response.data));
+            dispatch(publishMessage(errorMessage('institution.load-error', {error: error.response.data.message})));
         });
     }
 }
@@ -87,14 +88,16 @@ export function createInstitution(institution) {
     //console.log("Creating institution: ", institution);
     return function (dispatch) {
         dispatch(saveInstitutionPending(ACTION_FLAG.CREATE_ENTITY));
-        axiosBackend.post(`${API_URL}/rest/institutions`, {
+        return axiosBackend.post(`${API_URL}/rest/institutions`, {
             ...institution
         }).then((response) => {
             const key = Utils.extractKeyFromLocationHeader(response);
             dispatch(saveInstitutionSuccess(institution, key, ACTION_FLAG.CREATE_ENTITY));
             dispatch(loadInstitutions());
+            dispatch(publishMessage(successMessage('institution.save-success')));
         }).catch((error) => {
             dispatch(saveInstitutionError(error.response.data, institution, ACTION_FLAG.CREATE_ENTITY));
+            publishMessage(errorMessage('institution.save-error', {error: error.response.data.message}));
         });
     }
 }
@@ -103,13 +106,15 @@ export function updateInstitution(institution) {
     //console.log("Updating institution: ", institution);
     return function (dispatch) {
         dispatch(saveInstitutionPending(ACTION_FLAG.UPDATE_ENTITY));
-        axiosBackend.put(`${API_URL}/rest/institutions/${institution.key}`, {
+        return axiosBackend.put(`${API_URL}/rest/institutions/${institution.key}`, {
             ...institution
         }).then(() => {
             dispatch(saveInstitutionSuccess(institution, null, ACTION_FLAG.UPDATE_ENTITY));
             dispatch(loadInstitutions());
+            dispatch(publishMessage(successMessage('institution.save-success')));
         }).catch((error) => {
             dispatch(saveInstitutionError(error.response.data, institution, ACTION_FLAG.UPDATE_ENTITY));
+            publishMessage(errorMessage('institution.save-error', {error: error.response.data.message}));
         });
     }
 }

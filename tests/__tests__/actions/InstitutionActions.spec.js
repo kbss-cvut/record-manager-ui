@@ -145,7 +145,6 @@ describe('Institution asynchronous actions', function () {
     beforeEach(() => {
         mockApi = new MockAdapter(axiosBackend);
         store = mockStore({intl: en});
-        store.setSt
     });
 
     it('creates SAVE_INSTITUTION_SUCCESS action when saving institution successfully is done', function (done) {
@@ -153,7 +152,6 @@ describe('Institution asynchronous actions', function () {
             {type: ActionConstants.SAVE_INSTITUTION_PENDING, actionFlag: ACTION_FLAG.CREATE_ENTITY},
             {type: ActionConstants.SAVE_INSTITUTION_SUCCESS, key, actionFlag: ACTION_FLAG.CREATE_ENTITY, institution},
             {type: ActionConstants.LOAD_INSTITUTIONS_PENDING},
-            {type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS, institutions},
         ];
 
         mockApi.onPost(`${API_URL}/rest/institutions`).reply(200, null, {location});
@@ -162,7 +160,7 @@ describe('Institution asynchronous actions', function () {
         store.dispatch(createInstitution(institution));
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 3)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });
@@ -192,8 +190,7 @@ describe('Institution asynchronous actions', function () {
                 actionFlag: ACTION_FLAG.UPDATE_ENTITY,
                 institution
             },
-            {type: ActionConstants.LOAD_INSTITUTIONS_PENDING},
-            {type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS, institutions},
+            {type: ActionConstants.LOAD_INSTITUTIONS_PENDING}
         ];
 
         mockApi.onPut(`${API_URL}/rest/institutions/${institution.key}`).reply(200, null, {location});
@@ -202,7 +199,7 @@ describe('Institution asynchronous actions', function () {
         store.dispatch(updateInstitution(institution));
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 3)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });

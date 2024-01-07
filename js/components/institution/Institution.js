@@ -1,20 +1,18 @@
-'use strict';
-
 import React from "react";
 import {Button, Card} from "react-bootstrap";
-import {injectIntl, FormattedMessage} from "react-intl";
+import {FormattedMessage, injectIntl} from "react-intl";
 import InstitutionMembers from "./InstitutionMembers";
 import InstitutionPatients from "./InstitutionPatients";
 import withI18n from "../../i18n/withI18n";
 import HorizontalInput from "../HorizontalInput";
 import PropTypes from "prop-types";
 
-import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
 import {formatDate} from "../../utils/Utils";
-import AlertMessage from "../AlertMessage";
-import {LoaderCard, LoaderSmall} from "../Loader";
+import {LoaderSmall} from "../Loader";
 import InstitutionValidator from "../../validation/InstitutionValidator";
 import HelpIcon from "../HelpIcon";
+import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 
 /**
  * Institution detail. Editable only for admins.
@@ -29,8 +27,7 @@ class Institution extends React.Component {
         formTemplatesLoaded: PropTypes.object,
         handlers: PropTypes.object.isRequired,
         currentUser: PropTypes.object.isRequired,
-        userDeleted: PropTypes.object,
-        showAlert: PropTypes.bool
+        userDeleted: PropTypes.object
     };
 
     constructor(props) {
@@ -46,54 +43,43 @@ class Institution extends React.Component {
 
     render() {
         const {
-            showAlert,
             currentUser,
             institution,
             recordsLoaded,
-            institutionLoaded,
-            institutionSaved,
             formTemplatesLoaded
         } = this.props;
-
-        if (institutionLoaded.status === ACTION_STATUS.ERROR) {
-            return <AlertMessage type={ALERT_TYPES.DANGER}
-                                 message={this.props.formatMessage('institution.load-error', {error: institutionLoaded.error.message})}/>;
-        } else if (!institution) {
-            return <LoaderCard header={<span>{this.i18n('institution.panel-title')}</span>}/>;
-        }
 
         return <Card variant='primary'>
             <Card.Header className="text-light bg-primary" as="h6">{this.i18n('institution.panel-title')}</Card.Header>
             <Card.Body>
-                <form>
-                    <div className='row'>
-                        <div className='col-12 col-sm-6'>
-                            <HorizontalInput
-                                type='text' name='name' label={`${this.i18n('institution.name')}*`}
-                                value={institution.name} readOnly={currentUser.role !== ROLE.ADMIN}
-                                onChange={this._onChange} labelWidth={3} inputWidth={8}/>
+                <PromiseTrackingMask area="institution"/>
+                {institution && <>
+                    <form>
+                        <div className='row'>
+                            <div className='col-12 col-sm-6'>
+                                <HorizontalInput
+                                    type='text' name='name' label={`${this.i18n('institution.name')}*`}
+                                    value={institution.name} readOnly={currentUser.role !== ROLE.ADMIN}
+                                    onChange={this._onChange} labelWidth={3} inputWidth={8}/>
+                            </div>
+                            <div className='col-12 col-sm-6'>
+                                <HorizontalInput
+                                    type='text' name='emailAddress' label={this.i18n('institution.email')}
+                                    value={institution.emailAddress || ""} readOnly={currentUser.role !== ROLE.ADMIN}
+                                    onChange={this._onChange} labelWidth={3} inputWidth={8}/>
+                            </div>
                         </div>
-                        <div className='col-12 col-sm-6'>
-                            <HorizontalInput
-                                type='text' name='emailAddress' label={this.i18n('institution.email')}
-                                value={institution.emailAddress || ""} readOnly={currentUser.role !== ROLE.ADMIN}
-                                onChange={this._onChange} labelWidth={3} inputWidth={8}/>
-                        </div>
-                    </div>
-                    {this._renderAddedDate()}
-                    {this._renderButtons()}
-                    {showAlert && institutionSaved.status === ACTION_STATUS.ERROR &&
-                        <AlertMessage type={ALERT_TYPES.DANGER}
-                                      message={this.props.formatMessage('institution.save-error', {error: institutionSaved.error.message})}/>}
-                    {showAlert && institutionSaved.status === ACTION_STATUS.SUCCESS &&
-                        <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('institution.save-success')}/>}
-                </form>
-                {!institution.isNew && this._renderMembers()}
-                {!institution.isNew &&
+                        {this._renderAddedDate()}
+                        {this._renderButtons()}
+                    </form>
+                    {!institution.isNew && this._renderMembers()}
+                    {!institution.isNew &&
                     <InstitutionPatients
                         recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
                         onEdit={this.props.handlers.onEditPatient} onExport={this.props.handlers.onExportRecords}
                         currentUser={currentUser}/>}
+                </>
+                }
             </Card.Body>
         </Card>;
     }
@@ -126,7 +112,7 @@ class Institution extends React.Component {
                     disabled={!InstitutionValidator.isValid(this.props.institution) || this.props.institutionSaved.status === ACTION_STATUS.PENDING}
                     onClick={handlers.onSave} className="d-inline-flex">{this.i18n('save')}
                 {!InstitutionValidator.isValid(this.props.institution) &&
-                    <HelpIcon className="align-self-center" text={this.i18n('required')} glyph="help"/>}
+                <HelpIcon className="align-self-center" text={this.i18n('required')} glyph="help"/>}
                 {institutionSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}</Button>
             <Button variant='link' size='sm' onClick={handlers.onCancel}>{this.i18n('cancel')}</Button>
         </div>;
