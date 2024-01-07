@@ -11,17 +11,15 @@ import {ROLE} from "../../constants/DefaultConstants";
 import {loadInstitutions} from "../../actions/InstitutionsActions";
 import {bindActionCreators} from "redux";
 import {deleteInstitution} from "../../actions/InstitutionActions";
+import {trackPromise} from "react-promise-tracker";
 
 class InstitutionsController extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            showAlert: false
-        };
     }
 
     componentDidMount() {
-        this.props.loadInstitutions();
+        trackPromise(this.props.loadInstitutions(), "institutions");
     }
 
     _onEditInstitution = (institution) => {
@@ -43,8 +41,7 @@ class InstitutionsController extends React.Component {
     };
 
     _onDeleteInstitution = (institution) => {
-        this.props.deleteInstitution(institution);
-        this.setState({showAlert: true});
+        trackPromise(this.props.deleteInstitution(institution), "institutions");
     };
 
     render() {
@@ -57,8 +54,7 @@ class InstitutionsController extends React.Component {
             onCreate: this._onAddInstitution,
             onDelete: this._onDeleteInstitution
         };
-        return <Institutions institutionsLoaded={institutionsLoaded} showAlert={this.state.showAlert}
-                             handlers={handlers} institutionDeleted={institutionDeleted}/>;
+        return <Institutions institutionsLoaded={institutionsLoaded} handlers={handlers} institutionDeleted={institutionDeleted}/>;
     }
 }
 

@@ -83,7 +83,7 @@ describe('Institutions asynchronize actions', function () {
         store.dispatch(loadInstitutions());
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 2)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });

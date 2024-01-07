@@ -4,18 +4,21 @@ import {ACTION_FLAG} from "../constants/DefaultConstants";
 import * as Utils from "../utils/Utils";
 import {loadInstitutions} from "./InstitutionsActions";
 import {API_URL} from '../../config';
+import {publishMessage} from "./MessageActions";
+import {errorMessage, successMessage} from "../model/Message";
 
 export function deleteInstitution(institution) {
-    //console.log("Deleting institution: ", institution);
-    return function (dispatch) {
+    return function (dispatch, getState) {
         dispatch(deleteInstitutionPending(institution.key));
-        axiosBackend.delete(`${API_URL}/rest/institutions/${institution.key}`, {
+        return axiosBackend.delete(`${API_URL}/rest/institutions/${institution.key}`, {
             ...institution
         }).then(() => {
             dispatch(loadInstitutions());
             dispatch(deleteInstitutionSuccess(institution));
+            dispatch(publishMessage(successMessage('institution.delete-success')));
         }).catch((error) => {
             dispatch(deleteInstitutionError(error.response.data, institution));
+            dispatch(publishMessage(errorMessage('institution.delete-error', {error: getState().intl.messages[error.response.data.messageId]})));
         });
     }
 }

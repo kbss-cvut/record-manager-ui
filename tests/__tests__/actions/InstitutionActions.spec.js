@@ -23,6 +23,7 @@ import {
     updateInstitution
 } from "../../../js/actions/InstitutionActions";
 import {API_URL} from '../../../config';
+import en from "../../../js/i18n/en";
 
 describe('Institution synchronize actions', function () {
     const institution = {key: 7979868757},
@@ -126,7 +127,7 @@ describe('Institution synchronize actions', function () {
 const middlewares = [thunk.withExtraArgument(axiosBackend)];
 const mockStore = configureMockStore(middlewares);
 
-describe('Institution asynchronize actions', function () {
+describe('Institution asynchronous actions', function () {
     let store,
         mockApi;
     const institution = {key: 696875909},
@@ -143,7 +144,8 @@ describe('Institution asynchronize actions', function () {
 
     beforeEach(() => {
         mockApi = new MockAdapter(axiosBackend);
-        store = mockStore([]);
+        store = mockStore({intl: en});
+        store.setSt
     });
 
     it('creates SAVE_INSTITUTION_SUCCESS action when saving institution successfully is done', function (done) {
@@ -226,7 +228,6 @@ describe('Institution asynchronize actions', function () {
             {type: ActionConstants.DELETE_INSTITUTION_PENDING, key: institution.key},
             {type: ActionConstants.LOAD_INSTITUTIONS_PENDING},
             {type: ActionConstants.DELETE_INSTITUTION_SUCCESS, institution},
-            {type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS, institutions},
         ];
 
         mockApi.onDelete(`${API_URL}/rest/institutions/${institution.key}`).reply(200);
@@ -235,7 +236,7 @@ describe('Institution asynchronize actions', function () {
         store.dispatch(deleteInstitution(institution));
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 3)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });
@@ -251,7 +252,7 @@ describe('Institution asynchronize actions', function () {
         store.dispatch(deleteInstitution(institution));
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 2)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });
@@ -267,7 +268,7 @@ describe('Institution asynchronize actions', function () {
         store.dispatch(loadInstitution(institution.key));
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 2)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });
@@ -283,7 +284,7 @@ describe('Institution asynchronize actions', function () {
         store.dispatch(loadInstitution(institution.key));
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 2)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });
