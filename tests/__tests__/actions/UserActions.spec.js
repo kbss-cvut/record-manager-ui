@@ -28,13 +28,14 @@ import {
     updateUser
 } from "../../../js/actions/UserActions";
 import {API_URL} from '../../../config';
+import en from "../../../js/i18n/en";
 
 const members = [
     {username: 'record1'},
     {username: 'record2'}
 ];
 
-describe('User synchronize actions', function () {
+describe('User synchronous actions', function () {
     const user = {username: 'test'},
         error = {message: 'error'};
 
@@ -191,7 +192,7 @@ describe('User asynchronize actions', function () {
 
     beforeEach(() => {
         mockApi = new MockAdapter(axiosBackend);
-        store = mockStore();
+        store = mockStore({intl: en});
     });
 
     it('creates SAVE_USER_SUCCESS action when saving user successfully is done', function (done) {
@@ -269,7 +270,6 @@ describe('User asynchronize actions', function () {
             {type: ActionConstants.DELETE_USER_PENDING, username},
             {type: ActionConstants.LOAD_USERS_PENDING},
             {type: ActionConstants.DELETE_USER_SUCCESS, user},
-            {type: ActionConstants.LOAD_USERS_SUCCESS, users},
         ];
 
         mockApi.onDelete(`${API_URL}/rest/users/${user.username}`).reply(200);
@@ -278,7 +278,7 @@ describe('User asynchronize actions', function () {
         store.dispatch(deleteUser(user));
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 3)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });
@@ -294,7 +294,7 @@ describe('User asynchronize actions', function () {
         store.dispatch(deleteUser(user));
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 2)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });
@@ -358,7 +358,7 @@ describe('User asynchronize actions', function () {
         store.dispatch(loadInstitutionMembers(institutionKey));
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 2)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });

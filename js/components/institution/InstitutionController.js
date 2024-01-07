@@ -38,10 +38,10 @@ class InstitutionController extends React.Component {
         const institutionKey = this.props.match.params.key;
 
         if (!this.state.institution) {
-            this.props.loadInstitution(institutionKey);
+            trackPromise(this.props.loadInstitution(institutionKey), "institution");
         }
         if (institutionKey) {
-            this.props.loadInstitutionMembers(institutionKey);
+            trackPromise(this.props.loadInstitutionMembers(institutionKey), "institution-members");
             if (this.props.status === ACTION_STATUS.SUCCESS && canLoadInstitutionsPatients(institutionKey, this.props.currentUser)) {
                 this.props.loadRecords(null, institutionKey);
             }
@@ -70,7 +70,7 @@ class InstitutionController extends React.Component {
                 });
             } else {
                 this.setState({saved: false});
-                loadInstitution(this.state.institution.key);
+                this.props.loadInstitution(this.state.institution.key);
             }
         }
     }
@@ -111,7 +111,7 @@ class InstitutionController extends React.Component {
     };
 
     _onDeleteUser = (user) => {
-        this.props.deleteUser(user, this.state.institution);
+        trackPromise(this.props.deleteUser(user, this.state.institution), "institution-members");
     };
 
     _onEditUser = (user, institution) => {

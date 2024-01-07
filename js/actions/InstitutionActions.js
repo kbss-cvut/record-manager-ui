@@ -49,7 +49,7 @@ export function loadInstitution(key) {
     //console.log("Loading institution with key: ", key);
     return function (dispatch) {
         dispatch(loadInstitutionPending());
-        axiosBackend.get(`${API_URL}/rest/institutions/${key}`).then((response) => {
+        return axiosBackend.get(`${API_URL}/rest/institutions/${key}`).then((response) => {
             dispatch(loadInstitutionSuccess(response.data));
         }).catch((error) => {
             dispatch(loadInstitutionError(error.response.data));

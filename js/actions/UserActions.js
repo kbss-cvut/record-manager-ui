@@ -5,6 +5,8 @@ import {loadUsers} from "./UsersActions";
 import {API_URL, getEnv} from '../../config';
 import {transitionToHome} from "../utils/Routing";
 import {getOidcToken, isAdmin, saveOidcToken} from "../utils/SecurityUtils";
+import {publishMessage} from "./MessageActions";
+import {errorMessage, successMessage} from "../model/Message";
 
 export function createUser(user) {
     //console.log("Creating user: ", user);
@@ -70,9 +72,9 @@ export function unloadSavedUser() {
 
 export function deleteUser(user, institution = null) {
     //console.log("Deleting user: ", user);
-    return function (dispatch) {
+    return function (dispatch, getState) {
         dispatch(deleteUserPending(user.username));
-        axiosBackend.delete(`${API_URL}/rest/users/${user.username}`, {
+        return axiosBackend.delete(`${API_URL}/rest/users/${user.username}`, {
             ...user
         }).then(() => {
             if (institution) {
@@ -81,8 +83,10 @@ export function deleteUser(user, institution = null) {
                 dispatch(loadUsers());
             }
             dispatch(deleteUserSuccess(user));
+            dispatch(publishMessage(successMessage("user.delete-success")));
         }).catch((error) => {
             dispatch(deleteUserError(error.response.data, user));
+            dispatch(publishMessage(errorMessage('user.delete-error', {error: getState().intl.messages[error.response.data.message]})));
         });
     }
 }
@@ -151,10 +155,11 @@ export function loadInstitutionMembers(key) {
     //console.log("Loading members of institution", key);
     return function (dispatch) {
         dispatch(loadInstitutionMembersPending());
-        axiosBackend.get(`${API_URL}/rest/users?institution=${key}`).then((response) => {
+        return axiosBackend.get(`${API_URL}/rest/users?institution=${key}`).then((response) => {
             dispatch(loadInstitutionMembersSuccess(response.data));
         }).catch((error) => {
             dispatch(loadInstitutionMembersError(error.response.data));
+            dispatch(publishMessage(errorMessage('institution.members.loading-error', {error: error.response.data.message})));
         });
     }
 }
