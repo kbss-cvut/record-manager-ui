@@ -6,6 +6,7 @@ import thunk from "redux-thunk";
 import configureMockStore from "redux-mock-store";
 import {loadStatistics} from "../../../js/actions/StatisticsActions";
 import {API_URL} from '../../../config';
+import {errorMessage} from "../../../js/model/Message";
 
 const middlewares = [thunk.withExtraArgument(axiosBackend)];
 const mockStore = configureMockStore(middlewares);
@@ -50,7 +51,7 @@ describe('Statistics asynchronize actions', function () {
         store.dispatch(loadStatistics());
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 2)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });

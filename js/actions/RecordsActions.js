@@ -5,7 +5,7 @@ import {API_URL} from '../../config';
 import {asyncError, asyncRequest, asyncSuccess} from "./AsyncActionUtils";
 import {fileDownload} from "../utils/Utils";
 import {publishMessage} from "./MessageActions";
-import Message, {MessageType} from "../model/Message";
+import {errorMessage, infoMessage, successMessage} from "../model/Message";
 
 export function loadRecords(currentUser, institutionKey = null) {
     //console.log("Loading records");
@@ -72,30 +72,16 @@ export function importRecords(file) {
             dispatch(asyncSuccess(ActionConstants.IMPORT_RECORDS_SUCCESS));
             dispatch(loadRecords(getState().auth.user));
             if (resp.data.importedCount < resp.data.totalCount) {
-                dispatch(publishMessage(new Message({
-                    messageId: "records.import.partialSuccess.message",
-                    values: {
-                        importedCount: resp.data.importedCount,
-                        totalCount: resp.data.totalCount
-                    },
-                    type: MessageType.INFO
-                })))
+                dispatch(publishMessage(infoMessage("records.import.partialSuccess.message", {
+                    importedCount: resp.data.importedCount,
+                    totalCount: resp.data.totalCount
+                })));
             } else {
-                dispatch(publishMessage(new Message({
-                    messageId: "records.import.success.message",
-                    values: {
-                        importedCount: resp.data.importedCount
-                    },
-                    type: MessageType.SUCCESS
-                })))
+                dispatch(publishMessage(successMessage("records.import.success.message", {importedCount: resp.data.importedCount})));
             }
-        })
-            .catch(error => {
-                dispatch(publishMessage(new Message({
-                    messageId: "records.import.error.message",
-                    type: MessageType.ERROR
-                })))
-                return dispatch(asyncError(ActionConstants.IMPORT_RECORDS_ERROR, error.response.data));
-            });
+        }).catch(error => {
+            dispatch(errorMessage("records.import.error.message"));
+            return dispatch(asyncError(ActionConstants.IMPORT_RECORDS_ERROR, error.response.data));
+        });
     };
 }

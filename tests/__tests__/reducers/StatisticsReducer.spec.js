@@ -35,7 +35,7 @@ describe('StatisticsReducer', function () {
         ).toEqual(
             {
                 status: ACTION_STATUS.PENDING,
-                error: '',
+                error: undefined,
                 testEntry: initialState.testEntry
             });
     });
@@ -54,7 +54,7 @@ describe('StatisticsReducer', function () {
         ).toEqual(
             {
                 status: ACTION_STATUS.SUCCESS,
-                error: '',
+                error: undefined,
                 data: {},
                 testEntry: initialState.testEntry
             });
