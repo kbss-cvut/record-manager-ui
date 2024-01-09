@@ -79,6 +79,7 @@ services:
   db-server:
     build:
       context: ../shared/db-server
+    image: ${RECORD_SET_NAME:-rm}-db-server
     container_name: ${RECORD_SET_NAME:-rm}-db-server
     environment:
       GDB_JAVA_OPTS: "-Dgraphdb.external-url=${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${RECORD_MANAGER_ROOT_PATH:-/record-manager}/services/db-server"
