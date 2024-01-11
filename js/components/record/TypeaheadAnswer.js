@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Constants, JsonLdObjectUtils} from "@kbss-cvut/s-forms";
-import JsonLdUtils from "jsonld-utils";
+import * as JsonLdUtils from "jsonld-utils";
 import Select from 'react-select';
 import {axiosBackend} from "../../actions";
 import PropTypes from "prop-types";
