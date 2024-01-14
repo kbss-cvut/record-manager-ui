@@ -1,14 +1,17 @@
 import * as ActionConstants from "../constants/ActionConstants";
 import {axiosBackend} from "./index";
 import {API_URL} from '../../config';
+import {publishMessage} from "./MessageActions";
+import {errorMessage} from "../model/Message";
 
 export function loadUsers() {
     return function (dispatch) {
         dispatch(loadUsersPending());
-        axiosBackend.get(`${API_URL}/rest/users`).then((response) => {
+        return axiosBackend.get(`${API_URL}/rest/users`).then((response) => {
             dispatch(loadUsersSuccess(response.data));
         }).catch((error) => {
             dispatch(loadUsersError(error.response.data));
+            dispatch(publishMessage(errorMessage('users.loading-error', {error: error.response.data.message})));
         });
     }
 }
