@@ -17,7 +17,7 @@ describe('History asynchronize actions', function () {
             "message": "An error has occurred.",
         }, key = "12345",
         action = {type: 'TEST_ACTION'},
-        actions = [action, action];;
+        actions = [action, action];
 
     beforeEach(() => {
         mockApi = new MockAdapter(axiosBackend);
@@ -83,7 +83,7 @@ describe('History asynchronize actions', function () {
         store.dispatch(loadActions(1, null));
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 2)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });

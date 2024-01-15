@@ -35,10 +35,11 @@ export function loadActions(pageNumber, searchData) {
     }
     return function (dispatch) {
         dispatch({type: ActionConstants.LOAD_ACTIONS_HISTORY_PENDING});
-        axiosBackend.get(`${API_URL}/${URL_PREFIX}${urlSuffix}`).then((response) => {
+        return axiosBackend.get(`${API_URL}/${URL_PREFIX}${urlSuffix}`).then((response) => {
             dispatch({type: ActionConstants.LOAD_ACTIONS_HISTORY_SUCCESS, actionsHistory: response.data});
         }).catch((error) => {
             dispatch({type: ActionConstants.LOAD_ACTIONS_HISTORY_ERROR, error: error.response.data});
+            dispatch(publishMessage(errorMessage('history.loading-error', {error: error.response.data.message})));
         });
     }
 }
