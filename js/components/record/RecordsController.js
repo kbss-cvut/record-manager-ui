@@ -14,6 +14,7 @@ import {deleteRecord, updateRecord} from "../../actions/RecordActions";
 import {loadFormTemplates} from "../../actions/FormTemplatesActions";
 import {extractQueryParam} from "../../utils/Utils"
 import {RECORD_PHASE} from "../../constants/DefaultConstants";
+import {trackPromise} from "react-promise-tracker";
 
 class RecordsController extends React.Component {
     constructor(props) {
@@ -24,7 +25,7 @@ class RecordsController extends React.Component {
     }
 
     componentDidMount() {
-        this.props.loadRecords(this.props.currentUser);
+        trackPromise(this.props.loadRecords(this.props.currentUser), "records");
         this.props.loadFormTemplates();
     }
 

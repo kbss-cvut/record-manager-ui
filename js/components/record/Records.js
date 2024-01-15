@@ -1,5 +1,3 @@
-'use strict';
-
 import React from "react";
 import {Button, Card} from "react-bootstrap";
 import {injectIntl} from "react-intl";
@@ -7,7 +5,6 @@ import withI18n from "../../i18n/withI18n";
 import RecordTable from "./RecordTable";
 import {ACTION_STATUS, ALERT_TYPES, EXTENSION_CONSTANTS} from "../../constants/DefaultConstants";
 import AlertMessage from "../AlertMessage";
-import {LoaderSmall} from "../Loader";
 import PropTypes from "prop-types";
 import {processTypeaheadOptions} from "./TypeaheadAnswer";
 import {EXTENSIONS} from "../../../config";
@@ -74,11 +71,9 @@ class Records extends React.Component {
             <PromiseTrackingMask area="records"/>
             <Card.Header className="text-light bg-primary" as="h6">
                 {this._getPanelTitle()}
-                {recordsLoaded.records && recordsLoaded.status === ACTION_STATUS.PENDING &&
-                    <LoaderSmall/>}
             </Card.Header>
             <Card.Body>
-                <RecordTable {...this.props}/>
+                {recordsLoaded.records && <RecordTable {...this.props}/>}
                 <ImportRecordsDialog show={this.state.showImportDialog} onSubmit={this.onImport}
                                      onCancel={this.closeImportDialog}/>
                 <div className="d-flex justify-content-between">

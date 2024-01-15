@@ -126,7 +126,7 @@ describe('Records asynchronize actions', function () {
         store.dispatch(loadRecords(admin));
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 2)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });

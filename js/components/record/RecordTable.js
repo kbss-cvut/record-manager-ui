@@ -1,17 +1,13 @@
-'use strict';
-
 import React from "react";
 import {Table} from "react-bootstrap";
 import DeleteItemDialog from "../DeleteItemDialog";
 import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
-import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
 import RecordRow from "./RecordRow";
-import AlertMessage from "../AlertMessage";
-import Loader from "../Loader";
 import PropTypes from "prop-types";
 import {processTypeaheadOptions} from "./TypeaheadAnswer";
 import {isAdmin} from "../../utils/SecurityUtils";
+import {sanitizeArray} from "../../utils/Utils";
 
 class RecordTable extends React.Component {
     static propTypes = {
@@ -52,19 +48,12 @@ class RecordTable extends React.Component {
     };
 
     render() {
-        const {recordsLoaded} = this.props;
-        if (!recordsLoaded.records && (!recordsLoaded.status || recordsLoaded.status === ACTION_STATUS.PENDING)) {
-            return <Loader/>
-        } else if (recordsLoaded.status === ACTION_STATUS.ERROR) {
-            return <AlertMessage type={ALERT_TYPES.DANGER}
-                                 message={this.props.formatMessage('records.loading-error', {error: recordsLoaded.error.message})}/>
-        }
         const filteredRecords = this._getFormTemplateRecords();
         return <div>
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
                               show={this.state.showDialog} item={this.state.selectedRecord}
                               itemLabel={this._getDeleteLabel()}/>
-            {filteredRecords.length > 0 ?
+            {sanitizeArray(filteredRecords).length > 0 ?
                 <Table size="sm" responsive striped bordered hover>
                     {this._renderHeader()}
                     <tbody>
@@ -90,7 +79,7 @@ class RecordTable extends React.Component {
             }
             <th className='w-25 content-center'>{this.i18n('records.local-name')}</th>
             {(admin)
-                  && <th className='w-25 content-center'>{this.i18n('institution.panel-title')}</th>
+                && <th className='w-25 content-center'>{this.i18n('institution.panel-title')}</th>
             }
             {(admin)
                 && <th className='w-25 content-center'>{this.i18n('records.form-template')}</th>
@@ -113,7 +102,7 @@ class RecordTable extends React.Component {
                                  formTemplateOptions={formTemplateOptions}
                                  currentUser={this.props.currentUser}
                                  disableDelete={this.props.disableDelete} deletionLoading={!this.props.disableDelete &&
-            !!(recordsDeleting.includes(filteredRecords[i].key))}/>);
+                !!(recordsDeleting.includes(filteredRecords[i].key))}/>);
         }
         return rows;
     }

@@ -8,7 +8,6 @@ import {publishMessage} from "./MessageActions";
 import {errorMessage, infoMessage, successMessage} from "../model/Message";
 
 export function loadRecords(currentUser, institutionKey = null) {
-    //console.log("Loading records");
     let urlSuffix = '';
     if (institutionKey) {
         urlSuffix = `?institution=${institutionKey}`;
@@ -17,10 +16,11 @@ export function loadRecords(currentUser, institutionKey = null) {
     }
     return function (dispatch) {
         dispatch(loadRecordsPending());
-        axiosBackend.get(`${API_URL}/rest/records${urlSuffix}`).then((response) => {
+        return axiosBackend.get(`${API_URL}/rest/records${urlSuffix}`).then((response) => {
             dispatch(loadRecordsSuccess(response.data));
         }).catch((error) => {
             dispatch(loadRecordsError(error.response.data));
+            dispatch(publishMessage(errorMessage('records.loading-error', {error: error.response.data.message})));
         });
     }
 }
@@ -80,7 +80,7 @@ export function importRecords(file) {
                 dispatch(publishMessage(successMessage("records.import.success.message", {importedCount: resp.data.importedCount})));
             }
         }).catch(error => {
-            dispatch(errorMessage("records.import.error.message"));
+            dispatch(publishMessage(errorMessage("records.import.error.message")));
             return dispatch(asyncError(ActionConstants.IMPORT_RECORDS_ERROR, error.response.data));
         });
     };
