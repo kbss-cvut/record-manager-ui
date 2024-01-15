@@ -3,8 +3,7 @@ import {Button, Card} from "react-bootstrap";
 import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import RecordTable from "./RecordTable";
-import {ACTION_STATUS, ALERT_TYPES, EXTENSION_CONSTANTS} from "../../constants/DefaultConstants";
-import AlertMessage from "../AlertMessage";
+import {EXTENSION_CONSTANTS} from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
 import {processTypeaheadOptions} from "./TypeaheadAnswer";
 import {EXTENSIONS} from "../../../config";
@@ -22,7 +21,6 @@ class Records extends React.Component {
         recordsLoaded: PropTypes.object,
         recordDeleted: PropTypes.object,
         recordsDeleting: PropTypes.array,
-        showAlert: PropTypes.bool.isRequired,
         handlers: PropTypes.object.isRequired,
         currentUser: PropTypes.object.isRequired,
         formTemplatesLoaded: PropTypes.object.isRequired,
@@ -51,7 +49,7 @@ class Records extends React.Component {
     }
 
     render() {
-        const {showAlert, recordDeleted, formTemplate, recordsLoaded} = this.props;
+        const {formTemplate, recordsLoaded} = this.props;
         const showCreateButton = STUDY_CREATE_AT_MOST_ONE_RECORD
             ? (!recordsLoaded.records || (recordsLoaded.records.length < 1))
             : true;
@@ -95,11 +93,6 @@ class Records extends React.Component {
                     </div>
                     <ExportRecordsDropdown onExport={this.props.handlers.onExport} records={recordsLoaded.records}/>
                 </div>
-                {showAlert && recordDeleted.status === ACTION_STATUS.ERROR &&
-                    <AlertMessage type={ALERT_TYPES.DANGER}
-                                  message={this.props.formatMessage('record.delete-error', {error: this.i18n(this.props.recordDeleted.error.message)})}/>}
-                {showAlert && recordDeleted.status === ACTION_STATUS.SUCCESS &&
-                    <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('record.delete-success')}/>}
             </Card.Body>
         </Card>;
     }

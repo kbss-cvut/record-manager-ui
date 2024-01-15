@@ -19,9 +19,6 @@ import {trackPromise} from "react-promise-tracker";
 class RecordsController extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            showAlert: false
-        };
     }
 
     componentDidMount() {
@@ -51,8 +48,7 @@ class RecordsController extends React.Component {
     };
 
     _onDeleteRecord = (record) => {
-        this.props.deleteRecord(record, this.props.currentUser);
-        this.setState({showAlert: true});
+        trackPromise(this.props.deleteRecord(record, this.props.currentUser), "records");
     };
 
     _onPublishRecords = async () => {
@@ -75,11 +71,11 @@ class RecordsController extends React.Component {
     };
 
     _onExportRecords = (exportType) => {
-        this.props.exportRecords(exportType);
+        trackPromise(this.props.exportRecords(exportType), "records");
     };
 
     _onImportRecords = (file) => {
-        return this.props.importRecords(file);
+        trackPromise(this.props.importRecords(file), "records");
     };
 
     render() {
@@ -96,7 +92,7 @@ class RecordsController extends React.Component {
             onExport: this._onExportRecords,
             onImport: this._onImportRecords
         };
-        return <Records recordsLoaded={recordsLoaded} showAlert={this.state.showAlert} handlers={handlers}
+        return <Records recordsLoaded={recordsLoaded} handlers={handlers}
                         recordDeleted={recordDeleted} recordsDeleting={recordsDeleting} currentUser={currentUser}
                         formTemplate={formTemplate}
                         formTemplatesLoaded={formTemplatesLoaded}/>;

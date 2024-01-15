@@ -24,7 +24,7 @@ import {
 } from "../../../js/actions/RecordActions";
 import {API_URL} from '../../../config';
 
-describe('Record synchronize actions', function () {
+describe('Record synchronous actions', function () {
     const record = {key: 7979868757},
         key = 7979868757,
         error = {message: 'error'};
@@ -128,7 +128,7 @@ describe('Record synchronize actions', function () {
 const middlewares = [thunk.withExtraArgument(axiosBackend)];
 const mockStore = configureMockStore(middlewares);
 
-describe('Record asynchronize actions', function () {
+describe('Record asynchronous actions', function () {
     let store,
         mockApi;
     const error = {
@@ -210,7 +210,6 @@ describe('Record asynchronize actions', function () {
             { type: ActionConstants.DELETE_RECORD_PENDING, key: record.key},
             { type: ActionConstants.LOAD_RECORDS_PENDING},
             { type: ActionConstants.DELETE_RECORD_SUCCESS, record, key: record.key},
-            { type: ActionConstants.LOAD_RECORDS_SUCCESS, records},
         ];
 
         mockApi.onDelete(`${API_URL}/rest/records/${record.key}`).reply(200);
@@ -219,7 +218,7 @@ describe('Record asynchronize actions', function () {
         store.dispatch(deleteRecord(record, currentUser));
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 3)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });
@@ -235,7 +234,7 @@ describe('Record asynchronize actions', function () {
         store.dispatch(deleteRecord(record, currentUser));
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 2)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });

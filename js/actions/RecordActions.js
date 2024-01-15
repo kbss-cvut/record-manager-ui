@@ -4,18 +4,21 @@ import {axiosBackend} from "./index";
 import * as Utils from "../utils/Utils";
 import {loadRecords} from "./RecordsActions";
 import {API_URL} from '../../config';
+import {publishMessage} from "./MessageActions";
+import {errorMessage, successMessage} from "../model/Message";
 
 export function deleteRecord(record, currentUser) {
-    //console.log("Deleting record: ", record);
     return function (dispatch) {
         dispatch(deleteRecordPending(record.key));
-        axiosBackend.delete(`${API_URL}/rest/records/${record.key}`, {
+        return axiosBackend.delete(`${API_URL}/rest/records/${record.key}`, {
             ...record
         }).then(() => {
             dispatch(loadRecords(currentUser));
             dispatch(deleteRecordSuccess(record, record.key));
+            dispatch(publishMessage(successMessage("record.delete-success")));
         }).catch((error) => {
             dispatch(deleteRecordError(error.response.data, record, record.key));
+            dispatch(publishMessage(errorMessage('record.delete-error', {error: error.response.data.message})));
         });
     }
 }
@@ -48,7 +51,7 @@ export function loadRecord(key) {
     //console.log("Loading record with key: ", key);
     return function (dispatch) {
         dispatch(loadRecordPending());
-        axiosBackend.get(`${API_URL}/rest/records/${key}`).then((response) => {
+        return axiosBackend.get(`${API_URL}/rest/records/${key}`).then((response) => {
             dispatch(loadRecordSuccess(response.data));
         }).catch((error) => {
             dispatch(loadRecordError(error.response.data));
@@ -86,7 +89,7 @@ export function createRecord(record, currentUser) {
     //console.log("Creating record: ", record);
     return function (dispatch) {
         dispatch(saveRecordPending(ACTION_FLAG.CREATE_ENTITY));
-        axiosBackend.post(`${API_URL}/rest/records`, {
+        return axiosBackend.post(`${API_URL}/rest/records`, {
             ...record
         }).then((response) => {
             const key = Utils.extractKeyFromLocationHeader(response);
@@ -102,9 +105,9 @@ export function updateRecord(record, currentUser) {
     //console.log("Updating record: ", record);
     return function (dispatch) {
         dispatch(saveRecordPending(ACTION_FLAG.UPDATE_ENTITY));
-        axiosBackend.put(`${API_URL}/rest/records/${record.key}`, {
+        return axiosBackend.put(`${API_URL}/rest/records/${record.key}`, {
             ...record
-        }).then((response) => {
+        }).then(() => {
             dispatch(saveRecordSuccess(record, null, ACTION_FLAG.UPDATE_ENTITY));
             dispatch(loadRecords(currentUser));
         }).catch((error) => {
