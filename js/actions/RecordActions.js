@@ -6,7 +6,7 @@ import {loadRecords} from "./RecordsActions";
 import {API_URL} from '../../config';
 import {publishMessage} from "./MessageActions";
 import {errorMessage, successMessage} from "../model/Message";
-import {showServerResponseErrorMessage} from "./AsyncActionUtils";
+import {asyncError, asyncRequest, asyncSuccess, showServerResponseErrorMessage} from "./AsyncActionUtils";
 
 export function deleteRecord(record, currentUser) {
     return function (dispatch) {
@@ -150,20 +150,18 @@ export function unloadSavedRecord() {
     }
 }
 
-export function loadFormgen(status, error = null) {
-    switch (status) {
-        case ACTION_STATUS.PENDING:
-            return {
-                type: ActionConstants.LOAD_FORMGEN_PENDING
-            };
-        case ACTION_STATUS.SUCCESS:
-            return {
-                type: ActionConstants.LOAD_FORMGEN_SUCCESS
-            };
-        case ACTION_STATUS.ERROR:
-            return {
-                type: ActionConstants.LOAD_FORMGEN_ERROR,
-                error
-            }
+export function loadFormgen(record) {
+    return dispatch => {
+        dispatch(asyncRequest(ActionConstants.LOAD_FORMGEN_PENDING));
+        return axiosBackend.post(`${API_URL}/rest/formGen`, record)
+            .then(resp => {
+                dispatch(asyncSuccess(ActionConstants.LOAD_FORMGEN_SUCCESS));
+                return Promise.resolve(resp.data);
+            })
+            .catch(error => {
+                dispatch(asyncError(ActionConstants.LOAD_FORMGEN_ERROR, error));
+                dispatch(showServerResponseErrorMessage(error, 'record.load-form-error'));
+                return Promise.reject(error);
+            })
     }
 }
