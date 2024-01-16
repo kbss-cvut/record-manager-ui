@@ -6,10 +6,10 @@ import {API_URL, getEnv} from '../../config';
 import {transitionToHome} from "../utils/Routing";
 import {getOidcToken, isAdmin, saveOidcToken} from "../utils/SecurityUtils";
 import {publishMessage} from "./MessageActions";
-import {errorMessage, successMessage} from "../model/Message";
+import {successMessage} from "../model/Message";
+import {showServerResponseErrorMessage} from "./AsyncActionUtils";
 
 export function createUser(user) {
-    //console.log("Creating user: ", user);
     return function (dispatch) {
         dispatch(saveUserPending(ACTION_FLAG.CREATE_ENTITY));
         axiosBackend.post(`${API_URL}/rest/users`, {
@@ -24,7 +24,6 @@ export function createUser(user) {
 }
 
 export function updateUser(user, currentUser, sendEmail = true) {
-    //console.log("Updating user: ", user);
     return function (dispatch) {
         dispatch(saveUserPending(ACTION_FLAG.UPDATE_ENTITY));
         axiosBackend.put(`${API_URL}/rest/users/${user.username}${!sendEmail ? '?email=false' : ''}`, {
@@ -34,8 +33,10 @@ export function updateUser(user, currentUser, sendEmail = true) {
             if (isAdmin(currentUser)) {
                 dispatch(loadUsers());
             }
+            dispatch(publishMessage(successMessage(sendEmail ? 'user.save-success-with-email' : 'user.save-success')));
         }).catch((error) => {
             dispatch(saveUserError(error.response.data, user, ACTION_FLAG.UPDATE_ENTITY));
+            dispatch(showServerResponseErrorMessage(error, 'user.save-error'));
         });
     }
 }
@@ -71,8 +72,7 @@ export function unloadSavedUser() {
 }
 
 export function deleteUser(user, institution = null) {
-    //console.log("Deleting user: ", user);
-    return function (dispatch, getState) {
+    return function (dispatch) {
         dispatch(deleteUserPending(user.username));
         return axiosBackend.delete(`${API_URL}/rest/users/${user.username}`, {
             ...user
@@ -86,7 +86,7 @@ export function deleteUser(user, institution = null) {
             dispatch(publishMessage(successMessage("user.delete-success")));
         }).catch((error) => {
             dispatch(deleteUserError(error.response.data, user));
-            dispatch(publishMessage(errorMessage('user.delete-error', {error: getState().intl.messages[error.response.data.message]})));
+            dispatch(showServerResponseErrorMessage(error, "user.delete-error"));
         });
     }
 }
@@ -117,10 +117,11 @@ export function loadUser(username) {
     //console.log("Loading user with username: ", username);
     return function (dispatch) {
         dispatch(loadUserPending());
-        axiosBackend.get(`${API_URL}/rest/users/${username}`).then((response) => {
+        return axiosBackend.get(`${API_URL}/rest/users/${username}`).then((response) => {
             dispatch(loadUserSuccess(response.data));
         }).catch((error) => {
             dispatch(loadUserError(error.response.data));
+            dispatch(showServerResponseErrorMessage(error, 'user.load-error'));
         });
     }
 }
@@ -159,7 +160,7 @@ export function loadInstitutionMembers(key) {
             dispatch(loadInstitutionMembersSuccess(response.data));
         }).catch((error) => {
             dispatch(loadInstitutionMembersError(error.response.data));
-            dispatch(publishMessage(errorMessage('institution.members.loading-error', {error: error.response.data.message})));
+            dispatch(showServerResponseErrorMessage(error, 'institution.members.loading-error'));
         });
     }
 }
@@ -237,9 +238,11 @@ export function sendInvitation(username) {
         axiosBackend.put(`${API_URL}/rest/users/send-invitation/${username}`).then(() => {
             dispatch({type: ActionConstants.SEND_INVITATION_SUCCESS, username});
             dispatch(loadUser(username));
+            dispatch(publishMessage(successMessage("user.send-invitation-success")));
         }).catch((error) => {
             dispatch({type: ActionConstants.SEND_INVITATION_ERROR, error: error.response.data});
             dispatch(loadUser(username));
+            dispatch(showServerResponseErrorMessage(error, 'user.send-invitation-error'));
         });
     }
 }
@@ -250,9 +253,11 @@ export function deleteInvitationOption(username) {
         axiosBackend.post(`${API_URL}/rest/users/send-invitation/delete`, username, {headers: {"Content-Type": "text/plain"}}).then(() => {
             dispatch({type: ActionConstants.INVITATION_OPTION_DELETE_SUCCESS, username});
             dispatch(loadUser(username));
+            dispatch(publishMessage(successMessage("user.delete-invitation-option-success")));
         }).catch((error) => {
             dispatch({type: ActionConstants.INVITATION_OPTION_DELETE_ERROR, error: error.response.data});
             dispatch(loadUser(username));
+            dispatch(showServerResponseErrorMessage(error, 'user.delete-invitation-option-error'));
         });
     }
 }
@@ -268,6 +273,7 @@ export function impersonate(username) {
             window.location.reload();
         }).catch((error) => {
             dispatch({type: ActionConstants.IMPERSONATE_ERROR, error: error.response.data});
+            dispatch(showServerResponseErrorMessage(error, 'user.impersonate-error'));
         });
     }
 }

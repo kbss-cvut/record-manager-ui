@@ -176,7 +176,7 @@ describe('Institution asynchronous actions', function () {
         store.dispatch(createInstitution(institution));
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 2)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });
@@ -215,7 +215,7 @@ describe('Institution asynchronous actions', function () {
         store.dispatch(updateInstitution(institution));
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 2)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });

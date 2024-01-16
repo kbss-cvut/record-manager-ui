@@ -1,9 +1,8 @@
 import {axiosBackend} from "./index";
 import * as ActionConstants from "../constants/ActionConstants";
-import {omit, startsWith, endsWith} from 'lodash';
+import {endsWith, omit, startsWith} from 'lodash';
 import {API_URL} from '../../config';
-import {publishMessage} from "./MessageActions";
-import {errorMessage} from "../model/Message";
+import {showServerResponseErrorMessage} from "./AsyncActionUtils";
 
 const URL_PREFIX = 'rest/history';
 
@@ -39,7 +38,7 @@ export function loadActions(pageNumber, searchData) {
             dispatch({type: ActionConstants.LOAD_ACTIONS_HISTORY_SUCCESS, actionsHistory: response.data});
         }).catch((error) => {
             dispatch({type: ActionConstants.LOAD_ACTIONS_HISTORY_ERROR, error: error.response.data});
-            dispatch(publishMessage(errorMessage('history.loading-error', {error: error.response.data.message})));
+            dispatch(showServerResponseErrorMessage(error, 'history.loading-error'));
         });
     }
 }
@@ -51,7 +50,7 @@ export function loadActionByKey(key) {
             dispatch({type: ActionConstants.LOAD_ACTION_HISTORY_SUCCESS, actionHistory: response.data});
         }).catch((error) => {
             dispatch({type: ActionConstants.LOAD_ACTION_HISTORY_ERROR, error: error.response.data});
-            dispatch(publishMessage(errorMessage('history.load-error', {error: error.response.data.message})));
+            dispatch(showServerResponseErrorMessage(error, 'history.load-error'));
         });
     }
 }

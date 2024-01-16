@@ -1,8 +1,7 @@
 import * as ActionConstants from "../constants/ActionConstants";
 import {axiosBackend} from "./index";
 import {API_URL} from '../../config';
-import {publishMessage} from "./MessageActions";
-import {errorMessage} from "../model/Message";
+import {showServerResponseErrorMessage} from "./AsyncActionUtils";
 
 export function loadInstitutions() {
     return function (dispatch) {
@@ -11,7 +10,7 @@ export function loadInstitutions() {
             dispatch(loadInstitutionsSuccess(response.data));
         }).catch((error) => {
             dispatch(loadInstitutionsError(error.response.data));
-            dispatch(publishMessage(errorMessage('institutions.loading-error', {error: error.response.data.message})));
+            dispatch(showServerResponseErrorMessage(error, 'institutions.loading-error'));
         });
     }
 }

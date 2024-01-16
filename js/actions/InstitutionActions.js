@@ -6,6 +6,7 @@ import {loadInstitutions} from "./InstitutionsActions";
 import {API_URL} from '../../config';
 import {publishMessage} from "./MessageActions";
 import {errorMessage, successMessage} from "../model/Message";
+import {showServerResponseErrorMessage} from "./AsyncActionUtils";
 
 export function deleteInstitution(institution) {
     return function (dispatch, getState) {
@@ -53,7 +54,7 @@ export function loadInstitution(key) {
             dispatch(loadInstitutionSuccess(response.data));
         }).catch((error) => {
             dispatch(loadInstitutionError(error.response.data));
-            dispatch(publishMessage(errorMessage('institution.load-error', {error: error.response.data.message})));
+            dispatch(showServerResponseErrorMessage(error, 'institution.load-error'));
         });
     }
 }
@@ -97,7 +98,7 @@ export function createInstitution(institution) {
             dispatch(publishMessage(successMessage('institution.save-success')));
         }).catch((error) => {
             dispatch(saveInstitutionError(error.response.data, institution, ACTION_FLAG.CREATE_ENTITY));
-            publishMessage(errorMessage('institution.save-error', {error: error.response.data.message}));
+            dispatch(showServerResponseErrorMessage(error, 'institution.save-error'));
         });
     }
 }
@@ -114,7 +115,7 @@ export function updateInstitution(institution) {
             dispatch(publishMessage(successMessage('institution.save-success')));
         }).catch((error) => {
             dispatch(saveInstitutionError(error.response.data, institution, ACTION_FLAG.UPDATE_ENTITY));
-            publishMessage(errorMessage('institution.save-error', {error: error.response.data.message}));
+            dispatch(showServerResponseErrorMessage(error, 'institution.save-error'));
         });
     }
 }

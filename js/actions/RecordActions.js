@@ -6,6 +6,7 @@ import {loadRecords} from "./RecordsActions";
 import {API_URL} from '../../config';
 import {publishMessage} from "./MessageActions";
 import {errorMessage, successMessage} from "../model/Message";
+import {showServerResponseErrorMessage} from "./AsyncActionUtils";
 
 export function deleteRecord(record, currentUser) {
     return function (dispatch) {
@@ -18,7 +19,7 @@ export function deleteRecord(record, currentUser) {
             dispatch(publishMessage(successMessage("record.delete-success")));
         }).catch((error) => {
             dispatch(deleteRecordError(error.response.data, record, record.key));
-            dispatch(publishMessage(errorMessage('record.delete-error', {error: error.response.data.message})));
+            dispatch(showServerResponseErrorMessage(error, 'record.delete-error'));
         });
     }
 }
@@ -54,7 +55,7 @@ export function loadRecord(key) {
             dispatch(loadRecordSuccess(response.data));
         }).catch((error) => {
             dispatch(loadRecordError(error.response.data));
-            dispatch(publishMessage(errorMessage('record.load-error', {error: error.response.data.message})));
+            dispatch(showServerResponseErrorMessage(error, 'record.load-error'));
         });
     }
 }

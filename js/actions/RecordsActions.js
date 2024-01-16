@@ -2,10 +2,10 @@ import * as ActionConstants from "../constants/ActionConstants";
 import {HttpHeaders, ROLE} from "../constants/DefaultConstants";
 import {axiosBackend} from "./index";
 import {API_URL} from '../../config';
-import {asyncError, asyncRequest, asyncSuccess} from "./AsyncActionUtils";
+import {asyncError, asyncRequest, asyncSuccess, showServerResponseErrorMessage} from "./AsyncActionUtils";
 import {fileDownload} from "../utils/Utils";
 import {publishMessage} from "./MessageActions";
-import {errorMessage, infoMessage, successMessage} from "../model/Message";
+import {infoMessage, successMessage} from "../model/Message";
 
 export function loadRecords(currentUser, institutionKey = null) {
     let urlSuffix = '';
@@ -20,7 +20,7 @@ export function loadRecords(currentUser, institutionKey = null) {
             dispatch(loadRecordsSuccess(response.data));
         }).catch((error) => {
             dispatch(loadRecordsError(error.response.data));
-            dispatch(publishMessage(errorMessage('records.loading-error', {error: error.response.data.message})));
+            dispatch(showServerResponseErrorMessage(error, 'records.loading-error'));
         });
     }
 }
@@ -80,8 +80,8 @@ export function importRecords(file) {
                 dispatch(publishMessage(successMessage("records.import.success.message", {importedCount: resp.data.importedCount})));
             }
         }).catch(error => {
-            dispatch(publishMessage(errorMessage("records.import.error.message")));
-            return dispatch(asyncError(ActionConstants.IMPORT_RECORDS_ERROR, error.response.data));
+            dispatch(asyncError(ActionConstants.IMPORT_RECORDS_ERROR, error.response.data));
+            dispatch(showServerResponseErrorMessage(error, "records.import.error.message"));
         });
     };
 }
