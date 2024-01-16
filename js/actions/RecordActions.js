@@ -48,13 +48,13 @@ export function deleteRecordError(error, record, key) {
 }
 
 export function loadRecord(key) {
-    //console.log("Loading record with key: ", key);
     return function (dispatch) {
         dispatch(loadRecordPending());
         return axiosBackend.get(`${API_URL}/rest/records/${key}`).then((response) => {
             dispatch(loadRecordSuccess(response.data));
         }).catch((error) => {
             dispatch(loadRecordError(error.response.data));
+            dispatch(publishMessage(errorMessage('record.load-error', {error: error.response.data.message})));
         });
     }
 }
@@ -86,8 +86,7 @@ export function unloadRecord() {
 }
 
 export function createRecord(record, currentUser) {
-    //console.log("Creating record: ", record);
-    return function (dispatch) {
+    return function (dispatch, getState) {
         dispatch(saveRecordPending(ACTION_FLAG.CREATE_ENTITY));
         return axiosBackend.post(`${API_URL}/rest/records`, {
             ...record
@@ -95,23 +94,26 @@ export function createRecord(record, currentUser) {
             const key = Utils.extractKeyFromLocationHeader(response);
             dispatch(saveRecordSuccess(record, key, ACTION_FLAG.CREATE_ENTITY));
             dispatch(loadRecords(currentUser));
+            dispatch(publishMessage(successMessage("record.save-success")));
         }).catch((error) => {
             dispatch(saveRecordError(error.response.data, record, ACTION_FLAG.CREATE_ENTITY));
+            dispatch(publishMessage(errorMessage('record.save-error', {error: getState().intl.messages[error.response.data.messageId]})));
         });
     }
 }
 
 export function updateRecord(record, currentUser) {
-    //console.log("Updating record: ", record);
-    return function (dispatch) {
+    return function (dispatch, getState) {
         dispatch(saveRecordPending(ACTION_FLAG.UPDATE_ENTITY));
         return axiosBackend.put(`${API_URL}/rest/records/${record.key}`, {
             ...record
         }).then(() => {
             dispatch(saveRecordSuccess(record, null, ACTION_FLAG.UPDATE_ENTITY));
             dispatch(loadRecords(currentUser));
+            dispatch(publishMessage(successMessage("record.save-success")));
         }).catch((error) => {
             dispatch(saveRecordError(error.response.data, record, ACTION_FLAG.UPDATE_ENTITY));
+            dispatch(publishMessage(errorMessage('record.save-error', {error: getState().intl.messages[error.response.data.messageId]})));
         });
     }
 }
