@@ -6,7 +6,7 @@ import {API_URL, getEnv} from '../../config';
 import {transitionToHome} from "../utils/Routing";
 import {getOidcToken, isAdmin, saveOidcToken} from "../utils/SecurityUtils";
 import {publishMessage} from "./MessageActions";
-import {successMessage} from "../model/Message";
+import {errorMessage, successMessage} from "../model/Message";
 import {showServerResponseErrorMessage} from "./AsyncActionUtils";
 
 export function createUser(user) {
@@ -192,14 +192,16 @@ export function unloadInstitutionMembers() {
 }
 
 export function changePassword(username, password, sendEmail = true) {
-    return function (dispatch) {
+    return function (dispatch, getState) {
         dispatch(changePasswordPending());
         axiosBackend.put(`${API_URL}/rest/users/${username}/password-change${!sendEmail ? '?email=false' : ''}`, {
             ...password
         }).then(() => {
             dispatch(changePasswordSuccess());
+            dispatch(publishMessage(successMessage(sendEmail ? 'user.password-change-success-with-email' : 'user.password-change-success')));
         }).catch((error) => {
             dispatch(changePasswordError(error.response.data));
+            dispatch(publishMessage(errorMessage('user.password-change-error', {error: getState().intl.messages[error.response.data.messageId]})));
         });
     }
 }

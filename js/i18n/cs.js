@@ -230,6 +230,7 @@ export default {
         'or': ' nebo',
         'error.record.localNameOfRecordIsNotUnique': 'Formulářové pole \'Název/Česky\' není unikátní napříč všemi záznamy.',
         'error.record.localNameOfRecordIsEmpty': 'Formulářové pole \'Název/Česky\' je prázdne.',
-        'error.institution.remove.institutionWithMembersOrPatientRecordsCannotBeDeleted': 'Instituci se zaměstnanci nebo se záznamy nelze odstranit.'
+        'error.institution.remove.institutionWithMembersOrPatientRecordsCannotBeDeleted': 'Instituci se zaměstnanci nebo se záznamy nelze odstranit.',
+        'error.password.validation.thePassedUsersCurrentPasswordIsDifferentFromTheSpecifiedOne': "Původní heslo uživatele neodpovídá heslu uloženému."
     }
 };

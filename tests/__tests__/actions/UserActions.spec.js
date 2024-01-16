@@ -373,7 +373,7 @@ describe('User asynchronous actions', function () {
         store.dispatch(changePassword(username, password));
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 2)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });
@@ -389,7 +389,7 @@ describe('User asynchronous actions', function () {
         store.dispatch(changePassword(username, password));
 
         setTimeout(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions().slice(0, 2)).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });

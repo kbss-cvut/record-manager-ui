@@ -230,6 +230,7 @@ export default {
         'or': ' or',
         'error.record.localNameOfRecordIsNotUnique': 'Name is not unique.',
         'error.record.localNameOfRecordIsEmpty': 'Name is empty.',
-        'error.institution.remove.institutionWithMembersOrPatientRecordsCannotBeDeleted': 'Institution with members or patient records cannot be deleted.'
+        'error.institution.remove.institutionWithMembersOrPatientRecordsCannotBeDeleted': 'Institution with members or patient records cannot be deleted.',
+        'error.password.validation.thePassedUsersCurrentPasswordIsDifferentFromTheSpecifiedOne': "The user's current password is different from the specified one."
     }
 };
