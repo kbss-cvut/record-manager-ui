@@ -1,5 +1,5 @@
 import * as ActionConstants from "../constants/ActionConstants";
-import {ACTION_FLAG, ACTION_STATUS} from "../constants/DefaultConstants";
+import {ACTION_FLAG} from "../constants/DefaultConstants";
 import {axiosBackend} from "./index";
 import * as Utils from "../utils/Utils";
 import {loadRecords} from "./RecordsActions";

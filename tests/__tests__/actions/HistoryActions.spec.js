@@ -6,6 +6,8 @@ import thunk from "redux-thunk";
 import configureMockStore from "redux-mock-store";
 import {loadActionByKey, loadActions} from "../../../js/actions/HistoryActions";
 import {API_URL} from '../../../config';
+import {errorMessage} from "../../../js/model/Message";
+import {mockDateNow, restoreDateNow} from "../../environment/Environment";
 
 const middlewares = [thunk.withExtraArgument(axiosBackend)];
 const mockStore = configureMockStore(middlewares);
@@ -22,6 +24,11 @@ describe('History asynchronize actions', function () {
     beforeEach(() => {
         mockApi = new MockAdapter(axiosBackend);
         store = mockStore();
+        mockDateNow();
+    });
+
+    afterEach(() => {
+        restoreDateNow();
     });
 
     xit('creates LOAD_ACTION_HISTORY_SUCCESS action when loading of action is successfully done', function (done) {
@@ -75,7 +82,8 @@ describe('History asynchronize actions', function () {
     it('creates LOAD_ACTIONS_HISTORY_ERROR action if an error occurred during loading of actions', function (done) {
         const expectedActions = [
             {type: ActionConstants.LOAD_ACTIONS_HISTORY_PENDING},
-            {type: ActionConstants.LOAD_ACTIONS_HISTORY_ERROR, error}
+            {type: ActionConstants.LOAD_ACTIONS_HISTORY_ERROR, error},
+            {type: ActionConstants.PUBLISH_MESSAGE, message: errorMessage('history.loading-error', {error: error.message})}
         ];
 
         mockApi.onGet(`${API_URL}/rest/history?page=1`).reply(400, error);
@@ -83,7 +91,7 @@ describe('History asynchronize actions', function () {
         store.dispatch(loadActions(1, null));
 
         setTimeout(() => {
-            expect(store.getActions().slice(0, 2)).toEqual(expectedActions);
+            expect(store.getActions()).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });

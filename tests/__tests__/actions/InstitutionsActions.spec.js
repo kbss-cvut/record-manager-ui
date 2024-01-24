@@ -11,6 +11,8 @@ import {
     loadInstitutionsSuccess
 } from "../../../js/actions/InstitutionsActions";
 import {API_URL} from '../../../config';
+import {mockDateNow, restoreDateNow} from "../../environment/Environment";
+import {errorMessage} from "../../../js/model/Message";
 
 const institutions = [{key: 786785600}, {key: 86875960}];
 
@@ -54,6 +56,11 @@ describe('Institutions asynchronize actions', function () {
     beforeEach(() => {
         mockApi = new MockAdapter(axiosBackend);
         store = mockStore();
+        mockDateNow();
+    });
+
+    afterEach(() => {
+        restoreDateNow();
     });
 
     it('creates LOAD_INSTITUTIONS_SUCCESS action when loading institutions successfully is done', function (done) {
@@ -75,7 +82,8 @@ describe('Institutions asynchronize actions', function () {
     it('creates LOAD_INSTITUTIONS_ERROR action if an error occurred during loading institutions', function (done) {
         const expectedActions = [
             { type: ActionConstants.LOAD_INSTITUTIONS_PENDING},
-            { type: ActionConstants.LOAD_INSTITUTIONS_ERROR, error}
+            { type: ActionConstants.LOAD_INSTITUTIONS_ERROR, error},
+            { type: ActionConstants.PUBLISH_MESSAGE, message: errorMessage('institutions.loading-error', {error: error.message})}
         ];
 
         mockApi.onGet(`${API_URL}/rest/institutions`).reply(400, error);
@@ -83,7 +91,7 @@ describe('Institutions asynchronize actions', function () {
         store.dispatch(loadInstitutions());
 
         setTimeout(() => {
-            expect(store.getActions().slice(0, 2)).toEqual(expectedActions);
+            expect(store.getActions()).toEqual(expectedActions);
             done();
         }, TEST_TIMEOUT);
     });
