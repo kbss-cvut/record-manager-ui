@@ -3,7 +3,7 @@
 import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-dom/test-utils';
-import {ACTION_STATUS, ROLE} from "../../../js/constants/DefaultConstants";
+import {ROLE} from "../../../js/constants/DefaultConstants";
 import PasswordChange from "../../../js/components/user/PasswordChange";
 import * as UserFactory from "../../../js/utils/EntityFactory";
 import enLang from '../../../js/i18n/en';
@@ -13,7 +13,6 @@ describe('PasswordChange', function () {
     let valid,
         match,
         passwordChange,
-        showAlert,
         currentUser,
         currentUserAdmin,
         handlers,
@@ -27,7 +26,6 @@ describe('PasswordChange', function () {
             onChange: jest.fn(),
         };
         valid = true;
-        showAlert = false;
     });
 
     currentUser = {
@@ -54,43 +52,10 @@ describe('PasswordChange', function () {
 
     passwordChange = {};
 
-    it('shows error about password was not changed', function () {
-        showAlert = true;
-        passwordChange = {
-            status: ACTION_STATUS.ERROR,
-            error: {
-                message: "error"
-            }
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <PasswordChange handlers={handlers} currentUser={currentUser} showAlert={showAlert}
-                                valid={valid} passwordChange={passwordChange} match={match}
-                                password={passwordEmpty}/>
-            </IntlProvider>);
-        const alert = TestUtils.findRenderedDOMComponentWithClass(tree, 'alert-danger');
-        expect(alert).not.toBeNull();
-    });
-
-    it("shows alert that password was successfully changed", function () {
-        showAlert = true;
-        passwordChange = {
-            status: ACTION_STATUS.SUCCESS
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <PasswordChange handlers={handlers} currentUser={currentUser} showAlert={showAlert}
-                                valid={valid} passwordChange={passwordChange} match={match}
-                                password={passwordEmpty}/>
-            </IntlProvider>);
-        const alert = TestUtils.findRenderedDOMComponentWithClass(tree, 'alert-success');
-        expect(alert).not.toBeNull();
-    });
-
     it('renders clickable "Save" button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <PasswordChange handlers={handlers} currentUser={currentUser} showAlert={showAlert}
+                <PasswordChange handlers={handlers} currentUser={currentUser}
                                 valid={valid} passwordChange={passwordChange} match={match}
                                 password={passwordFilled}/>
             </IntlProvider>);
@@ -105,7 +70,7 @@ describe('PasswordChange', function () {
     it('renders disabled "Save" button', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <PasswordChange handlers={handlers} currentUser={currentUser} showAlert={showAlert}
+                <PasswordChange handlers={handlers} currentUser={currentUser}
                                 valid={valid} passwordChange={passwordChange} match={match}
                                 password={passwordEmpty}/>
             </IntlProvider>);
@@ -119,7 +84,7 @@ describe('PasswordChange', function () {
         valid = false;
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <PasswordChange handlers={handlers} currentUser={currentUser} showAlert={showAlert}
+                <PasswordChange handlers={handlers} currentUser={currentUser}
                                 valid={valid} passwordChange={passwordChange} match={match}
                                 password={passwordEmpty}/>
             </IntlProvider>);
@@ -130,7 +95,7 @@ describe('PasswordChange', function () {
     it('renders 2 inputs for admin who is changing password to someone else', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <PasswordChange handlers={handlers} currentUser={currentUserAdmin} showAlert={showAlert}
+                <PasswordChange handlers={handlers} currentUser={currentUserAdmin}
                                 valid={valid} passwordChange={passwordChange} match={match}
                                 password={passwordEmpty}/>
             </IntlProvider>);
@@ -141,7 +106,7 @@ describe('PasswordChange', function () {
     it('renders 3 inputs when somebody is changing his password', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <PasswordChange handlers={handlers} currentUser={currentUser} showAlert={showAlert}
+                <PasswordChange handlers={handlers} currentUser={currentUser}
                                 valid={valid} passwordChange={passwordChange} match={match}
                                 password={passwordEmpty}/>
             </IntlProvider>);
@@ -152,7 +117,7 @@ describe('PasswordChange', function () {
     it('renders "Cancel" button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <PasswordChange handlers={handlers} currentUser={currentUser} showAlert={showAlert}
+                <PasswordChange handlers={handlers} currentUser={currentUser}
                                 valid={valid} passwordChange={passwordChange} match={match}
                                 password={passwordEmpty}/>
             </IntlProvider>);

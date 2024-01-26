@@ -225,11 +225,12 @@ export default {
         'The passed username already exists.': 'The passed username already exists.',
         'User with specified username already exists.': 'User with specified username already exists.',
         'Cannot update user.': 'Cannot update user.',
-        'Institution with members or patient records cannot be deleted.': 'Institution with members or records cannot be deleted.',
         'Your browser is not fully supported! Some parts of web may not work properly.': 'Your browser is not fully supported! Some parts of web may not work properly.',
         'We recommend using the latest version of ': 'We recommend using the latest version of ',
         'or': ' or',
         'error.record.localNameOfRecordIsNotUnique': 'Name is not unique.',
-        'error.record.localNameOfRecordIsEmpty': 'Name is empty.'
+        'error.record.localNameOfRecordIsEmpty': 'Name is empty.',
+        'error.institution.remove.institutionWithMembersOrPatientRecordsCannotBeDeleted': 'Institution with members or patient records cannot be deleted.',
+        'error.password.validation.thePassedUsersCurrentPasswordIsDifferentFromTheSpecifiedOne': "The user's current password is different from the specified one."
     }
 };

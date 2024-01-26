@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-dom/test-utils';
@@ -12,8 +10,6 @@ describe('Users', function () {
     let users,
         usersLoaded,
         usersLoadedEmpty,
-        userDeleted,
-        showAlert,
         handlers;
 
     users = [{
@@ -23,10 +19,6 @@ describe('Users', function () {
     }];
 
     beforeEach(() => {
-        showAlert = false;
-        userDeleted = {
-            status: ACTION_STATUS.SUCCESS
-        };
         handlers = {
             onEdit: jest.fn(),
             onCreate: jest.fn(),
@@ -42,40 +34,10 @@ describe('Users', function () {
         };
     });
 
-    it('shows loader', function () {
-        usersLoaded = {
-            status: ACTION_STATUS.PENDING
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <Users usersLoaded={usersLoaded} showAlert={showAlert}
-                       userDeleted={userDeleted} handlers={handlers}/>
-            </IntlProvider>);
-        const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'loader-spin');
-        expect(result).not.toBeNull();
-    });
-
-    it('shows error about institutions were not loaded', function () {
-        usersLoaded = {
-            status: ACTION_STATUS.ERROR,
-            error: {
-                message: "Error"
-            }
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <Users usersLoaded={usersLoaded} showAlert={showAlert}
-                       userDeleted={userDeleted} handlers={handlers}/>
-            </IntlProvider>);
-        const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
-        expect(alert).not.toBeNull();
-    });
-
     it('renders card with text, that no users were found', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Users usersLoaded={usersLoadedEmpty} showAlert={showAlert}
-                       userDeleted={userDeleted} handlers={handlers}/>
+                <Users usersLoaded={usersLoadedEmpty} handlers={handlers}/>
             </IntlProvider>);
         const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
         expect(cardHeading).not.toBeNull();
@@ -88,8 +50,7 @@ describe('Users', function () {
     it('renders card with table and table headers', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Users usersLoaded={usersLoaded} showAlert={showAlert}
-                       userDeleted={userDeleted} handlers={handlers}/>
+                <Users usersLoaded={usersLoaded} handlers={handlers}/>
             </IntlProvider>);
         const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
         expect(cardHeading).not.toBeNull();
@@ -104,46 +65,12 @@ describe('Users', function () {
     it('renders "Create user" button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Users usersLoaded={usersLoaded} showAlert={showAlert}
-                       userDeleted={userDeleted} handlers={handlers}/>
+                <Users usersLoaded={usersLoaded} handlers={handlers}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
         expect(buttons.length).toEqual(7);
 
         TestUtils.Simulate.click(buttons[6]); // Create User
         expect(handlers.onCreate).toHaveBeenCalled();
-    });
-
-    it('shows successful alert that user was successfully deleted', function () {
-        showAlert = true;
-        userDeleted = {
-            ...userDeleted,
-            status: ACTION_STATUS.SUCCESS
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <Users usersLoaded={usersLoaded} showAlert={showAlert}
-                       userDeleted={userDeleted} handlers={handlers}/>
-            </IntlProvider>);
-        const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-success");
-        expect(alert).not.toBeNull();
-    });
-
-    it('shows unsuccessful alert that user was not deleted', function () {
-        showAlert = true;
-        userDeleted = {
-            ...userDeleted,
-            status: ACTION_STATUS.ERROR,
-            error: {
-                message: "Error"
-            }
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <Users usersLoaded={usersLoaded} showAlert={showAlert}
-                       userDeleted={userDeleted} handlers={handlers}/>
-            </IntlProvider>);
-        const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
-        expect(alert).not.toBeNull();
     });
 });

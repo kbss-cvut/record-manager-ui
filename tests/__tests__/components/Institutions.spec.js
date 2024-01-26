@@ -13,7 +13,6 @@ describe('Institutions', function () {
         institutionsLoadedEmpty,
         institutionDeleted,
         institutions,
-        showAlert,
         handlers;
 
     institutions = [{
@@ -29,7 +28,6 @@ describe('Institutions', function () {
     }];
 
     beforeEach(() => {
-        showAlert = false;
         institutionDeleted = {
             status: ACTION_STATUS.SUCCESS
         };
@@ -48,19 +46,6 @@ describe('Institutions', function () {
         };
     });
 
-    it('shows loader', function () {
-        institutionsLoaded = {
-            status: ACTION_STATUS.PENDING
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <Institutions institutionsLoaded={institutionsLoaded} showAlert={showAlert}
-                              institutionDeleted={institutionDeleted} handlers={handlers}/>
-            </IntlProvider>);
-        const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'loader-spin');
-        expect(result).not.toBeNull();
-    });
-
     it('shows error about institutions were not loaded', function () {
         institutionsLoaded = {
             status: ACTION_STATUS.ERROR,
@@ -70,7 +55,7 @@ describe('Institutions', function () {
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Institutions institutionsLoaded={institutionsLoaded} showAlert={showAlert}
+                <Institutions institutionsLoaded={institutionsLoaded}
                               institutionDeleted={institutionDeleted} handlers={handlers}/>
             </IntlProvider>);
         const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
@@ -80,7 +65,7 @@ describe('Institutions', function () {
     it('renders card with text, that no institutions were found', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Institutions institutionsLoaded={institutionsLoadedEmpty} showAlert={showAlert}
+                <Institutions institutionsLoaded={institutionsLoadedEmpty}
                               institutionDeleted={institutionDeleted} handlers={handlers}/>
             </IntlProvider>);
         const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
@@ -94,7 +79,7 @@ describe('Institutions', function () {
     it('renders card with table and institutions', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Institutions institutionsLoaded={institutionsLoaded} showAlert={showAlert}
+                <Institutions institutionsLoaded={institutionsLoaded}
                               institutionDeleted={institutionDeleted} handlers={handlers}/>
             </IntlProvider>);
         const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
@@ -110,7 +95,7 @@ describe('Institutions', function () {
     it('renders "Create institution" button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Institutions institutionsLoaded={institutionsLoaded} showAlert={showAlert}
+                <Institutions institutionsLoaded={institutionsLoaded}
                               institutionDeleted={institutionDeleted} handlers={handlers}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
@@ -118,36 +103,5 @@ describe('Institutions', function () {
 
         TestUtils.Simulate.click(buttons[6]); // Create Institution
         expect(handlers.onCreate).toHaveBeenCalled();
-    });
-
-    it('renders successful alert that institution was successfully deleted', function () {
-        showAlert = true;
-        institutionDeleted = {
-            status: ACTION_STATUS.SUCCESS
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <Institutions institutionsLoaded={institutionsLoaded} showAlert={showAlert}
-                              institutionDeleted={institutionDeleted} handlers={handlers}/>
-            </IntlProvider>);
-        const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-success");
-        expect(alert).not.toBeNull();
-    });
-
-    it('renders unsuccessful alert that institution was not deleted', function () {
-        showAlert = true;
-        institutionDeleted = {
-            status: ACTION_STATUS.ERROR,
-            error: {
-                message: "Error"
-            }
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <Institutions institutionsLoaded={institutionsLoaded} showAlert={showAlert}
-                              institutionDeleted={institutionDeleted} handlers={handlers}/>
-            </IntlProvider>);
-        const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
-        expect(alert).not.toBeNull();
     });
 });

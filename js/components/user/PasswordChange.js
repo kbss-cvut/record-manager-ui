@@ -1,5 +1,3 @@
-'use strict';
-
 import React from "react";
 import {Button, Card} from "react-bootstrap";
 import withI18n from "../../i18n/withI18n";
@@ -17,7 +15,6 @@ class PasswordChange extends React.Component {
     static propTypes = {
         handlers: PropTypes.object.isRequired,
         currentUser: PropTypes.object.isRequired,
-        showAlert: PropTypes.bool.isRequired,
         passwordChange: PropTypes.object.isRequired,
         match: PropTypes.object.isRequired,
         password: PropTypes.object.isRequired
@@ -26,8 +23,6 @@ class PasswordChange extends React.Component {
     constructor(props) {
         super(props);
         this.i18n = this.props.i18n;
-        this.formatMessage = this.props.formatMessage;
-        this.state = {savedWithEmail: false};
     }
 
     _onChange = (e) => {
@@ -38,16 +33,14 @@ class PasswordChange extends React.Component {
 
     _onSave() {
         this.props.handlers.onSave(this.props.currentUser.username === this.props.match.params.username);
-        this.setState({savedWithEmail: false});
     }
 
     _onSaveWithEmail() {
         this.props.handlers.onSave();
-        this.setState({savedWithEmail: true});
     }
 
     render() {
-        const {handlers, currentUser, showAlert, valid, passwordChange, match, password} = this.props;
+        const {handlers, currentUser, valid, passwordChange, match, password} = this.props;
 
         return <Card variant='primary'>
             <Card.Header className="text-light bg-primary" as="h6">{this.i18n('user.password-change')}</Card.Header>
@@ -110,12 +103,6 @@ class PasswordChange extends React.Component {
                     </div>
                     {!valid &&
                     <AlertMessage type={ALERT_TYPES.DANGER} message={this.i18n('user.password-non-valid')}/>}
-                    {showAlert && passwordChange.status === ACTION_STATUS.ERROR &&
-                    <AlertMessage type={ALERT_TYPES.DANGER}
-                                  message={this.props.formatMessage('user.password-change-error', {error: this.i18n(passwordChange.error.message)})}/>}
-                    {showAlert && passwordChange.status === ACTION_STATUS.SUCCESS &&
-                    <AlertMessage type={ALERT_TYPES.SUCCESS}
-                                  message={this.i18n(this.state.savedWithEmail ? 'user.password-change-success-with-email' : 'user.password-change-success')}/>}
                 </form>
             </Card.Body>
         </Card>;

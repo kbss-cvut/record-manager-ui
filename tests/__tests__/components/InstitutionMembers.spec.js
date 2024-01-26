@@ -77,23 +77,6 @@ describe('InstitutionMembers', function () {
         expect(result).not.toBeNull();
     });
 
-    it('renders unsuccessful alert that members were not loaded', function () {
-        institutionMembers = {
-            status: ACTION_STATUS.ERROR,
-            error: {
-                message: "Error"
-            }
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <InstitutionMembers institution={institution} institutionMembers={institutionMembers}
-                                    onDelete={onDelete} onEditUser={onEditUser} onAddNewUser={onAddNewUser}
-                                    currentUser={admin} userDeleted={userDeleted}/>
-            </IntlProvider>);
-        const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
-        expect(alert).not.toBeNull();
-    });
-
     it('renders card with table and table headers and columns', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>

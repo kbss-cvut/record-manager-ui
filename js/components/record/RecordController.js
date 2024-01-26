@@ -24,6 +24,7 @@ import omit from 'lodash/omit';
 import {extractQueryParam} from "../../utils/Utils";
 import {withRouter} from "react-router-dom";
 import {EXTENSIONS} from "../../../config";
+import {trackPromise} from "react-promise-tracker";
 
 class RecordController extends React.Component {
     constructor(props) {
@@ -95,20 +96,14 @@ class RecordController extends React.Component {
         record.question = this.recordComponent.current.getFormData();
         record.localName = record.localName ? record.localName : this._getLocalName();
         if (record.isNew) {
-            this.props.createRecord(omit(record, 'isNew'), currentUser);
+            trackPromise(this.props.createRecord(omit(record, 'isNew'), currentUser), "record");
         } else {
-            this.props.updateRecord(record, currentUser);
+            trackPromise(this.props.updateRecord(record, currentUser), "record");
         }
     };
 
     _onCancel = () => {
-        // TODO
-        // const handlers = this.props.viewHandlers[Routes.editRecord.name];
-        // if (handlers) {
-        //     transitionTo(handlers.onCancel);
-        // } else {
         this._transitionToRecords();
-        // }
     };
 
     _transitionToRecords() {

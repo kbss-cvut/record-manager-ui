@@ -6,8 +6,10 @@ import {TEST_TIMEOUT} from "../../constants/DefaultTestConstants";
 import {axiosBackend} from "../../../js/actions";
 import {loadUsers, loadUsersError, loadUsersPending, loadUsersSuccess} from "../../../js/actions/UsersActions";
 import {API_URL} from '../../../config';
+import {mockDateNow, restoreDateNow} from "../../environment/Environment";
+import {errorMessage} from "../../../js/model/Message";
 
-describe('Users synchronize actions', function () {
+describe('Users synchronous actions', function () {
     it('creates an action to fetch all users', () => {
         const expectedAction = {
             type: ActionConstants.LOAD_USERS_PENDING,
@@ -37,7 +39,7 @@ describe('Users synchronize actions', function () {
 const middlewares = [thunk.withExtraArgument(axiosBackend)];
 const mockStore = configureMockStore(middlewares);
 
-describe('Users asynchronize actions', function () {
+describe('Users asynchronous actions', function () {
     let store,
         mockApi;
     const users = [{username: 'test1'}, {username: 'test2'}],
@@ -49,6 +51,11 @@ describe('Users asynchronize actions', function () {
     beforeEach(() => {
         mockApi = new MockAdapter(axiosBackend);
         store = mockStore();
+        mockDateNow();
+    });
+
+    afterEach(() => {
+        restoreDateNow();
     });
 
     it('creates LOAD_USERS_SUCCESS action when loading users successfully is done', function (done) {
@@ -70,7 +77,8 @@ describe('Users asynchronize actions', function () {
     it('creates LOAD_USERS_ERROR action if an error occurred during loading users', function (done) {
         const expectedActions = [
             { type: ActionConstants.LOAD_USERS_PENDING},
-            { type: ActionConstants.LOAD_USERS_ERROR, error}
+            { type: ActionConstants.LOAD_USERS_ERROR, error},
+            { type: ActionConstants.PUBLISH_MESSAGE, message: errorMessage('users.loading-error', {error: error.message})}
         ];
 
         mockApi.onGet(`${API_URL}/rest/users`).reply(400, error);

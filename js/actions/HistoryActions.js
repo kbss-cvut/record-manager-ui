@@ -1,7 +1,8 @@
 import {axiosBackend} from "./index";
 import * as ActionConstants from "../constants/ActionConstants";
-import {omit, startsWith, endsWith} from 'lodash';
+import {endsWith, omit, startsWith} from 'lodash';
 import {API_URL} from '../../config';
+import {showServerResponseErrorMessage} from "./AsyncActionUtils";
 
 const URL_PREFIX = 'rest/history';
 
@@ -33,10 +34,11 @@ export function loadActions(pageNumber, searchData) {
     }
     return function (dispatch) {
         dispatch({type: ActionConstants.LOAD_ACTIONS_HISTORY_PENDING});
-        axiosBackend.get(`${API_URL}/${URL_PREFIX}${urlSuffix}`).then((response) => {
+        return axiosBackend.get(`${API_URL}/${URL_PREFIX}${urlSuffix}`).then((response) => {
             dispatch({type: ActionConstants.LOAD_ACTIONS_HISTORY_SUCCESS, actionsHistory: response.data});
         }).catch((error) => {
             dispatch({type: ActionConstants.LOAD_ACTIONS_HISTORY_ERROR, error: error.response.data});
+            dispatch(showServerResponseErrorMessage(error, 'history.loading-error'));
         });
     }
 }
@@ -44,10 +46,11 @@ export function loadActions(pageNumber, searchData) {
 export function loadActionByKey(key) {
     return function (dispatch) {
         dispatch({type: ActionConstants.LOAD_ACTION_HISTORY_PENDING});
-        axiosBackend.get(`${API_URL}/${URL_PREFIX}/${key}`).then((response) => {
+        return axiosBackend.get(`${API_URL}/${URL_PREFIX}/${key}`).then((response) => {
             dispatch({type: ActionConstants.LOAD_ACTION_HISTORY_SUCCESS, actionHistory: response.data});
         }).catch((error) => {
             dispatch({type: ActionConstants.LOAD_ACTION_HISTORY_ERROR, error: error.response.data});
+            dispatch(showServerResponseErrorMessage(error, 'history.load-error'));
         });
     }
 }

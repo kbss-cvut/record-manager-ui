@@ -1,19 +1,17 @@
-'use strict';
-
-import React, {Fragment} from 'react';
+import React from 'react';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import {Card} from "react-bootstrap";
 import {loadActions} from "../../actions/HistoryActions";
 import {bindActionCreators} from "redux";
-import {ACTION_STATUS, ALERT_TYPES, ACTIONS_PER_PAGE} from "../../constants/DefaultConstants";
-import {LoaderCard, LoaderSmall} from "../Loader";
-import AlertMessage from "../AlertMessage";
+import {ACTIONS_PER_PAGE} from "../../constants/DefaultConstants";
 import HistoryTable from "./HistoryTable";
 import Routes from "../../constants/RoutesConstants";
 import {transitionToWithOpts} from "../../utils/Routing";
 import HistoryPagination from "./HistoryPagination";
+import PromiseTrackingMask from "../misc/PromiseTrackingMask";
+import {trackPromise} from "react-promise-tracker";
 
 class HistoryList extends React.Component {
     constructor(props) {
@@ -26,7 +24,7 @@ class HistoryList extends React.Component {
     }
 
     componentDidMount() {
-        this.props.loadActions(1);
+        trackPromise(this.props.loadActions(1), "history");
     }
 
     _onOpen = (key) => {
@@ -68,12 +66,6 @@ class HistoryList extends React.Component {
 
     render() {
         const {actionsLoaded} = this.props;
-        if (!actionsLoaded.actions && (!actionsLoaded.status || actionsLoaded.status === ACTION_STATUS.PENDING)) {
-            return <LoaderCard header={this._renderHeader()}/>;
-        } else if (actionsLoaded.status === ACTION_STATUS.ERROR) {
-            return <AlertMessage type={ALERT_TYPES.DANGER}
-                                 message={this.props.formatMessage('history.loading-error', {error: actionsLoaded.error.message})}/>
-        }
         const handlers = {
             handleSearch: this._handleSearch,
             handleReset: this._handleReset,
@@ -83,22 +75,21 @@ class HistoryList extends React.Component {
         };
         return <Card variant='primary'>
             <Card.Header className="text-light bg-primary" as="h6">
-                {this._renderHeader()}
+                {this.i18n('main.history')}
             </Card.Header>
-            <Card.Body><HistoryTable handlers={handlers} searchData={this.state.searchData}
-                                     actions={actionsLoaded.actions} i18n={this.i18n}/>
-                <HistoryPagination pageNumber={this.state.pageNumber}
-                                   numberOfActions={actionsLoaded.actions.length}
-                                   handlePagination={this._handlePagination}/>
+            <Card.Body>
+                <PromiseTrackingMask area="history"/>
+                {actionsLoaded.actions &&
+                    <>
+                        <HistoryTable handlers={handlers} searchData={this.state.searchData}
+                                      actions={actionsLoaded.actions} i18n={this.i18n}/>
+                        <HistoryPagination pageNumber={this.state.pageNumber}
+                                           numberOfActions={actionsLoaded.actions.length}
+                                           handlePagination={this._handlePagination}/>
+                    </>
+                }
             </Card.Body>
         </Card>
-    }
-
-    _renderHeader = () => {
-        return <Fragment>
-            {this.i18n('main.history')}{this.props.actionsLoaded.status === ACTION_STATUS.PENDING &&
-        <LoaderSmall/>}
-        </Fragment>
     }
 }
 

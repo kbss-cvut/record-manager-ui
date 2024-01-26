@@ -23,8 +23,11 @@ import {
     updateInstitution
 } from "../../../js/actions/InstitutionActions";
 import {API_URL} from '../../../config';
+import en from "../../../js/i18n/en";
+import {errorMessage, successMessage} from "../../../js/model/Message";
+import {mockDateNow, restoreDateNow} from "../../environment/Environment";
 
-describe('Institution synchronize actions', function () {
+describe('Institution synchronous actions', function () {
     const institution = {key: 7979868757},
         key = 7979868757,
         error = {message: 'error'};
@@ -126,7 +129,7 @@ describe('Institution synchronize actions', function () {
 const middlewares = [thunk.withExtraArgument(axiosBackend)];
 const mockStore = configureMockStore(middlewares);
 
-describe('Institution asynchronize actions', function () {
+describe('Institution asynchronous actions', function () {
     let store,
         mockApi;
     const institution = {key: 696875909},
@@ -143,7 +146,12 @@ describe('Institution asynchronize actions', function () {
 
     beforeEach(() => {
         mockApi = new MockAdapter(axiosBackend);
-        store = mockStore([]);
+        store = mockStore({intl: en});
+        mockDateNow();
+    });
+
+    afterEach(() => {
+        restoreDateNow();
     });
 
     it('creates SAVE_INSTITUTION_SUCCESS action when saving institution successfully is done', function (done) {
@@ -151,7 +159,8 @@ describe('Institution asynchronize actions', function () {
             {type: ActionConstants.SAVE_INSTITUTION_PENDING, actionFlag: ACTION_FLAG.CREATE_ENTITY},
             {type: ActionConstants.SAVE_INSTITUTION_SUCCESS, key, actionFlag: ACTION_FLAG.CREATE_ENTITY, institution},
             {type: ActionConstants.LOAD_INSTITUTIONS_PENDING},
-            {type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS, institutions},
+            {type: ActionConstants.PUBLISH_MESSAGE, message: successMessage('institution.save-success')},
+            {type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS, institutions}
         ];
 
         mockApi.onPost(`${API_URL}/rest/institutions`).reply(200, null, {location});
@@ -168,7 +177,8 @@ describe('Institution asynchronize actions', function () {
     it('creates SAVE_INSTITUTION_ERROR action if an error occurred during creating institution', function (done) {
         const expectedActions = [
             {type: ActionConstants.SAVE_INSTITUTION_PENDING, actionFlag: ACTION_FLAG.CREATE_ENTITY},
-            {type: ActionConstants.SAVE_INSTITUTION_ERROR, actionFlag: ACTION_FLAG.CREATE_ENTITY, error, institution}
+            {type: ActionConstants.SAVE_INSTITUTION_ERROR, actionFlag: ACTION_FLAG.CREATE_ENTITY, error, institution},
+            {type: ActionConstants.PUBLISH_MESSAGE, message: errorMessage('institution.save-error', {error: error.message})}
         ];
 
         mockApi.onPost(`${API_URL}/rest/institutions`).reply(400, error);
@@ -191,7 +201,8 @@ describe('Institution asynchronize actions', function () {
                 institution
             },
             {type: ActionConstants.LOAD_INSTITUTIONS_PENDING},
-            {type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS, institutions},
+            {type: ActionConstants.PUBLISH_MESSAGE, message: successMessage('institution.save-success')},
+            {type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS, institutions}
         ];
 
         mockApi.onPut(`${API_URL}/rest/institutions/${institution.key}`).reply(200, null, {location});
@@ -208,7 +219,8 @@ describe('Institution asynchronize actions', function () {
     it('creates SAVE_INSTITUTION_ERROR action if an error occurred during updating institution', function (done) {
         const expectedActions = [
             {type: ActionConstants.SAVE_INSTITUTION_PENDING, actionFlag: ACTION_FLAG.UPDATE_ENTITY},
-            {type: ActionConstants.SAVE_INSTITUTION_ERROR, actionFlag: ACTION_FLAG.UPDATE_ENTITY, error, institution}
+            {type: ActionConstants.SAVE_INSTITUTION_ERROR, actionFlag: ACTION_FLAG.UPDATE_ENTITY, error, institution},
+            {type: ActionConstants.PUBLISH_MESSAGE, message: errorMessage('institution.save-error', {error: error.message})}
         ];
 
         mockApi.onPut(`${API_URL}/rest/institutions/${institution.key}`).reply(400, error);
@@ -226,7 +238,8 @@ describe('Institution asynchronize actions', function () {
             {type: ActionConstants.DELETE_INSTITUTION_PENDING, key: institution.key},
             {type: ActionConstants.LOAD_INSTITUTIONS_PENDING},
             {type: ActionConstants.DELETE_INSTITUTION_SUCCESS, institution},
-            {type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS, institutions},
+            {type: ActionConstants.PUBLISH_MESSAGE, message: successMessage('institution.delete-success')},
+            {type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS, institutions}
         ];
 
         mockApi.onDelete(`${API_URL}/rest/institutions/${institution.key}`).reply(200);
@@ -240,10 +253,11 @@ describe('Institution asynchronize actions', function () {
         }, TEST_TIMEOUT);
     });
 
-    it('creates SAVE_INSTITUTION_ERROR action if an error occurred during updating institution', function (done) {
+    it('creates DELETE_INSTITUTION_ERROR action if an error occurred during institution delete', function (done) {
         const expectedActions = [
             {type: ActionConstants.DELETE_INSTITUTION_PENDING, key: institution.key},
-            {type: ActionConstants.DELETE_INSTITUTION_ERROR, error, institution}
+            {type: ActionConstants.DELETE_INSTITUTION_ERROR, error, institution},
+            {type: ActionConstants.PUBLISH_MESSAGE, message: errorMessage('institution.delete-error', {error: undefined})}
         ];
 
         mockApi.onDelete(`${API_URL}/rest/institutions/${institution.key}`).reply(400, error);
@@ -275,7 +289,8 @@ describe('Institution asynchronize actions', function () {
     it('creates LOAD_INSTITUTION_ERROR action if an error occurred during loading institution', function (done) {
         const expectedActions = [
             {type: ActionConstants.LOAD_INSTITUTION_PENDING},
-            {type: ActionConstants.LOAD_INSTITUTION_ERROR, error}
+            {type: ActionConstants.LOAD_INSTITUTION_ERROR, error},
+            {type: ActionConstants.PUBLISH_MESSAGE, message: errorMessage('institution.load-error', {error: error.message})}
         ];
 
         mockApi.onGet(`${API_URL}/rest/institutions/${institution.key}`).reply(400, error);

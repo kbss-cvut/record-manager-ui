@@ -34,8 +34,7 @@ class UserController extends React.Component {
         super(props);
         this.state = {
             user: this._isNew() ? UserFactory.initNewUser() : null,
-            saved: false,
-            showAlert: false
+            saved: false
         };
         this.institution = this._getPayload();
     }
@@ -51,7 +50,6 @@ class UserController extends React.Component {
             this._onChange({institution: this.institution});
         }
         if (this.props.userSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY && this.props.userSaved.status === ACTION_STATUS.SUCCESS) {
-            this.setState({showAlert: true});
             this.props.unloadSavedUser();
         }
     }
@@ -82,7 +80,7 @@ class UserController extends React.Component {
 
         if (prevProps.match.params.username !== match.params.username) {
             loadUser(match.params.username);
-            this.setState({saved: false, showAlert: false, invited: false, impersonated: false});
+            this.setState({saved: false, invited: false, impersonated: false});
         }
     }
 
@@ -96,7 +94,7 @@ class UserController extends React.Component {
 
     _onSave = (sendEmail = true) => {
         let user = this.state.user;
-        this.setState({saved: true, showAlert: true, invited: false});
+        this.setState({saved: true, invited: false});
         if (user.isNew || (this._isNew() && this.props.userSaved.status === ACTION_STATUS.ERROR)) {
             this.props.createUser(omit(user, 'isNew'));
         } else {
@@ -139,17 +137,17 @@ class UserController extends React.Component {
     }
 
     _sendInvitation = () => {
-        this.setState({deletedInvitation: false, invited: true, showAlert: false});
+        this.setState({deletedInvitation: false, invited: true});
         this.props.sendInvitation(this.state.user.username);
     };
 
     _deleteInvitationOption = () => {
-        this.setState({deletedInvitation: true, invited: false, showAlert: false});
+        this.setState({deletedInvitation: true, invited: false});
         this.props.deleteInvitationOption(this.state.user.username);
     };
 
     _impersonate = () => {
-        this.setState({impersonated: true, showAlert: false});
+        this.setState({impersonated: true});
         if (isUsingOidcAuth()) {
             this.props.oidcImpersonate(this.state.user.username);
         } else {
@@ -183,7 +181,7 @@ class UserController extends React.Component {
             deleteInvitationOption: this._deleteInvitationOption
         };
         return <User user={this.state.user} handlers={handlers} backToInstitution={this.institution !== null}
-                     userSaved={userSaved} showAlert={this.state.showAlert} userLoaded={userLoaded}
+                     userSaved={userSaved} userLoaded={userLoaded}
                      currentUser={currentUser} institutions={institutionsLoaded.institutions || []}
                      invitationSent={invitationSent} invited={this.state.invited} impersonation={impersonation}
                      invitationDelete={invitationDelete} impersonated={this.state.impersonated}
