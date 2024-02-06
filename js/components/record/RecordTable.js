@@ -6,8 +6,9 @@ import withI18n from "../../i18n/withI18n";
 import RecordRow from "./RecordRow";
 import PropTypes from "prop-types";
 import {processTypeaheadOptions} from "./TypeaheadAnswer";
-import {isAdmin} from "../../utils/SecurityUtils";
 import {sanitizeArray} from "../../utils/Utils";
+import {IfGranted} from "react-authorization";
+import {ROLE} from "../../constants/DefaultConstants";
 
 class RecordTable extends React.Component {
     static propTypes = {
@@ -71,19 +72,17 @@ class RecordTable extends React.Component {
     }
 
     _renderHeader() {
-        const admin = isAdmin(this.props.currentUser);
         return <thead>
         <tr>
-            {(admin)
-                && <th className='w-15 content-center'>{this.i18n('records.id')}</th>
-            }
+            <IfGranted expected={ROLE.ADMIN} actual={this.props.currentUser.role}>
+                <th className='w-15 content-center'>{this.i18n('records.id')}</th>
+            </IfGranted>
             <th className='w-25 content-center'>{this.i18n('records.local-name')}</th>
-            {(admin)
-                && <th className='w-25 content-center'>{this.i18n('institution.panel-title')}</th>
-            }
-            {(admin)
-                && <th className='w-25 content-center'>{this.i18n('records.form-template')}</th>
-            }
+            <IfGranted expected={ROLE.ADMIN} actual={this.props.currentUser.role}>
+                <th className='w-25 content-center'>{this.i18n('institution.panel-title')}</th>
+
+                <th className='w-25 content-center'>{this.i18n('records.form-template')}</th>
+            </IfGranted>
             <th className='w-25 content-center'>{this.i18n('records.last-modified')}</th>
             <th className='w-15 content-center'>{this.i18n('records.completion-status')}</th>
             <th className='w-20 content-center'>{this.i18n('actions')}</th>
