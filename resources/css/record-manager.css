@@ -99,7 +99,12 @@ td.actions {
 }
 
 td.actions button {
-    margin: 5px 5px 5px 5px;
+    margin: 5px;
+    min-width: 4.5rem;
+}
+
+.action-button {
+    min-width: 4.5rem;
 }
 
 .login-panel {

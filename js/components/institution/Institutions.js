@@ -20,7 +20,7 @@ const Institutions = ({institutionsLoaded, handlers, institutionDeleted}) => {
             <InstitutionTable institutions={institutionsLoaded.institutions || []} handlers={handlers}
                               institutionDeleted={institutionDeleted}/>
             <div>
-                <Button variant='primary' size='sm'
+                <Button variant='primary' size='sm' className='action-button'
                         onClick={handlers.onCreate}>{i18n('institutions.create-institution')}</Button>
             </div>
         </Card.Body>

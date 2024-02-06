@@ -3,6 +3,7 @@ import * as ActionConstants from "../constants/ActionConstants";
 import {endsWith, omit, startsWith} from 'lodash';
 import {API_URL} from '../../config';
 import {showServerResponseErrorMessage} from "./AsyncActionUtils";
+import {PAGE_SIZE} from "../constants/DefaultConstants";
 
 const URL_PREFIX = 'rest/history';
 
@@ -24,7 +25,7 @@ export function logAction(action, author, timestamp) {
 }
 
 export function loadActions(pageNumber, searchData) {
-    let urlSuffix = `?page=${pageNumber}`;
+    let urlSuffix = `?page=${pageNumber}&size=${PAGE_SIZE}`;
     if (searchData && searchData.author && searchData.action) {
         urlSuffix = `${urlSuffix}&author=${searchData.author}&type=${searchData.action}`;
     } else if (searchData && searchData.author) {

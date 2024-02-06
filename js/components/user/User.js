@@ -257,7 +257,7 @@ class User extends React.Component {
                             this._passwordChangeButton()}
                         {this._saveAndSendEmailButton()}
                         {(isAdmin(currentUser) || currentUser.username === user.username) &&
-                        <Button variant='success' size='sm' ref='submit' className="d-inline-flex"
+                        <Button variant='success' size='sm' ref='submit' className="action-button"
                                 disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
                                 onClick={() => this._onSave()}
                                 title={this.i18n('required')}>
@@ -268,7 +268,7 @@ class User extends React.Component {
                             <LoaderSmall/>}
                         </Button>
                         }
-                        <Button variant='link' size='sm' onClick={handlers.onCancel}>
+                        <Button variant='link' size='sm' className="action-button" onClick={handlers.onCancel}>
                             {this.i18n(this.props.backToInstitution ? 'users.back-to-institution' : 'cancel')}
                         </Button>
                     </div>

@@ -83,15 +83,15 @@ class Records extends React.Component {
                 <div className="d-flex justify-content-between">
                     <div>
                         {showCreateButton
-                            ? <Button id="records-create" className="mr-1" variant='primary' size='sm'
+                            ? <Button id="records-create" className="mr-1 action-button" variant='primary' size='sm'
                                       disabled={createRecordDisabled}
                                       title={createRecordTooltip}
                                       onClick={onCreateWithFormTemplate}>{this.i18n('records.create-tile')}</Button>
                             : null}
-                        <Button id="records-import" className='mx-1' variant='primary' size='sm'
+                        <Button id="records-import" className='mx-1 action-button' variant='primary' size='sm'
                                 onClick={this.openImportDialog}>{this.i18n('records.import')}</Button>
                         {showPublishButton ?
-                            <Button id="records-publish" className="mx-1" variant='success' size='sm'
+                            <Button id="records-publish" className="mx-1 action-button" variant='success' size='sm'
                                     onClick={this.props.handlers.onPublish}>
                                 {this.i18n('publish')}
                             </Button>
