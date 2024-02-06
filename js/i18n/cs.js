@@ -208,6 +208,8 @@ export default {
         'statistics.number-of-processed-records': 'Počet vyplněných záznamů',
         'statistics.loading-error': 'Nepodařilo se načíst statistiky. {error}',
 
+        'table.sort.tooltip': 'Seřadit záznamy dle tohoto sloupce',
+
         'User does not exist.': 'Uživatel neexistuje.',
         'Provided credentials don\'t match.': 'Zadané údaje nesouhlasí.',
         'Cannot generate Person URI without last name.': 'Nelze vygenerovat Person URI bez příjmení.',

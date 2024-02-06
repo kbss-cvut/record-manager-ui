@@ -9,6 +9,7 @@ import {processTypeaheadOptions} from "./TypeaheadAnswer";
 import {sanitizeArray} from "../../utils/Utils";
 import {IfGranted} from "react-authorization";
 import {ROLE} from "../../constants/DefaultConstants";
+import SortToggle from "../misc/SortToggle";
 
 class RecordTable extends React.Component {
     static propTypes = {
@@ -19,7 +20,8 @@ class RecordTable extends React.Component {
         recordDeleted: PropTypes.object,
         disableDelete: PropTypes.bool,
         recordsDeleting: PropTypes.array,
-        currentUser: PropTypes.object.isRequired
+        currentUser: PropTypes.object.isRequired,
+        sorting: PropTypes.object.isRequired
     };
 
     static defaultProps = {
@@ -83,7 +85,10 @@ class RecordTable extends React.Component {
 
                 <th className='w-25 content-center'>{this.i18n('records.form-template')}</th>
             </IfGranted>
-            <th className='w-25 content-center'>{this.i18n('records.last-modified')}</th>
+            <th className='w-25 content-center'>
+                {this.i18n('records.last-modified')}
+                <SortToggle onToggle={this.props.sorting.onSort} attribute={"date"} sort={this.props.sorting.sort.date}/>
+            </th>
             <th className='w-15 content-center'>{this.i18n('records.completion-status')}</th>
             <th className='w-20 content-center'>{this.i18n('actions')}</th>
         </tr>

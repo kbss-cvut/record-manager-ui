@@ -84,7 +84,12 @@ export const ROLE = {
     DOCTOR: 'Regular User'
 };
 // Number of table elements per page.
-export const PAGE_SIZE = 5;
+export const PAGE_SIZE = 25;
+
+export const SortDirection = {
+    ASC: "+",
+    DESC: "-"
+}
 
 export const STATISTICS_TYPE = {
     NUMBER_OF_INVESTIGATORS: 'statistics.number-of-investigators',

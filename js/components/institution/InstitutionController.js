@@ -5,7 +5,7 @@ import withI18n from "../../i18n/withI18n";
 import Routes from "../../constants/RoutesConstants";
 import {transitionTo, transitionToWithOpts} from "../../utils/Routing";
 import {connect} from "react-redux";
-import {ACTION_FLAG, ACTION_STATUS} from "../../constants/DefaultConstants";
+import {ACTION_FLAG, ACTION_STATUS, PAGE_SIZE, SortDirection} from "../../constants/DefaultConstants";
 import {bindActionCreators} from "redux";
 import {
     createInstitution,
@@ -14,21 +14,27 @@ import {
     unloadSavedInstitution,
     updateInstitution
 } from "../../actions/InstitutionActions";
-import {canLoadInstitutionsPatients} from "../../utils/Utils";
+import {canLoadInstitutionsPatients, sortToParams} from "../../utils/Utils";
 import {deleteUser, loadInstitutionMembers, unloadInstitutionMembers} from "../../actions/UserActions";
 import * as EntityFactory from "../../utils/EntityFactory";
-import {exportRecords, loadRecordsByInstitution} from "../../actions/RecordsActions";
+import {exportRecords, loadRecords} from "../../actions/RecordsActions";
 import omit from 'lodash/omit';
 import {loadFormTemplates} from "../../actions/FormTemplatesActions";
 import {isAdmin} from "../../utils/SecurityUtils";
 import {trackPromise} from "react-promise-tracker";
+import {INITIAL_PAGE} from "../misc/Pagination";
+import {nextSortState} from "../misc/SortToggle";
 
 class InstitutionController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             institution: this._isNew() ? EntityFactory.initNewInstitution() : null,
-            saved: false
+            saved: false,
+            pageNumber: INITIAL_PAGE,
+            sort: {
+                date: SortDirection.DESC
+            }
         };
     }
 
@@ -41,13 +47,23 @@ class InstitutionController extends React.Component {
         if (institutionKey) {
             trackPromise(this.props.loadInstitutionMembers(institutionKey), "institution-members");
             if (this.props.status === ACTION_STATUS.SUCCESS && canLoadInstitutionsPatients(institutionKey, this.props.currentUser)) {
-                this.props.loadRecords(institutionKey);
+                this._loadRecords();
             }
         }
         if (this.props.institutionSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY && this.props.institutionSaved.status === ACTION_STATUS.SUCCESS) {
             this.props.unloadSavedInstitution();
         }
         this.props.loadFormTemplates();
+    }
+
+    _loadRecords() {
+        const institutionKey = this.props.match.params.key;
+        this.props.loadRecords({
+            institution: institutionKey,
+            page: this.state.pageNumber,
+            size: PAGE_SIZE,
+            sort: sortToParams(this.state.sort)
+        });
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -134,6 +150,12 @@ class InstitutionController extends React.Component {
         });
     };
 
+    onSort = (attribute) => {
+        const change = {};
+        change[attribute] = nextSortState(this.state.sort[attribute]);
+        this.setState({sort: Object.assign({}, this.state.sort, change)}, this._loadRecords);
+    }
+
     render() {
         const {
             currentUser, institutionLoaded, institutionSaved, institutionMembers,
@@ -152,12 +174,16 @@ class InstitutionController extends React.Component {
             onExportRecords: this._onExportRecords,
             onDelete: this._onDeleteUser
         };
+        const sorting = {
+            sort: this.state.sort,
+            onSort: this.onSort
+        };
         return <Institution handlers={handlers} institution={this.state.institution}
                             institutionMembers={institutionMembers}
                             recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
                             currentUser={currentUser}
                             institutionLoaded={institutionLoaded} institutionSaved={institutionSaved}
-                            userDeleted={userDeleted}
+                            userDeleted={userDeleted} sorting={sorting}
         />;
     }
 }
@@ -186,7 +212,7 @@ function mapDispatchToProps(dispatch) {
         createInstitution: bindActionCreators(createInstitution, dispatch),
         updateInstitution: bindActionCreators(updateInstitution, dispatch),
         loadInstitutionMembers: bindActionCreators(loadInstitutionMembers, dispatch),
-        loadRecords: bindActionCreators(loadRecordsByInstitution, dispatch),
+        loadRecords: bindActionCreators(loadRecords, dispatch),
         loadFormTemplates: bindActionCreators(loadFormTemplates, dispatch),
         deleteUser: bindActionCreators(deleteUser, dispatch),
         transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),

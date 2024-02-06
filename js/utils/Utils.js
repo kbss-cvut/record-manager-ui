@@ -354,3 +354,7 @@ export function extractLastPageNumber(response) {
     const links = parseLinkHeader(linkHeader);
     return links.last ? Number(links.last.page) : undefined;
 }
+
+export function sortToParams(sort) {
+    return Object.keys(sort).filter(k => sort[k] !== undefined).map(k => `${sort[k]}${k}`);
+}

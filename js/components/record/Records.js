@@ -26,6 +26,7 @@ class Records extends React.Component {
         currentUser: PropTypes.object.isRequired,
         formTemplatesLoaded: PropTypes.object.isRequired,
         pagination: PropTypes.object.isRequired,
+        sorting: PropTypes.object.isRequired,
         formTemplate: PropTypes.string
     };
 

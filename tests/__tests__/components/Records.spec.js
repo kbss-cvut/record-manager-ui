@@ -4,7 +4,7 @@ import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-dom/test-utils';
 import Records from "../../../js/components/record/Records";
-import {ACTION_STATUS, ROLE} from "../../../js/constants/DefaultConstants";
+import {ACTION_STATUS, ROLE, SortDirection} from "../../../js/constants/DefaultConstants";
 import enLang from '../../../js/i18n/en';
 import {INITIAL_PAGE} from "../../../js/components/misc/Pagination";
 
@@ -16,31 +16,30 @@ describe('Records', function () {
         recordDeleted,
         recordsDeleting = [],
         formTemplatesLoaded = {},
-        showAlert,
         pagination,
+        sorting,
         handlers;
     admin = {
         username: 'admin',
         role: ROLE.ADMIN
     };
     records = [{
-        "uri":"http://onto.fel.cvut.cz/ontologies/record-manager/patient-record#instance456619209",
-        "key":"159968282553298774",
-        "localName":"Test1",
-        "dateCreated":"1520956570034",
+        "uri": "http://onto.fel.cvut.cz/ontologies/record-manager/patient-record#instance456619209",
+        "key": "159968282553298774",
+        "localName": "Test1",
+        "dateCreated": "1520956570034",
         "author": {username: 'test'},
         "institution": {key: 12345678}
     }, {
-        "uri":"http://onto.fel.cvut.cz/ontologies/record-manager/patient-record#instance456619208",
-        "key":"159968282553298775",
-        "localName":"Test2",
-        "dateCreated":"1520956570035",
+        "uri": "http://onto.fel.cvut.cz/ontologies/record-manager/patient-record#instance456619208",
+        "key": "159968282553298775",
+        "localName": "Test2",
+        "dateCreated": "1520956570035",
         "author": {username: 'test'},
         "institution": {key: 12345678}
     }];
 
     beforeEach(() => {
-        showAlert = false;
         recordsLoaded = {
             status: ACTION_STATUS.SUCCESS,
             records
@@ -50,6 +49,12 @@ describe('Records', function () {
             handlePagination: jest.fn(),
             itemCount: records.length,
             pageCount: 1
+        };
+        sorting = {
+            sort: {
+                date: SortDirection.DESC
+            },
+            onSort: jest.fn()
         };
         recordDeleted = {
             status: ACTION_STATUS.SUCCESS
@@ -63,30 +68,29 @@ describe('Records', function () {
 
     });
 
-    it('renders card with table and records', function () {
-        const tree = TestUtils.renderIntoDocument(
+    function render() {
+        return TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Records recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
-                         recordDeleted={recordDeleted} handlers={handlers} pagination={pagination}
+                         recordDeleted={recordDeleted} handlers={handlers} pagination={pagination} sorting={sorting}
                          recordsDeleting={recordsDeleting} currentUser={admin}/>
             </IntlProvider>);
+    }
+
+    it('renders card with table and records', function () {
+        const tree = render();
         const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
         expect(cardHeading).not.toBeNull();
         const cardBody = TestUtils.findRenderedDOMComponentWithClass(tree, 'card-body');
         expect(cardBody).not.toBeNull();
-        const table = TestUtils.scryRenderedDOMComponentsWithTag(tree,'table');
+        const table = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'table');
         expect(table).not.toBeNull();
-        const th = TestUtils.scryRenderedDOMComponentsWithTag(tree,'th');
+        const th = TestUtils.scryRenderedDOMComponentsWithTag(tree, 'th');
         expect(th.length).toEqual(7);
     });
 
     it('renders "Create record" button and click on it', function () {
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <Records recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
-                         recordDeleted={recordDeleted} handlers={handlers} pagination={pagination}
-                         recordsDeleting={recordsDeleting} currentUser={admin}/>
-            </IntlProvider>);
+        const tree = render();
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
         const createButton = buttons.find(b => b.id === "records-create");
         expect(createButton).toBeDefined();

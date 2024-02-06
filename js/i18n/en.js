@@ -208,6 +208,8 @@ export default {
         'statistics.number-of-processed-records': 'Number of processed records',
         'statistics.loading-error': 'Unable to load statistics. {error}',
 
+        'table.sort.tooltip': 'Sort records by this column',
+
         'User does not exist.': 'User does not exist.',
         'Provided credentials don\'t match.': 'Provided credentials don\'t match.',
         'Cannot generate Person URI without last name.': 'Cannot generate Person URI without last name.',

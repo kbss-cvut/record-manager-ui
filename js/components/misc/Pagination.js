@@ -15,7 +15,7 @@ let Pagination = ({pageNumber, handlePagination, itemCount, pageCount}) => {
             <BSPagination.Prev disabled={pageNumber === 0} onClick={() => handlePagination(pageNumber - 1)}/>
             <BSPagination.Item active={true}>{pageNumber + 1}</BSPagination.Item>
             <BSPagination.Next disabled={itemCount < PAGE_SIZE} onClick={() => handlePagination(pageNumber + 1)}/>
-            {pageCount &&
+            {pageCount !== undefined &&
                 <BSPagination.Last disabled={pageNumber === pageCount} onClick={() => handlePagination(pageCount)}/>}
         </BSPagination>
     </div>

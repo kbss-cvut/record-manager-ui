@@ -3,7 +3,7 @@
 import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-dom/test-utils';
-import {ACTION_STATUS, ROLE} from "../../../js/constants/DefaultConstants";
+import {ACTION_STATUS, ROLE, SortDirection} from "../../../js/constants/DefaultConstants";
 import Institution from "../../../js/components/institution/Institution";
 import enLang from '../../../js/i18n/en';
 
@@ -12,7 +12,6 @@ describe('Institution', function () {
     let institution,
         newInstitution,
         institutionSaved,
-        showAlert,
         institutionLoaded,
         admin,
         user,
@@ -20,6 +19,7 @@ describe('Institution', function () {
         recordsLoaded = {
         records: []
         },
+        sorting,
         formTemplatesLoaded = {},
         handlers = {
             onSave: jest.fn(),
@@ -52,7 +52,6 @@ describe('Institution', function () {
     };
 
     beforeEach(() => {
-        showAlert = false;
         institutionLoaded = {
             status: ACTION_STATUS.SUCCESS,
             error: ''
@@ -70,33 +69,18 @@ describe('Institution', function () {
             status: ACTION_STATUS.SUCCESS,
             records: []
         };
-    });
-
-    it('shows error about institution was not loaded', function () {
-        institutionLoaded = {
-            ...institutionLoaded,
-            status: ACTION_STATUS.ERROR,
-            error: {
-                message: "Error"
-            }
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <Institution handlers={handlers} institution={institution} institutionMembers={institutionMembers}
-                             recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded} showAlert={showAlert}
-                             currentUser={admin} institutionLoaded={institutionLoaded}
-                             institutionSaved={institutionSaved}/>
-            </IntlProvider>);
-        const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
-        expect(alert).not.toBeNull();
+        sorting = {
+            sort: {date: SortDirection.DESC},
+            onSort: jest.fn()
+        }
     });
 
     it("renders institution's form empty", function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={newInstitution} institutionMembers={institutionMembers}
-                             recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded} showAlert={showAlert}
-                             currentUser={admin} institutionLoaded={institutionLoaded}
+                             recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded}
+                             currentUser={admin} institutionLoaded={institutionLoaded} sorting={sorting}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
         const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'input');
@@ -123,8 +107,8 @@ describe('Institution', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={newInstitution} institutionMembers={institutionMembers}
-                             recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded} showAlert={showAlert}
-                             currentUser={admin} institutionLoaded={institutionLoaded}
+                             recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded}
+                             currentUser={admin} institutionLoaded={institutionLoaded} sorting={sorting}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
         let buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
@@ -142,37 +126,20 @@ describe('Institution', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={newInstitution} institutionMembers={institutionMembers}
-                             recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded} showAlert={showAlert}
-                             currentUser={user} institutionLoaded={institutionLoaded}
+                             recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded}
+                             currentUser={user} institutionLoaded={institutionLoaded} sorting={sorting}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
         let buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
         expect(buttons.length).toEqual(1);
     });
 
-    it('shows successful alert that institution was successfully saved', function () {
-        showAlert = true;
-        institutionSaved = {
-            ...institutionSaved,
-            status: ACTION_STATUS.SUCCESS
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <Institution handlers={handlers} institution={institution} institutionMembers={institutionMembers}
-                             recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded} showAlert={showAlert}
-                             currentUser={admin} institutionLoaded={institutionLoaded}
-                             institutionSaved={institutionSaved}/>
-            </IntlProvider>);
-        const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-success");
-        expect(alert).not.toBeNull();
-    });
-
     it('renders "Cancel" button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={institution} institutionMembers={institutionMembers}
-                             recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded} showAlert={showAlert}
-                             currentUser={admin} institutionLoaded={institutionLoaded}
+                             recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded}
+                             currentUser={admin} institutionLoaded={institutionLoaded} sorting={sorting}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
@@ -180,26 +147,6 @@ describe('Institution', function () {
 
         TestUtils.Simulate.click(buttons[1]); // cancel
         expect(handlers.onCancel).toHaveBeenCalled();
-    });
-
-    it('shows unsuccessful alert that institution was not saved', function () {
-        showAlert = true;
-        institutionSaved = {
-            ...institutionSaved,
-            status: ACTION_STATUS.ERROR,
-            error: {
-                message: "error"
-            }
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <Institution handlers={handlers} institution={institution} institutionMembers={institutionMembers}
-                             recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded} showAlert={showAlert}
-                             currentUser={admin} institutionLoaded={institutionLoaded}
-                             institutionSaved={institutionSaved}/>
-            </IntlProvider>);
-        const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
-        expect(alert).not.toBeNull();
     });
 
     it('renders loading spinner in "Save" button on saving', function () {
@@ -210,8 +157,8 @@ describe('Institution', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={institution} institutionMembers={institutionMembers}
-                             recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded} showAlert={showAlert}
-                             currentUser={admin} institutionLoaded={institutionLoaded}
+                             recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded}
+                             currentUser={admin} institutionLoaded={institutionLoaded} sorting={sorting}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
         const loader = TestUtils.findRenderedDOMComponentWithClass(tree, "loader");

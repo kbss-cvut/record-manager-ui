@@ -10,16 +10,20 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {deleteRecord, updateRecord} from "../../actions/RecordActions";
 import {loadFormTemplates} from "../../actions/FormTemplatesActions";
-import {extractQueryParam} from "../../utils/Utils"
-import {PAGE_SIZE, RECORD_PHASE} from "../../constants/DefaultConstants";
+import {extractQueryParam, sortToParams} from "../../utils/Utils"
+import {PAGE_SIZE, RECORD_PHASE, SortDirection} from "../../constants/DefaultConstants";
 import {trackPromise} from "react-promise-tracker";
 import {INITIAL_PAGE} from "../misc/Pagination";
+import {nextSortState} from "../misc/SortToggle";
 
 class RecordsController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pageNumber: INITIAL_PAGE
+            pageNumber: INITIAL_PAGE,
+            sort: {
+                date: SortDirection.DESC
+            }
         };
     }
 
@@ -29,7 +33,11 @@ class RecordsController extends React.Component {
     }
 
     _loadRecords() {
-        trackPromise(this.props.loadRecords({page: this.state.pageNumber, size: PAGE_SIZE}), "records");
+        trackPromise(this.props.loadRecords({
+            page: this.state.pageNumber,
+            size: PAGE_SIZE,
+            sort: sortToParams(this.state.sort)
+        }), "records");
     }
 
     _onEditRecord = (record) => {
@@ -48,7 +56,7 @@ class RecordsController extends React.Component {
         }
         opts.handlers = {
             onSuccess: Routes.records,
-                onCancel: Routes.records
+            onCancel: Routes.records
         }
         this.props.transitionToWithOpts(Routes.createRecord, opts);
     };
@@ -87,6 +95,12 @@ class RecordsController extends React.Component {
         this.setState({pageNumber}, this._loadRecords);
     }
 
+    onSort = (attribute) => {
+        const change = {};
+        change[attribute] = nextSortState(this.state.sort[attribute]);
+        this.setState({sort: Object.assign({}, this.state.sort, change)}, this._loadRecords);
+    }
+
     render() {
         const {formTemplatesLoaded, recordsLoaded, recordDeleted, recordsDeleting, currentUser} = this.props;
         const formTemplate = extractQueryParam(this.props.location.search, "formTemplate");
@@ -106,8 +120,12 @@ class RecordsController extends React.Component {
             pageNumber: this.state.pageNumber,
             itemCount: recordsLoaded.records?.length,
             pageCount: recordsLoaded.pageCount
+        };
+        const sorting = {
+            onSort: this.onSort,
+            sort: this.state.sort
         }
-        return <Records recordsLoaded={recordsLoaded} handlers={handlers} pagination={pagination}
+        return <Records recordsLoaded={recordsLoaded} handlers={handlers} pagination={pagination} sorting={sorting}
                         recordDeleted={recordDeleted} recordsDeleting={recordsDeleting} currentUser={currentUser}
                         formTemplate={formTemplate}
                         formTemplatesLoaded={formTemplatesLoaded}/>;
