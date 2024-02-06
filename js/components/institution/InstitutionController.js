@@ -1,5 +1,3 @@
-'use strict';
-
 import React from "react";
 import Institution from "./Institution";
 import {injectIntl} from "react-intl";
@@ -19,7 +17,7 @@ import {
 import {canLoadInstitutionsPatients} from "../../utils/Utils";
 import {deleteUser, loadInstitutionMembers, unloadInstitutionMembers} from "../../actions/UserActions";
 import * as EntityFactory from "../../utils/EntityFactory";
-import {exportRecords, loadRecords} from "../../actions/RecordsActions";
+import {exportRecords, loadRecordsByInstitution} from "../../actions/RecordsActions";
 import omit from 'lodash/omit';
 import {loadFormTemplates} from "../../actions/FormTemplatesActions";
 import {isAdmin} from "../../utils/SecurityUtils";
@@ -43,7 +41,7 @@ class InstitutionController extends React.Component {
         if (institutionKey) {
             trackPromise(this.props.loadInstitutionMembers(institutionKey), "institution-members");
             if (this.props.status === ACTION_STATUS.SUCCESS && canLoadInstitutionsPatients(institutionKey, this.props.currentUser)) {
-                this.props.loadRecords(null, institutionKey);
+                this.props.loadRecords(institutionKey);
             }
         }
         if (this.props.institutionSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY && this.props.institutionSaved.status === ACTION_STATUS.SUCCESS) {
@@ -188,7 +186,7 @@ function mapDispatchToProps(dispatch) {
         createInstitution: bindActionCreators(createInstitution, dispatch),
         updateInstitution: bindActionCreators(updateInstitution, dispatch),
         loadInstitutionMembers: bindActionCreators(loadInstitutionMembers, dispatch),
-        loadRecords: bindActionCreators(loadRecords, dispatch),
+        loadRecords: bindActionCreators(loadRecordsByInstitution, dispatch),
         loadFormTemplates: bindActionCreators(loadFormTemplates, dispatch),
         deleteUser: bindActionCreators(deleteUser, dispatch),
         transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),

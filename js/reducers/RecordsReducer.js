@@ -21,6 +21,7 @@ export default function (state = initialState, action) {
                 recordsLoaded: {
                     status: ACTION_STATUS.SUCCESS,
                     records: action.records,
+                    pageCount: action.pageCount,
                     error: ''
                 }
             };

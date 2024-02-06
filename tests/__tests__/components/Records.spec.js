@@ -6,8 +6,9 @@ import TestUtils from 'react-dom/test-utils';
 import Records from "../../../js/components/record/Records";
 import {ACTION_STATUS, ROLE} from "../../../js/constants/DefaultConstants";
 import enLang from '../../../js/i18n/en';
+import {INITIAL_PAGE} from "../../../js/components/misc/Pagination";
 
-describe.skip('Records', function () {
+describe('Records', function () {
     const intlData = enLang;
     let admin,
         records,
@@ -16,6 +17,7 @@ describe.skip('Records', function () {
         recordsDeleting = [],
         formTemplatesLoaded = {},
         showAlert,
+        pagination,
         handlers;
     admin = {
         username: 'admin',
@@ -43,6 +45,12 @@ describe.skip('Records', function () {
             status: ACTION_STATUS.SUCCESS,
             records
         };
+        pagination = {
+            pageNumber: INITIAL_PAGE,
+            handlePagination: jest.fn(),
+            itemCount: records.length,
+            pageCount: 1
+        };
         recordDeleted = {
             status: ACTION_STATUS.SUCCESS
         };
@@ -55,11 +63,11 @@ describe.skip('Records', function () {
 
     });
 
-    xit('renders card with table and records', function () {
+    it('renders card with table and records', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
-                         recordDeleted={recordDeleted} handlers={handlers}
+                <Records recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
+                         recordDeleted={recordDeleted} handlers={handlers} pagination={pagination}
                          recordsDeleting={recordsDeleting} currentUser={admin}/>
             </IntlProvider>);
         const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
@@ -69,55 +77,21 @@ describe.skip('Records', function () {
         const table = TestUtils.scryRenderedDOMComponentsWithTag(tree,'table');
         expect(table).not.toBeNull();
         const th = TestUtils.scryRenderedDOMComponentsWithTag(tree,'th');
-        expect(th.length).toEqual(5);
+        expect(th.length).toEqual(7);
     });
 
-    xit('renders "Create record" button and click on it', function () {
+    it('renders "Create record" button and click on it', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
-                         recordDeleted={recordDeleted} handlers={handlers}
+                <Records recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
+                         recordDeleted={recordDeleted} handlers={handlers} pagination={pagination}
                          recordsDeleting={recordsDeleting} currentUser={admin}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-        expect(buttons.length).toEqual(9);
+        const createButton = buttons.find(b => b.id === "records-create");
+        expect(createButton).toBeDefined();
 
-        TestUtils.Simulate.click(buttons[8]); // Create record
+        TestUtils.Simulate.click(createButton); // Create record
         expect(handlers.onCreate).toHaveBeenCalled();
-    });
-
-    xit('renders successful alert that record was successfully deleted', function () {
-        showAlert = true;
-        recordDeleted = {
-            status: ACTION_STATUS.SUCCESS
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
-                         recordDeleted={recordDeleted} handlers={handlers}
-                         recordsDeleting={recordsDeleting} currentUser={admin}/>
-            </IntlProvider>);
-        const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-success");
-        expect(alert).not.toBeNull();
-    });
-
-    it('renders unsuccessful alert that record was not deleted', function () {
-        showAlert = true;
-        recordDeleted = {
-            status: ACTION_STATUS.ERROR,
-            error: {
-                message: "Error"
-            }
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <Records recordsLoaded={recordsLoaded} showAlert={showAlert}
-                         recordDeleted={recordDeleted} handlers={handlers}
-                         recordsDeleting={recordsDeleting} currentUser={admin}
-                         formTemplatesLoaded={formTemplatesLoaded}
-                />
-            </IntlProvider>);
-        const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
-        expect(alert).not.toBeNull();
     });
 });

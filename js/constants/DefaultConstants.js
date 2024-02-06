@@ -83,14 +83,8 @@ export const ROLE = {
     ADMIN: 'Admin',
     DOCTOR: 'Regular User'
 };
-
-export const PAGINATION_DIRECTION = {
-    PREVIOUS: -1,
-    NEXT: 1
-};
-
 // Number of table elements per page.
-export const PAGE_SIZE = 25;
+export const PAGE_SIZE = 5;
 
 export const STATISTICS_TYPE = {
     NUMBER_OF_INVESTIGATORS: 'statistics.number-of-investigators',
@@ -101,7 +95,8 @@ export const SCRIPT_ERROR = 'SCRIPT_ERROR';
 
 export const HttpHeaders = {
     AUTHORIZATION: "Authorization",
-    CONTENT_DISPOSITION: "content-disposition"
+    CONTENT_DISPOSITION: "content-disposition",
+    LINK: "link"
 }
 
 export const MediaType = {

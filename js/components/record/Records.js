@@ -2,7 +2,6 @@ import React from "react";
 import {Button, Card} from "react-bootstrap";
 import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
-import RecordTable from "./RecordTable";
 import {EXTENSION_CONSTANTS} from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
 import {processTypeaheadOptions} from "./TypeaheadAnswer";
@@ -12,6 +11,8 @@ import {isAdmin} from "../../utils/SecurityUtils";
 import ImportRecordsDialog from "./ImportRecordsDialog";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 import {trackPromise} from "react-promise-tracker";
+import RecordTable from "./RecordTable";
+import Pagination from "../misc/Pagination";
 
 const STUDY_CLOSED_FOR_ADDITION = false;
 const STUDY_CREATE_AT_MOST_ONE_RECORD = false;
@@ -24,6 +25,7 @@ class Records extends React.Component {
         handlers: PropTypes.object.isRequired,
         currentUser: PropTypes.object.isRequired,
         formTemplatesLoaded: PropTypes.object.isRequired,
+        pagination: PropTypes.object.isRequired,
         formTemplate: PropTypes.string
     };
 
@@ -49,7 +51,7 @@ class Records extends React.Component {
     }
 
     render() {
-        const {formTemplate, recordsLoaded} = this.props;
+        const {formTemplate, recordsLoaded, pagination} = this.props;
         const showCreateButton = STUDY_CREATE_AT_MOST_ONE_RECORD
             ? (!recordsLoaded.records || (recordsLoaded.records.length < 1))
             : true;
@@ -71,27 +73,31 @@ class Records extends React.Component {
                 {this._getPanelTitle()}
             </Card.Header>
             <Card.Body>
-                {recordsLoaded.records && <RecordTable {...this.props}/>}
+                {recordsLoaded.records && <>
+                    <RecordTable {...this.props}/>
+                    <Pagination {...pagination}/>
+                </>}
                 <ImportRecordsDialog show={this.state.showImportDialog} onSubmit={this.onImport}
                                      onCancel={this.closeImportDialog}/>
                 <div className="d-flex justify-content-between">
                     <div>
                         {showCreateButton
-                            ? <Button className="mr-1" variant='primary' size='sm'
+                            ? <Button id="records-create" className="mr-1" variant='primary' size='sm'
                                       disabled={createRecordDisabled}
                                       title={createRecordTooltip}
                                       onClick={onCreateWithFormTemplate}>{this.i18n('records.create-tile')}</Button>
                             : null}
-                        <Button className='mx-1' variant='primary' size='sm'
+                        <Button id="records-import" className='mx-1' variant='primary' size='sm'
                                 onClick={this.openImportDialog}>{this.i18n('records.import')}</Button>
                         {showPublishButton ?
-                            <Button className="mx-1" variant='success' size='sm'
+                            <Button id="records-publish" className="mx-1" variant='success' size='sm'
                                     onClick={this.props.handlers.onPublish}>
                                 {this.i18n('publish')}
                             </Button>
                             : null}
                     </div>
-                    <ExportRecordsDropdown onExport={this.props.handlers.onExport} records={recordsLoaded.records}/>
+                    <ExportRecordsDropdown id="records-export" onExport={this.props.handlers.onExport}
+                                           records={recordsLoaded.records}/>
                 </div>
             </Card.Body>
         </Card>;

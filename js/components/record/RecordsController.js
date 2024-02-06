@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 
 import Records from "./Records";
@@ -13,17 +11,25 @@ import {bindActionCreators} from "redux";
 import {deleteRecord, updateRecord} from "../../actions/RecordActions";
 import {loadFormTemplates} from "../../actions/FormTemplatesActions";
 import {extractQueryParam} from "../../utils/Utils"
-import {RECORD_PHASE} from "../../constants/DefaultConstants";
+import {PAGE_SIZE, RECORD_PHASE} from "../../constants/DefaultConstants";
 import {trackPromise} from "react-promise-tracker";
+import {INITIAL_PAGE} from "../misc/Pagination";
 
 class RecordsController extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            pageNumber: INITIAL_PAGE
+        };
     }
 
     componentDidMount() {
-        trackPromise(this.props.loadRecords(this.props.currentUser), "records");
+        this._loadRecords();
         this.props.loadFormTemplates();
+    }
+
+    _loadRecords() {
+        trackPromise(this.props.loadRecords({page: this.state.pageNumber, size: PAGE_SIZE}), "records");
     }
 
     _onEditRecord = (record) => {
@@ -48,11 +54,10 @@ class RecordsController extends React.Component {
     };
 
     _onDeleteRecord = (record) => {
-        trackPromise(this.props.deleteRecord(record, this.props.currentUser), "records");
+        trackPromise(this.props.deleteRecord(record), "records");
     };
 
     _onPublishRecords = async () => {
-        const currentUser = this.props.currentUser;
 
         this.setState({
             records: this.props.recordsLoaded.records
@@ -60,7 +65,7 @@ class RecordsController extends React.Component {
             const updatedRecords = this.state.records.map(async (record) => {
                 if (record.phase === RECORD_PHASE.COMPLETED) {
                     const updatedRecord = {...record, phase: RECORD_PHASE.PUBLISHED};
-                    await this.props.updateRecord(updatedRecord, currentUser);
+                    await this.props.updateRecord(updatedRecord);
                     return updatedRecord;
                 }
             });
@@ -78,6 +83,10 @@ class RecordsController extends React.Component {
         trackPromise(this.props.importRecords(file), "records");
     };
 
+    onPagination = (pageNumber) => {
+        this.setState({pageNumber}, this._loadRecords);
+    }
+
     render() {
         const {formTemplatesLoaded, recordsLoaded, recordDeleted, recordsDeleting, currentUser} = this.props;
         const formTemplate = extractQueryParam(this.props.location.search, "formTemplate");
@@ -90,9 +99,15 @@ class RecordsController extends React.Component {
             onDelete: this._onDeleteRecord,
             onPublish: this._onPublishRecords,
             onExport: this._onExportRecords,
-            onImport: this._onImportRecords
+            onImport: this._onImportRecords,
         };
-        return <Records recordsLoaded={recordsLoaded} handlers={handlers}
+        const pagination = {
+            handlePagination: this.onPagination,
+            pageNumber: this.state.pageNumber,
+            itemCount: recordsLoaded.records?.length,
+            pageCount: recordsLoaded.pageCount
+        }
+        return <Records recordsLoaded={recordsLoaded} handlers={handlers} pagination={pagination}
                         recordDeleted={recordDeleted} recordsDeleting={recordsDeleting} currentUser={currentUser}
                         formTemplate={formTemplate}
                         formTemplatesLoaded={formTemplatesLoaded}/>;
