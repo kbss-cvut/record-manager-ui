@@ -5,11 +5,10 @@ import withI18n from "../../i18n/withI18n";
 import {Card} from "react-bootstrap";
 import {loadActions} from "../../actions/HistoryActions";
 import {bindActionCreators} from "redux";
-import {ACTIONS_PER_PAGE} from "../../constants/DefaultConstants";
 import HistoryTable from "./HistoryTable";
 import Routes from "../../constants/RoutesConstants";
 import {transitionToWithOpts} from "../../utils/Routing";
-import HistoryPagination from "./HistoryPagination";
+import Pagination, {INITIAL_PAGE} from "../misc/Pagination";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 import {trackPromise} from "react-promise-tracker";
 
@@ -19,12 +18,12 @@ class HistoryList extends React.Component {
         this.i18n = this.props.i18n;
         this.state = {
             searchData: {},
-            pageNumber: 1
+            pageNumber: INITIAL_PAGE
         }
     }
 
     componentDidMount() {
-        trackPromise(this.props.loadActions(1), "history");
+        trackPromise(this.props.loadActions(INITIAL_PAGE), "history");
     }
 
     _onOpen = (key) => {
@@ -45,23 +44,17 @@ class HistoryList extends React.Component {
         }
     };
 
-    _handleSearch = (newPageNumber = 1) => {
-        this.props.loadActions(newPageNumber, this.state.searchData);
+    _handleSearch = (newPageNumber = INITIAL_PAGE) => {
+        trackPromise(this.props.loadActions(newPageNumber, this.state.searchData), "history");
     };
 
     _handleReset = () => {
-        this.setState({searchData: {}, pageNumber: 1});
-        this.props.loadActions(1, {});
+        this.setState({searchData: {}, pageNumber: INITIAL_PAGE}, () => this._handleSearch());
     };
 
-    _handlePagination = (direction) => {
-        if (this.props.actionsLoaded.actions.length <= ACTIONS_PER_PAGE && direction === 1 ||
-            this.state.pageNumber === 1 && direction === -1) {
-            return;
-        }
-        const newPageNumber = this.state.pageNumber + direction;
-        this.setState({pageNumber: newPageNumber});
-        this._handleSearch(newPageNumber);
+    _handlePagination = (pageNumber) => {
+        this.setState({pageNumber: pageNumber});
+        this._handleSearch(pageNumber);
     };
 
     render() {
@@ -83,9 +76,9 @@ class HistoryList extends React.Component {
                     <>
                         <HistoryTable handlers={handlers} searchData={this.state.searchData}
                                       actions={actionsLoaded.actions} i18n={this.i18n}/>
-                        <HistoryPagination pageNumber={this.state.pageNumber}
-                                           numberOfActions={actionsLoaded.actions.length}
-                                           handlePagination={this._handlePagination}/>
+                        <Pagination pageNumber={this.state.pageNumber}
+                                    itemCount={actionsLoaded.actions.length}
+                                    handlePagination={this._handlePagination}/>
                     </>
                 }
             </Card.Body>

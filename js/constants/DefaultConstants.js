@@ -89,8 +89,8 @@ export const PAGINATION_DIRECTION = {
     NEXT: 1
 };
 
-// Number of history actions on one page. Needs to be changes also in back-end
-export const ACTIONS_PER_PAGE = 25;
+// Number of table elements per page.
+export const PAGE_SIZE = 25;
 
 export const STATISTICS_TYPE = {
     NUMBER_OF_INVESTIGATORS: 'statistics.number-of-investigators',

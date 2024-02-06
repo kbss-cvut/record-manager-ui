@@ -6,7 +6,7 @@ import {Table} from "react-bootstrap";
 import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import HistoryRow from "./HistoryRow";
-import {ACTIONS_PER_PAGE} from "../../constants/DefaultConstants";
+import {PAGE_SIZE} from "../../constants/DefaultConstants";
 import HistorySearch from "./HistorySearch";
 import PropTypes from "prop-types";
 
@@ -51,7 +51,7 @@ class HistoryTable extends React.Component {
 
     _renderRows() {
         const {actions, handlers} = this.props;
-        let len = actions.length > ACTIONS_PER_PAGE ? actions.length - 1 : actions.length;
+        let len = actions.length > PAGE_SIZE ? actions.length - 1 : actions.length;
         let rows = [];
         for (let i = 0; i < len; i++) {
             rows.push(<HistoryRow key={actions[i].key} action={actions[i]} onOpen={handlers.onOpen}/>);
