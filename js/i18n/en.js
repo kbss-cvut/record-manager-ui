@@ -36,6 +36,7 @@ export default {
         'reject': 'Reject',
         'complete': 'Complete',
         'publish': 'Publish',
+        'select.placeholder': 'Select...',
 
         'login.title': Constants.APP_NAME + ' - Login',
         'login.username': 'Username',

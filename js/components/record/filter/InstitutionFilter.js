@@ -2,8 +2,8 @@ import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {loadInstitutions} from "../../../actions/InstitutionsActions";
 import {sanitizeArray} from "../../../utils/Utils";
-import {FormControl} from "react-bootstrap";
 import {useI18n} from "../../../hooks/useI18n";
+import {IntelligentTreeSelect} from "intelligent-tree-select";
 
 const InstitutionFilter = ({value, onChange}) => {
     const {i18n} = useI18n();
@@ -14,12 +14,11 @@ const InstitutionFilter = ({value, onChange}) => {
             dispatch(loadInstitutions());
         }
     }, [dispatch, institutions]);
-    return <FormControl as='select' value={value || "no-value"} onChange={e => onChange(e.currentTarget.value)}>
-        {[<option key='default' value='no-value' disabled={true}>{i18n("select.default")}</option>]
-            .concat(sanitizeArray(institutions).map(inst => <option key={inst.key} value={inst.key}>
-                {inst.name}
-            </option>))}
-    </FormControl>
+    const selected = sanitizeArray(institutions).find(o => o.key === value);
+    return <IntelligentTreeSelect options={institutions} multi={false} renderAsTree={false} labelKey="name"
+                                  valueKey="key"
+                                  onChange={o => onChange(o !== null ? o.key : undefined)} value={selected}
+                                  placeholder={i18n("select.placeholder")}/>;
 };
 
 export default InstitutionFilter;
