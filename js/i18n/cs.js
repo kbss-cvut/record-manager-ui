@@ -215,6 +215,10 @@ export default {
 
         'table.sort.tooltip': 'Seřadit záznamy dle tohoto sloupce',
 
+        'filters': 'Filtry',
+        'filters.reset': 'Zrušit filtry',
+        'filters.active.tooltip': 'Záznamy jsou nyní filtrovány',
+
         'User does not exist.': 'Uživatel neexistuje.',
         'Provided credentials don\'t match.': 'Zadané údaje nesouhlasí.',
         'Cannot generate Person URI without last name.': 'Nelze vygenerovat Person URI bez příjmení.',

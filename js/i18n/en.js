@@ -216,7 +216,8 @@ export default {
         'table.sort.tooltip': 'Sort records by this column',
 
         'filters': 'Filters',
-        'filters.active': 'Active filters',
+        'filters.reset': 'Reset filters',
+        'filters.active.tooltip': 'Records are currently filtered',
 
         'User does not exist.': 'User does not exist.',
         'Provided credentials don\'t match.': 'Provided credentials don\'t match.',

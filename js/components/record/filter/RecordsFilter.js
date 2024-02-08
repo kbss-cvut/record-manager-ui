@@ -8,9 +8,11 @@ import {ROLE} from "../../../constants/DefaultConstants";
 import {useSelector} from "react-redux";
 import InstitutionFilter from "./InstitutionFilter";
 
-const RecordsFilter = ({filters, onChange}) => {
+const RecordsFilter = ({filters, onChange, onReset}) => {
     const user = useSelector(state => state.auth.user);
     const {i18n} = useI18n();
+    const filtersActive = Object.keys(filters).length > 0;
+
     const filtersPopover = <Popover id="record-filters">
         <Popover.Title as="h4">{i18n("filters")}</Popover.Title>
         <Popover.Content>
@@ -39,12 +41,17 @@ const RecordsFilter = ({filters, onChange}) => {
             </Form>
         </Popover.Content>
     </Popover>;
+
     return <>
         <div className="mb-3">
             <OverlayTrigger trigger="click" placement="right" overlay={filtersPopover} rootClose={true}>
-                <Button id="record-filters-trigger" variant="primary" size="sm"
-                        className="action-button">{i18n("filters")}</Button>
+                <Button id="record-filters-trigger" variant="primary" size="sm" active={filtersActive}
+                        title={filtersActive ? i18n("filters.active.tooltip") : undefined}
+                        className="action-button">{`${i18n("filters")}${filtersActive ? "*" : ""}`}</Button>
             </OverlayTrigger>
+            {filtersActive &&
+                <Button id="record-filters-reset" variant="outline-primary" size="sm" className="action-button ml-2"
+                        onClick={onReset}>{i18n("filters.reset")}</Button>}
         </div>
     </>;
 };

@@ -104,8 +104,15 @@ class RecordsController extends React.Component {
     }
 
     onFilter = (change) => {
-        this.setState({filters: Object.assign({}, this.state.filters, change)}, this._loadRecords);
+        this.setState({
+            filters: Object.assign({}, this.state.filters, change),
+            pageNumber: INITIAL_PAGE
+        }, this._loadRecords);
     }
+
+    onResetFilters = () => {
+        this.setState({filters: {}, pageNumber: INITIAL_PAGE}, this._loadRecords);
+    };
 
     render() {
         const {formTemplatesLoaded, recordsLoaded, recordDeleted, recordsDeleting, currentUser} = this.props;
@@ -133,7 +140,8 @@ class RecordsController extends React.Component {
         };
         const filters = {
             filters: this.state.filters,
-            onChange: this.onFilter
+            onChange: this.onFilter,
+            onReset: this.onResetFilters
         };
         return <Records handlers={handlers} pagination={pagination} sorting={sorting} filters={filters}
                         recordsLoaded={recordsLoaded} recordDeleted={recordDeleted} recordsDeleting={recordsDeleting}
