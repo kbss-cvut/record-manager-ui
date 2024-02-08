@@ -853,3 +853,11 @@ header {
 .messages-5 {
     height: 20.625rem;
 }
+
+#record-filters {
+    min-width: 500px;
+}
+
+.filter-datetimepicker {
+    max-width: 120px;
+}

@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import {IntlProvider} from 'react-intl';
 import TestUtils from 'react-dom/test-utils';
@@ -7,6 +5,8 @@ import Records from "../../../js/components/record/Records";
 import {ACTION_STATUS, ROLE, SortDirection} from "../../../js/constants/DefaultConstants";
 import enLang from '../../../js/i18n/en';
 import {INITIAL_PAGE} from "../../../js/components/misc/Pagination";
+
+jest.mock("../../../js/components/record/filter/RecordsFilter", () => () => <>Filters</>);
 
 describe('Records', function () {
     const intlData = enLang;
@@ -72,6 +72,7 @@ describe('Records', function () {
         return TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <Records recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
+                         filters={{filters: {}, onChange: jest.fn()}}
                          recordDeleted={recordDeleted} handlers={handlers} pagination={pagination} sorting={sorting}
                          recordsDeleting={recordsDeleting} currentUser={admin}/>
             </IntlProvider>);

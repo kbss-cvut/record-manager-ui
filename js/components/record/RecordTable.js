@@ -87,7 +87,8 @@ class RecordTable extends React.Component {
             </IfGranted>
             <th className='w-25 content-center'>
                 {this.i18n('records.last-modified')}
-                <SortToggle onToggle={this.props.sorting.onSort} attribute={"date"} sort={this.props.sorting.sort.date}/>
+                <SortToggle onToggle={this.props.sorting.onSort} attribute={"date"}
+                            sort={this.props.sorting.sort.date}/>
             </th>
             <th className='w-15 content-center'>{this.i18n('records.completion-status')}</th>
             <th className='w-20 content-center'>{this.i18n('actions')}</th>

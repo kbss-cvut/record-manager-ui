@@ -23,7 +23,8 @@ class RecordsController extends React.Component {
             pageNumber: INITIAL_PAGE,
             sort: {
                 date: SortDirection.DESC
-            }
+            },
+            filters: {}
         };
     }
 
@@ -36,6 +37,7 @@ class RecordsController extends React.Component {
         trackPromise(this.props.loadRecords({
             page: this.state.pageNumber,
             size: PAGE_SIZE,
+            ...this.state.filters,
             sort: sortToParams(this.state.sort)
         }), "records");
     }
@@ -101,6 +103,10 @@ class RecordsController extends React.Component {
         this.setState({sort: Object.assign({}, this.state.sort, change)}, this._loadRecords);
     }
 
+    onFilter = (change) => {
+        this.setState({filters: Object.assign({}, this.state.filters, change)}, this._loadRecords);
+    }
+
     render() {
         const {formTemplatesLoaded, recordsLoaded, recordDeleted, recordsDeleting, currentUser} = this.props;
         const formTemplate = extractQueryParam(this.props.location.search, "formTemplate");
@@ -124,10 +130,14 @@ class RecordsController extends React.Component {
         const sorting = {
             onSort: this.onSort,
             sort: this.state.sort
-        }
-        return <Records recordsLoaded={recordsLoaded} handlers={handlers} pagination={pagination} sorting={sorting}
-                        recordDeleted={recordDeleted} recordsDeleting={recordsDeleting} currentUser={currentUser}
-                        formTemplate={formTemplate}
+        };
+        const filters = {
+            filters: this.state.filters,
+            onChange: this.onFilter
+        };
+        return <Records handlers={handlers} pagination={pagination} sorting={sorting} filters={filters}
+                        recordsLoaded={recordsLoaded} recordDeleted={recordDeleted} recordsDeleting={recordsDeleting}
+                        formTemplate={formTemplate} currentUser={currentUser}
                         formTemplatesLoaded={formTemplatesLoaded}/>;
     }
 }

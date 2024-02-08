@@ -13,6 +13,7 @@ import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 import {trackPromise} from "react-promise-tracker";
 import RecordTable from "./RecordTable";
 import Pagination from "../misc/Pagination";
+import RecordsFilter from "./filter/RecordsFilter";
 
 const STUDY_CLOSED_FOR_ADDITION = false;
 const STUDY_CREATE_AT_MOST_ONE_RECORD = false;
@@ -27,6 +28,7 @@ class Records extends React.Component {
         formTemplatesLoaded: PropTypes.object.isRequired,
         pagination: PropTypes.object.isRequired,
         sorting: PropTypes.object.isRequired,
+        filters: PropTypes.object.isRequired,
         formTemplate: PropTypes.string
     };
 
@@ -52,7 +54,7 @@ class Records extends React.Component {
     }
 
     render() {
-        const {formTemplate, recordsLoaded, pagination} = this.props;
+        const {formTemplate, recordsLoaded, pagination, filters} = this.props;
         const showCreateButton = STUDY_CREATE_AT_MOST_ONE_RECORD
             ? (!recordsLoaded.records || (recordsLoaded.records.length < 1))
             : true;
@@ -75,6 +77,7 @@ class Records extends React.Component {
             </Card.Header>
             <Card.Body>
                 {recordsLoaded.records && <>
+                    <RecordsFilter {...filters}/>
                     <RecordTable {...this.props}/>
                     <Pagination {...pagination}/>
                 </>}

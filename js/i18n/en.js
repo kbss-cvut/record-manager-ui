@@ -146,6 +146,11 @@ export default {
         'records.form-template': 'Template',
         'records.local-name': 'Name',
         'records.completion-status': 'Status',
+        'records.completion-status.open': 'Open',
+        'records.completion-status.valid': 'Valid',
+        'records.completion-status.completed': 'Completed',
+        'records.completion-status.published': 'Published',
+        'records.completion-status.rejected': 'Rejected',
         'records.completion-status-tooltip.complete': 'All required fields of the record have been filled out.',
         'records.completion-status-tooltip.incomplete': 'Some of the required fields of the record have not yet been filled out.',
         'records.completion-status-tooltip.rejected': 'The form was rejected',
@@ -209,6 +214,9 @@ export default {
         'statistics.loading-error': 'Unable to load statistics. {error}',
 
         'table.sort.tooltip': 'Sort records by this column',
+
+        'filters': 'Filters',
+        'filters.active': 'Active filters',
 
         'User does not exist.': 'User does not exist.',
         'Provided credentials don\'t match.': 'Provided credentials don\'t match.',
