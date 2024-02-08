@@ -47,11 +47,16 @@ export function loadRecordsError(error) {
     return asyncError(ActionConstants.LOAD_RECORDS_ERROR, error);
 }
 
-export function exportRecords(exportType, institutionKey) {
-    return (dispatch) => {
+export function exportRecords(exportType, params = {}) {
+    return (dispatch, getState) => {
         dispatch(asyncRequest(ActionConstants.EXPORT_RECORDS_PENDING));
-        const urlSuffix = institutionKey ? `?institution=${institutionKey}` : '';
-        return axiosBackend.get(`${API_URL}/rest/records/export${urlSuffix}`, {
+        const currentUser = getState().auth.user;
+        if (currentUser && !isAdmin(currentUser) && currentUser.institution) {
+            params.institution = currentUser.institution.key;
+        }
+        return axiosBackend.get(`${API_URL}/rest/records/export`, {
+            params,
+            paramsSerializer,
             headers: {
                 accept: exportType.mediaType
             },

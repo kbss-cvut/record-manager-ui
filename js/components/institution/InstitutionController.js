@@ -141,7 +141,7 @@ class InstitutionController extends React.Component {
 
     _onExportRecords = (exportType) => {
         const institutionKey = this.state.institution.key;
-        this.props.exportRecords(exportType, institutionKey);
+        this.props.exportRecords(exportType, {institution: institutionKey, sort: sortToParams(this.state.sort)});
     };
 
     _onAddNewUser = (institution) => {

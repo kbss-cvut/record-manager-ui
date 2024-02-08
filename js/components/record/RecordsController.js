@@ -86,7 +86,10 @@ class RecordsController extends React.Component {
     };
 
     _onExportRecords = (exportType) => {
-        trackPromise(this.props.exportRecords(exportType), "records");
+        trackPromise(this.props.exportRecords(exportType, {
+            ...this.state.filters,
+            sort: sortToParams(this.state.sort)
+        }), "records");
     };
 
     _onImportRecords = (file) => {
