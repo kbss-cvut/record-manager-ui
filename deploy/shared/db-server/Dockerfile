@@ -11,6 +11,7 @@ WORKDIR ${GRAPHDB_HOME}
 # Install libs related to RDF processing
 ### for arm64
 RUN if command -v apt >/dev/null; then \
+    apt update && \
     apt install -y python3-rdflib && \
     apt install -y liburi-perl; \
 fi
