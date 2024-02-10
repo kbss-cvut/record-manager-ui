@@ -9,8 +9,10 @@ ENV GRAPHDB_INSTALL_DIR=/opt/graphdb/dist
 WORKDIR ${GRAPHDB_HOME}
 
 # Install libs related to RDF processing
-RUN apk add py3-rdflib
-RUN apk add perl-uri
+### for arm64
+RUN apt 2>&1 >/dev/null || apt install -y python3-rdflib && apt install -y liburi-perl
+### for amd64
+RUN apk 2>&1 >/dev/null || apk add py3-rdflib && apk add perl-uri
 
 # Copy initialization data and repository config
 #COPY init-data /root/graphdb-import
