@@ -10,9 +10,16 @@ WORKDIR ${GRAPHDB_HOME}
 
 # Install libs related to RDF processing
 ### for arm64
-RUN apt 2>&1 >/dev/null || apt install -y python3-rdflib && apt install -y liburi-perl
+RUN if command -v apt >/dev/null; then \
+    apt install -y python3-rdflib && \
+    apt install -y liburi-perl; \
+fi
+
 ### for amd64
-RUN apk 2>&1 >/dev/null || apk add py3-rdflib && apk add perl-uri
+RUN if command -v apk >/dev/null; then \
+    apk add py3-rdflib && \
+    apk add perl-uri; \
+fi
 
 # Copy initialization data and repository config
 #COPY init-data /root/graphdb-import
