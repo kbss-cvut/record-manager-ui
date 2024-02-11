@@ -24,7 +24,7 @@ axiosBackend.interceptors.request.use((reqConfig) => {
 axiosBackend.interceptors.response.use(
     response => response,
     error => {
-        const {status} = error.response;
+        const status = error?.response?.status;
         if (status === 401) { // non-logged
             if (!window.location.pathname.includes('/login')) {
                 transitionTo(Routes.login);
