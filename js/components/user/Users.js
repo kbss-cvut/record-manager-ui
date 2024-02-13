@@ -1,64 +1,33 @@
-'use strict';
-
 import React from 'react';
 import {Button, Card} from 'react-bootstrap';
-import {injectIntl} from "react-intl";
-import withI18n from '../../i18n/withI18n';
 import UserTable from './UserTable';
-import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
-import AlertMessage from "../AlertMessage";
-import {LoaderCard, LoaderSmall} from "../Loader";
 import PropTypes from "prop-types";
 import IfInternalAuth from "../misc/oidc/IfInternalAuth";
+import PromiseTrackingMask from "../misc/PromiseTrackingMask";
+import {useI18n} from "../../hooks/useI18n";
 
-class Users extends React.Component {
-    static propTypes = {
-        usersLoaded: PropTypes.object,
-        handlers: PropTypes.object.isRequired,
-        userDeleted: PropTypes.object,
-        showAlert: PropTypes.bool.isRequired,
-    };
+const Users = ({usersLoaded, handlers}) => {
+    const {i18n} = useI18n();
+    return <Card>
+        <Card.Header className="text-light bg-primary" as="h6">
+            {i18n('users.panel-title')}
+        </Card.Header>
+        <Card.Body>
+            <PromiseTrackingMask area="users"/>
+            {usersLoaded.users && <UserTable users={usersLoaded.users} handlers={handlers}/>}
+            <IfInternalAuth>
+                <div>
+                    <Button variant='primary' size='sm'
+                            onClick={handlers.onCreate}>{i18n('users.create-user')}</Button>
+                </div>
+            </IfInternalAuth>
+        </Card.Body>
+    </Card>;
+};
 
-    constructor(props) {
-        super(props);
-        this.i18n = this.props.i18n;
-    }
+Users.propTypes = {
+    usersLoaded: PropTypes.object,
+    handlers: PropTypes.object.isRequired
+};
 
-    render() {
-        const {usersLoaded, showAlert, userDeleted} = this.props;
-        if (!usersLoaded.users && (!usersLoaded.status || usersLoaded.status === ACTION_STATUS.PENDING)) {
-            return <LoaderCard header={this.i18n('users.panel-title')}/>;
-        } else if (usersLoaded.status === ACTION_STATUS.ERROR) {
-            return <AlertMessage type={ALERT_TYPES.DANGER}
-                                 message={this.props.formatMessage('users.loading-error', {error: usersLoaded.error.message})}/>
-        }
-        return <Card>
-            <Card.Header className="text-light bg-primary" as="h6">
-                {this.i18n('users.panel-title')}
-                {this.props.usersLoaded.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
-            </Card.Header>
-            <Card.Body>
-                <UserTable users={usersLoaded.users} {...this.props}/>
-                <IfInternalAuth>
-                    <div>
-                        <Button variant='primary' size='sm'
-                                onClick={this.props.handlers.onCreate}>{this.i18n('users.create-user')}</Button>
-                    </div>
-                </IfInternalAuth>
-                {showAlert && userDeleted.status === ACTION_STATUS.ERROR &&
-                    <AlertMessage type={ALERT_TYPES.DANGER}
-                                  message={this.props.formatMessage('user.delete-error', {error: this.i18n(this.props.userDeleted.error.message)})}/>}
-                {showAlert && userDeleted.status === ACTION_STATUS.SUCCESS &&
-                    <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.delete-success')}/>}
-            </Card.Body>
-        </Card>;
-    }
-
-    _renderHeader() {
-        return <span>
-            {this.i18n('users.panel-title')}{this.props.usersLoaded.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
-        </span>;
-    }
-}
-
-export default injectIntl(withI18n(Users));
+export default Users;

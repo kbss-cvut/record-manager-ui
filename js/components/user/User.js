@@ -1,13 +1,10 @@
-'use strict';
-
 import React from "react";
 import {Button, Card} from "react-bootstrap";
 import withI18n from "../../i18n/withI18n";
 import {injectIntl} from "react-intl";
 import HorizontalInput from "../HorizontalInput";
 import UserValidator from "../../validation/UserValidator";
-import AlertMessage from "../AlertMessage";
-import {ACTION_STATUS, ALERT_TYPES, ROLE} from "../../constants/DefaultConstants";
+import {ACTION_STATUS, ROLE} from "../../constants/DefaultConstants";
 import {getRole, processInstitutions} from "../../utils/Utils";
 import * as Vocabulary from "../../constants/Vocabulary";
 import {LoaderCard, LoaderSmall} from "../Loader";
@@ -25,7 +22,6 @@ class User extends React.Component {
         userSaved: PropTypes.object,
         userLoaded: PropTypes.object,
         currentUser: PropTypes.object,
-        showAlert: PropTypes.bool,
         institutions: PropTypes.array,
         invitationSent: PropTypes.object,
         invitationDelete: PropTypes.object,
@@ -174,16 +170,7 @@ class User extends React.Component {
     }
 
     render() {
-        const {
-            userSaved, userLoaded, currentUser, showAlert, user, handlers,
-            invitationSent, invited, invitationDelete, impersonation, impersonated, deletedInvitation
-        } = this.props;
-
-        if (userLoaded.status === ACTION_STATUS.ERROR) {
-            return <AlertMessage
-                type={ALERT_TYPES.DANGER}
-                message={this.props.formatMessage('user.load-error', {error: userLoaded.error.message})}/>;
-        }
+        const {userSaved, currentUser, user, handlers} = this.props;
 
         if (!user) {
             return <LoaderCard header={<span>{this.i18n('user.panel-title')}</span>}/>;
@@ -285,26 +272,6 @@ class User extends React.Component {
                             {this.i18n(this.props.backToInstitution ? 'users.back-to-institution' : 'cancel')}
                         </Button>
                     </div>
-                    {showAlert && userSaved.status === ACTION_STATUS.ERROR &&
-                    <AlertMessage type={ALERT_TYPES.DANGER}
-                                  message={this.props.formatMessage('user.save-error', {error: this.props.userSaved.error.message})}/>}
-                    {showAlert && userSaved.status === ACTION_STATUS.SUCCESS &&
-                    <AlertMessage type={ALERT_TYPES.SUCCESS}
-                                  message={this.i18n(this.state.savedWithEmail ? 'user.save-success-with-email' : 'user.save-success')}/>}
-                    {invited && invitationSent.status === ACTION_STATUS.SUCCESS &&
-                    <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.send-invitation-success')}/>}
-                    {invited && invitationSent.status === ACTION_STATUS.ERROR &&
-                    <AlertMessage type={ALERT_TYPES.DANGER}
-                                  message={this.props.formatMessage('user.send-invitation-error', {error: invitationSent.error.message})}/>}
-                    {deletedInvitation && invitationDelete.status === ACTION_STATUS.SUCCESS &&
-                    <AlertMessage type={ALERT_TYPES.SUCCESS}
-                                  message={this.i18n('user.delete-invitation-option-success')}/>}
-                    {deletedInvitation && invitationDelete.status === ACTION_STATUS.ERROR &&
-                    <AlertMessage type={ALERT_TYPES.DANGER}
-                                  message={this.props.formatMessage('user.delete-invitation-option-error', {error: invitationDelete.error.message})}/>}
-                    {impersonated && impersonation.status === ACTION_STATUS.ERROR &&
-                    <AlertMessage type={ALERT_TYPES.DANGER}
-                                  message={this.props.formatMessage('user.impersonate-error', {error: impersonation.error.message})}/>}
                 </form>
             </Card.Body>
         </Card>;

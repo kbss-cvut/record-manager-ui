@@ -12,10 +12,12 @@ import {
     loadRecordsSuccess
 } from "../../../js/actions/RecordsActions";
 import {API_URL} from '../../../config';
+import {mockDateNow, restoreDateNow} from "../../environment/Environment";
+import {errorMessage} from "../../../js/model/Message";
 
 const records = [{key: 786785600}, {key: 86875960}];
 
-describe('Records synchronize actions', function () {
+describe('Records synchronous actions', function () {
     it('creates an action to fetch all records', () => {
         const expectedAction = {
             type: ActionConstants.LOAD_RECORDS_PENDING,
@@ -44,7 +46,7 @@ describe('Records synchronize actions', function () {
 const middlewares = [thunk.withExtraArgument(axiosBackend)];
 const mockStore = configureMockStore(middlewares);
 
-describe('Records asynchronize actions', function () {
+describe('Records asynchronous actions', function () {
     let store,
         mockApi;
     const error = {
@@ -65,6 +67,11 @@ describe('Records asynchronize actions', function () {
     beforeEach(() => {
         mockApi = new MockAdapter(axiosBackend);
         store = mockStore();
+        mockDateNow();
+    });
+
+    afterEach(() => {
+        restoreDateNow();
     });
 
     it('creates LOAD_RECORDS_SUCCESS action when loading all records successfully is done', function (done) {
@@ -118,7 +125,8 @@ describe('Records asynchronize actions', function () {
     it('creates LOAD_RECORDS_ERROR action if an error occurred during loading records', function (done) {
         const expectedActions = [
             {type: ActionConstants.LOAD_RECORDS_PENDING},
-            {type: ActionConstants.LOAD_RECORDS_ERROR, error}
+            {type: ActionConstants.LOAD_RECORDS_ERROR, error},
+            {type: ActionConstants.PUBLISH_MESSAGE, message: errorMessage('records.loading-error', {error: error.message})}
         ];
 
         mockApi.onGet(`${API_URL}/rest/records`).reply(400, error);

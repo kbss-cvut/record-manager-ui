@@ -73,7 +73,7 @@ class Login extends React.Component {
                 <Card.Header className="text-light bg-primary" as="h6">{this.i18n('login.title')}</Card.Header>
                 <Card.Body>
                     {!this.state.deviceSupported &&
-                    <div className='message-container'>
+                    <div>
                         <Alert className={`alert-browser-support`} variant="warning">
                             {this.i18n('Your browser is not fully supported! Some parts of web may not work properly.')}<br/>
                             {this.i18n('We recommend using the latest version of ')}

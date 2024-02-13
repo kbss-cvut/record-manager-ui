@@ -1,20 +1,16 @@
-'use strict';
-
 import React from "react";
 import {Table} from "react-bootstrap";
 import DeleteItemDialog from "../DeleteItemDialog";
 import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import UserRow from "./UserRow";
-import {ACTION_STATUS} from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
 import IfInternalAuth from "../misc/oidc/IfInternalAuth";
 
 class UserTable extends React.Component {
     static propTypes = {
         users: PropTypes.array.isRequired,
-        handlers: PropTypes.object.isRequired,
-        userDeleted: PropTypes.object
+        handlers: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -77,13 +73,11 @@ class UserTable extends React.Component {
     }
 
     _renderUsers() {
-        const {users, userDeleted} = this.props;
+        const {users} = this.props;
         const onEdit = this.props.handlers.onEdit;
         let rows = [];
         for (let i = 0, len = users.length; i < len; i++) {
-            rows.push(<UserRow key={users[i].username} user={users[i]} onEdit={onEdit} onDelete={this._onDelete}
-                               deletionLoading={!!(userDeleted.status === ACTION_STATUS.PENDING
-                                   && userDeleted.username === users[i].username)}/>);
+            rows.push(<UserRow key={users[i].username} user={users[i]} onEdit={onEdit} onDelete={this._onDelete}/>);
         }
         return rows;
     }

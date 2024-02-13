@@ -36,13 +36,26 @@ export default class Message {
     }
 }
 
-export function createStringMessage(text, type) {
-    return new Message({message: text, type});
+export function successMessage(messageId, values) {
+    return new Message({
+        messageId,
+        values,
+        type: MessageType.SUCCESS
+    });
 }
 
-export function createFormattedMessage(mId, values) {
+export function infoMessage(messageId, values) {
     return new Message({
-        messageId: mId,
+        messageId,
         values,
+        type: MessageType.INFO
+    });
+}
+
+export function errorMessage(messageId, values) {
+    return new Message({
+        messageId,
+        values,
+        type: MessageType.ERROR
     });
 }

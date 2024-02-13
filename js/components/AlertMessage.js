@@ -3,7 +3,7 @@ import {Alert} from "react-bootstrap";
 import PropTypes from "prop-types";
 
 const AlertMessage = (props) => (
-    <div className='message-container'>
+    <div>
         <Alert className={`alert-position-${props.alertPosition || 'down'}`} variant={props.type}>
             {props.message}
         </Alert>

@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import {injectIntl} from "react-intl";
 import withI18n from '../../i18n/withI18n';
@@ -17,7 +15,6 @@ class PasswordChangeController extends React.Component {
         super(props);
         this.state = {
             password: UserFactory.initNewPassword(),
-            showAlert: false,
             valid: true
         };
     }
@@ -31,7 +28,7 @@ class PasswordChangeController extends React.Component {
         if (this._passwordValid()) {
             delete this.state.password.confirmPassword;
             this.props.changePassword(this.props.match.params.username, this.state.password, sendEmail);
-            this.setState({showAlert: true, password: UserFactory.initNewPassword()});
+            this.setState({password: UserFactory.initNewPassword()});
         }
     };
 
@@ -45,7 +42,7 @@ class PasswordChangeController extends React.Component {
             this.setState({valid: true});
             return true;
         }
-        this.setState({valid: false, showAlert: false});
+        this.setState({valid: false});
         return false;
     };
 
@@ -59,7 +56,7 @@ class PasswordChangeController extends React.Component {
             onSave: this._onSave,
             onChange: this._onChange
         };
-        return <PasswordChange handlers={handlers} currentUser={currentUser} showAlert={this.state.showAlert}
+        return <PasswordChange handlers={handlers} currentUser={currentUser}
                                valid={this.state.valid} passwordChange={passwordChange} match={match}
                                password={this.state.password}/>;
     }

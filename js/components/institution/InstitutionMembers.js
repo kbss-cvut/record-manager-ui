@@ -1,22 +1,19 @@
-'use strict';
-
 import React from 'react';
 import {Button, Card, Table} from 'react-bootstrap';
 import {injectIntl} from "react-intl";
 import withI18n from '../../i18n/withI18n';
 import DeleteItemDialog from "../DeleteItemDialog";
-import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
+import {ACTION_STATUS} from "../../constants/DefaultConstants";
 import Loader, {LoaderSmall} from "../Loader";
-import AlertMessage from "../AlertMessage";
 import PropTypes from "prop-types";
 import {isAdmin} from "../../utils/SecurityUtils";
+import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 
 class InstitutionMembers extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             showDialog: false,
-            showAlert: false,
             selectedUser: null
         };
         this.i18n = this.props.i18n;
@@ -41,12 +38,9 @@ class InstitutionMembers extends React.Component {
     }
 
     render() {
-        const {institutionMembers, institution, currentUser, onAddNewUser, userDeleted} = this.props;
+        const {institutionMembers, institution, currentUser, onAddNewUser} = this.props;
         if (!institutionMembers.members && (!institutionMembers.status || institutionMembers.status === ACTION_STATUS.PENDING)) {
             return <Loader/>
-        } else if (institutionMembers.status === ACTION_STATUS.ERROR) {
-            return <AlertMessage type={ALERT_TYPES.DANGER}
-                                 message={this.props.formatMessage('institution.members.loading-error', {error: institutionMembers.error.message})}/>
         }
 
         return <Card variant='info' className="mt-3">
@@ -56,6 +50,7 @@ class InstitutionMembers extends React.Component {
                               show={this.state.showDialog} item={this.state.selectedUser}
                               itemLabel={this._getDeleteLabel()}/>
             <Card.Body>
+                <PromiseTrackingMask area="institution-members"/>
                 {institutionMembers.members.length > 0 ?
                     <Table size="sm" responsive striped bordered hover>
                         <thead>
@@ -80,11 +75,6 @@ class InstitutionMembers extends React.Component {
                     </Button>
                 </div>
                 }
-                {this.state.showAlert && userDeleted.status === ACTION_STATUS.ERROR &&
-                <AlertMessage type={ALERT_TYPES.DANGER}
-                              message={this.props.formatMessage('user.delete-error', {error: this.i18n(this.props.userDeleted.error.message)})}/>}
-                {this.state.showAlert && userDeleted.status === ACTION_STATUS.SUCCESS &&
-                <AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('user.delete-success')}/>}
             </Card.Body>
         </Card>;
     }

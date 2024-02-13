@@ -72,21 +72,6 @@ describe('Institution', function () {
         };
     });
 
-    it('shows loader', function () {
-        institutionLoaded = {
-            status: ACTION_STATUS.PENDING
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <Institution handlers={handlers} institution={null} institutionMembers={institutionMembers}
-                             recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded} showAlert={showAlert}
-                             currentUser={admin} institutionLoaded={institutionLoaded}
-                             institutionSaved={institutionSaved}/>
-            </IntlProvider>);
-        const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'loader-spin');
-        expect(result).not.toBeNull();
-    });
-
     it('shows error about institution was not loaded', function () {
         institutionLoaded = {
             ...institutionLoaded,

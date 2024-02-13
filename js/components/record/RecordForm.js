@@ -6,8 +6,6 @@ import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
 import withI18n from '../../i18n/withI18n';
 import Loader from "../Loader";
-import {ACTION_STATUS, ALERT_TYPES} from "../../constants/DefaultConstants";
-import AlertMessage from "../AlertMessage";
 import {axiosBackend} from "../../actions";
 import {API_URL} from "../../../config";
 import * as Logger from "../../utils/Logger";
@@ -16,6 +14,8 @@ import * as I18nStore from "../../stores/I18nStore";
 // import SmartComponents from "s-forms-components";
 
 import 'react-datepicker/dist/react-datepicker.css';
+import PromiseTrackingMask from "../misc/PromiseTrackingMask";
+import {trackPromise} from "react-promise-tracker";
 // import "intelligent-tree-select/lib/styles.css"
 
 // const componentMapping = SmartComponents.getComponentMapping();
@@ -25,36 +25,27 @@ class RecordForm extends React.Component {
         super(props);
         this.i18n = this.props.i18n;
         this.state = {
-            wizardProperties: null,
             form: null
         }
         this.refForm = React.createRef();
     }
 
     componentDidMount() {
-        if(this.props.record.formTemplate) {
-            this.props.loadFormgen(ACTION_STATUS.PENDING);
+        if (this.props.record.formTemplate) {
             this.loadWizard();
         }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {record} = this.props;
-        if(record.formTemplate && record.formTemplate != prevProps.record.formTemplate) {
-            this.props.loadFormgen(ACTION_STATUS.PENDING);
+        if (record.formTemplate && record.formTemplate !== prevProps.record.formTemplate) {
             this.loadWizard();
         }
     }
 
-    async loadWizard() {
-        try {
-            const response = await axiosBackend.post(`${API_URL}/rest/formGen`, this.props.record);
-            this.props.loadFormgen(ACTION_STATUS.SUCCESS);
-            this.setState({form: response.data})
-        } catch (error) {
-            Logger.error('Received no valid wizard.');
-            this.props.loadFormgen(ACTION_STATUS.ERROR, error);
-        }
+    loadWizard() {
+        trackPromise(this.props.loadFormgen(this.props.record), "sform")
+            .then(data => this.setState({form: data})).catch(() => Logger.error('Received no valid wizard.'));
     }
 
     getFormData = () => {
@@ -115,25 +106,19 @@ class RecordForm extends React.Component {
             ...this._getIconsOptions()
         }
 
-        if (this.props.formgen.status === ACTION_STATUS.ERROR) {
-            return <AlertMessage
-                type={ALERT_TYPES.DANGER}
-                message={this.props.formatMessage('record.load-form-error', {error: this.props.formgen.error.message})}/>;
-        } else if (!!this.props.record.formTemplate && (this.props.formgen.status === ACTION_STATUS.PENDING || !this.state.form)) {
-            return <Loader/>;
-        }
-
-        return !!this.state.form && <SForms
-            ref={this.refForm}
-            form={this.state.form}
-            formData={this.props.record.question}
-            options={options}
-            fetchTypeAheadValues={this.fetchTypeAheadValues}
-            isFormValid={this.props.isFormValid}
-            enableForwardSkip={true}
-            loader={<Loader/>}
-            // componentMapRules={componentMapping}
-        />;
+        return <>
+            <PromiseTrackingMask area="sform"/>
+            {!!this.state.form && <SForms
+                ref={this.refForm}
+                form={this.state.form}
+                formData={this.props.record.question}
+                options={options}
+                fetchTypeAheadValues={this.fetchTypeAheadValues}
+                isFormValid={this.props.isFormValid}
+                enableForwardSkip={true}
+                loader={<Loader/>}
+            />}
+        </>;
     }
 }
 

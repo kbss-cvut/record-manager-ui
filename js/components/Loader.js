@@ -1,6 +1,5 @@
 import React from 'react';
 import {Card} from "react-bootstrap";
-import {findReturnStatement} from "eslint-plugin-react/lib/util/ast";
 
 const Loader = () => (
     <div className="loader-spin">

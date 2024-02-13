@@ -4,18 +4,22 @@ import {ACTION_FLAG} from "../constants/DefaultConstants";
 import * as Utils from "../utils/Utils";
 import {loadInstitutions} from "./InstitutionsActions";
 import {API_URL} from '../../config';
+import {publishMessage} from "./MessageActions";
+import {errorMessage, successMessage} from "../model/Message";
+import {showServerResponseErrorMessage} from "./AsyncActionUtils";
 
 export function deleteInstitution(institution) {
-    //console.log("Deleting institution: ", institution);
-    return function (dispatch) {
+    return function (dispatch, getState) {
         dispatch(deleteInstitutionPending(institution.key));
-        axiosBackend.delete(`${API_URL}/rest/institutions/${institution.key}`, {
+        return axiosBackend.delete(`${API_URL}/rest/institutions/${institution.key}`, {
             ...institution
         }).then(() => {
             dispatch(loadInstitutions());
             dispatch(deleteInstitutionSuccess(institution));
+            dispatch(publishMessage(successMessage('institution.delete-success')));
         }).catch((error) => {
             dispatch(deleteInstitutionError(error.response.data, institution));
+            dispatch(publishMessage(errorMessage('institution.delete-error', {error: getState().intl.messages[error.response.data.messageId]})));
         });
     }
 }
@@ -46,10 +50,11 @@ export function loadInstitution(key) {
     //console.log("Loading institution with key: ", key);
     return function (dispatch) {
         dispatch(loadInstitutionPending());
-        axiosBackend.get(`${API_URL}/rest/institutions/${key}`).then((response) => {
+        return axiosBackend.get(`${API_URL}/rest/institutions/${key}`).then((response) => {
             dispatch(loadInstitutionSuccess(response.data));
         }).catch((error) => {
             dispatch(loadInstitutionError(error.response.data));
+            dispatch(showServerResponseErrorMessage(error, 'institution.load-error'));
         });
     }
 }
@@ -84,14 +89,16 @@ export function createInstitution(institution) {
     //console.log("Creating institution: ", institution);
     return function (dispatch) {
         dispatch(saveInstitutionPending(ACTION_FLAG.CREATE_ENTITY));
-        axiosBackend.post(`${API_URL}/rest/institutions`, {
+        return axiosBackend.post(`${API_URL}/rest/institutions`, {
             ...institution
         }).then((response) => {
             const key = Utils.extractKeyFromLocationHeader(response);
             dispatch(saveInstitutionSuccess(institution, key, ACTION_FLAG.CREATE_ENTITY));
             dispatch(loadInstitutions());
+            dispatch(publishMessage(successMessage('institution.save-success')));
         }).catch((error) => {
             dispatch(saveInstitutionError(error.response.data, institution, ACTION_FLAG.CREATE_ENTITY));
+            dispatch(showServerResponseErrorMessage(error, 'institution.save-error'));
         });
     }
 }
@@ -100,13 +107,15 @@ export function updateInstitution(institution) {
     //console.log("Updating institution: ", institution);
     return function (dispatch) {
         dispatch(saveInstitutionPending(ACTION_FLAG.UPDATE_ENTITY));
-        axiosBackend.put(`${API_URL}/rest/institutions/${institution.key}`, {
+        return axiosBackend.put(`${API_URL}/rest/institutions/${institution.key}`, {
             ...institution
         }).then(() => {
             dispatch(saveInstitutionSuccess(institution, null, ACTION_FLAG.UPDATE_ENTITY));
             dispatch(loadInstitutions());
+            dispatch(publishMessage(successMessage('institution.save-success')));
         }).catch((error) => {
             dispatch(saveInstitutionError(error.response.data, institution, ACTION_FLAG.UPDATE_ENTITY));
+            dispatch(showServerResponseErrorMessage(error, 'institution.save-error'));
         });
     }
 }

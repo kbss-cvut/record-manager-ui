@@ -224,12 +224,13 @@ export default {
         'Cannot update user URI.': 'Nelze aktualizovat uživatelské URI.',
         'The passed username already exists.': 'Zadané uživatelské jméno již existuje.',
         'User with specified username already exists.': 'Uživatel s touto přezdívkou již existuje.',
-        'Cannot update user.': 'Není možné aktualizovat usera.',
-        'Institution with members or patient records cannot be deleted.': 'Instituci se zaměstnanci nebo se záznamy nelze odstranit.',
+        'Cannot update user.': 'Není možné aktualizovat uživatele.',
         'Your browser is not fully supported! Some parts of web may not work properly.': 'Váš prohlížeč není plně podporován! Některé části stránek nemusí fungovat správně.',
         'We recommend using the latest version of ': 'Doporučujeme použít nejnovější verzi ',
         'or': ' nebo',
         'error.record.localNameOfRecordIsNotUnique': 'Formulářové pole \'Název/Česky\' není unikátní napříč všemi záznamy.',
-        'error.record.localNameOfRecordIsEmpty': 'Formulářové pole \'Název/Česky\' je prázdne.'
+        'error.record.localNameOfRecordIsEmpty': 'Formulářové pole \'Název/Česky\' je prázdne.',
+        'error.institution.remove.institutionWithMembersOrPatientRecordsCannotBeDeleted': 'Instituci se zaměstnanci nebo se záznamy nelze odstranit.',
+        'error.password.validation.thePassedUsersCurrentPasswordIsDifferentFromTheSpecifiedOne': "Původní heslo uživatele neodpovídá heslu uloženému."
     }
 };

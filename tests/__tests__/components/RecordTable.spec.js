@@ -36,39 +36,6 @@ describe('RecordTable', function () {
         }
     });
 
-    it('shows loader', function () {
-        recordsLoaded = {
-            status: ACTION_STATUS.PENDING
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <RecordTable recordsLoaded={recordsLoaded} handlers={handlers} disableDelete={disableDelete}
-                             recordDeleted={recordDeleted} formTemplatesLoaded={formTemplatesLoaded}
-                             currentUser={currentUser}
-                />
-            </IntlProvider>);
-        const result = TestUtils.findRenderedDOMComponentWithClass(tree, 'loader-spin');
-        expect(result).not.toBeNull();
-    });
-
-    it('renders unsuccessful alert that records were not loaded', function () {
-        recordsLoaded = {
-            status: ACTION_STATUS.ERROR,
-            error: {
-                message: "Error"
-            }
-        };
-        const tree = TestUtils.renderIntoDocument(
-            <IntlProvider locale="en" {...intlData}>
-                <RecordTable recordsLoaded={recordsLoaded} handlers={handlers} disableDelete={disableDelete}
-                             recordDeleted={recordDeleted} formTemplatesLoaded={formTemplatesLoaded}
-                             currentUser={currentUser}
-                />
-            </IntlProvider>);
-        const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
-        expect(alert).not.toBeNull();
-    });
-
     xit('renders table with headers and columns', function () {
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>

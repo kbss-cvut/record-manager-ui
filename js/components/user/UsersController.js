@@ -11,6 +11,7 @@ import {bindActionCreators} from "redux";
 import {loadUsers} from "../../actions/UsersActions";
 import {ROLE} from "../../constants/DefaultConstants";
 import {deleteUser} from "../../actions/UserActions";
+import {trackPromise} from "react-promise-tracker";
 
 class UsersController extends React.Component {
     constructor(props) {
@@ -21,7 +22,7 @@ class UsersController extends React.Component {
     }
 
     componentDidMount() {
-        this.props.loadUsers();
+        trackPromise(this.props.loadUsers(), "users");
     }
 
     _onEditUser = (user) => {

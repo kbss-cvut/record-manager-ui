@@ -6,11 +6,13 @@ import thunk from "redux-thunk";
 import configureMockStore from "redux-mock-store";
 import {loadStatistics} from "../../../js/actions/StatisticsActions";
 import {API_URL} from '../../../config';
+import {errorMessage} from "../../../js/model/Message";
+import {mockDateNow, restoreDateNow} from "../../environment/Environment";
 
 const middlewares = [thunk.withExtraArgument(axiosBackend)];
 const mockStore = configureMockStore(middlewares);
 
-describe('Statistics asynchronize actions', function () {
+describe('Statistics asynchronous actions', function () {
     let store,
         mockApi;
     const payload = {numberOfPatients: 5, numberOfInstitutions: 10},
@@ -21,6 +23,11 @@ describe('Statistics asynchronize actions', function () {
     beforeEach(() => {
         mockApi = new MockAdapter(axiosBackend);
         store = mockStore();
+        mockDateNow();
+    });
+
+    afterEach(() => {
+        restoreDateNow();
     });
 
     it('creates LOAD_STATISTICS_SUCCESS action when loading statistics is successfully done', function (done) {
@@ -42,7 +49,8 @@ describe('Statistics asynchronize actions', function () {
     it('creates LOAD_STATISTICS_ERROR action if an error occurred during loading statistics', function (done) {
         const expectedActions = [
             {type: ActionConstants.LOAD_STATISTICS_PENDING},
-            {type: ActionConstants.LOAD_STATISTICS_ERROR, error}
+            {type: ActionConstants.LOAD_STATISTICS_ERROR, error},
+            {type: ActionConstants.PUBLISH_MESSAGE, message: errorMessage('history.loading-error', {error: error.message})}
         ];
 
         mockApi.onGet(`${API_URL}/rest/statistics`).reply(400, error);

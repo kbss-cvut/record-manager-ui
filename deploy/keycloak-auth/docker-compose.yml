@@ -133,7 +133,7 @@ services:
       - "8080"
     volumes:
       - auth-server:/opt/keycloak/data
-      - ../shared/keycloak:/opt/keycloak/data/import
+      - ./keycloak:/opt/keycloak/data/import
     depends_on:
       - auth-server-db
 

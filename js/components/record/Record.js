@@ -1,5 +1,3 @@
-'use strict';
-
 import React from "react";
 import {Button} from "react-bootstrap";
 import PropTypes from "prop-types";
@@ -9,12 +7,12 @@ import HorizontalInput from "../HorizontalInput";
 import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
 import RequiredAttributes from "./RequiredAttributes";
-import {ACTION_STATUS, ALERT_TYPES, EXTENSION_CONSTANTS, RECORD_PHASE} from "../../constants/DefaultConstants";
-import AlertMessage from "../AlertMessage";
+import {ACTION_STATUS, EXTENSION_CONSTANTS, RECORD_PHASE} from "../../constants/DefaultConstants";
 import {LoaderCard, LoaderSmall} from "../Loader";
 import {processTypeaheadOptions} from "./TypeaheadAnswer";
 import {EXTENSIONS} from "../../../config";
 import {isAdmin} from "../../utils/SecurityUtils";
+import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 
 class Record extends React.Component {
     constructor(props) {
@@ -41,23 +39,20 @@ class Record extends React.Component {
     }
 
     render() {
-        const {recordLoaded, recordSaved, showAlert, record, formTemplate, currentUser} = this.props;
+        const {record, formTemplate, currentUser} = this.props;
 
         if (!record?.formTemplate) {
             if (formTemplate) {
                 record.formTemplate = formTemplate;
             }
         }
-        if (recordLoaded.status === ACTION_STATUS.ERROR) {
-            return <AlertMessage type={ALERT_TYPES.DANGER}
-                                 message={this.props.formatMessage('record.load-error', {error: this.props.recordLoaded.error.message})}/>;
-        }
 
         if (!record) {
             return <LoaderCard header={this._renderHeader()} variant='primary'/>;
         }
 
-        return <div className={"record"}>
+        return <div className="record">
+            <PromiseTrackingMask area="record" coverViewport={true}/>
             <form>
                 <RequiredAttributes record={record} onChange={this._onChange}
                                     formTemplate={formTemplate}
@@ -68,14 +63,6 @@ class Record extends React.Component {
             </form>
             {this._renderForm()}
             {this._renderButtons()}
-            {showAlert && recordSaved.status === ACTION_STATUS.ERROR &&
-                <div>
-                    <AlertMessage type={ALERT_TYPES.DANGER}
-                                  message={this.props.formatMessage('record.save-error', {error: this.i18n(recordSaved.error.messageId)})}/>
-                    <br/>
-                </div>}
-            {showAlert && recordSaved.status === ACTION_STATUS.SUCCESS &&
-                <div><AlertMessage type={ALERT_TYPES.SUCCESS} message={this.i18n('record.save-success')}/><br/></div>}
         </div>;
     }
 

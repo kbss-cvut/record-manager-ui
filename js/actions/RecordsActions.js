@@ -2,13 +2,12 @@ import * as ActionConstants from "../constants/ActionConstants";
 import {HttpHeaders, ROLE} from "../constants/DefaultConstants";
 import {axiosBackend} from "./index";
 import {API_URL} from '../../config';
-import {asyncError, asyncRequest, asyncSuccess} from "./AsyncActionUtils";
+import {asyncError, asyncRequest, asyncSuccess, showServerResponseErrorMessage} from "./AsyncActionUtils";
 import {fileDownload} from "../utils/Utils";
 import {publishMessage} from "./MessageActions";
-import Message, {MessageType} from "../model/Message";
+import {infoMessage, successMessage} from "../model/Message";
 
 export function loadRecords(currentUser, institutionKey = null) {
-    //console.log("Loading records");
     let urlSuffix = '';
     if (institutionKey) {
         urlSuffix = `?institution=${institutionKey}`;
@@ -17,10 +16,11 @@ export function loadRecords(currentUser, institutionKey = null) {
     }
     return function (dispatch) {
         dispatch(loadRecordsPending());
-        axiosBackend.get(`${API_URL}/rest/records${urlSuffix}`).then((response) => {
+        return axiosBackend.get(`${API_URL}/rest/records${urlSuffix}`).then((response) => {
             dispatch(loadRecordsSuccess(response.data));
         }).catch((error) => {
             dispatch(loadRecordsError(error.response.data));
+            dispatch(showServerResponseErrorMessage(error, 'records.loading-error'));
         });
     }
 }
@@ -72,30 +72,16 @@ export function importRecords(file) {
             dispatch(asyncSuccess(ActionConstants.IMPORT_RECORDS_SUCCESS));
             dispatch(loadRecords(getState().auth.user));
             if (resp.data.importedCount < resp.data.totalCount) {
-                dispatch(publishMessage(new Message({
-                    messageId: "records.import.partialSuccess.message",
-                    values: {
-                        importedCount: resp.data.importedCount,
-                        totalCount: resp.data.totalCount
-                    },
-                    type: MessageType.INFO
-                })))
+                dispatch(publishMessage(infoMessage("records.import.partialSuccess.message", {
+                    importedCount: resp.data.importedCount,
+                    totalCount: resp.data.totalCount
+                })));
             } else {
-                dispatch(publishMessage(new Message({
-                    messageId: "records.import.success.message",
-                    values: {
-                        importedCount: resp.data.importedCount
-                    },
-                    type: MessageType.SUCCESS
-                })))
+                dispatch(publishMessage(successMessage("records.import.success.message", {importedCount: resp.data.importedCount})));
             }
-        })
-            .catch(error => {
-                dispatch(publishMessage(new Message({
-                    messageId: "records.import.error.message",
-                    type: MessageType.ERROR
-                })))
-                return dispatch(asyncError(ActionConstants.IMPORT_RECORDS_ERROR, error.response.data));
-            });
+        }).catch(error => {
+            dispatch(asyncError(ActionConstants.IMPORT_RECORDS_ERROR, error.response.data));
+            dispatch(showServerResponseErrorMessage(error, "records.import.error.message"));
+        });
     };
 }
