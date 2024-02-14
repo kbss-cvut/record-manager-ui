@@ -11,9 +11,9 @@ import {ROLE} from "../../constants/DefaultConstants";
 import DateIntervalFilter from "./filter/DateIntervalFilter";
 import PhaseFilter from "./filter/PhaseFilter";
 import InstitutionFilter from "./filter/InstitutionFilter";
-import {FaFilter} from "react-icons/fa";
-import classNames from "classnames";
 import SortIndicator from "../misc/SortIndicator";
+import {useI18n} from "../../hooks/useI18n";
+import FilterIndicator from "../misc/FilterIndicator";
 
 class RecordTable extends React.Component {
     static propTypes = {
@@ -36,32 +36,28 @@ class RecordTable extends React.Component {
         super(props);
         this.i18n = this.props.i18n;
         this.state = {
-            selectedRecord: null,
             showDialog: false,
-            showInstitutionFilter: false,
-            showPhaseFilter: false,
-            showModifiedFilter: false
         };
     }
 
     _onDelete = (record) => {
-        this.setState({showDialog: true, selectedRecord: record});
+        this.setState({selectedRecord: record});
     };
 
     _onCancelDelete = () => {
-        this.setState({showDialog: false, selectedRecord: null});
+        this.setState({selectedRecord: null});
     };
 
     _onSubmitDelete = () => {
         this.props.handlers.onDelete(this.state.selectedRecord);
-        this.setState({showDialog: false, selectedRecord: null});
+        this.setState({selectedRecord: null});
     };
 
     render() {
         const filteredRecords = this._getFormTemplateRecords();
         return <div>
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
-                              show={this.state.showDialog} item={this.state.selectedRecord}
+                              show={this.state.selectedRecord !== null} item={this.state.selectedRecord}
                               itemLabel={this._getDeleteLabel()}/>
             <Table size="sm" responsive striped bordered hover>
                 {this._renderHeader()}
@@ -85,44 +81,11 @@ class RecordTable extends React.Component {
             </IfGranted>
             <th className='col-2 content-center'>{this.i18n('records.local-name')}</th>
             <IfGranted expected={ROLE.ADMIN} actual={this.props.currentUser.role}>
-                <OverlayTrigger trigger="click" placement="bottom" rootClose={true}
-                                overlay={<Popover id="records-filters-institution" className="record-filters-popup">
-                                    <Popover.Content>
-                                        <InstitutionFilter value={filters.institution} onChange={onChange}/>
-                                    </Popover.Content>
-                                </Popover>}>
-                    <th id="records-institution" className='col-2 content-center cursor-pointer' title={this.i18n("table.column.filterable")}>
-                        {this.i18n('institution.panel-title')}
-                        {this._renderFilterIcon(filters.institution)}
-                    </th>
-                </OverlayTrigger>
-
+                <FilterableInstitutionHeader filters={filters} onFilterChange={onChange}/>
                 <th className='col-2 content-center'>{this.i18n('records.form-template')}</th>
             </IfGranted>
-            <OverlayTrigger trigger="click" placement="bottom" rootClose={true}
-                            overlay={<Popover id="records-filters-date" className="record-filters-popup">
-                                <Popover.Content>
-                                    <DateIntervalFilter minDate={filters.minDate} maxDate={filters.maxDate}
-                                                        sort={(sort).date} onChange={onChange}/>
-                                </Popover.Content>
-                            </Popover>}>
-                <th id="records-lastmodified" className='col-2 content-center cursor-pointer' title={this.i18n("table.column.filterable")}>
-                    {this.i18n('records.last-modified')}
-                    {this._renderFilterIcon(filters.minDate || filters.maxDate)}
-                    <SortIndicator direction={sort.date}/>
-                </th>
-            </OverlayTrigger>
-            <OverlayTrigger trigger="click" placement="bottom" rootClose={true}
-                            overlay={<Popover id="records-filters-phase" className="record-filters-popup">
-                                <Popover.Content>
-                                    <PhaseFilter value={filters.phase} onChange={onChange}/>
-                                </Popover.Content>
-                            </Popover>}>
-                <th id="records-phase" className='col-1 content-center cursor-pointer' title={this.i18n("table.column.filterable")}>
-                    {this.i18n('records.completion-status')}
-                    {this._renderFilterIcon(filters.phase)}
-                </th>
-            </OverlayTrigger>
+            <FilterableLastModifiedHeader filters={filters} sort={sort} onFilterAndSortChange={onChange}/>
+            <FilterablePhaseHeader filters={filters} onFilterChange={onChange}/>
             <th className='col-1 content-center'>{this.i18n('actions')}</th>
         </tr>
         </thead>
@@ -153,11 +116,56 @@ class RecordTable extends React.Component {
         }
         return records.filter((r) => (r.formTemplate === formTemplate))
     }
+}
 
-    _renderFilterIcon(filterValue) {
-        const classes = classNames("ml-1", {invisible: filterValue === undefined});
-        return <FaFilter className={classes} title={this.i18n("filters.active.tooltip")}/>;
-    }
+const FilterableInstitutionHeader = ({filters, onFilterChange}) => {
+    const {i18n} = useI18n();
+    return <OverlayTrigger trigger="click" placement="bottom" rootClose={true}
+                           overlay={<Popover id="records-filters-institution" className="record-filters-popup">
+                               <Popover.Content>
+                                   <InstitutionFilter value={filters.institution} onChange={onFilterChange}/>
+                               </Popover.Content>
+                           </Popover>}>
+        <th id="records-institution" className='col-2 content-center cursor-pointer'
+            title={i18n("table.column.filterable")}>
+            {i18n('institution.panel-title')}
+            <FilterIndicator filterValue={filters.institution}/>
+        </th>
+    </OverlayTrigger>;
+};
+
+const FilterableLastModifiedHeader = ({filters, sort, onFilterAndSortChange}) => {
+    const {i18n} = useI18n();
+    return <OverlayTrigger trigger="click" placement="bottom" rootClose={true}
+                    overlay={<Popover id="records-filters-date" className="record-filters-popup">
+                        <Popover.Content>
+                            <DateIntervalFilter minDate={filters.minDate} maxDate={filters.maxDate}
+                                                sort={(sort).date} onChange={onFilterAndSortChange}/>
+                        </Popover.Content>
+                    </Popover>}>
+        <th id="records-lastmodified" className='col-2 content-center cursor-pointer'
+            title={i18n("table.column.filterable")}>
+            {i18n('records.last-modified')}
+            <FilterIndicator filterValue={filters.minDate || filters.maxDate}/>
+            <SortIndicator direction={sort.date}/>
+        </th>
+    </OverlayTrigger>;
+};
+
+const FilterablePhaseHeader = ({filters, onFilterChange}) => {
+    const {i18n} = useI18n();
+    return <OverlayTrigger trigger="click" placement="bottom" rootClose={true}
+                           overlay={<Popover id="records-filters-phase" className="record-filters-popup">
+                               <Popover.Content>
+                                   <PhaseFilter value={filters.phase} onChange={onFilterChange}/>
+                               </Popover.Content>
+                           </Popover>}>
+        <th id="records-phase" className='col-1 content-center cursor-pointer'
+            title={i18n("table.column.filterable")}>
+            {i18n('records.completion-status')}
+            <FilterIndicator filterValue={filters.phase}/>
+        </th>
+    </OverlayTrigger>;
 }
 
 export default injectIntl(withI18n(RecordTable));

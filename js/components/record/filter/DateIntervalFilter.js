@@ -7,7 +7,8 @@ import {SortDirection} from "../../../constants/DefaultConstants";
 import {FaCheck} from "react-icons/fa";
 
 function toIsoDate(date) {
-    return date.toISOString().substring(0, 10);
+    // Work around timezones - https://github.com/Hacker0x01/react-datepicker/issues/1787
+    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())).toISOString().substring(0, 10);
 }
 
 const DateIntervalFilter = ({minDate, maxDate, sort, onChange}) => {
