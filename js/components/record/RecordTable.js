@@ -14,6 +14,7 @@ import InstitutionFilter from "./filter/InstitutionFilter";
 import SortIndicator from "../misc/SortIndicator";
 import {useI18n} from "../../hooks/useI18n";
 import FilterIndicator from "../misc/FilterIndicator";
+import {sanitizeArray} from "../../utils/Utils";
 
 class RecordTable extends React.Component {
     static propTypes = {
@@ -108,7 +109,7 @@ class RecordTable extends React.Component {
     }
 
     _getFormTemplateRecords() {
-        const records = this.props.recordsLoaded.records,
+        const records = sanitizeArray(this.props.recordsLoaded.records),
             formTemplate = this.props.formTemplate;
 
         if (!formTemplate) {
