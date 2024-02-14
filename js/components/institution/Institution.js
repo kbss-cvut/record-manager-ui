@@ -27,7 +27,7 @@ class Institution extends React.Component {
         formTemplatesLoaded: PropTypes.object,
         handlers: PropTypes.object.isRequired,
         currentUser: PropTypes.object.isRequired,
-        sorting: PropTypes.object.isRequired,
+        filterAndSort: PropTypes.object.isRequired,
         userDeleted: PropTypes.object
     };
 
@@ -78,7 +78,7 @@ class Institution extends React.Component {
                         <InstitutionPatients
                             recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
                             onEdit={this.props.handlers.onEditPatient} onExport={this.props.handlers.onExportRecords}
-                            currentUser={currentUser} sorting={this.props.sorting}/>}
+                            currentUser={currentUser} filterAndSort={this.props.filterAndSort}/>}
                 </>
                 }
             </Card.Body>

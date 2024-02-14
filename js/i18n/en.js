@@ -217,8 +217,12 @@ export default {
         'table.sort.tooltip': 'Sort records by this column',
 
         'filters': 'Filters',
-        'filters.reset': 'Reset filters',
+        'filters.reset': 'Reset',
         'filters.active.tooltip': 'Records are currently filtered',
+        'filters.date.from': 'From',
+        'filters.date.to': 'To',
+        'sort.asc': 'Sort ascending',
+        'sort.desc': 'Sort descending',
 
         'User does not exist.': 'User does not exist.',
         'Provided credentials don\'t match.': 'Provided credentials don\'t match.',

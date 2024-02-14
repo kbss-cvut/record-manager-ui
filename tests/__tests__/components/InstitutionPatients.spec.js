@@ -13,24 +13,25 @@ describe('InstitutionPatients', function () {
             username: 'testUser',
             role: ROLE.DOCTOR
         },
-        records,
-        sorting = {
+        filterAndSort = {
             sort: {
                 date: SortDirection.DESC
             },
-            onSort: jest.fn()
+            filters: {},
+            onChange: jest.fn()
         },
         onEdit = jest.fn(),
         onExport = jest.fn();
 
     it('renders card', function () {
         recordsLoaded = {
-            records
+            records: []
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
-                <InstitutionPatients recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded} sorting={sorting}
-                                     onEdit={onEdit} onExport={onExport} currentUser={currentUser} />
+                <InstitutionPatients recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
+                                     filterAndSort={filterAndSort}
+                                     onEdit={onEdit} onExport={onExport} currentUser={currentUser}/>
             </IntlProvider>);
         const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
         expect(cardHeading).not.toBeNull();

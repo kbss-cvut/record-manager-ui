@@ -293,10 +293,6 @@ td.actions button {
     border-color: #bce8f1;
 }
 
-.float-right {
-    float: right;
-}
-
 .factor-root-event {
     font-size: 110%;
     font-weight: bold;
@@ -854,8 +850,8 @@ header {
     height: 20.625rem;
 }
 
-#record-filters {
-    min-width: 500px;
+.record-filters-popup {
+    min-width: 300px;
 }
 
 .filter-datetimepicker {

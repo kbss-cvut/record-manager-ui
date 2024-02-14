@@ -217,8 +217,12 @@ export default {
         'table.sort.tooltip': 'Seřadit záznamy dle tohoto sloupce',
 
         'filters': 'Filtry',
-        'filters.reset': 'Zrušit filtry',
+        'filters.reset': 'Zrušit',
         'filters.active.tooltip': 'Záznamy jsou nyní filtrovány',
+        'filters.date.from': 'Od',
+        'filters.date.to': 'Do',
+        'sort.asc': 'Seřadit vzestupně',
+        'sort.desc': 'Seřadit sestupně',
 
         'User does not exist.': 'Uživatel neexistuje.',
         'Provided credentials don\'t match.': 'Zadané údaje nesouhlasí.',

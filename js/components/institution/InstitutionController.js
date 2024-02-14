@@ -23,7 +23,6 @@ import {loadFormTemplates} from "../../actions/FormTemplatesActions";
 import {isAdmin} from "../../utils/SecurityUtils";
 import {trackPromise} from "react-promise-tracker";
 import {INITIAL_PAGE} from "../misc/Pagination";
-import {nextSortState} from "../misc/SortToggle";
 
 class InstitutionController extends React.Component {
     constructor(props) {
@@ -32,6 +31,7 @@ class InstitutionController extends React.Component {
             institution: this._isNew() ? EntityFactory.initNewInstitution() : null,
             saved: false,
             pageNumber: INITIAL_PAGE,
+            filters: {},
             sort: {
                 date: SortDirection.DESC
             }
@@ -66,7 +66,7 @@ class InstitutionController extends React.Component {
         });
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps) {
         const {institutionLoaded, institutionSaved, transitionToWithOpts} = this.props;
 
         if (prevProps.institutionLoaded.status === ACTION_STATUS.PENDING && institutionLoaded.status === ACTION_STATUS.SUCCESS) {
@@ -150,10 +150,11 @@ class InstitutionController extends React.Component {
         });
     };
 
-    onSort = (attribute) => {
-        const change = {};
-        change[attribute] = nextSortState(this.state.sort[attribute]);
-        this.setState({sort: Object.assign({}, this.state.sort, change)}, this._loadRecords);
+    onFilterAndSort = (filterChange, sortChange) => {
+        this.setState({
+            filters: Object.assign({}, this.state.filters, filterChange),
+            sort: Object.assign({}, this.state.sort, sortChange)
+        }, this._loadRecords);
     }
 
     render() {
@@ -174,16 +175,17 @@ class InstitutionController extends React.Component {
             onExportRecords: this._onExportRecords,
             onDelete: this._onDeleteUser
         };
-        const sorting = {
+        const filterAndSort = {
+            filters: this.state.filters,
             sort: this.state.sort,
-            onSort: this.onSort
+            onChange: this.onFilterAndSort
         };
         return <Institution handlers={handlers} institution={this.state.institution}
                             institutionMembers={institutionMembers}
                             recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
                             currentUser={currentUser}
                             institutionLoaded={institutionLoaded} institutionSaved={institutionSaved}
-                            userDeleted={userDeleted} sorting={sorting}
+                            userDeleted={userDeleted} filterAndSort={filterAndSort}
         />;
     }
 }

@@ -14,7 +14,6 @@ import {extractQueryParam, sortToParams} from "../../utils/Utils"
 import {PAGE_SIZE, RECORD_PHASE, SortDirection} from "../../constants/DefaultConstants";
 import {trackPromise} from "react-promise-tracker";
 import {INITIAL_PAGE} from "../misc/Pagination";
-import {nextSortState} from "../misc/SortToggle";
 
 class RecordsController extends React.Component {
     constructor(props) {
@@ -100,22 +99,13 @@ class RecordsController extends React.Component {
         this.setState({pageNumber}, this._loadRecords);
     }
 
-    onSort = (attribute) => {
-        const change = {};
-        change[attribute] = nextSortState(this.state.sort[attribute]);
-        this.setState({sort: Object.assign({}, this.state.sort, change)}, this._loadRecords);
-    }
-
-    onFilter = (change) => {
+    onFilterAndSort = (filterChange, sortChange) => {
         this.setState({
-            filters: Object.assign({}, this.state.filters, change),
+            filters: Object.assign({}, this.state.filters, filterChange),
+            sort: Object.assign({}, this.state.sort, sortChange),
             pageNumber: INITIAL_PAGE
         }, this._loadRecords);
     }
-
-    onResetFilters = () => {
-        this.setState({filters: {}, pageNumber: INITIAL_PAGE}, this._loadRecords);
-    };
 
     render() {
         const {formTemplatesLoaded, recordsLoaded, recordDeleted, recordsDeleting, currentUser} = this.props;
@@ -137,16 +127,12 @@ class RecordsController extends React.Component {
             itemCount: recordsLoaded.records?.length,
             pageCount: recordsLoaded.pageCount
         };
-        const sorting = {
-            onSort: this.onSort,
-            sort: this.state.sort
-        };
-        const filters = {
+        const filterAndSort = {
             filters: this.state.filters,
-            onChange: this.onFilter,
-            onReset: this.onResetFilters
-        };
-        return <Records handlers={handlers} pagination={pagination} sorting={sorting} filters={filters}
+            sort: this.state.sort,
+            onChange: this.onFilterAndSort
+        }
+        return <Records handlers={handlers} pagination={pagination} filterAndSort={filterAndSort}
                         recordsLoaded={recordsLoaded} recordDeleted={recordDeleted} recordsDeleting={recordsDeleting}
                         formTemplate={formTemplate} currentUser={currentUser}
                         formTemplatesLoaded={formTemplatesLoaded}/>;

@@ -6,8 +6,6 @@ import {ACTION_STATUS, ROLE, SortDirection} from "../../../js/constants/DefaultC
 import enLang from '../../../js/i18n/en';
 import {INITIAL_PAGE} from "../../../js/components/misc/Pagination";
 
-jest.mock("../../../js/components/record/filter/RecordsFilter", () => () => <>Filters</>);
-
 describe('Records', function () {
     const intlData = enLang;
     let admin,
@@ -17,7 +15,7 @@ describe('Records', function () {
         recordsDeleting = [],
         formTemplatesLoaded = {},
         pagination,
-        sorting,
+        filterAndSort,
         handlers;
     admin = {
         username: 'admin',
@@ -50,11 +48,12 @@ describe('Records', function () {
             itemCount: records.length,
             pageCount: 1
         };
-        sorting = {
+        filterAndSort = {
             sort: {
                 date: SortDirection.DESC
             },
-            onSort: jest.fn()
+            filters: {},
+            onChange: jest.fn()
         };
         recordDeleted = {
             status: ACTION_STATUS.SUCCESS
@@ -73,7 +72,7 @@ describe('Records', function () {
             <IntlProvider locale="en" {...intlData}>
                 <Records recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
                          filters={{filters: {}, onChange: jest.fn()}}
-                         recordDeleted={recordDeleted} handlers={handlers} pagination={pagination} sorting={sorting}
+                         recordDeleted={recordDeleted} handlers={handlers} pagination={pagination} filterAndSort={filterAndSort}
                          recordsDeleting={recordsDeleting} currentUser={admin}/>
             </IntlProvider>);
     }

@@ -19,7 +19,7 @@ describe('Institution', function () {
         recordsLoaded = {
         records: []
         },
-        sorting,
+        filterAndSort,
         formTemplatesLoaded = {},
         handlers = {
             onSave: jest.fn(),
@@ -69,9 +69,10 @@ describe('Institution', function () {
             status: ACTION_STATUS.SUCCESS,
             records: []
         };
-        sorting = {
+        filterAndSort = {
             sort: {date: SortDirection.DESC},
-            onSort: jest.fn()
+            filters: {},
+            onChange: jest.fn()
         }
     });
 
@@ -80,7 +81,7 @@ describe('Institution', function () {
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={newInstitution} institutionMembers={institutionMembers}
                              recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded}
-                             currentUser={admin} institutionLoaded={institutionLoaded} sorting={sorting}
+                             currentUser={admin} institutionLoaded={institutionLoaded} filterAndSort={filterAndSort}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
         const result = TestUtils.scryRenderedDOMComponentsWithTag(tree,'input');
@@ -108,7 +109,7 @@ describe('Institution', function () {
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={newInstitution} institutionMembers={institutionMembers}
                              recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded}
-                             currentUser={admin} institutionLoaded={institutionLoaded} sorting={sorting}
+                             currentUser={admin} institutionLoaded={institutionLoaded} filterAndSort={filterAndSort}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
         let buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
@@ -127,7 +128,7 @@ describe('Institution', function () {
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={newInstitution} institutionMembers={institutionMembers}
                              recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded}
-                             currentUser={user} institutionLoaded={institutionLoaded} sorting={sorting}
+                             currentUser={user} institutionLoaded={institutionLoaded} filterAndSort={filterAndSort}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
         let buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
@@ -139,7 +140,7 @@ describe('Institution', function () {
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={institution} institutionMembers={institutionMembers}
                              recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded}
-                             currentUser={admin} institutionLoaded={institutionLoaded} sorting={sorting}
+                             currentUser={admin} institutionLoaded={institutionLoaded} filterAndSort={filterAndSort}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
         const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
@@ -158,7 +159,7 @@ describe('Institution', function () {
             <IntlProvider locale="en" {...intlData}>
                 <Institution handlers={handlers} institution={institution} institutionMembers={institutionMembers}
                              recordsLoaded={recordsLoaded}  formTemplatesLoaded={formTemplatesLoaded}
-                             currentUser={admin} institutionLoaded={institutionLoaded} sorting={sorting}
+                             currentUser={admin} institutionLoaded={institutionLoaded} filterAndSort={filterAndSort}
                              institutionSaved={institutionSaved}/>
             </IntlProvider>);
         const loader = TestUtils.findRenderedDOMComponentWithClass(tree, "loader");

@@ -1,15 +1,16 @@
 import React from "react";
-import {Table} from "react-bootstrap";
+import {OverlayTrigger, Popover, Table} from "react-bootstrap";
 import DeleteItemDialog from "../DeleteItemDialog";
 import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import RecordRow from "./RecordRow";
 import PropTypes from "prop-types";
 import {processTypeaheadOptions} from "./TypeaheadAnswer";
-import {sanitizeArray} from "../../utils/Utils";
 import {IfGranted} from "react-authorization";
 import {ROLE} from "../../constants/DefaultConstants";
-import SortToggle from "../misc/SortToggle";
+import DateIntervalFilter from "./filter/DateIntervalFilter";
+import PhaseFilter from "./filter/PhaseFilter";
+import InstitutionFilter from "./filter/InstitutionFilter";
 
 class RecordTable extends React.Component {
     static propTypes = {
@@ -21,7 +22,7 @@ class RecordTable extends React.Component {
         disableDelete: PropTypes.bool,
         recordsDeleting: PropTypes.array,
         currentUser: PropTypes.object.isRequired,
-        sorting: PropTypes.object.isRequired
+        filterAndSort: PropTypes.object.isRequired
     };
 
     static defaultProps = {
@@ -33,7 +34,10 @@ class RecordTable extends React.Component {
         this.i18n = this.props.i18n;
         this.state = {
             selectedRecord: null,
-            showDialog: false
+            showDialog: false,
+            showInstitutionFilter: false,
+            showPhaseFilter: false,
+            showModifiedFilter: false
         };
     }
 
@@ -56,16 +60,12 @@ class RecordTable extends React.Component {
             <DeleteItemDialog onClose={this._onCancelDelete} onSubmit={this._onSubmitDelete}
                               show={this.state.showDialog} item={this.state.selectedRecord}
                               itemLabel={this._getDeleteLabel()}/>
-            {sanitizeArray(filteredRecords).length > 0 ?
-                <Table size="sm" responsive striped bordered hover>
-                    {this._renderHeader()}
-                    <tbody>
-                    {this._renderRows(filteredRecords)}
-                    </tbody>
-                </Table>
-                :
-                <p className="font-italic">{this.i18n('records.not-found')}</p>
-            }
+            <Table size="sm" responsive striped bordered hover>
+                {this._renderHeader()}
+                <tbody>
+                {this._renderRows(filteredRecords)}
+                </tbody>
+            </Table>
         </div>;
     }
 
@@ -74,6 +74,7 @@ class RecordTable extends React.Component {
     }
 
     _renderHeader() {
+        const {filters, sort, onChange} = this.props.filterAndSort;
         return <thead>
         <tr>
             <IfGranted expected={ROLE.ADMIN} actual={this.props.currentUser.role}>
@@ -81,16 +82,37 @@ class RecordTable extends React.Component {
             </IfGranted>
             <th className='w-25 content-center'>{this.i18n('records.local-name')}</th>
             <IfGranted expected={ROLE.ADMIN} actual={this.props.currentUser.role}>
-                <th className='w-25 content-center'>{this.i18n('institution.panel-title')}</th>
+                <OverlayTrigger trigger="click" placement="bottom" rootClose={true}
+                                overlay={<Popover id="records-filters-institution" className="record-filters-popup">
+                                    <Popover.Content>
+                                        <InstitutionFilter value={filters.institution} onChange={onChange}/>
+                                    </Popover.Content>
+                                </Popover>}>
+                    <th id="records-institution"
+                        className='w-25 content-center'>{this.i18n('institution.panel-title')}</th>
+                </OverlayTrigger>
 
                 <th className='w-25 content-center'>{this.i18n('records.form-template')}</th>
             </IfGranted>
-            <th className='w-25 content-center'>
-                {this.i18n('records.last-modified')}
-                <SortToggle onToggle={this.props.sorting.onSort} attribute={"date"}
-                            sort={this.props.sorting.sort.date}/>
-            </th>
-            <th className='w-15 content-center'>{this.i18n('records.completion-status')}</th>
+            <OverlayTrigger trigger="click" placement="bottom" rootClose={true}
+                            overlay={<Popover id="records-filters-date" className="record-filters-popup">
+                                <Popover.Content>
+                                    <DateIntervalFilter minDate={filters.minDate} maxDate={filters.maxDate}
+                                                        sort={(sort).date} onChange={onChange}/>
+                                </Popover.Content>
+                            </Popover>}>
+                <th id="records-lastmodified" className='w-25 content-center'>
+                    {this.i18n('records.last-modified')}
+                </th>
+            </OverlayTrigger>
+            <OverlayTrigger trigger="click" placement="bottom" rootClose={true}
+                            overlay={<Popover id="records-filters-phase" className="record-filters-popup">
+                                <Popover.Content>
+                                    <PhaseFilter value={filters.phase} onChange={onChange}/>
+                                </Popover.Content>
+                            </Popover>}>
+                <th id="records-phase" className='w-15 content-center'>{this.i18n('records.completion-status')}</th>
+            </OverlayTrigger>
             <th className='w-20 content-center'>{this.i18n('actions')}</th>
         </tr>
         </thead>
