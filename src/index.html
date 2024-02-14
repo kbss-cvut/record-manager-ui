@@ -7,13 +7,12 @@
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
           crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="<%=htmlWebpackPlugin.options.basename %>/css/record-manager.css"/>
-    <link rel="icon" type="image/png" href="<%=htmlWebpackPlugin.options.basename %>/images/favicon.ico"/>
+    <link rel="stylesheet" href="../resources/css/record-manager.css"/>
+    <!-- <link rel="icon" type="image/png" href="<%=htmlWebpackPlugin.options.basename %>/images/favicon.ico"/> -->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0"/>
     <!-- <script type="text/javascript" src="<%=htmlWebpackPlugin.options.basename %>/locale/cs.js"></script> -->
-    <title><%=htmlWebpackPlugin.options.title %></title>
+    <title>record manager</title>
     <script src="https://unpkg.com/bowser@2.7.0/es5.js"></script>
-    <script src="<%=htmlWebpackPlugin.options.basename %>/config.js"></script>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -32,10 +31,8 @@
 <footer class="footer">
     <div class="container-fluid">
         <p class="text-muted" style="float: left">
-            <%=htmlWebpackPlugin.options.appInfo %>
         </p>
         <p class="text-muted" style="float: right">
-            Version: <%=htmlWebpackPlugin.options.version %>
         </p>
     </div>
 </footer>
