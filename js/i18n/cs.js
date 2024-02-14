@@ -214,11 +214,12 @@ export default {
         'statistics.number-of-processed-records': 'Počet vyplněných záznamů',
         'statistics.loading-error': 'Nepodařilo se načíst statistiky. {error}',
 
-        'table.sort.tooltip': 'Seřadit záznamy dle tohoto sloupce',
+        'table.sort.tooltip': 'Záznamy jsou řazeny dle tohoto sloupce',
+        'table.column.filterable': 'Tento sloupec umožňuje filtrování záznamů',
 
         'filters': 'Filtry',
         'filters.reset': 'Zrušit',
-        'filters.active.tooltip': 'Záznamy jsou nyní filtrovány',
+        'filters.active.tooltip': 'Záznamy jsou filtrovány dle tohoto sloupce',
         'filters.date.from': 'Od',
         'filters.date.to': 'Do',
         'sort.asc': 'Seřadit vzestupně',

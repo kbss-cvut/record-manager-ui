@@ -214,11 +214,12 @@ export default {
         'statistics.number-of-processed-records': 'Number of processed records',
         'statistics.loading-error': 'Unable to load statistics. {error}',
 
-        'table.sort.tooltip': 'Sort records by this column',
+        'table.sort.tooltip': 'Records are sorted by this column',
+        'table.column.filterable': 'This column supports record filtering',
 
         'filters': 'Filters',
         'filters.reset': 'Reset',
-        'filters.active.tooltip': 'Records are currently filtered',
+        'filters.active.tooltip': 'Records are filtered by this column',
         'filters.date.from': 'From',
         'filters.date.to': 'To',
         'sort.asc': 'Sort ascending',
