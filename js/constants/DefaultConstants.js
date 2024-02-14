@@ -83,8 +83,8 @@ export const ROLE = {
     ADMIN: 'Admin',
     DOCTOR: 'Regular User'
 };
-// Number of table elements per page.
-export const PAGE_SIZE = 15;
+// Default number of table elements per page.
+export const DEFAULT_PAGE_SIZE = 20;
 
 export const SortDirection = {
     ASC: "+",
@@ -122,3 +122,5 @@ export const RECORD_PHASE = {
     PUBLISHED: 'published',
     REJECTED: 'rejected'
 }
+
+export const STORAGE_TABLE_PAGE_SIZE_KEY = `${APP_TITLE}_TABLE_PAGE_SIZE`;

@@ -11,9 +11,15 @@ import {bindActionCreators} from "redux";
 import {deleteRecord, updateRecord} from "../../actions/RecordActions";
 import {loadFormTemplates} from "../../actions/FormTemplatesActions";
 import {extractQueryParam, sortToParams} from "../../utils/Utils"
-import {PAGE_SIZE, RECORD_PHASE, SortDirection} from "../../constants/DefaultConstants";
+import {
+    DEFAULT_PAGE_SIZE,
+    RECORD_PHASE,
+    SortDirection,
+    STORAGE_TABLE_PAGE_SIZE_KEY
+} from "../../constants/DefaultConstants";
 import {trackPromise} from "react-promise-tracker";
 import {INITIAL_PAGE} from "../misc/Pagination";
+import BrowserStorage from "../../utils/BrowserStorage";
 
 class RecordsController extends React.Component {
     constructor(props) {
@@ -35,7 +41,7 @@ class RecordsController extends React.Component {
     _loadRecords() {
         trackPromise(this.props.loadRecords({
             page: this.state.pageNumber,
-            size: PAGE_SIZE,
+            size: BrowserStorage.get(STORAGE_TABLE_PAGE_SIZE_KEY, DEFAULT_PAGE_SIZE),
             ...this.state.filters,
             sort: sortToParams(this.state.sort)
         }), "records");

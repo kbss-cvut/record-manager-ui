@@ -216,6 +216,8 @@ export default {
 
         'table.sort.tooltip': 'Records are sorted by this column',
         'table.column.filterable': 'This column supports record filtering',
+        'table.pagination.size-message': 'Show {size} records per page',
+        'table.pagination.size.all': 'Show all records',
 
         'filters': 'Filters',
         'filters.reset': 'Reset',

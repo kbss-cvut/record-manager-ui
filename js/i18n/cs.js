@@ -216,6 +216,8 @@ export default {
 
         'table.sort.tooltip': 'Záznamy jsou řazeny dle tohoto sloupce',
         'table.column.filterable': 'Tento sloupec umožňuje filtrování záznamů',
+        'table.pagination.size-message': 'Zobrazit {size} záznamů na stránku',
+        'table.pagination.size.all': 'Zobrazit vše',
 
         'filters': 'Filtry',
         'filters.reset': 'Zrušit',

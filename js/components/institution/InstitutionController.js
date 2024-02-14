@@ -5,7 +5,13 @@ import withI18n from "../../i18n/withI18n";
 import Routes from "../../constants/RoutesConstants";
 import {transitionTo, transitionToWithOpts} from "../../utils/Routing";
 import {connect} from "react-redux";
-import {ACTION_FLAG, ACTION_STATUS, PAGE_SIZE, SortDirection} from "../../constants/DefaultConstants";
+import {
+    ACTION_FLAG,
+    ACTION_STATUS,
+    DEFAULT_PAGE_SIZE,
+    SortDirection,
+    STORAGE_TABLE_PAGE_SIZE_KEY
+} from "../../constants/DefaultConstants";
 import {bindActionCreators} from "redux";
 import {
     createInstitution,
@@ -23,6 +29,7 @@ import {loadFormTemplates} from "../../actions/FormTemplatesActions";
 import {isAdmin} from "../../utils/SecurityUtils";
 import {trackPromise} from "react-promise-tracker";
 import {INITIAL_PAGE} from "../misc/Pagination";
+import BrowserStorage from "../../utils/BrowserStorage";
 
 class InstitutionController extends React.Component {
     constructor(props) {
@@ -61,7 +68,7 @@ class InstitutionController extends React.Component {
         this.props.loadRecords({
             institution: institutionKey,
             page: this.state.pageNumber,
-            size: PAGE_SIZE,
+            size: BrowserStorage.get(STORAGE_TABLE_PAGE_SIZE_KEY, DEFAULT_PAGE_SIZE),
             sort: sortToParams(this.state.sort)
         });
     }
