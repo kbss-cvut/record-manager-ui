@@ -84,7 +84,7 @@ export const ROLE = {
     DOCTOR: 'Regular User'
 };
 // Default number of table elements per page.
-export const DEFAULT_PAGE_SIZE = 20;
+export const DEFAULT_PAGE_SIZE = 10;
 
 export const SortDirection = {
     ASC: "+",
