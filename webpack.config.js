@@ -39,6 +39,10 @@ module.exports = (env = {}) => {
                 // Provide an alias for the problematic import
                 'react-bootstrap/Card': resolve(__dirname, 'node_modules/react-bootstrap/esm/Card.js'),
             },
+            fallback: {
+                url: false,
+                "querystring": require.resolve("querystring-es3")
+            }
         },
         devServer: {
             host: 'localhost',
