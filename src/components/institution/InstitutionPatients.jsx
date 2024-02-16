@@ -6,7 +6,7 @@ import ExportRecordsDropdown from "../record/ExportRecordsDropdown";
 import {useI18n} from "../../hooks/useI18n";
 
 const InstitutionPatients = (props) => {
-    const {recordsLoaded, formTemplatesLoaded, onEdit, onExport, currentUser} = props;
+    const {recordsLoaded, formTemplatesLoaded, onEdit, onExport, currentUser, filterAndSort} = props;
     const {i18n} = useI18n();
 
     return <Card variant='info' className="mt-3">
@@ -16,7 +16,7 @@ const InstitutionPatients = (props) => {
             <RecordTable recordsLoaded={recordsLoaded}
                          formTemplatesLoaded={formTemplatesLoaded}
                          handlers={{onEdit: onEdit}}
-                         disableDelete={true}
+                         disableDelete={true} filterAndSort={filterAndSort}
                          currentUser={currentUser}/>
             <div className="d-flex justify-content-end">
                 <ExportRecordsDropdown onExport={onExport} records={recordsLoaded.records}/>
@@ -30,7 +30,8 @@ InstitutionPatients.propTypes = {
     formTemplatesLoaded: PropTypes.object.isRequired,
     onEdit: PropTypes.func.isRequired,
     onExport: PropTypes.func.isRequired,
-    currentUser: PropTypes.object.isRequired
+    currentUser: PropTypes.object.isRequired,
+    filterAndSort: PropTypes.object.isRequired
 };
 
 export default InstitutionPatients;

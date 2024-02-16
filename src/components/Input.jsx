@@ -55,7 +55,7 @@ export default class Input extends React.Component {
     }
 
     _renderSelect() {
-        return <FormGroup size='sm' validationState={this.props.validation}>
+        return <FormGroup size='sm'>
             {this._renderLabel()}
             <FormControl as='select' ref={c => this.input = c} {...this.props}>
                 {this.props.children}
@@ -70,7 +70,7 @@ export default class Input extends React.Component {
     }
 
     _renderTextArea() {
-        return <FormGroup size='sm' validationState={this.props.validation}>
+        return <FormGroup size='sm'>
             {this._renderLabel()}
             <FormControl as='textarea' style={{height: 'auto'}} ref={c => this.input = c} {...this.props}/>
             {this.props.validation && <FormControl.Feedback/>}
@@ -83,7 +83,7 @@ export default class Input extends React.Component {
     }
 
     _renderInput() {
-        return <FormGroup size='sm' validationState={this.props.validation}>
+        return <FormGroup size='sm'>
             {this._renderLabel()}
             <FormControl ref={c => this.input = c} as='input' {...this.props}/>
             {this.props.validation && <FormControl.Feedback/>}

@@ -96,7 +96,7 @@ class Record extends React.Component {
         return <div className="mt-3 text-center">
             {EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER
                 && (!record.isNew) && (record.phase === RECORD_PHASE.OPEN || this._isAdmin())
-                && <Button className="mx-1" variant='danger' size='sm'
+                && <Button className="mx-1 action-button" variant='danger' size='sm'
                            disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
                                || !this.state.isFormValid || !record.state.isComplete() || record.phase === RECORD_PHASE.REJECTED}
                            onClick={this.props.handlers.onReject}>
@@ -105,14 +105,14 @@ class Record extends React.Component {
 
             {(EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER || EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR)
                 && (!record.isNew) && (record.phase === RECORD_PHASE.OPEN || this._isAdmin())
-                && <Button className="mx-1" variant='success' size='sm'
+                && <Button className="mx-1 action-button" variant='success' size='sm'
                            disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
                                || !this.state.isFormValid || !record.state.isComplete() || record.phase === RECORD_PHASE.COMPLETED}
                            onClick={this.props.handlers.onComplete}>
                     {this.i18n('complete')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
                 </Button>}
 
-            <Button className="mx-1" variant='success' size='sm'
+            <Button className="mx-1 action-button" variant='success' size='sm'
                     disabled={formgen.status === ACTION_STATUS.PENDING || recordSaved.status === ACTION_STATUS.PENDING
                         || !this.state.isFormValid || !record.state.isComplete()}
                     hidden={!this._isAdmin()
@@ -120,7 +120,7 @@ class Record extends React.Component {
                     onClick={this.props.handlers.onSave}>
                 {this.i18n('save')}{recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}
             </Button>
-            <Button className="mx-1" variant='link' size='sm'
+            <Button className="mx-1 action-button" variant='link' size='sm'
                     onClick={this.props.handlers.onCancel}>{this.i18n('cancel')}</Button>
         </div>
     }

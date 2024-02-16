@@ -151,7 +151,7 @@ describe('Record asynchronous actions', function () {
 
     beforeEach(() => {
         mockApi = new MockAdapter(axiosBackend);
-        store = mockStore({intl: en});
+        store = mockStore({intl: en, auth: {user: currentUser}});
         mockDateNow();
     });
 
@@ -169,9 +169,9 @@ describe('Record asynchronous actions', function () {
         ];
 
         mockApi.onPost(`${API_URL}/rest/records`).reply(200, null, {location});
-        mockApi.onGet(`${API_URL}/rest/records`).reply(200, records);
+        mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
 
-        store.dispatch(createRecord(record, currentUser));
+        store.dispatch(createRecord(record));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -189,9 +189,9 @@ describe('Record asynchronous actions', function () {
         ];
 
         mockApi.onPut(`${API_URL}/rest/records/${record.key}`).reply(200, null, {location});
-        mockApi.onGet(`${API_URL}/rest/records`).reply(200, records);
+        mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
 
-        store.dispatch(updateRecord(record, currentUser));
+        store.dispatch(updateRecord(record));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -208,7 +208,7 @@ describe('Record asynchronous actions', function () {
 
         mockApi.onPut(`${API_URL}/rest/records/${record.key}`).reply(400, error);
 
-        store.dispatch(updateRecord(record, currentUser));
+        store.dispatch(updateRecord(record));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -226,9 +226,9 @@ describe('Record asynchronous actions', function () {
         ];
 
         mockApi.onDelete(`${API_URL}/rest/records/${record.key}`).reply(200);
-        mockApi.onGet(`${API_URL}/rest/records`).reply(200, records);
+        mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
 
-        store.dispatch(deleteRecord(record, currentUser));
+        store.dispatch(deleteRecord(record));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -245,7 +245,7 @@ describe('Record asynchronous actions', function () {
 
         mockApi.onDelete(`${API_URL}/rest/records/${record.key}`).reply(400, error);
 
-        store.dispatch(deleteRecord(record, currentUser));
+        store.dispatch(deleteRecord(record));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);

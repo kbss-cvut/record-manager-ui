@@ -7,6 +7,7 @@ import {axiosBackend} from "../../../js/actions";
 import {ROLE} from "../../../js/constants/DefaultConstants";
 import {
     loadRecords,
+    loadRecordsByInstitution,
     loadRecordsError,
     loadRecordsPending,
     loadRecordsSuccess
@@ -14,6 +15,7 @@ import {
 import {API_URL} from '../../../config';
 import {mockDateNow, restoreDateNow} from "../../environment/Environment";
 import {errorMessage} from "../../../js/model/Message";
+import en from "../../../js/i18n/en";
 
 const records = [{key: 786785600}, {key: 86875960}];
 
@@ -66,7 +68,7 @@ describe('Records asynchronous actions', function () {
 
     beforeEach(() => {
         mockApi = new MockAdapter(axiosBackend);
-        store = mockStore();
+        store = mockStore({intl: en, auth: {user: admin}});
         mockDateNow();
     });
 
@@ -80,9 +82,9 @@ describe('Records asynchronous actions', function () {
             {type: ActionConstants.LOAD_RECORDS_SUCCESS, records}
         ];
 
-        mockApi.onGet(`${API_URL}/rest/records`).reply(200, records);
+        mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
 
-        store.dispatch(loadRecords(admin));
+        store.dispatch(loadRecords());
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -95,10 +97,11 @@ describe('Records asynchronous actions', function () {
             {type: ActionConstants.LOAD_RECORDS_PENDING},
             {type: ActionConstants.LOAD_RECORDS_SUCCESS, records}
         ];
+        store.getState().auth.user = doctor;
 
-        mockApi.onGet(`${API_URL}/rest/records?institution=${doctor.institution.key}`).reply(200, records);
+        mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
 
-        store.dispatch(loadRecords(doctor));
+        store.dispatch(loadRecords());
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -112,9 +115,9 @@ describe('Records asynchronous actions', function () {
             {type: ActionConstants.LOAD_RECORDS_SUCCESS, records}
         ];
 
-        mockApi.onGet(`${API_URL}/rest/records?institution=${institutionKey}`).reply(200, records);
+        mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
 
-        store.dispatch(loadRecords(null, institutionKey));
+        store.dispatch(loadRecordsByInstitution(institutionKey));
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);
@@ -131,7 +134,7 @@ describe('Records asynchronous actions', function () {
 
         mockApi.onGet(`${API_URL}/rest/records`).reply(400, error);
 
-        store.dispatch(loadRecords(admin));
+        store.dispatch(loadRecords());
 
         setTimeout(() => {
             expect(store.getActions()).toEqual(expectedActions);

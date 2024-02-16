@@ -27,6 +27,7 @@ class Institution extends React.Component {
         formTemplatesLoaded: PropTypes.object,
         handlers: PropTypes.object.isRequired,
         currentUser: PropTypes.object.isRequired,
+        filterAndSort: PropTypes.object.isRequired,
         userDeleted: PropTypes.object
     };
 
@@ -74,10 +75,10 @@ class Institution extends React.Component {
                     </form>
                     {!institution.isNew && this._renderMembers()}
                     {!institution.isNew &&
-                    <InstitutionPatients
-                        recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
-                        onEdit={this.props.handlers.onEditPatient} onExport={this.props.handlers.onExportRecords}
-                        currentUser={currentUser}/>}
+                        <InstitutionPatients
+                            recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
+                            onEdit={this.props.handlers.onEditPatient} onExport={this.props.handlers.onExportRecords}
+                            currentUser={currentUser} filterAndSort={this.props.filterAndSort}/>}
                 </>
                 }
             </Card.Body>
@@ -103,18 +104,19 @@ class Institution extends React.Component {
         const {currentUser, handlers, institutionSaved} = this.props;
         if (currentUser.role !== ROLE.ADMIN) {
             return <div className='row justify-content-center'>
-                <Button variant='primary' size='sm' onClick={handlers.onCancel}>{this.i18n('back')}</Button>
+                <Button variant='primary' size='sm' className="action-button"
+                        onClick={handlers.onCancel}>{this.i18n('back')}</Button>
             </div>;
         }
 
         return <div className="mt-3 text-center">
             <Button variant='success' size='sm' ref='submit'
                     disabled={!InstitutionValidator.isValid(this.props.institution) || this.props.institutionSaved.status === ACTION_STATUS.PENDING}
-                    onClick={handlers.onSave} className="d-inline-flex">{this.i18n('save')}
+                    onClick={handlers.onSave} className="action-button">{this.i18n('save')}
                 {!InstitutionValidator.isValid(this.props.institution) &&
-                <HelpIcon className="align-self-center" text={this.i18n('required')} glyph="help"/>}
+                    <HelpIcon className="align-self-center" text={this.i18n('required')} glyph="help"/>}
                 {institutionSaved.status === ACTION_STATUS.PENDING && <LoaderSmall/>}</Button>
-            <Button variant='link' size='sm' onClick={handlers.onCancel}>{this.i18n('cancel')}</Button>
+            <Button variant='link' size='sm' className='action-button' onClick={handlers.onCancel}>{this.i18n('cancel')}</Button>
         </div>;
 
     }

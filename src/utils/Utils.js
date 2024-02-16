@@ -1,10 +1,11 @@
 'use strict';
 import Bowser from 'bowser';
 import * as Constants from "../constants/DefaultConstants";
-import {ROLE} from "../constants/DefaultConstants";
+import {HttpHeaders, ROLE} from "../constants/DefaultConstants";
 import * as Vocabulary from "../constants/Vocabulary";
 import * as supportedDevices from "../constants/SupportedDevices";
 import {isAdmin} from "./SecurityUtils";
+import parseLinkHeader from "parse-link-header";
 
 /**
  * Common propositions that should not be capitalized
@@ -308,4 +309,52 @@ export function fileDownload(data, filename, mimeType = "application/octet-strea
     tempLink.click();
     document.body.removeChild(tempLink);
     window.URL.revokeObjectURL(blobURL);
+}
+
+/**
+ * Serializes an object containing parameter data into a URL query string.
+ * @param paramData Parameters to serialize
+ * @returns {string|string}
+ */
+export function paramsSerializer(paramData) {
+    const keys = Object.keys(paramData);
+    let options = "";
+
+    keys.forEach((key) => {
+        const isParamTypeObject = typeof paramData[key] === "object";
+        const isParamTypeArray = isParamTypeObject && paramData[key].length >= 0;
+        if (paramData[key] === undefined || paramData[key] === null) {
+            return;
+        }
+
+        if (!isParamTypeObject) {
+            options += `${key}=${encodeURIComponent(paramData[key])}&`;
+        }
+
+        if (isParamTypeObject && isParamTypeArray) {
+            paramData[key].forEach((element) => {
+                options += `${key}=${encodeURIComponent(element)}&`;
+            });
+        }
+    });
+
+    return options ? options.slice(0, -1) : options;
+}
+
+/**
+ * Extracts the number of the last page as provided by the 'last' rel HATEOAS link.
+ * @param response HTTP response
+ * @returns {number|undefined} Page number or undefined, if it could not have been extracted
+ */
+export function extractLastPageNumber(response) {
+    const linkHeader = response.headers[HttpHeaders.LINK];
+    if (!linkHeader) {
+        return undefined;
+    }
+    const links = parseLinkHeader(linkHeader);
+    return links.last ? Number(links.last.page) : undefined;
+}
+
+export function sortToParams(sort) {
+    return Object.keys(sort).filter(k => sort[k] !== undefined).map(k => `${sort[k]}${k}`);
 }

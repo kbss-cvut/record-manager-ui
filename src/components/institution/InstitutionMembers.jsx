@@ -69,11 +69,11 @@ class InstitutionMembers extends React.Component {
                     <p className="font-italic">{this.i18n('institution.members.not-found')}</p>
                 }
                 {isAdmin(currentUser) &&
-                <div className="btn-toolbar">
-                    <Button variant='primary' size="sm" onClick={() => onAddNewUser(institution)}>
-                        {this.i18n('users.add-new-user')}
-                    </Button>
-                </div>
+                    <div className="btn-toolbar">
+                        <Button variant='primary' size="sm" onClick={() => onAddNewUser(institution)}>
+                            {this.i18n('users.add-new-user')}
+                        </Button>
+                    </div>
                 }
             </Card.Body>
         </Card>;
@@ -92,14 +92,14 @@ class InstitutionMembers extends React.Component {
                 <td className='report-row'>{member.emailAddress}</td>
                 <td className='report-row actions'>
                     <Button variant='primary' size='sm' title={this.i18n('users.open-tooltip')}
-                            onClick={() => onEditUser(member, institution)}>
+                            className='action-button' onClick={() => onEditUser(member, institution)}>
                         {this.i18n('open')}
                     </Button>
                     {isAdmin(currentUser) &&
-                    <Button variant='warning' size='sm' title={this.i18n('users.delete-tooltip')}
-                            onClick={() => this._onDelete(member)}>
-                        {this.i18n('delete')}{deletionLoading && <LoaderSmall/>}
-                    </Button>}
+                        <Button variant='warning' size='sm' title={this.i18n('users.delete-tooltip')}
+                                className='action-button' onClick={() => this._onDelete(member)}>
+                            {this.i18n('delete')}{deletionLoading && <LoaderSmall/>}
+                        </Button>}
                 </td>
             </tr>);
         }
