@@ -14,17 +14,20 @@ if (!fs.existsSync(path.join(__dirname, '/build/index.html'))) {
 
 // Compress served content (e.g. favicon.ico)
 app.use(compression());
-// app that use dynamic route
-app.use(express.static(`${__dirname}/build`));
 
-app.get('*', (request, response) => {
-    response.sendFile(path.join(__dirname, '/build/index.html'));
+// Serve static files from the build directory
+app.use(express.static(path.join(__dirname, 'build')));
+
+// Handle all other routes by serving the index.html
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.listen(port, host, error => {
+// Start the server
+app.listen(port, host, (error) => {
     if (error) {
-        console.log(error);
+        console.error(error);
+    } else {
+        console.info(`Server is running at http://${host}:${port}`);
     }
-
-    console.info('Listening on port %s!', port);
 });

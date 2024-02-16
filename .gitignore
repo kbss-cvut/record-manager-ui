@@ -5,3 +5,5 @@ build
 coverage
 junit.xml
 .DS_store
+
+.env

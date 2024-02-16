@@ -26,7 +26,7 @@ export function login(username, password) {
             } catch (e) {/* caused test warning */
             }
         }).catch((error) => {
-            dispatch(userAuthError(error.response.data));
+            dispatch(userAuthError(error?.response?.data));
         });
     }
 }
@@ -59,7 +59,7 @@ export function logout() {
         return axiosBackend.post(`${API_URL}/j_spring_security_logout`).then(() => {
             dispatch(unauthUser());
         }).catch((error) => {
-            dispatch(userAuthError(error.response.data));
+            dispatch(userAuthError(error?.response?.data));
         });
     }
 }
