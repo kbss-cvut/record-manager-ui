@@ -12,8 +12,7 @@ import * as Logger from "../../utils/Logger";
 import * as I18nStore from "../../stores/I18nStore";
 // TODO enable s-forms-components
 // import SmartComponents from "s-forms-components";
-import "@kbss-cvut/s-forms/dist/s-forms.css";
-// import 's-forms-components/dist/s-forms-components.css'
+
 import 'react-datepicker/dist/react-datepicker.css';
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 import {trackPromise} from "react-promise-tracker";

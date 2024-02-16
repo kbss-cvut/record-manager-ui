@@ -9,6 +9,7 @@ import OidcAuthWrapper from "./components/misc/oidc/OidcAuthWrapper";
 import OidcSignInCallback from "./components/pages/OidcSignInCallback";
 import OidcSilentCallback from "./components/pages/OidcSilentCallback";
 import {isUsingOidcAuth} from "./utils/OidcUtils";
+import "@kbss-cvut/s-forms/css"
 
 const App = (props) => {
     return <IntlProvider {...props.intl}>
