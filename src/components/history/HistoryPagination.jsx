@@ -1,7 +1,7 @@
 import React from "react";
 import {injectIntl} from "react-intl";
 import withI18n from "../../i18n/withI18n";
-import {ACTIONS_PER_PAGE, PAGINATION_DIRECTION, SEARCH_TYPE} from "../../constants/DefaultConstants";
+import {ACTIONS_PER_PAGE, PAGINATION_DIRECTION } from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
 
 let HistoryPagination = (props) => (

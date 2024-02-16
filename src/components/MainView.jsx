@@ -2,7 +2,7 @@
 
 import React from "react";
 import * as I18nStore from "../stores/I18nStore";
-import {Container, DropdownItem, Nav, Navbar, NavDropdown, NavItem} from "react-bootstrap";
+import {Container, Nav, Navbar, NavDropdown, NavItem} from "react-bootstrap";
 import {authRoutes, unauthRoutes} from "../utils/Routes";
 import Routes from "../constants/RoutesConstants";
 import {injectIntl} from "react-intl";
