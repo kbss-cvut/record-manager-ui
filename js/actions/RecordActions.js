@@ -8,13 +8,13 @@ import {publishMessage} from "./MessageActions";
 import {errorMessage, successMessage} from "../model/Message";
 import {asyncError, asyncRequest, asyncSuccess, showServerResponseErrorMessage} from "./AsyncActionUtils";
 
-export function deleteRecord(record, currentUser) {
+export function deleteRecord(record) {
     return function (dispatch) {
         dispatch(deleteRecordPending(record.key));
         return axiosBackend.delete(`${API_URL}/rest/records/${record.key}`, {
             ...record
         }).then(() => {
-            dispatch(loadRecords(currentUser));
+            dispatch(loadRecords());
             dispatch(deleteRecordSuccess(record, record.key));
             dispatch(publishMessage(successMessage("record.delete-success")));
         }).catch((error) => {
@@ -86,7 +86,7 @@ export function unloadRecord() {
     }
 }
 
-export function createRecord(record, currentUser) {
+export function createRecord(record) {
     return function (dispatch, getState) {
         dispatch(saveRecordPending(ACTION_FLAG.CREATE_ENTITY));
         return axiosBackend.post(`${API_URL}/rest/records`, {
@@ -94,7 +94,7 @@ export function createRecord(record, currentUser) {
         }).then((response) => {
             const key = Utils.extractKeyFromLocationHeader(response);
             dispatch(saveRecordSuccess(record, key, ACTION_FLAG.CREATE_ENTITY));
-            dispatch(loadRecords(currentUser));
+            dispatch(loadRecords());
             dispatch(publishMessage(successMessage("record.save-success")));
         }).catch((error) => {
             dispatch(saveRecordError(error.response.data, record, ACTION_FLAG.CREATE_ENTITY));
@@ -103,14 +103,14 @@ export function createRecord(record, currentUser) {
     }
 }
 
-export function updateRecord(record, currentUser) {
+export function updateRecord(record) {
     return function (dispatch, getState) {
         dispatch(saveRecordPending(ACTION_FLAG.UPDATE_ENTITY));
         return axiosBackend.put(`${API_URL}/rest/records/${record.key}`, {
             ...record
         }).then(() => {
             dispatch(saveRecordSuccess(record, null, ACTION_FLAG.UPDATE_ENTITY));
-            dispatch(loadRecords(currentUser));
+            dispatch(loadRecords());
             dispatch(publishMessage(successMessage("record.save-success")));
         }).catch((error) => {
             dispatch(saveRecordError(error.response.data, record, ACTION_FLAG.UPDATE_ENTITY));

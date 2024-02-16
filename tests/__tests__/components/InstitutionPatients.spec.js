@@ -3,7 +3,7 @@ import React from "react";
 import {IntlProvider} from "react-intl";
 import InstitutionPatients from "../../../js/components/institution/InstitutionPatients";
 import enLang from '../../../js/i18n/en';
-import {ROLE} from "../../../js/constants/DefaultConstants";
+import {ROLE, SortDirection} from "../../../js/constants/DefaultConstants";
 
 describe('InstitutionPatients', function () {
     const intlData = enLang;
@@ -13,18 +13,25 @@ describe('InstitutionPatients', function () {
             username: 'testUser',
             role: ROLE.DOCTOR
         },
-        records,
+        filterAndSort = {
+            sort: {
+                date: SortDirection.DESC
+            },
+            filters: {},
+            onChange: jest.fn()
+        },
         onEdit = jest.fn(),
         onExport = jest.fn();
 
     it('renders card', function () {
         recordsLoaded = {
-            records
+            records: []
         };
         const tree = TestUtils.renderIntoDocument(
             <IntlProvider locale="en" {...intlData}>
                 <InstitutionPatients recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
-                                     onEdit={onEdit} onExport={onExport} currentUser={currentUser} />
+                                     filterAndSort={filterAndSort}
+                                     onEdit={onEdit} onExport={onExport} currentUser={currentUser}/>
             </IntlProvider>);
         const cardHeading = TestUtils.findRenderedDOMComponentWithClass(tree, 'card');
         expect(cardHeading).not.toBeNull();

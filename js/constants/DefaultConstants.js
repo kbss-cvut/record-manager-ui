@@ -83,14 +83,13 @@ export const ROLE = {
     ADMIN: 'Admin',
     DOCTOR: 'Regular User'
 };
+// Default number of table elements per page.
+export const DEFAULT_PAGE_SIZE = 10;
 
-export const PAGINATION_DIRECTION = {
-    PREVIOUS: -1,
-    NEXT: 1
-};
-
-// Number of history actions on one page. Needs to be changes also in back-end
-export const ACTIONS_PER_PAGE = 25;
+export const SortDirection = {
+    ASC: "+",
+    DESC: "-"
+}
 
 export const STATISTICS_TYPE = {
     NUMBER_OF_INVESTIGATORS: 'statistics.number-of-investigators',
@@ -101,7 +100,8 @@ export const SCRIPT_ERROR = 'SCRIPT_ERROR';
 
 export const HttpHeaders = {
     AUTHORIZATION: "Authorization",
-    CONTENT_DISPOSITION: "content-disposition"
+    CONTENT_DISPOSITION: "content-disposition",
+    LINK: "link"
 }
 
 export const MediaType = {
@@ -122,3 +122,5 @@ export const RECORD_PHASE = {
     PUBLISHED: 'published',
     REJECTED: 'rejected'
 }
+
+export const STORAGE_TABLE_PAGE_SIZE_KEY = `${APP_TITLE}_TABLE_PAGE_SIZE`;

@@ -1,5 +1,3 @@
-'use strict';
-
 import React from "react";
 import Institution from "./Institution";
 import {injectIntl} from "react-intl";
@@ -7,7 +5,13 @@ import withI18n from "../../i18n/withI18n";
 import Routes from "../../constants/RoutesConstants";
 import {transitionTo, transitionToWithOpts} from "../../utils/Routing";
 import {connect} from "react-redux";
-import {ACTION_FLAG, ACTION_STATUS} from "../../constants/DefaultConstants";
+import {
+    ACTION_FLAG,
+    ACTION_STATUS,
+    DEFAULT_PAGE_SIZE,
+    SortDirection,
+    STORAGE_TABLE_PAGE_SIZE_KEY
+} from "../../constants/DefaultConstants";
 import {bindActionCreators} from "redux";
 import {
     createInstitution,
@@ -16,7 +20,7 @@ import {
     unloadSavedInstitution,
     updateInstitution
 } from "../../actions/InstitutionActions";
-import {canLoadInstitutionsPatients} from "../../utils/Utils";
+import {canLoadInstitutionsPatients, sortToParams} from "../../utils/Utils";
 import {deleteUser, loadInstitutionMembers, unloadInstitutionMembers} from "../../actions/UserActions";
 import * as EntityFactory from "../../utils/EntityFactory";
 import {exportRecords, loadRecords} from "../../actions/RecordsActions";
@@ -24,13 +28,20 @@ import omit from 'lodash/omit';
 import {loadFormTemplates} from "../../actions/FormTemplatesActions";
 import {isAdmin} from "../../utils/SecurityUtils";
 import {trackPromise} from "react-promise-tracker";
+import {INITIAL_PAGE} from "../misc/Pagination";
+import BrowserStorage from "../../utils/BrowserStorage";
 
 class InstitutionController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             institution: this._isNew() ? EntityFactory.initNewInstitution() : null,
-            saved: false
+            saved: false,
+            pageNumber: INITIAL_PAGE,
+            filters: {},
+            sort: {
+                date: SortDirection.DESC
+            }
         };
     }
 
@@ -43,7 +54,7 @@ class InstitutionController extends React.Component {
         if (institutionKey) {
             trackPromise(this.props.loadInstitutionMembers(institutionKey), "institution-members");
             if (this.props.status === ACTION_STATUS.SUCCESS && canLoadInstitutionsPatients(institutionKey, this.props.currentUser)) {
-                this.props.loadRecords(null, institutionKey);
+                this._loadRecords();
             }
         }
         if (this.props.institutionSaved.actionFlag === ACTION_FLAG.CREATE_ENTITY && this.props.institutionSaved.status === ACTION_STATUS.SUCCESS) {
@@ -52,7 +63,17 @@ class InstitutionController extends React.Component {
         this.props.loadFormTemplates();
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    _loadRecords() {
+        const institutionKey = this.props.match.params.key;
+        this.props.loadRecords({
+            institution: institutionKey,
+            page: this.state.pageNumber,
+            size: BrowserStorage.get(STORAGE_TABLE_PAGE_SIZE_KEY, DEFAULT_PAGE_SIZE),
+            sort: sortToParams(this.state.sort)
+        });
+    }
+
+    componentDidUpdate(prevProps) {
         const {institutionLoaded, institutionSaved, transitionToWithOpts} = this.props;
 
         if (prevProps.institutionLoaded.status === ACTION_STATUS.PENDING && institutionLoaded.status === ACTION_STATUS.SUCCESS) {
@@ -127,7 +148,7 @@ class InstitutionController extends React.Component {
 
     _onExportRecords = (exportType) => {
         const institutionKey = this.state.institution.key;
-        this.props.exportRecords(exportType, institutionKey);
+        this.props.exportRecords(exportType, {institution: institutionKey, sort: sortToParams(this.state.sort)});
     };
 
     _onAddNewUser = (institution) => {
@@ -135,6 +156,13 @@ class InstitutionController extends React.Component {
             payload: {institution: institution}
         });
     };
+
+    onFilterAndSort = (filterChange, sortChange) => {
+        this.setState({
+            filters: Object.assign({}, this.state.filters, filterChange),
+            sort: Object.assign({}, this.state.sort, sortChange)
+        }, this._loadRecords);
+    }
 
     render() {
         const {
@@ -154,12 +182,17 @@ class InstitutionController extends React.Component {
             onExportRecords: this._onExportRecords,
             onDelete: this._onDeleteUser
         };
+        const filterAndSort = {
+            filters: this.state.filters,
+            sort: this.state.sort,
+            onChange: this.onFilterAndSort
+        };
         return <Institution handlers={handlers} institution={this.state.institution}
                             institutionMembers={institutionMembers}
                             recordsLoaded={recordsLoaded} formTemplatesLoaded={formTemplatesLoaded}
                             currentUser={currentUser}
                             institutionLoaded={institutionLoaded} institutionSaved={institutionSaved}
-                            userDeleted={userDeleted}
+                            userDeleted={userDeleted} filterAndSort={filterAndSort}
         />;
     }
 }

@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 
 import Records from "./Records";
@@ -12,18 +10,41 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {deleteRecord, updateRecord} from "../../actions/RecordActions";
 import {loadFormTemplates} from "../../actions/FormTemplatesActions";
-import {extractQueryParam} from "../../utils/Utils"
-import {RECORD_PHASE} from "../../constants/DefaultConstants";
+import {extractQueryParam, sortToParams} from "../../utils/Utils"
+import {
+    DEFAULT_PAGE_SIZE,
+    RECORD_PHASE,
+    SortDirection,
+    STORAGE_TABLE_PAGE_SIZE_KEY
+} from "../../constants/DefaultConstants";
 import {trackPromise} from "react-promise-tracker";
+import {INITIAL_PAGE} from "../misc/Pagination";
+import BrowserStorage from "../../utils/BrowserStorage";
 
 class RecordsController extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            pageNumber: INITIAL_PAGE,
+            sort: {
+                date: SortDirection.DESC
+            },
+            filters: {}
+        };
     }
 
     componentDidMount() {
-        trackPromise(this.props.loadRecords(this.props.currentUser), "records");
+        this._loadRecords();
         this.props.loadFormTemplates();
+    }
+
+    _loadRecords() {
+        trackPromise(this.props.loadRecords({
+            page: this.state.pageNumber,
+            size: BrowserStorage.get(STORAGE_TABLE_PAGE_SIZE_KEY, DEFAULT_PAGE_SIZE),
+            ...this.state.filters,
+            sort: sortToParams(this.state.sort)
+        }), "records");
     }
 
     _onEditRecord = (record) => {
@@ -42,17 +63,16 @@ class RecordsController extends React.Component {
         }
         opts.handlers = {
             onSuccess: Routes.records,
-                onCancel: Routes.records
+            onCancel: Routes.records
         }
         this.props.transitionToWithOpts(Routes.createRecord, opts);
     };
 
     _onDeleteRecord = (record) => {
-        trackPromise(this.props.deleteRecord(record, this.props.currentUser), "records");
+        trackPromise(this.props.deleteRecord(record), "records");
     };
 
     _onPublishRecords = async () => {
-        const currentUser = this.props.currentUser;
 
         this.setState({
             records: this.props.recordsLoaded.records
@@ -60,7 +80,7 @@ class RecordsController extends React.Component {
             const updatedRecords = this.state.records.map(async (record) => {
                 if (record.phase === RECORD_PHASE.COMPLETED) {
                     const updatedRecord = {...record, phase: RECORD_PHASE.PUBLISHED};
-                    await this.props.updateRecord(updatedRecord, currentUser);
+                    await this.props.updateRecord(updatedRecord);
                     return updatedRecord;
                 }
             });
@@ -71,12 +91,27 @@ class RecordsController extends React.Component {
     };
 
     _onExportRecords = (exportType) => {
-        trackPromise(this.props.exportRecords(exportType), "records");
+        trackPromise(this.props.exportRecords(exportType, {
+            ...this.state.filters,
+            sort: sortToParams(this.state.sort)
+        }), "records");
     };
 
     _onImportRecords = (file) => {
         trackPromise(this.props.importRecords(file), "records");
     };
+
+    onPagination = (pageNumber) => {
+        this.setState({pageNumber}, this._loadRecords);
+    }
+
+    onFilterAndSort = (filterChange, sortChange) => {
+        this.setState({
+            filters: Object.assign({}, this.state.filters, filterChange),
+            sort: Object.assign({}, this.state.sort, sortChange),
+            pageNumber: INITIAL_PAGE
+        }, this._loadRecords);
+    }
 
     render() {
         const {formTemplatesLoaded, recordsLoaded, recordDeleted, recordsDeleting, currentUser} = this.props;
@@ -90,11 +125,22 @@ class RecordsController extends React.Component {
             onDelete: this._onDeleteRecord,
             onPublish: this._onPublishRecords,
             onExport: this._onExportRecords,
-            onImport: this._onImportRecords
+            onImport: this._onImportRecords,
         };
-        return <Records recordsLoaded={recordsLoaded} handlers={handlers}
-                        recordDeleted={recordDeleted} recordsDeleting={recordsDeleting} currentUser={currentUser}
-                        formTemplate={formTemplate}
+        const pagination = {
+            handlePagination: this.onPagination,
+            pageNumber: this.state.pageNumber,
+            itemCount: recordsLoaded.records?.length,
+            pageCount: recordsLoaded.pageCount
+        };
+        const filterAndSort = {
+            filters: this.state.filters,
+            sort: this.state.sort,
+            onChange: this.onFilterAndSort
+        }
+        return <Records handlers={handlers} pagination={pagination} filterAndSort={filterAndSort}
+                        recordsLoaded={recordsLoaded} recordDeleted={recordDeleted} recordsDeleting={recordsDeleting}
+                        formTemplate={formTemplate} currentUser={currentUser}
                         formTemplatesLoaded={formTemplatesLoaded}/>;
     }
 }

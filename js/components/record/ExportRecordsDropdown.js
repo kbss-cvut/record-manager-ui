@@ -10,8 +10,10 @@ const ExportRecordsDropdown = ({records, onExport}) => {
     if (sanitizeArray(records).length === 0) {
         return null;
     }
-    return <DropdownButton id="records-export" title={i18n("records.export")} size="sm" variant="primary">
-        <Dropdown.Item onClick={() => onExport(ExportType.EXCEL)}>{i18n("records.export.excel")}</Dropdown.Item>
+    return <DropdownButton id="records-export" title={i18n("records.export")} size="sm" variant="primary"
+                           className="action-button">
+        {/* Excel export is currently not supported by the backend
+        <Dropdown.Item onClick={() => onExport(ExportType.EXCEL)}>{i18n("records.export.excel")}</Dropdown.Item>*/}
         <Dropdown.Item onClick={() => onExport(ExportType.JSON)}>{i18n("records.export.json")}</Dropdown.Item>
     </DropdownButton>;
 }

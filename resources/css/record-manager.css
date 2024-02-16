@@ -99,7 +99,12 @@ td.actions {
 }
 
 td.actions button {
-    margin: 5px 5px 5px 5px;
+    margin: 5px;
+    min-width: 4.5rem;
+}
+
+.action-button {
+    min-width: 4.5rem;
 }
 
 .login-panel {
@@ -288,10 +293,6 @@ td.actions button {
     border-color: #bce8f1;
 }
 
-.float-right {
-    float: right;
-}
-
 .factor-root-event {
     font-size: 110%;
     font-weight: bold;
@@ -393,17 +394,6 @@ button.reset-filters {
 
 .table-sorter-wrapper {
     position: relative !important;
-}
-
-.table-sorter-icon {
-    position: absolute;
-    right: 0.5em;
-    line-height: 14px;
-    width: 14px;
-    height: 14px;
-    margin-top: -7px;
-    top: 50%;
-    cursor: pointer;
 }
 
 .dropzone {
@@ -716,10 +706,6 @@ button .help-icon {
     }
 }
 
-.pagination .pointer {
-    cursor: pointer
-}
-
 .invite-to-study-text {
     line-height: 1.8;
 }
@@ -862,4 +848,12 @@ header {
 
 .messages-5 {
     height: 20.625rem;
+}
+
+.record-filters-popup {
+    min-width: 300px;
+}
+
+.filter-datetimepicker {
+    max-width: 120px;
 }

@@ -8,6 +8,7 @@ import {loadActionByKey, loadActions} from "../../../js/actions/HistoryActions";
 import {API_URL} from '../../../config';
 import {errorMessage} from "../../../js/model/Message";
 import {mockDateNow, restoreDateNow} from "../../environment/Environment";
+import {DEFAULT_PAGE_SIZE} from "../../../js/constants/DefaultConstants";
 
 const middlewares = [thunk.withExtraArgument(axiosBackend)];
 const mockStore = configureMockStore(middlewares);
@@ -86,7 +87,7 @@ describe('History asynchronize actions', function () {
             {type: ActionConstants.PUBLISH_MESSAGE, message: errorMessage('history.loading-error', {error: error.message})}
         ];
 
-        mockApi.onGet(`${API_URL}/rest/history?page=1`).reply(400, error);
+        mockApi.onGet(`${API_URL}/rest/history?page=1&size=${DEFAULT_PAGE_SIZE}`).reply(400, error);
 
         store.dispatch(loadActions(1, null));
 

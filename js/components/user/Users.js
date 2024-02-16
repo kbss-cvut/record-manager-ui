@@ -17,7 +17,7 @@ const Users = ({usersLoaded, handlers}) => {
             {usersLoaded.users && <UserTable users={usersLoaded.users} handlers={handlers}/>}
             <IfInternalAuth>
                 <div>
-                    <Button variant='primary' size='sm'
+                    <Button variant='primary' size='sm' className="action-button"
                             onClick={handlers.onCreate}>{i18n('users.create-user')}</Button>
                 </div>
             </IfInternalAuth>
