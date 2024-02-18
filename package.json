@@ -81,8 +81,8 @@
   },
   "scripts": {
     "preview": "vite preview",
-    "start": "vite serve src",
-    "build": "vite build src",
+    "start": "vite",
+    "build": "vite build",
     "build:static": "cross-env NODE_ENV=production STATIC=true webpack --env.prod -p --config ./webpack.config.js",
     "test": "echo !!!tests are disabled!!!",
     "lint": "eslint js",

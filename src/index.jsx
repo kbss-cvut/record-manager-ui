@@ -10,9 +10,6 @@ import rootReducer from "./reducers";
 import {errorLogger, historyLogger} from "./utils/HistoryLogger";
 import App from './App';
 
-require('dotenv').config()
-
-
 // store initialization
 const createStoreWithMiddleware = composeWithDevTools(
     applyMiddleware(reduxThunk, historyLogger),
