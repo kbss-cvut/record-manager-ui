@@ -14,11 +14,9 @@
       content="width=device-width, initial-scale=1, user-scalable=0"
     />
     <title>record manager</title>
-    <script src="https://unpkg.com/bowser@2.7.0/es5.js"></script>
-    <script type="module" src="./index.jsx"></script>
-
     <!-- if type=module, Vite will include the file contents inside minified index.js -->
     <script type="text/javascript" src="../config/index.js"></script>
+    <script src="https://unpkg.com/bowser@2.7.0/es5.js"></script>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -63,5 +61,6 @@
         )).innerHTML +=
           "Your browser is not fully supported! Some parts of web may not work properly. We recommend using the latest version of Chrome, Firefox, Safari or Edge.");
     </script>
+    <script type="module" src="./index.jsx"></script>
   </body>
 </html>

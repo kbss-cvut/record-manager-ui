@@ -7,10 +7,12 @@ export default defineConfig(({ mode }) => {
   return {
     base: "",
     root: "src",
+    envPrefix: ['VITE_', 'RECORD_MANAGER_'],
     build: {
+      sourcemap: true,
       // Relative to the root
       outDir: "../build",
-      emptyOutDir: true, // deletes build folder before each build
+      emptyOutDir: true, // deletes build folder before each build,
     },
     server: {
       port: 3000,
