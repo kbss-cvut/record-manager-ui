@@ -25,7 +25,7 @@ of the dependent services.
 
 ### Set up with Internal Authorization
 
-The deployment is based on [docker-compose.yml](../deploy/internal-auth/docker-compose.yml) and described in [Running with Dockerized Services and Internal Authorization](./development.md#running-with-dockerized-services-and-internal-authorization).
+The deployment is based on [docker-compose.yml](internal-auth/docker-compose.yml) and described in [Running with Dockerized Services and Internal Authorization](../doc/development.md#running-with-dockerized-services-and-internal-authorization).
 
 By default, if no `.env` is provided the application runs at `http://locahost:1235/record-manager`.
 
