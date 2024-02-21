@@ -9,7 +9,8 @@ export default defineConfig(({ mode }) => {
     root: "src",
     build: {
       // Relative to the root
-      outDir: "../dist",
+      outDir: "../build",
+      emptyOutDir: true, // deletes build folder before each build
     },
     server: {
       port: 3000,
