@@ -3,7 +3,7 @@
   "version": "0.2.3",
   "description": "Record Manager UI",
   "homepage": ".",
-  "main": "js/index.js",
+  "main": "src/index.jsx",
   "dependencies": {
     "@kbss-cvut/s-forms": "^0.7.1-beta-d176c14.0",
     "axios": "^0.21.1",

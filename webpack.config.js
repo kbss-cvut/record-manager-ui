@@ -26,7 +26,7 @@ module.exports = (env = {}) => {
     return {
         mode: env.production ? 'production' : 'development',
         context: resolve('src'),
-        entry: ['core-js/stable/object/assign', 'core-js/stable/promise', './index.js'],
+        entry: ['core-js/stable/object/assign', 'core-js/stable/promise', './index.jsx'],
         output: {
             filename: env.production ? 'bundle.[name].[contenthash].js' : 'bundle.[name].js',
             chunkFilename: '[name].[contenthash].js',
