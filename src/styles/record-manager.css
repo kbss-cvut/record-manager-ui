@@ -1,3 +1,14 @@
+@font-face {
+    font-family: 'glyphicons';
+    src: url('../assets/fonts/glyphicons-halflings-regular.eot');
+    src: url('../assets/fonts/glyphicons-halflings-regular.eot') format('embedded-opentype'),
+         url('../assets/fonts/glyphicons-halflings-regular.woff2') format('woff2'),
+         url('../assets/fonts/glyphicons-halflings-regular.woff') format('woff'),
+         url('../assets/fonts/glyphicons-halflings-regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 html {
     height: 100%;
     margin: 0;
@@ -373,7 +384,7 @@ button.reset-filters {
 
 .external-link {
     display: block;
-    content: url('../images/icons/external.png');
+    content: url('../assets/icons/external.png'); 
     width: 16px;
     height: 16px;
     margin-top: 28px;
@@ -386,7 +397,7 @@ button.reset-filters {
 }
 
 .external-link-gantt {
-    content: url('../images/icons/external.png');
+    content: url('../assets/icons/external.png');
     width: 16px;
     height: 16px;
     margin-top: 0.7em;
