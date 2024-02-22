@@ -25,7 +25,7 @@ module.exports = (env = {}) => {
 
     return {
         mode: env.production ? 'production' : 'development',
-        context: resolve('js'),
+        context: resolve('src'),
         entry: ['core-js/stable/object/assign', 'core-js/stable/promise', './index.js'],
         output: {
             filename: env.production ? 'bundle.[name].[contenthash].js' : 'bundle.[name].js',
