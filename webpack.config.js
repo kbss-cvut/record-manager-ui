@@ -25,8 +25,8 @@ module.exports = (env = {}) => {
 
     return {
         mode: env.production ? 'production' : 'development',
-        context: resolve('js'),
-        entry: ['core-js/stable/object/assign', 'core-js/stable/promise', './index.js'],
+        context: resolve('src'),
+        entry: ['core-js/stable/object/assign', 'core-js/stable/promise', './index.jsx'],
         output: {
             filename: env.production ? 'bundle.[name].[contenthash].js' : 'bundle.[name].js',
             chunkFilename: '[name].[contenthash].js',
@@ -97,6 +97,26 @@ module.exports = (env = {}) => {
                         },
                     ],
                 },
+                {
+                    test: /\.(png|jpe?g|gif)$/i,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                        },
+                    ],
+                },
+                {
+                    test: /\.(woff|woff2|eot|ttf|otf)$/,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: '[name].[ext]',
+                                outputPath: 'fonts/'
+                            }
+                        }
+                    ]
+                }
             ],
         },
         stats: {
@@ -111,7 +131,8 @@ module.exports = (env = {}) => {
                 version: env.production ? version : 'Dev',
                 year: new Date().getFullYear(),
                 title: appTitle,
-                template: 'index.html',
+                template: resolve(__dirname, 'public/index.html'),
+                favicon: resolve(__dirname, 'public/favicon.ico'),
                 inject: true,
                 minify: env.production,
                 basename: (isStatic || isForceBasename) ? basename : '',
@@ -144,7 +165,7 @@ module.exports = (env = {}) => {
             new CopyWebpackPlugin(
                 [
                     {
-                        from: resolve('./resources'),
+                        from: resolve('./public'),
                     },
                 ],
                 { copyUnmodified: true },
