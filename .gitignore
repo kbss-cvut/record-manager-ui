@@ -2,6 +2,7 @@
 *.iml
 node_modules
 build
+dist
 coverage
 junit.xml
 .DS_store
