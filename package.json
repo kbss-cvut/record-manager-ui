@@ -45,15 +45,21 @@
     "dotenv": "^8.2.0",
     "dotenv-safe": "^8.2.0",
     "enzyme": "^3.11.0",
+    "husky": "^9.0.11",
     "jest": "^25.4.0",
+    "lint-staged": "^15.2.2",
     "npm-run-all": "^4.1.5",
     "querystring-es3": "^0.2.1",
+    "prettier": "3.2.5",
     "redux-mock-store": "^1.5.4"
   },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "prettier:check": "npx prettier --check .",
+    "prettier:format": "npx prettier --write .",
+    "prepare": "husky",
     "test": "echo !!!tests are disabled!!!",
     "validate": "npm-run-all --parallel lint build test"
   },
@@ -65,5 +71,8 @@
     "type": "git",
     "url": "https://kbss.felk.cvut.cz/git/saving-study.git"
   },
-  "private": true
+  "private": true,
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  }
 }
