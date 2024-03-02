@@ -1,6 +1,6 @@
 import React from "react";
-import packageJson from '../package.json';
-import { APP_INFO } from '../config';
+import packageJson from "../package.json";
+import { APP_INFO } from "../config";
 
 export const Footer = () => {
   return (

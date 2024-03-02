@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-import {injectIntl} from 'react-intl';
+import { injectIntl } from "react-intl";
 
 /**
  * Our version of react-intl's injectIntl.
@@ -9,16 +9,16 @@ import {injectIntl} from 'react-intl';
  * tests).
  */
 export default function (component, props) {
-    if (!props) {
-        props = {};
-    }
-    // Store this only for development purposes
-    if (process.env.NODE_ENV !== 'production') {
-        props.withRef = true;
-        const comp = injectIntl(component, props);
-        comp.wrappedComponent = comp;
-        return comp;
-    } else {
-        return injectIntl(component, props);
-    }
-};
+  if (!props) {
+    props = {};
+  }
+  // Store this only for development purposes
+  if (process.env.NODE_ENV !== "production") {
+    props.withRef = true;
+    const comp = injectIntl(component, props);
+    comp.wrappedComponent = comp;
+    return comp;
+  } else {
+    return injectIntl(component, props);
+  }
+}

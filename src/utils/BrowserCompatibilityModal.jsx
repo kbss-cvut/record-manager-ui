@@ -17,13 +17,11 @@ export const BrowserCompatibilityModal = () => {
     setIsSupported(supported);
   }, []);
 
-  const supportedBrowserList = Object.entries(SUPPORTED_BROWSERS).map(
-    ([browserName, minVersion]) => (
-      <li key={browserName}>
-        {browserName}: {minVersion}
-      </li>
-    )
-  );
+  const supportedBrowserList = Object.entries(SUPPORTED_BROWSERS).map(([browserName, minVersion]) => (
+    <li key={browserName}>
+      {browserName}: {minVersion}
+    </li>
+  ));
 
   return (
     <Modal show={!isSupported} backdrop="static" keyboard={false}>
@@ -32,9 +30,8 @@ export const BrowserCompatibilityModal = () => {
       </Modal.Header>
       <Modal.Body>
         <p>
-          Your browser is not fully supported! Some parts of the web may not
-          work properly. We recommend using the latest version of Chrome,
-          Firefox, Safari, or Edge.
+          Your browser is not fully supported! Some parts of the web may not work properly. We recommend using the
+          latest version of Chrome, Firefox, Safari, or Edge.
         </p>
         <p>List of supported browsers:</p>
         <ul>{supportedBrowserList}</ul>

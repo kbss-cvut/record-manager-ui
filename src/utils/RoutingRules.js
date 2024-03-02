@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 let rules = {};
 
@@ -19,9 +19,9 @@ let rules = {};
  * @param routeName Route name
  */
 export function execute(routeName) {
-    if (rules[routeName]) {
-        rules[routeName].forEach((item) => {
-            item.call();
-        });
-    }
+  if (rules[routeName]) {
+    rules[routeName].forEach((item) => {
+      item.call();
+    });
+  }
 }

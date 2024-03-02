@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useState,} from "react";
-import {generateRedirectUri, getUserManager} from "../../../utils/OidcUtils";
-import {getOidcToken} from "../../../utils/SecurityUtils";
+import React, { useCallback, useEffect, useState } from "react";
+import { generateRedirectUri, getUserManager } from "../../../utils/OidcUtils";
+import { getOidcToken } from "../../../utils/SecurityUtils";
 
 // Taken from https://github.com/datagov-cz/assembly-line-shared but using a different config processing mechanism
 
@@ -11,7 +11,7 @@ const useThrow = () => {
       setState(() => {
         throw error;
       }),
-    [setState]
+    [setState],
   );
 };
 
@@ -20,31 +20,31 @@ const useThrow = () => {
  */
 export const AuthContext = React.createContext(null);
 
-const OidcAuthWrapper = ({
-  children,
-  location = window.location,
-}) => {
+const OidcAuthWrapper = ({ children, location = window.location }) => {
   const userManager = getUserManager();
   const throwError = useThrow();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    userManager.getUser().then(u => {
-      if (u && u.access_token && !u.expired) {
-        // User authenticated
-        // NOTE: the oidc-client-js library never returns null if the user is not authenticated
-        // Checking for existence of BOTH access_token and expired field seems OK
-        // Checking only for expired field is not enough
-        setUser(u);
-      } else {
-        // User not authenticated -> trigger auth flow
-        return userManager.signinRedirect({
-          redirect_uri: generateRedirectUri(location.href),
-        });
-      }
-    }).catch(error => {
-      throwError(error);
-    })
+    userManager
+      .getUser()
+      .then((u) => {
+        if (u && u.access_token && !u.expired) {
+          // User authenticated
+          // NOTE: the oidc-client-js library never returns null if the user is not authenticated
+          // Checking for existence of BOTH access_token and expired field seems OK
+          // Checking only for expired field is not enough
+          setUser(u);
+        } else {
+          // User not authenticated -> trigger auth flow
+          return userManager.signinRedirect({
+            redirect_uri: generateRedirectUri(location.href),
+          });
+        }
+      })
+      .catch((error) => {
+        throwError(error);
+      });
   }, [location, throwError, setUser, userManager]);
 
   useEffect(() => {
@@ -79,8 +79,7 @@ const OidcAuthWrapper = ({
     userManager.events.addSilentRenewError(handleSilentRenewError);
 
     // Unsubscribe on component unmount
-    return () =>
-      userManager.events.removeSilentRenewError(handleSilentRenewError);
+    return () => userManager.events.removeSilentRenewError(handleSilentRenewError);
   }, [location, throwError, setUser, userManager]);
 
   const logout = useCallback(() => {
@@ -100,11 +99,7 @@ const OidcAuthWrapper = ({
     return null;
   }
 
-  return (
-    <AuthContext.Provider value={{ user, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, logout }}>{children}</AuthContext.Provider>;
 };
 
 export default OidcAuthWrapper;

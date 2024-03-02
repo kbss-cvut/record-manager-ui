@@ -1,16 +1,16 @@
 import React from "react";
-import {getUserManager} from "../../utils/OidcUtils";
+import { getUserManager } from "../../utils/OidcUtils";
 
 export default class AuthenticationSilentCallback extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    componentDidMount() {
-        getUserManager().signinSilentCallback();
-    }
+  componentDidMount() {
+    getUserManager().signinSilentCallback();
+  }
 
-    render() {
-        return <p/>;
-    }
+  render() {
+    return <p />;
+  }
 }

@@ -11,6 +11,7 @@ This guide provides information on how to build and deploy Record Manager UI.
 ### Setup
 
 Uses `.env` to configure options like:
+
 - url of backend
 - application title in browser
 - internationalization settings
@@ -32,16 +33,21 @@ By default, if no `.env` is provided the application runs at `http://locahost:12
 #### Set up behind reverse proxy
 
 It is possible to set up Record Manager behind reverse proxy using variables:
+
 - `PUBLIC_ORIGIN` -- Public origin of URL where Record Manager UI will run, e.g. `https://kbss.fel.cvut.cz`, `http://kbss.fel.cvut.cz:8080`, `http://localhost`.
 - `RECORD_MANAGER_ROOT_PATH` - Path to Record Manager UI (by default it is set to "/record-manager").
 
 Example set up with reverse proxy:
-1) create `.env` file with following variables:
+
+1. create `.env` file with following variables:
+
 ```
 PUBLIC_ORIGIN=http://localhost
 RECORD_MANAGER_ROOT_PATH=/record-manager-example
 ```
-2) set up apache2 reverse proxy on the host computer:
+
+2. set up apache2 reverse proxy on the host computer:
+
 ```
 <VirtualHost *:80>
         <Location /record-manager-example>
@@ -50,13 +56,14 @@ RECORD_MANAGER_ROOT_PATH=/record-manager-example
         </Location>
 </VirtualHost>
 ```
-3) run the Record Manager UI at http://localhost/record-manager-example
+
+3. run the Record Manager UI at http://localhost/record-manager-example
 
 ### Set up with Keycloak Authorization
 
 The deployment is pretty much self-contained based on [docker-compose.yml](../deploy/keycloak-auth-no-proxy/docker-compose.yml). It sets up the corresponding repositories, imports a realm where clients
-are configured for both the Record Manager backend and frontend. All the services (except PostgreSQL used by Keycloak) 
-in the deployment export their ports to the host system, so ensure the following ports are available on your system: 
+are configured for both the Record Manager backend and frontend. All the services (except PostgreSQL used by Keycloak)
+in the deployment export their ports to the host system, so ensure the following ports are available on your system:
 3000, 8080, 8081, 8088.
 
 To run the deployment for the first time, follow these steps:

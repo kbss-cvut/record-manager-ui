@@ -1,8 +1,8 @@
 // Taken from https://github.com/datagov-cz/assembly-line-shared but using a different config processing mechanism
 
-import {getEnv} from "../../config";
+import { getEnv } from "../../config";
 import Routes from "../constants/RoutesConstants";
-import {UserManager} from "oidc-client";
+import { UserManager } from "oidc-client";
 
 // Singleton UserManager instance
 let userManager;
@@ -34,9 +34,7 @@ export const getOidcConfig = () => {
   return {
     authority: getEnv("AUTH_SERVER_URL"),
     client_id: clientId,
-    redirect_uri: `${baseUrl}/oidc-signin-callback?forward_uri=${encodeForwardUri(
-      baseUrl
-    )}`,
+    redirect_uri: `${baseUrl}/oidc-signin-callback?forward_uri=${encodeForwardUri(baseUrl)}`,
     silent_redirect_uri: `${baseUrl}/oidc-silent-callback`,
     post_logout_redirect_uri: `${baseUrl}/${Routes.dashboard.path}`,
     response_type: "code",
@@ -58,15 +56,13 @@ function resolveUrl() {
 
 export const userProfileLink = () => {
   return `${getEnv("AUTH_SERVER_URL")}/account`;
-}
+};
 
 /**
  * Helper to generate redirect Uri
  */
 export const generateRedirectUri = (forwardUri) => {
-  return `${resolveUrl()}/oidc-signin-callback?forward_uri=${encodeForwardUri(
-    forwardUri
-  )}`;
+  return `${resolveUrl()}/oidc-signin-callback?forward_uri=${encodeForwardUri(forwardUri)}`;
 };
 
 /**

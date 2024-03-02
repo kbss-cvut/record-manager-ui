@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /**
  * Filters data according to specified filter(s).
@@ -9,35 +9,38 @@
  */
 
 const filterData = (data, filter) => {
-    if (this._canSkipFilter(filter)) {
-        return data;
+  if (this._canSkipFilter(filter)) {
+    return data;
+  }
+  return data.filter(function (item) {
+    for (let key in filter) {
+      if (filter[key] === "all") {
+        continue;
+      }
+      const path = key.split(".");
+      let value = item;
+      for (let i = 0, len = path.length; i < len; i++) {
+        value = value[path[i]];
+      }
+      if (
+        (Array.isArray(value) && value.indexOf(filter[key]) === -1) ||
+        (!Array.isArray(value) && value !== filter[key])
+      ) {
+        return false;
+      }
     }
-    return data.filter(function (item) {
-        for (let key in filter) {
-            if (filter[key] === 'all') {
-                continue;
-            }
-            const path = key.split('.');
-            let value = item;
-            for (let i = 0, len = path.length; i < len; i++) {
-                value = value[path[i]];
-            }
-            if ((Array.isArray(value) && value.indexOf(filter[key]) === -1) || (!Array.isArray(value) && value !== filter[key])) {
-                return false;
-            }
-        }
-        return true;
-    });
+    return true;
+  });
 };
 
 const _canSkipFilter = (filter) => {
-    if (!filter) {
-        return true;
-    }
-    for (let key in filter) {
-        if (filter[key] !== 'all') {
-            return false;
-        }
-    }
+  if (!filter) {
     return true;
+  }
+  for (let key in filter) {
+    if (filter[key] !== "all") {
+      return false;
+    }
+  }
+  return true;
 };

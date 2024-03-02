@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
 export default class InstitutionValidator {
-    static isValid(institution) {
-        return !!institution.name;
-    }
+  static isValid(institution) {
+    return !!institution.name;
+  }
 }

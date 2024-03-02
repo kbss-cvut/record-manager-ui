@@ -1,8 +1,8 @@
-version: '3.9'
+version: "3.9"
 
 # Provide access to record-manager-ui that runs locally in dev mode
 x-access-for-local-development: &local-dev-env
-    cors.allowedOrigins: "http://localhost:3000"
+  cors.allowedOrigins: "http://localhost:3000"
 
 services:
   nginx:
@@ -48,7 +48,7 @@ services:
     image: ghcr.io/kbss-cvut/kbss-cvut/record-manager:latest
     container_name: ${RECORD_SET_NAME:-rm}-record-manager-server
     expose:
-      - "8080"  
+      - "8080"
     restart: always
     depends_on:
       - s-pipes-engine
@@ -67,7 +67,7 @@ services:
     image: ghcr.io/kbss-cvut/s-pipes/s-pipes-engine:latest
     container_name: ${RECORD_SET_NAME:-rm}-s-pipes-engine
     expose:
-      - "8080"  
+      - "8080"
     restart: always
     depends_on:
       - db-server
@@ -84,7 +84,7 @@ services:
     environment:
       GDB_JAVA_OPTS: "-Dgraphdb.external-url=${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${RECORD_MANAGER_ROOT_PATH:-/record-manager}/services/db-server"
     expose:
-      - "7200"  
+      - "7200"
     restart: always
     volumes:
       - ../shared/db-server/init-data/forms:/root/graphdb-import/forms:ro
