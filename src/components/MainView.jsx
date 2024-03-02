@@ -1,8 +1,6 @@
-'use strict';
-
 import React from "react";
 import * as I18nStore from "../stores/I18nStore";
-import {Container, DropdownItem, Nav, Navbar, NavDropdown, NavItem} from "react-bootstrap";
+import {Container, Nav, Navbar, NavDropdown, NavItem} from "react-bootstrap";
 import {authRoutes, unauthRoutes} from "../utils/Routes";
 import Routes from "../constants/RoutesConstants";
 import {injectIntl} from "react-intl";
@@ -20,6 +18,7 @@ import {isUsingOidcAuth, userProfileLink} from "../utils/OidcUtils";
 import ImpersonatorBadge from "./ImpersonatorBadge";
 import {isAdmin} from "../utils/SecurityUtils";
 import Messages from "./message/Messages";
+import Footer from "../Footer";
 
 class MainView extends React.Component {
     constructor(props) {
@@ -73,7 +72,7 @@ class MainView extends React.Component {
         const path = this.props.location.pathname;
 
         return (
-            <div>
+            <div className="main-view-wrapper">
                 <header>
                     <Container>
                         <Navbar expand="lg">
@@ -138,10 +137,11 @@ class MainView extends React.Component {
                         </Navbar>
                     </Container>
                 </header>
-                <section className="container mt-4" style={{height: '100%'}}>
+                <section className="page-wrapper container mt-4">
                     <Messages/>
                     {authRoutes}
                 </section>
+                <Footer />
             </div>
         );
     }
