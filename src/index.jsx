@@ -22,7 +22,7 @@ window.onerror = (msg, source, line) => {
     errorLogger(msg, line, store);
     return false;
 };
-const app = document.getElementById('content');
+const app = document.getElementById('root');
 const root = createRoot(app);
 root.render(
     <Provider store={store}>

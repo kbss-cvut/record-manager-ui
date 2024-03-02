@@ -30,7 +30,7 @@ ENV BASENAME=""
 ENV APP_INFO='<a href="https://github.com/blcham" target="_blank" rel="noopener noreferrer" title="github.com/blcham, 2023">©&nbsp;github.com/blcham, 2023</a>'
 
 # Copy the react build from Build Stage
-COPY --from=build /usr/src/app/build /var/www
+COPY --from=build /usr/src/app/dist /var/www
 
 # Copy error page
 COPY .docker/error.html /usr/share/nginx/html
@@ -42,7 +42,7 @@ COPY .docker/nginx.conf /etc/nginx/nginx.conf
 COPY .docker/config.js.template /etc/nginx/config.js.template
 
 # Copy our custom html template
-COPY --from=build /usr/src/app/build/index.html /etc/nginx/index.html.template
+COPY --from=build /usr/src/app/dist/index.html /etc/nginx/index.html.template
 
 # from the outside.
 EXPOSE 80
