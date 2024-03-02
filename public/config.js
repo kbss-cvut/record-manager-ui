@@ -1,3 +1,2 @@
 // This file gets replaced when run within Docker
-window.__config__ = {
-}
+window.__config__ = {};

@@ -1,4 +1,4 @@
-import {intlData} from '../i18n/localization';
+import { intlData } from "../i18n/localization";
 
 const IntlReducer = (state = intlData) => state;
 

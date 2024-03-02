@@ -1,20 +1,61 @@
-'use strict';
-import Bowser from 'bowser';
+"use strict";
+import Bowser from "bowser";
 import * as Constants from "../constants/DefaultConstants";
-import {HttpHeaders, ROLE} from "../constants/DefaultConstants";
+import { HttpHeaders, ROLE } from "../constants/DefaultConstants";
 import * as Vocabulary from "../constants/Vocabulary";
 import * as supportedDevices from "../constants/SupportedDevices";
-import {isAdmin} from "./SecurityUtils";
+import { isAdmin } from "./SecurityUtils";
 import parseLinkHeader from "parse-link-header";
 
 /**
  * Common propositions that should not be capitalized
  */
 const PREPOSITIONS = [
-    'a', 'about', 'across', 'after', 'along', 'among', 'an', 'around', 'as', 'aside', 'at', 'before', 'behind', 'below',
-    'beneath', 'beside', 'besides', 'between', 'beyond', 'but', 'by', 'for', 'given', 'in', 'inside', 'into', 'like', 'near',
-    'of', 'off', 'on', 'onto', 'outside', 'over', 'since', 'than', 'through', 'to', 'until', 'up', 'via', 'with', 'within',
-    'without', 'not'
+  "a",
+  "about",
+  "across",
+  "after",
+  "along",
+  "among",
+  "an",
+  "around",
+  "as",
+  "aside",
+  "at",
+  "before",
+  "behind",
+  "below",
+  "beneath",
+  "beside",
+  "besides",
+  "between",
+  "beyond",
+  "but",
+  "by",
+  "for",
+  "given",
+  "in",
+  "inside",
+  "into",
+  "like",
+  "near",
+  "of",
+  "off",
+  "on",
+  "onto",
+  "outside",
+  "over",
+  "since",
+  "than",
+  "through",
+  "to",
+  "until",
+  "up",
+  "via",
+  "with",
+  "within",
+  "without",
+  "not",
 ];
 
 const URL_CONTAINS_QUERY = /^.+\?.+=.+$/;
@@ -26,13 +67,13 @@ const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567
  * @param date The date to format
  */
 export function formatDate(date) {
-    const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate().toString();
-    const month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1).toString();
-    const year = (date.getFullYear() % 100).toString();
-    const h = date.getHours();
-    const hour = h < 10 ? '0' + h : h.toString();
-    const minute = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes().toString();
-    return (day + '-' + month + '-' + year + ' ' + hour + ':' + minute);
+  const day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate().toString();
+  const month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1).toString();
+  const year = (date.getFullYear() % 100).toString();
+  const h = date.getHours();
+  const hour = h < 10 ? "0" + h : h.toString();
+  const minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes().toString();
+  return day + "-" + month + "-" + year + " " + hour + ":" + minute;
 }
 
 /**
@@ -41,19 +82,19 @@ export function formatDate(date) {
  * Replaces underscores with spaces. And if capitalize is selected, capitalizes the words.
  */
 export function constantToString(constant, capitalize) {
-    if (!capitalize) {
-        return constant.replace(/_/g, ' ');
+  if (!capitalize) {
+    return constant.replace(/_/g, " ");
+  }
+  let words = constant.split("_");
+  for (let i = 0, len = words.length; i < len; i++) {
+    let word = words[i];
+    if (i > 0 && PREPOSITIONS.indexOf(word.toLowerCase()) !== -1) {
+      words[i] = word.toLowerCase();
+    } else {
+      words[i] = word.charAt(0) + word.substring(1).toLowerCase();
     }
-    let words = constant.split('_');
-    for (let i = 0, len = words.length; i < len; i++) {
-        let word = words[i];
-        if (i > 0 && PREPOSITIONS.indexOf(word.toLowerCase()) !== -1) {
-            words[i] = word.toLowerCase();
-        } else {
-            words[i] = word.charAt(0) + word.substring(1).toLowerCase();
-        }
-    }
-    return words.join(' ');
+  }
+  return words.join(" ");
 }
 
 /**
@@ -68,31 +109,31 @@ export function constantToString(constant, capitalize) {
  * @return {*} Converted value
  */
 export function convertTime(fromUnit, toUnit, value) {
-    if (fromUnit === toUnit) {
-        return value;
-    }
-    switch (fromUnit) {
-        case 'second':
-            if (toUnit === 'minute') {
-                return Math.round(value / 60);
-            } else {
-                return Math.round(value / 60 / 60);
-            }
-        case 'minute':
-            if (toUnit === 'second') {
-                return 60 * value;
-            } else {
-                return Math.round(value / 60);
-            }
-        case 'hour':
-            if (toUnit === 'second') {
-                return 60 * 60 * value;
-            } else {
-                return 60 * value;
-            }
-        default:
-            return value;
-    }
+  if (fromUnit === toUnit) {
+    return value;
+  }
+  switch (fromUnit) {
+    case "second":
+      if (toUnit === "minute") {
+        return Math.round(value / 60);
+      } else {
+        return Math.round(value / 60 / 60);
+      }
+    case "minute":
+      if (toUnit === "second") {
+        return 60 * value;
+      } else {
+        return Math.round(value / 60);
+      }
+    case "hour":
+      if (toUnit === "second") {
+        return 60 * 60 * value;
+      } else {
+        return 60 * value;
+      }
+    default:
+      return value;
+  }
 }
 
 /**
@@ -101,11 +142,11 @@ export function convertTime(fromUnit, toUnit, value) {
  * @return {string} Report key as string
  */
 export function extractKeyFromLocationHeader(response) {
-    const location = response.headers['location'];
-    if (!location) {
-        return '';
-    }
-    return location.substring(location.lastIndexOf('/') + 1);
+  const location = response.headers["location"];
+  if (!location) {
+    return "";
+  }
+  return location.substring(location.lastIndexOf("/") + 1);
 }
 
 /**
@@ -115,9 +156,9 @@ export function extractKeyFromLocationHeader(response) {
  * @return {String}
  */
 export function getPathFromLocation() {
-    const hash = window.location.hash;
-    const result = /#[/]?([a-z/0-9]+)\?/.exec(hash);
-    return result ? result[1] : '';
+  const hash = window.location.hash;
+  const result = /#[/]?([a-z/0-9]+)\?/.exec(hash);
+  return result ? result[1] : "";
 }
 
 /**
@@ -127,10 +168,10 @@ export function getPathFromLocation() {
  * @return extracted parameter value or undefined if the parameter is not present in the query
  */
 export function extractQueryParam(queryString, paramName) {
-    queryString = decodeURI(queryString); // TODO This is a nasty hack, the problem with encoding seems to be
-                                          // somewhere in thunk
-    const reqexpMatch = queryString.match(new RegExp(paramName + "=([^&]*)"));
-    return reqexpMatch ? reqexpMatch[1] : undefined;
+  queryString = decodeURI(queryString); // TODO This is a nasty hack, the problem with encoding seems to be
+  // somewhere in thunk
+  const reqexpMatch = queryString.match(new RegExp(paramName + "=([^&]*)"));
+  return reqexpMatch ? reqexpMatch[1] : undefined;
 }
 
 /**
@@ -140,9 +181,9 @@ export function extractQueryParam(queryString, paramName) {
  * @return {number}
  */
 export function randomInt() {
-    const min = 0,
-        max = 1073741824;   // Max Java Integer / 2
-    return Math.floor(Math.random() * (max - min)) + min;
+  const min = 0,
+    max = 1073741824; // Max Java Integer / 2
+  return Math.floor(Math.random() * (max - min)) + min;
 }
 
 /**
@@ -155,15 +196,15 @@ export function randomInt() {
  * @return {*}
  */
 export function idToName(items, id) {
-    if (!items) {
-        return id;
-    }
-    for (let i = 0, len = items.length; i < len; i++) {
-        if (items[i].id === id) {
-            return items[i].name;
-        }
-    }
+  if (!items) {
     return id;
+  }
+  for (let i = 0, len = items.length; i < len; i++) {
+    if (items[i].id === id) {
+      return items[i].name;
+    }
+  }
+  return id;
 }
 
 /**
@@ -174,7 +215,7 @@ export function idToName(items, id) {
  * @return {string|*}
  */
 export function getLastPathFragment(url) {
-    return url.substring(url.lastIndexOf('/') + 1);
+  return url.substring(url.lastIndexOf("/") + 1);
 }
 
 /**
@@ -183,19 +224,19 @@ export function getLastPathFragment(url) {
  * @return {number}
  */
 export function getStringHash(str) {
-    let hash = 0,
-        strlen = str ? str.length : 0,
-        i,
-        c;
-    if (strlen === 0) {
-        return hash;
-    }
-    for (i = 0; i < strlen; i++) {
-        c = str.charCodeAt(i);
-        hash = ((hash << 5) - hash) + c;
-        hash = hash & hash; // Convert to 32bit integer
-    }
+  let hash = 0,
+    strlen = str ? str.length : 0,
+    i,
+    c;
+  if (strlen === 0) {
     return hash;
+  }
+  for (i = 0; i < strlen; i++) {
+    c = str.charCodeAt(i);
+    hash = (hash << 5) - hash + c;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return hash;
 }
 
 /**
@@ -207,21 +248,21 @@ export function getStringHash(str) {
  * @return {*} Updated URL
  */
 export function addParametersToUrl(url, parameters) {
-    if (parameters) {
-        url += URL_CONTAINS_QUERY.test(url) ? '&' : '?';
-        Object.getOwnPropertyNames(parameters).forEach(function (param) {
-            url += param + '=' + parameters[param] + '&';   // '&' at the end of request URI should not be a problem
-        });
-    }
-    return url;
+  if (parameters) {
+    url += URL_CONTAINS_QUERY.test(url) ? "&" : "?";
+    Object.getOwnPropertyNames(parameters).forEach(function (param) {
+      url += param + "=" + parameters[param] + "&"; // '&' at the end of request URI should not be a problem
+    });
+  }
+  return url;
 }
 
 export function generatePassword() {
-    let pass = '';
-    for (let i = 0; i < Constants.PASSWORD_LENGTH; i++) {
-        pass += CHARACTERS.charAt(Math.floor(Math.random() * CHARACTERS.length));
-    }
-    return pass;
+  let pass = "";
+  for (let i = 0; i < Constants.PASSWORD_LENGTH; i++) {
+    pass += CHARACTERS.charAt(Math.floor(Math.random() * CHARACTERS.length));
+  }
+  return pass;
 }
 
 /**
@@ -232,61 +273,75 @@ export function generatePassword() {
  * @return {*|boolean}
  */
 export function canLoadInstitutionsPatients(institutionKey, currentUser) {
-    return currentUser != null && (isAdmin(currentUser) || (currentUser.institution != null && currentUser.institution.key === institutionKey));
+  return (
+    currentUser != null &&
+    (isAdmin(currentUser) || (currentUser.institution != null && currentUser.institution.key === institutionKey))
+  );
 }
 
 export function deviceIsMobile() {
-    const winWidth = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth);
-    return (winWidth > 0 && winWidth < 321)
-        ? true
-        : (/Android|webOS|iPhone|iPad|iPod|BlackBerry|Opera Mini|Mobile|MeeGo/i.test(
-            navigator.userAgent || navigator.vendor || window.opera));
+  const winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  return winWidth > 0 && winWidth < 321
+    ? true
+    : /Android|webOS|iPhone|iPad|iPod|BlackBerry|Opera Mini|Mobile|MeeGo/i.test(
+        navigator.userAgent || navigator.vendor || window.opera,
+      );
 }
 
 export function getRole(user) {
-    const userToTest = user;
-    if (!userToTest) {
-        return undefined;
-    }
-    if (userToTest.types) {
-        if (userToTest.types.indexOf(Vocabulary.ADMIN_TYPE) !== -1) {
-            return ROLE.ADMIN;
-        } else {
-            return ROLE.DOCTOR;
-        }
-    }
+  const userToTest = user;
+  if (!userToTest) {
     return undefined;
+  }
+  if (userToTest.types) {
+    if (userToTest.types.indexOf(Vocabulary.ADMIN_TYPE) !== -1) {
+      return ROLE.ADMIN;
+    } else {
+      return ROLE.DOCTOR;
+    }
+  }
+  return undefined;
 }
 
 export function processInstitutions(institutions) {
-    return institutions.map((item) => {
-        return {label: item.name, value: item.uri}
-    });
+  return institutions.map((item) => {
+    return { label: item.name, value: item.uri };
+  });
 }
 
 export function validateEmail(email) {
-    return /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i.test(email);
+  return /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i.test(
+    email,
+  );
 }
 
 export function deviceIsSupported() {
-    const browser = Bowser.getParser(window.navigator.userAgent);
+  const browser = Bowser.getParser(window.navigator.userAgent);
 
-    return browser.satisfies(supportedDevices.SUPPORTED_BROWSERS);
+  return browser.satisfies(supportedDevices.SUPPORTED_BROWSERS);
 }
 
 // format to DD-MM-YYYY HH:mm:ss:SSS
 export function formatDateWithMilliseconds(timestamp) {
-    const date = new Date(timestamp);
-    return ("00" + date.getDate()).slice(-2) + "-" +
-        ("00" + (date.getMonth() + 1)).slice(-2) + "-" +
-        date.getFullYear() + " " +
-        ("00" + date.getHours()).slice(-2) + ":" +
-        ("00" + date.getMinutes()).slice(-2) + ":" +
-        ("00" + date.getSeconds()).slice(-2) + ("00" + date.getMilliseconds()).slice(-2);
+  const date = new Date(timestamp);
+  return (
+    ("00" + date.getDate()).slice(-2) +
+    "-" +
+    ("00" + (date.getMonth() + 1)).slice(-2) +
+    "-" +
+    date.getFullYear() +
+    " " +
+    ("00" + date.getHours()).slice(-2) +
+    ":" +
+    ("00" + date.getMinutes()).slice(-2) +
+    ":" +
+    ("00" + date.getSeconds()).slice(-2) +
+    ("00" + date.getMilliseconds()).slice(-2)
+  );
 }
 
 export function sanitizeArray(arr) {
-    return arr ? (Array.isArray(arr) ? arr : [arr]) : [];
+  return arr ? (Array.isArray(arr) ? arr : [arr]) : [];
 }
 
 /**
@@ -298,17 +353,17 @@ export function sanitizeArray(arr) {
  * @param mimeType Type of data
  */
 export function fileDownload(data, filename, mimeType = "application/octet-stream") {
-    const blob = new Blob([data], {type: mimeType});
-    const blobURL = window.URL.createObjectURL(blob);
-    const tempLink = document.createElement("a");
-    tempLink.style.display = "none";
-    tempLink.href = blobURL;
-    tempLink.setAttribute("download", filename);
+  const blob = new Blob([data], { type: mimeType });
+  const blobURL = window.URL.createObjectURL(blob);
+  const tempLink = document.createElement("a");
+  tempLink.style.display = "none";
+  tempLink.href = blobURL;
+  tempLink.setAttribute("download", filename);
 
-    document.body.appendChild(tempLink);
-    tempLink.click();
-    document.body.removeChild(tempLink);
-    window.URL.revokeObjectURL(blobURL);
+  document.body.appendChild(tempLink);
+  tempLink.click();
+  document.body.removeChild(tempLink);
+  window.URL.revokeObjectURL(blobURL);
 }
 
 /**
@@ -317,28 +372,28 @@ export function fileDownload(data, filename, mimeType = "application/octet-strea
  * @returns {string|string}
  */
 export function paramsSerializer(paramData) {
-    const keys = Object.keys(paramData);
-    let options = "";
+  const keys = Object.keys(paramData);
+  let options = "";
 
-    keys.forEach((key) => {
-        const isParamTypeObject = typeof paramData[key] === "object";
-        const isParamTypeArray = isParamTypeObject && paramData[key].length >= 0;
-        if (paramData[key] === undefined || paramData[key] === null) {
-            return;
-        }
+  keys.forEach((key) => {
+    const isParamTypeObject = typeof paramData[key] === "object";
+    const isParamTypeArray = isParamTypeObject && paramData[key].length >= 0;
+    if (paramData[key] === undefined || paramData[key] === null) {
+      return;
+    }
 
-        if (!isParamTypeObject) {
-            options += `${key}=${encodeURIComponent(paramData[key])}&`;
-        }
+    if (!isParamTypeObject) {
+      options += `${key}=${encodeURIComponent(paramData[key])}&`;
+    }
 
-        if (isParamTypeObject && isParamTypeArray) {
-            paramData[key].forEach((element) => {
-                options += `${key}=${encodeURIComponent(element)}&`;
-            });
-        }
-    });
+    if (isParamTypeObject && isParamTypeArray) {
+      paramData[key].forEach((element) => {
+        options += `${key}=${encodeURIComponent(element)}&`;
+      });
+    }
+  });
 
-    return options ? options.slice(0, -1) : options;
+  return options ? options.slice(0, -1) : options;
 }
 
 /**
@@ -347,14 +402,16 @@ export function paramsSerializer(paramData) {
  * @returns {number|undefined} Page number or undefined, if it could not have been extracted
  */
 export function extractLastPageNumber(response) {
-    const linkHeader = response.headers[HttpHeaders.LINK];
-    if (!linkHeader) {
-        return undefined;
-    }
-    const links = parseLinkHeader(linkHeader);
-    return links.last ? Number(links.last.page) : undefined;
+  const linkHeader = response.headers[HttpHeaders.LINK];
+  if (!linkHeader) {
+    return undefined;
+  }
+  const links = parseLinkHeader(linkHeader);
+  return links.last ? Number(links.last.page) : undefined;
 }
 
 export function sortToParams(sort) {
-    return Object.keys(sort).filter(k => sort[k] !== undefined).map(k => `${sort[k]}${k}`);
+  return Object.keys(sort)
+    .filter((k) => sort[k] !== undefined)
+    .map((k) => `${sort[k]}${k}`);
 }

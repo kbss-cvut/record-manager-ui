@@ -1,24 +1,15 @@
 import React from "react";
-import {usePromiseTracker} from "react-promise-tracker";
-import {ContainerLoaderMask, LoaderMask} from "../Loader";
+import { usePromiseTracker } from "react-promise-tracker";
+import { ContainerLoaderMask, LoaderMask } from "../Loader";
 
-const PromiseTrackingMask = ({area, coverViewport}) => {
-    const {promiseInProgress} = usePromiseTracker({area});
+const PromiseTrackingMask = ({ area, coverViewport }) => {
+  const { promiseInProgress } = usePromiseTracker({ area });
 
-    return (
-        <>
-            {promiseInProgress &&
-                (area && !coverViewport ? (
-                    <ContainerLoaderMask/>
-                ) : (
-                    <LoaderMask/>
-                ))}
-        </>
-    );
+  return <>{promiseInProgress && (area && !coverViewport ? <ContainerLoaderMask /> : <LoaderMask />)}</>;
 };
 
 PromiseTrackingMask.defaultProps = {
-    coverViewport: false,
+  coverViewport: false,
 };
 
 export default PromiseTrackingMask;
