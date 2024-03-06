@@ -38,6 +38,7 @@
     "vite-plugin-eslint": "^1.8.1"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.23.10",
     "@cfaester/enzyme-adapter-react-18": "^0.7.1",
     "axios-mock-adapter": "^1.18.1",
     "core-js": "^3.6.5",

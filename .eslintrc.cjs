@@ -1,13 +1,11 @@
 module.exports = {
-  extends: [
-    "airbnb",
-    "plugin:react/recommended",
-    "plugin:jsx-a11y/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "prettier",
-  ],
-  plugins: ["react", "react-hooks", "jsx-a11y"],
+  parser: "@babel/eslint-parser",
+  extends: ["plugin:react/recommended"],
+  parserOptions: {
+    ecmaVersion: 2020,
+    requireConfigFile: false,
+  },
+  plugins: ["react"],
   rules: {}, // add specific rules here
   ignorePatterns: ["dist", "tests", ".eslintrc.cjs"],
   settings: {
