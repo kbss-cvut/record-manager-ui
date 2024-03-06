@@ -1,5 +1,6 @@
 import React from "react";
 import { Card } from "react-bootstrap";
+import PropTypes from "prop-types";
 
 const Loader = () => (
   <div className="loader-spin">
@@ -40,5 +41,9 @@ export const LoaderCard = (props) => (
     </Card.Body>
   </Card>
 );
+
+LoaderCard.propTypes = {
+  header: PropTypes.elementType,
+};
 
 export const LoaderSmall = () => <div className="loader align-self-center" />;

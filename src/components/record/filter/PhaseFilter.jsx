@@ -4,6 +4,7 @@ import { IntelligentTreeSelect } from "intelligent-tree-select";
 import { RECORD_PHASE } from "../../../constants/DefaultConstants";
 import { useI18n } from "../../../hooks/useI18n";
 import { sanitizeArray } from "../../../utils/Utils";
+import PropTypes from "prop-types";
 
 const PhaseFilter = ({ value, onChange }) => {
   const { i18n } = useI18n();
@@ -58,6 +59,11 @@ const PhaseFilter = ({ value, onChange }) => {
       </Row>
     </Form>
   );
+};
+
+PhaseFilter.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default PhaseFilter;

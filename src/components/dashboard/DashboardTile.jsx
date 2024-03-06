@@ -14,6 +14,7 @@ const DashboardTile = (props) => {
 DashboardTile.propTypes = {
   onClick: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
+  children: PropTypes.node.isRequired,
 };
 
 export default DashboardTile;

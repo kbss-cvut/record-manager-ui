@@ -1,4 +1,6 @@
+/* eslint-disable react/prop-types */
 import * as React from "react";
+import PropTypes from "prop-types";
 
 export default function withI18n(Component, options) {
   const { forwardRef = false } = options || {};

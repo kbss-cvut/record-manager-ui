@@ -18,6 +18,12 @@ import { sanitizeArray } from "../../utils/Utils";
 
 class RecordTable extends React.Component {
   static propTypes = {
+    intl: PropTypes.shape({
+      messages: PropTypes.object,
+      formatMessage: PropTypes.func,
+      locale: PropTypes.string,
+    }),
+    i18n: PropTypes.object,
     recordsLoaded: PropTypes.object.isRequired,
     formTemplate: PropTypes.string,
     formTemplatesLoaded: PropTypes.object.isRequired,
@@ -159,6 +165,16 @@ const FilterableInstitutionHeader = ({ filters, onFilterChange }) => {
   );
 };
 
+FilterableInstitutionHeader.propTypes = {
+  filters: PropTypes.shape({
+    institution: PropTypes.string,
+    minDate: PropTypes.instanceOf(Date),
+    maxDate: PropTypes.instanceOf(Date),
+    phase: PropTypes.string,
+  }),
+  onFilterChange: PropTypes.func,
+};
+
 const FilterableLastModifiedHeader = ({ filters, sort, onFilterAndSortChange }) => {
   const { i18n } = useI18n();
   return (
@@ -192,6 +208,19 @@ const FilterableLastModifiedHeader = ({ filters, sort, onFilterAndSortChange }) 
   );
 };
 
+FilterableLastModifiedHeader.propTypes = {
+  filters: PropTypes.shape({
+    institution: PropTypes.string,
+    minDate: PropTypes.instanceOf(Date),
+    maxDate: PropTypes.instanceOf(Date),
+    phase: PropTypes.string,
+  }),
+  sort: PropTypes.shape({
+    date: PropTypes.string,
+  }),
+  onFilterAndSortChange: PropTypes.func,
+};
+
 const FilterablePhaseHeader = ({ filters, onFilterChange }) => {
   const { i18n } = useI18n();
   return (
@@ -213,6 +242,16 @@ const FilterablePhaseHeader = ({ filters, onFilterChange }) => {
       </th>
     </OverlayTrigger>
   );
+};
+
+FilterablePhaseHeader.propTypes = {
+  filters: PropTypes.shape({
+    institution: PropTypes.string,
+    minDate: PropTypes.instanceOf(Date),
+    maxDate: PropTypes.instanceOf(Date),
+    phase: PropTypes.string,
+  }),
+  onFilterChange: PropTypes.func,
 };
 
 export default injectIntl(withI18n(RecordTable));

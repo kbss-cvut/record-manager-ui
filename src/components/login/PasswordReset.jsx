@@ -14,6 +14,7 @@ import { ACTION_STATUS, ALERT_TYPES } from "../../constants/DefaultConstants";
 import { LoaderSmall } from "../Loader";
 import * as Utils from "../../utils/Utils";
 import AlertMessage from "../AlertMessage";
+import PropTypes from "prop-types";
 
 class PasswordReset extends React.Component {
   constructor(props) {
@@ -112,6 +113,12 @@ class PasswordReset extends React.Component {
     );
   }
 }
+
+PasswordReset.propTypes = {
+  i18n: PropTypes.object.isRequired,
+  passwordReset: PropTypes.func.isRequired,
+  status: PropTypes.string.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(PasswordReset)));
 

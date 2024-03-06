@@ -21,6 +21,7 @@ export default class HorizontalInput extends React.Component {
     possibleValueQuery: PropTypes.string,
     // checkboxes and radios
     iconRight: PropTypes.object,
+    children: PropTypes.node.isRequired,
   };
 
   static defaultProps = {
@@ -35,6 +36,8 @@ export default class HorizontalInput extends React.Component {
   }
 
   focus() {
+    /* eslint-disable react/no-find-dom-node */
+    // Do not use findDOMNode. It doesn’t work with function components and is deprecated in StrictMode. See https://reactjs.org/docs/react-dom.html#finddomnodeeslintreact/no-find-dom-node
     ReactDOM.findDOMNode(this.input).focus();
   }
 

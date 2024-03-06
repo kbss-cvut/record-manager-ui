@@ -13,6 +13,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/record-manager.css";
 import "@kbss-cvut/s-forms/css";
 import { BrowserCompatibilityModal } from "./utils/BrowserCompatibilityModal";
+import PropTypes from "prop-types";
 
 const App = (props) => {
   useEffect(() => {
@@ -31,6 +32,10 @@ const App = (props) => {
       <BrowserCompatibilityModal />
     </IntlProvider>
   );
+};
+
+App.propTypes = {
+  intl: PropTypes.object,
 };
 
 const OidcMainView = () => {

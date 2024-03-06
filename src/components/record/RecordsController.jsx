@@ -20,6 +20,7 @@ import {
 import { trackPromise } from "react-promise-tracker";
 import { INITIAL_PAGE } from "../misc/Pagination";
 import BrowserStorage from "../../utils/BrowserStorage";
+import PropTypes from "prop-types";
 
 class RecordsController extends React.Component {
   constructor(props) {
@@ -163,6 +164,25 @@ class RecordsController extends React.Component {
     );
   }
 }
+
+RecordsController.propTypes = {
+  loadFormTemplates: PropTypes.func.isRequired,
+  loadRecords: PropTypes.func.isRequired,
+  transitionToWithOpts: PropTypes.func.isRequired,
+  deleteRecord: PropTypes.func.isRequired,
+  updateRecord: PropTypes.func.isRequired,
+  exportRecords: PropTypes.func.isRequired,
+  importRecords: PropTypes.func.isRequired,
+  formTemplatesLoaded: PropTypes.object.isRequired,
+  recordsLoaded: PropTypes.shape({
+    records: PropTypes.array.isRequired,
+    pageCount: PropTypes.number.isRequired,
+  }).isRequired,
+  recordDeleted: PropTypes.func.isRequired,
+  recordsDeleting: PropTypes.bool.isRequired,
+  currentUser: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(RecordsController)));
 

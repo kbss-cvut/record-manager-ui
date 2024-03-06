@@ -13,6 +13,7 @@ import { changePasswordToken, validateToken } from "../../actions/AuthActions";
 import { transitionTo } from "../../utils/Routing";
 import Routes from "../../constants/RoutesConstants";
 import AlertMessage from "../AlertMessage";
+import PropTypes from "prop-types";
 
 class PasswordReset extends React.Component {
   constructor(props) {
@@ -141,6 +142,25 @@ class PasswordReset extends React.Component {
     );
   }
 }
+
+PasswordReset.propTypes = {
+  i18n: PropTypes.object.isRequired,
+  validateToken: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      token: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  validTokenStatus: PropTypes.string.isRequired,
+  changePasswordToken: PropTypes.func.isRequired,
+  passwordChange: PropTypes.shape({
+    status: PropTypes.string.isRequired,
+    error: PropTypes.shape({
+      message: PropTypes.string,
+    }),
+  }).isRequired,
+  formatMessage: PropTypes.func.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(PasswordReset)));
 

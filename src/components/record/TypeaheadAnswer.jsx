@@ -66,6 +66,8 @@ const TypeaheadAnswer = (props) => {
 };
 
 TypeaheadAnswer.propTypes = {
+  options: PropTypes.object,
+  name: PropTypes.string,
   possibleValuesEndpoint: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.string,

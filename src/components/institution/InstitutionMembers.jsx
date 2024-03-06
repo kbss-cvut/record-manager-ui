@@ -132,6 +132,7 @@ class InstitutionMembers extends React.Component {
 }
 
 InstitutionMembers.propTypes = {
+  i18n: PropTypes.object.isRequired,
   institutionMembers: PropTypes.object.isRequired,
   institution: PropTypes.object.isRequired,
   onEditUser: PropTypes.func.isRequired,

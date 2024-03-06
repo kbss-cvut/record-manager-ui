@@ -12,6 +12,7 @@ import { loadUsers } from "../../actions/UsersActions";
 import { ROLE } from "../../constants/DefaultConstants";
 import { deleteUser } from "../../actions/UserActions";
 import { trackPromise } from "react-promise-tracker";
+import PropTypes from "prop-types";
 
 class UsersController extends React.Component {
   constructor(props) {
@@ -63,6 +64,17 @@ class UsersController extends React.Component {
     );
   }
 }
+
+UsersController.propTypes = {
+  loadUsers: PropTypes.func.isRequired,
+  transitionToWithOpts: PropTypes.func.isRequired,
+  deleteUser: PropTypes.func.isRequired,
+  currentUser: PropTypes.shape({
+    role: PropTypes.string.isRequired,
+  }).isRequired,
+  usersLoaded: PropTypes.bool.isRequired,
+  userDeleted: PropTypes.bool.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(UsersController)));
 

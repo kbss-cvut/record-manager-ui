@@ -10,6 +10,7 @@ import { transitionTo, transitionToWithOpts } from "../../utils/Routing";
 import withI18n from "../../i18n/withI18n";
 import { loadFormTemplates } from "../../actions/FormTemplatesActions";
 import { importRecords } from "../../actions/RecordsActions";
+import PropTypes from "prop-types";
 
 class DashboardController extends React.Component {
   constructor(props) {
@@ -90,6 +91,19 @@ class DashboardController extends React.Component {
     );
   }
 }
+
+DashboardController.propTypes = {
+  transitionToWithOpts: PropTypes.func.isRequired,
+  currentUser: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    institution: PropTypes.shape({
+      key: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  importRecords: PropTypes.func.isRequired,
+  loadFormTemplates: PropTypes.func.isRequired,
+  formTemplatesLoaded: PropTypes.object.isRequired, // Adjust the type if necessary
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(DashboardController)));
 

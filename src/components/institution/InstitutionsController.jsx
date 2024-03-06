@@ -12,6 +12,7 @@ import { loadInstitutions } from "../../actions/InstitutionsActions";
 import { bindActionCreators } from "redux";
 import { deleteInstitution } from "../../actions/InstitutionActions";
 import { trackPromise } from "react-promise-tracker";
+import PropTypes from "prop-types";
 
 class InstitutionsController extends React.Component {
   constructor(props) {
@@ -63,6 +64,17 @@ class InstitutionsController extends React.Component {
     );
   }
 }
+
+InstitutionsController.propTypes = {
+  loadInstitutions: PropTypes.func.isRequired,
+  transitionToWithOpts: PropTypes.func.isRequired,
+  deleteInstitution: PropTypes.func.isRequired,
+  currentUser: PropTypes.shape({
+    role: PropTypes.string.isRequired,
+  }).isRequired,
+  institutionsLoaded: PropTypes.bool.isRequired,
+  institutionDeleted: PropTypes.bool.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(InstitutionsController)));
 

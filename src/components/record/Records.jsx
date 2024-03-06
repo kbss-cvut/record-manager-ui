@@ -19,6 +19,8 @@ const STUDY_CREATE_AT_MOST_ONE_RECORD = false;
 
 class Records extends React.Component {
   static propTypes = {
+    i18n: PropTypes.object.isRequired,
+    intl: PropTypes.object.isRequired,
     recordsLoaded: PropTypes.object,
     recordDeleted: PropTypes.object,
     recordsDeleting: PropTypes.array,
