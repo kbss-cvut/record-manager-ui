@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useI18n } from "../../../hooks/useI18n";
 import { SortDirection } from "../../../constants/DefaultConstants";
 import { FaCheck } from "react-icons/fa";
+import PropTypes from "prop-types";
 
 function toIsoDate(date) {
   // Work around timezones - https://github.com/Hacker0x01/react-datepicker/issues/1787
@@ -101,6 +102,13 @@ const DateIntervalFilter = ({ minDate, maxDate, sort, onChange }) => {
       </Row>
     </Form>
   );
+};
+
+DateIntervalFilter.propTypes = {
+  minDate: PropTypes.instanceOf(Date).isRequired,
+  maxDate: PropTypes.instanceOf(Date).isRequired,
+  sort: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default DateIntervalFilter;

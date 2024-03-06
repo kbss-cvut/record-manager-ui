@@ -1,3 +1,4 @@
+/* eslint-disable react/no-string-refs */
 import React from "react";
 import { Button, Card } from "react-bootstrap";
 import withI18n from "../../i18n/withI18n";
@@ -13,6 +14,8 @@ import { isAdmin } from "../../utils/SecurityUtils";
 
 class PasswordChange extends React.Component {
   static propTypes = {
+    i18n: PropTypes.object,
+    valid: PropTypes.bool,
     handlers: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
     passwordChange: PropTypes.object.isRequired,

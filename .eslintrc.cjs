@@ -2,8 +2,10 @@ module.exports = {
   parser: "@babel/eslint-parser",
   extends: ["plugin:react/recommended"],
   parserOptions: {
-    ecmaVersion: 2020,
     requireConfigFile: false,
+    babelOptions: {
+      presets: ["@babel/preset-react"],
+    },
   },
   plugins: ["react"],
   rules: {}, // add specific rules here
@@ -11,6 +13,11 @@ module.exports = {
   settings: {
     react: {
       version: "detect",
+    },
+    "import/resolver": {
+      node: {
+        extensions: [".js", ".jsx"],
+      },
     },
   },
   env: {

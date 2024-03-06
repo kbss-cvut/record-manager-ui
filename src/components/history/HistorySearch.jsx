@@ -4,7 +4,7 @@ import withI18n from "../../i18n/withI18n";
 import { Button } from "react-bootstrap";
 import PropTypes from "prop-types";
 
-let HistorySearch = (props) => (
+const HistorySearch = (props) => (
   <tr>
     <td className="report-row">
       <input
@@ -51,6 +51,7 @@ let HistorySearch = (props) => (
 );
 
 HistorySearch.propTypes = {
+  i18n: PropTypes.object,
   handlers: PropTypes.object.isRequired,
   searchData: PropTypes.object.isRequired,
 };

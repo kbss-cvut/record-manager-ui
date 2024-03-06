@@ -5,6 +5,7 @@ import { loadInstitutions } from "../../../actions/InstitutionsActions";
 import { sanitizeArray } from "../../../utils/Utils";
 import { useI18n } from "../../../hooks/useI18n";
 import { IntelligentTreeSelect } from "intelligent-tree-select";
+import PropTypes from "prop-types";
 
 const InstitutionFilter = ({ value, onChange }) => {
   const { i18n } = useI18n();
@@ -59,6 +60,11 @@ const InstitutionFilter = ({ value, onChange }) => {
       </Row>
     </Form>
   );
+};
+
+InstitutionFilter.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default InstitutionFilter;

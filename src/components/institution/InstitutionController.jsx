@@ -30,6 +30,7 @@ import { isAdmin } from "../../utils/SecurityUtils";
 import { trackPromise } from "react-promise-tracker";
 import { INITIAL_PAGE } from "../misc/Pagination";
 import BrowserStorage from "../../utils/BrowserStorage";
+import PropTypes from "prop-types";
 
 class InstitutionController extends React.Component {
   constructor(props) {
@@ -223,6 +224,31 @@ class InstitutionController extends React.Component {
     );
   }
 }
+
+InstitutionController.propTypes = {
+  userDeleted: PropTypes.object,
+  unloadInstitutionMembers: PropTypes.func.isRequired,
+  unloadInstitution: PropTypes.func.isRequired,
+  transitionToWithOpts: PropTypes.func.isRequired,
+  loadRecords: PropTypes.func.isRequired,
+  match: PropTypes.object.isRequired,
+  loadInstitution: PropTypes.func.isRequired,
+  loadInstitutionMembers: PropTypes.func.isRequired,
+  status: PropTypes.string.isRequired,
+  currentUser: PropTypes.object.isRequired,
+  institutionSaved: PropTypes.object.isRequired,
+  unloadSavedInstitution: PropTypes.func.isRequired,
+  loadFormTemplates: PropTypes.func.isRequired,
+  institutionLoaded: PropTypes.object.isRequired,
+  deleteUser: PropTypes.func.isRequired,
+  createInstitution: PropTypes.func.isRequired,
+  updateInstitution: PropTypes.func.isRequired,
+  viewHandlers: PropTypes.object.isRequired,
+  exportRecords: PropTypes.func.isRequired,
+  institutionMembers: PropTypes.object.isRequired,
+  recordsLoaded: PropTypes.object.isRequired,
+  formTemplatesLoaded: PropTypes.object.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(InstitutionController)));
 

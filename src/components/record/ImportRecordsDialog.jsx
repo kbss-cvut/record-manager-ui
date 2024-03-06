@@ -4,6 +4,7 @@ import classNames from "classnames";
 import Dropzone from "react-dropzone";
 import { FaUpload } from "react-icons/fa";
 import { useI18n } from "../../hooks/useI18n";
+import PropTypes from "prop-types";
 
 const ImportRecordsDialog = ({ onSubmit, onCancel, show }) => {
   const { i18n } = useI18n();
@@ -51,6 +52,12 @@ const ImportRecordsDialog = ({ onSubmit, onCancel, show }) => {
       </Modal.Body>
     </Modal>
   );
+};
+
+ImportRecordsDialog.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  show: PropTypes.bool.isRequired,
 };
 
 export default ImportRecordsDialog;

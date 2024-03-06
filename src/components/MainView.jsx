@@ -19,6 +19,7 @@ import ImpersonatorBadge from "./ImpersonatorBadge";
 import { isAdmin } from "../utils/SecurityUtils";
 import Messages from "./message/Messages";
 import Footer from "../Footer";
+import PropTypes from "prop-types";
 
 class MainView extends React.Component {
   constructor(props) {
@@ -166,6 +167,18 @@ class MainView extends React.Component {
     );
   }
 }
+
+MainView.propTypes = {
+  i18n: PropTypes.object,
+  loadUserProfile: PropTypes.func,
+  intl: PropTypes.object,
+  location: PropTypes.object,
+  user: PropTypes.object,
+  transitionToWithOpts: PropTypes.func,
+  status: PropTypes.string,
+  isLoaded: PropTypes.bool,
+  history: PropTypes.object,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(withRouter(MainView))));
 

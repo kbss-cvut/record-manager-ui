@@ -11,6 +11,14 @@ import { trackPromise } from "react-promise-tracker";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 
 class Dashboard extends React.Component {
+  static propTypes = {
+    i18n: PropTypes.object.isRequired,
+    intl: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired,
+    handlers: PropTypes.object.isRequired,
+    formTemplatesLoaded: PropTypes.object.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.i18n = this.props.i18n;
@@ -159,11 +167,5 @@ class Dashboard extends React.Component {
     );
   }
 }
-
-Dashboard.propTypes = {
-  currentUser: PropTypes.object.isRequired,
-  handlers: PropTypes.object.isRequired,
-  formTemplatesLoaded: PropTypes.object.isRequired,
-};
 
 export default injectIntl(withI18n(Dashboard));

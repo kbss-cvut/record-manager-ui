@@ -1,3 +1,4 @@
+/* eslint-disable react/no-find-dom-node */
 "use strict";
 
 import React from "react";
@@ -7,6 +8,7 @@ import PropTypes from "prop-types";
 
 export default class Input extends React.Component {
   static propTypes = {
+    children: PropTypes.node.isRequired,
     type: PropTypes.string,
     label: PropTypes.string,
     value: PropTypes.any,

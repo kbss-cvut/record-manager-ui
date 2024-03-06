@@ -60,4 +60,9 @@ const PhaseFilter = ({ value, onChange }) => {
   );
 };
 
+PhaseFilter.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
 export default PhaseFilter;

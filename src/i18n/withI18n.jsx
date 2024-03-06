@@ -1,4 +1,5 @@
 import * as React from "react";
+import PropTypes from "prop-types";
 
 export default function withI18n(Component, options) {
   const { forwardRef = false } = options || {};
@@ -31,3 +32,12 @@ export default function withI18n(Component, options) {
 
   return Wrapper;
 }
+
+Wrapper.propTypes = {
+  intl: PropTypes.shape({
+    messages: PropTypes.object,
+    formatMessage: PropTypes.func,
+    locale: PropTypes.string,
+  }),
+  forwardedRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.instanceOf(Element) })]),
+};

@@ -11,6 +11,7 @@ import { transitionToWithOpts } from "../../utils/Routing";
 import Pagination, { INITIAL_PAGE } from "../misc/Pagination";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 import { trackPromise } from "react-promise-tracker";
+import PropTypes from "prop-types";
 
 class HistoryList extends React.Component {
   constructor(props) {
@@ -93,6 +94,15 @@ class HistoryList extends React.Component {
     );
   }
 }
+
+HistoryList.propTypes = {
+  i18n: PropTypes.object.isRequired, // Adjust the type if necessary
+  loadActions: PropTypes.func.isRequired,
+  transitionToWithOpts: PropTypes.func.isRequired,
+  actionsLoaded: PropTypes.shape({
+    actions: PropTypes.array.isRequired,
+  }).isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(HistoryList)));
 

@@ -28,6 +28,7 @@ import omit from "lodash/omit";
 import { getRole } from "../../utils/Utils";
 import { isUsingOidcAuth, userProfileLink } from "../../utils/OidcUtils";
 import { isAdmin } from "../../utils/SecurityUtils";
+import PropTypes from "prop-types";
 
 class UserController extends React.Component {
   constructor(props) {
@@ -204,6 +205,33 @@ class UserController extends React.Component {
     );
   }
 }
+
+UserController.propTypes = {
+  unloadSavedUser: PropTypes.func,
+  unloadUser: PropTypes.func,
+  currentUser: PropTypes.object.isRequired,
+  institutionsLoaded: PropTypes.object.isRequired,
+  loadInstitutions: PropTypes.func.isRequired,
+  loadUser: PropTypes.func.isRequired,
+  transitionToWithOpts: PropTypes.func.isRequired,
+  match: PropTypes.object.isRequired,
+  userSaved: PropTypes.object.isRequired,
+  userLoaded: PropTypes.object.isRequired,
+  generatedUsername: PropTypes.object.isRequired,
+  invitationSent: PropTypes.object.isRequired,
+  invitationDelete: PropTypes.object.isRequired,
+  impersonation: PropTypes.object.isRequired,
+  oidcImpersonate: PropTypes.func.isRequired,
+  impersonate: PropTypes.func.isRequired,
+  sendInvitation: PropTypes.func.isRequired,
+  deleteInvitationOption: PropTypes.func.isRequired,
+  generateUsername: PropTypes.func.isRequired,
+  transitionPayload: PropTypes.func.isRequired,
+  setTransitionPayload: PropTypes.func.isRequired,
+  createUser: PropTypes.func.isRequired,
+  updateUser: PropTypes.func.isRequired,
+  viewHandlers: PropTypes.object.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(UserController)));
 

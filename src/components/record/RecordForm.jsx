@@ -123,6 +123,7 @@ class RecordForm extends React.Component {
 }
 
 RecordForm.propTypes = {
+  i18n: PropTypes.object,
   record: PropTypes.object.isRequired,
   currentUser: PropTypes.object.isRequired,
   loadFormgen: PropTypes.func,

@@ -15,6 +15,10 @@ import { isAdmin } from "../../utils/SecurityUtils";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 
 class Record extends React.Component {
+  static propTypes = {
+    i18n: PropTypes.object.isRequired,
+    intl: PropTypes.object.isRequired,
+  };
   constructor(props) {
     super(props);
     this.i18n = this.props.i18n;

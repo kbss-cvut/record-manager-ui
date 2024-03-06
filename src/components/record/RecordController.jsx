@@ -25,6 +25,7 @@ import { extractQueryParam } from "../../utils/Utils";
 import { withRouter } from "react-router-dom";
 import { EXTENSIONS } from "../../../config";
 import { trackPromise } from "react-promise-tracker";
+import PropTypes from "prop-types";
 
 class RecordController extends React.Component {
   constructor(props) {
@@ -201,6 +202,38 @@ class RecordController extends React.Component {
     );
   }
 }
+
+RecordController.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      key: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  loadRecord: PropTypes.func.isRequired,
+  recordSaved: PropTypes.shape({
+    actionFlag: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+    record: PropTypes.shape({
+      key: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  recordLoaded: PropTypes.shape({
+    status: PropTypes.string.isRequired,
+    record: PropTypes.shape({
+      state: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  unloadSavedRecord: PropTypes.func.isRequired,
+  transitionToWithOpts: PropTypes.func.isRequired,
+  currentUser: PropTypes.object.isRequired,
+  unloadRecord: PropTypes.func.isRequired,
+  createRecord: PropTypes.func.isRequired,
+  updateRecord: PropTypes.func.isRequired,
+  formgen: PropTypes.object.isRequired,
+  loadFormgen: PropTypes.func.isRequired,
+  formTemplatesLoaded: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(withRouter(RecordController))));
 

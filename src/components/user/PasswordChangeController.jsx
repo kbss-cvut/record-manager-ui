@@ -9,6 +9,7 @@ import { bindActionCreators } from "redux";
 import { ROLE } from "../../constants/DefaultConstants";
 import { changePassword } from "../../actions/UserActions";
 import * as UserFactory from "../../utils/EntityFactory";
+import PropTypes from "prop-types";
 
 class PasswordChangeController extends React.Component {
   constructor(props) {
@@ -70,6 +71,21 @@ class PasswordChangeController extends React.Component {
     );
   }
 }
+
+PasswordChangeController.propTypes = {
+  changePassword: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      username: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  transitionToWithOpts: PropTypes.func.isRequired,
+  currentUser: PropTypes.shape({
+    role: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+  }).isRequired,
+  passwordChange: PropTypes.object.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(PasswordChangeController)));
 

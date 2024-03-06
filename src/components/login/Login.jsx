@@ -15,6 +15,7 @@ import { login } from "../../actions/AuthActions";
 import { LoaderSmall } from "../Loader";
 import { deviceIsMobile, deviceIsSupported } from "../../utils/Utils";
 import * as SupportedDevices from "../../constants/SupportedDevices";
+import PropTypes from "prop-types";
 
 class Login extends React.Component {
   constructor(props) {
@@ -59,7 +60,13 @@ class Login extends React.Component {
       return (
         <span key={browser.name}>
           {browser.linkMobile && browser.linkDesktop ? (
-            <a href={deviceIsMobile() ? browser.linkMobile : browser.linkDesktop} target="_blank" key="0">
+            // Using target="_blank" without rel="noreferrer" (which implies rel="noopener") is a security risk in older browsers: see https://mathiasbynens.github.io/rel-noopener/#recommendations
+            <a
+              href={deviceIsMobile() ? browser.linkMobile : browser.linkDesktop}
+              target="_blank"
+              key="0"
+              rel="noreferrer"
+            >
               {browser.name}
             </a>
           ) : (
@@ -142,6 +149,13 @@ class Login extends React.Component {
     );
   }
 }
+
+Login.propTypes = {
+  login: PropTypes.func,
+  error: PropTypes.object,
+  isLogging: PropTypes.bool,
+  i18n: PropTypes.object.isRequired, // Or whichever type 'i18n' is
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(Login)));
 

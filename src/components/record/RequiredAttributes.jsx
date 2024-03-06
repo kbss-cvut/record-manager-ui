@@ -12,6 +12,7 @@ import { isAdmin } from "../../utils/SecurityUtils";
 
 class RequiredAttributes extends React.Component {
   static propTypes = {
+    i18n: PropTypes.object,
     record: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
     completed: PropTypes.bool.isRequired,

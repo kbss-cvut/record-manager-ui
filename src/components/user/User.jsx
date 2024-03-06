@@ -1,3 +1,4 @@
+/* eslint-disable react/no-string-refs */
 import React from "react";
 import { Button, Card } from "react-bootstrap";
 import withI18n from "../../i18n/withI18n";
@@ -16,6 +17,7 @@ import { isAdmin } from "../../utils/SecurityUtils";
 
 class User extends React.Component {
   static propTypes = {
+    formatMessage: PropTypes.func.isRequired,
     user: PropTypes.object,
     handlers: PropTypes.object.isRequired,
     backToInstitution: PropTypes.bool,
@@ -106,6 +108,7 @@ class User extends React.Component {
           style={{ margin: "0 0.3em 0 0" }}
           variant="primary"
           size="sm"
+          // eslint-disable-next-line react/no-string-refs
           ref="submit"
           onClick={handlers.onPasswordChange}
         >

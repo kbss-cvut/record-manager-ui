@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { generateRedirectUri, getUserManager } from "../../../utils/OidcUtils";
 import { getOidcToken } from "../../../utils/SecurityUtils";
+import PropTypes from "prop-types";
 
 // Taken from https://github.com/datagov-cz/assembly-line-shared but using a different config processing mechanism
 
@@ -100,6 +101,11 @@ const OidcAuthWrapper = ({ children, location = window.location }) => {
   }
 
   return <AuthContext.Provider value={{ user, logout }}>{children}</AuthContext.Provider>;
+};
+
+OidcAuthWrapper.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+  location: PropTypes.object,
 };
 
 export default OidcAuthWrapper;
