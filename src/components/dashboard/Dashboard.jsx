@@ -12,7 +12,7 @@ import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 
 class Dashboard extends React.Component {
   static propTypes = {
-    i18n: PropTypes.object.isRequired,
+    i18n: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
     handlers: PropTypes.object.isRequired,

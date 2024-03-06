@@ -169,7 +169,7 @@ class MainView extends React.Component {
 }
 
 MainView.propTypes = {
-  i18n: PropTypes.object,
+  i18n: PropTypes.func,
   loadUserProfile: PropTypes.func,
   intl: PropTypes.object,
   location: PropTypes.object,
