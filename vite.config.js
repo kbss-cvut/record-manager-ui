@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import dotenv from "dotenv";
+import eslintPlugin from "vite-plugin-eslint";
 
 dotenv.config();
 
@@ -8,7 +9,12 @@ export default defineConfig({
   base: "",
   root: "",
   envPrefix: "RECORD_MANAGER_",
-  plugins: [react()],
+  plugins: [
+    react(),
+    eslintPlugin({
+      cache: false, // disable eslint cache to avoid conflicts
+    }),
+  ],
   build: {
     sourcemap: true,
     emptyOutDir: true,

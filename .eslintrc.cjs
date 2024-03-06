@@ -9,6 +9,7 @@ module.exports = {
   ],
   plugins: ["react", "react-hooks", "jsx-a11y"],
   rules: {}, // add specific rules here
+  ignorePatterns: ["dist", "tests", ".eslintrc.cjs"],
   settings: {
     react: {
       version: "detect",
