@@ -9,7 +9,7 @@ import IfInternalAuth from "../misc/oidc/IfInternalAuth";
 
 class UserTable extends React.Component {
   static propTypes = {
-    i18n: PropTypes.object,
+    i18n: PropTypes.func,
     users: PropTypes.array.isRequired,
     handlers: PropTypes.object.isRequired,
   };

@@ -175,11 +175,11 @@ RecordsController.propTypes = {
   importRecords: PropTypes.func.isRequired,
   formTemplatesLoaded: PropTypes.object.isRequired,
   recordsLoaded: PropTypes.shape({
-    records: PropTypes.array.isRequired,
-    pageCount: PropTypes.number.isRequired,
-  }).isRequired,
-  recordDeleted: PropTypes.func.isRequired,
-  recordsDeleting: PropTypes.bool.isRequired,
+    records: PropTypes.array,
+    pageCount: PropTypes.number,
+  }),
+  recordDeleted: PropTypes.object,
+  recordsDeleting: PropTypes.array,
   currentUser: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
 };
