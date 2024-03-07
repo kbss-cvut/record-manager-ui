@@ -18,6 +18,14 @@ export default defineConfig({
   build: {
     sourcemap: true,
     emptyOutDir: true,
+    rollupOptions: {
+      onwarn: (warning, defaultHandler) => {
+        if (warning.code === "INVALID_ANNOTATION" && warning.message.includes("*#__PURE__*")) {
+          return;
+        }
+        defaultHandler(warning);
+      },
+    },
   },
   define: {
     "process.env": process.env, // workaround for parse-link-header library that depends on 2 vars defined in `process.env`, see https://github.com/thlorenz/parse-link-header/issues/31
