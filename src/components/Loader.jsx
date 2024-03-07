@@ -43,7 +43,7 @@ export const LoaderCard = (props) => (
 );
 
 LoaderCard.propTypes = {
-  header: PropTypes.elementType,
+  header: PropTypes.object,
 };
 
 export const LoaderSmall = () => <div className="loader align-self-center" />;

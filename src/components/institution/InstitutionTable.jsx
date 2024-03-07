@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 
 class InstitutionTable extends React.Component {
   static propTypes = {
-    i18n: PropTypes.object,
+    i18n: PropTypes.func,
     institutions: PropTypes.array.isRequired,
     handlers: PropTypes.object.isRequired,
     institutionDeleted: PropTypes.object,

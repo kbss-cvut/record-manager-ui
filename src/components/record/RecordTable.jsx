@@ -23,7 +23,7 @@ class RecordTable extends React.Component {
       formatMessage: PropTypes.func,
       locale: PropTypes.string,
     }),
-    i18n: PropTypes.object,
+    i18n: PropTypes.func,
     recordsLoaded: PropTypes.object.isRequired,
     formTemplate: PropTypes.string,
     formTemplatesLoaded: PropTypes.object.isRequired,

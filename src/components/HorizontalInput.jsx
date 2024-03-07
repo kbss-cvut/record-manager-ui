@@ -21,7 +21,7 @@ export default class HorizontalInput extends React.Component {
     possibleValueQuery: PropTypes.string,
     // checkboxes and radios
     iconRight: PropTypes.object,
-    children: PropTypes.node.isRequired,
+    children: PropTypes.node,
   };
 
   static defaultProps = {
