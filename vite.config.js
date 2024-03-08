@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import dotenv from "dotenv";
 import eslintPlugin from "vite-plugin-eslint";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ export default defineConfig({
     eslintPlugin({
       cache: false, // disable eslint cache to avoid conflicts
     }),
+    nodePolyfills(),
   ],
   build: {
     sourcemap: true,
