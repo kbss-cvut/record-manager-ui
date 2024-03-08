@@ -13,7 +13,7 @@ export default defineConfig({
   plugins: [
     react(),
     eslintPlugin({
-      cache: false, // disable eslint cache to avoid conflicts
+      cache: false,
     }),
     nodePolyfills(),
   ],
@@ -22,7 +22,12 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       onwarn: (warning, defaultHandler) => {
-        if (warning.code === "INVALID_ANNOTATION" && warning.message.includes("*#__PURE__*")) {
+        // TODO: remove isFromKbssCvutPackageWarning and solve the root cause, see https://github.com/kbss-cvut/record-manager-ui/issues/113
+        const isFromKbssCvutPackageWarning =
+          warning.code === "EVAL" && warning.message.includes("node_modules/store/plugins/lib/json2.js");
+        const isRollupPureAnnotationWarning =
+          warning.code === "INVALID_ANNOTATION" && warning.message.includes("*#__PURE__*");
+        if (isFromKbssCvutPackageWarning || isRollupPureAnnotationWarning) {
           return;
         }
         defaultHandler(warning);
