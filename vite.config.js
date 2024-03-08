@@ -26,6 +26,7 @@ export default defineConfig({
         defaultHandler(warning);
       },
     },
+    cssMinify: false,
   },
   define: {
     "process.env": process.env, // workaround for parse-link-header library that depends on 2 vars defined in `process.env`, see https://github.com/thlorenz/parse-link-header/issues/31
