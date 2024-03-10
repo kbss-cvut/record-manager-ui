@@ -22,16 +22,18 @@ import { INITIAL_PAGE } from "../misc/Pagination";
 import BrowserStorage from "../../utils/BrowserStorage";
 import PropTypes from "prop-types";
 
+const INITIAL_STATE = {
+  pageNumber: INITIAL_PAGE,
+  sort: {
+    date: SortDirection.DESC,
+  },
+  filters: {},
+};
+
 class RecordsController extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      pageNumber: INITIAL_PAGE,
-      sort: {
-        date: SortDirection.DESC,
-      },
-      filters: {},
-    };
+    this.state = Object.assign({}, INITIAL_STATE);
   }
 
   componentDidMount() {
@@ -73,7 +75,9 @@ class RecordsController extends React.Component {
   };
 
   _onDeleteRecord = (record) => {
-    trackPromise(this.props.deleteRecord(record), "record-" + record.key);
+    trackPromise(this.props.deleteRecord(record), "record-" + record.key).then(() => {
+      this.setState(Object.assign({}, INITIAL_STATE), this._loadRecords);
+    });
   };
 
   _onPublishRecords = async () => {
@@ -178,7 +182,6 @@ RecordsController.propTypes = {
     pageCount: PropTypes.number.isRequired,
   }).isRequired,
   recordDeleted: PropTypes.func.isRequired,
-  recordsDeleting: PropTypes.bool.isRequired,
   currentUser: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
 };

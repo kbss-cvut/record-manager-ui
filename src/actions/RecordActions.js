@@ -16,7 +16,6 @@ export function deleteRecord(record) {
         ...record,
       })
       .then(() => {
-        dispatch(loadRecords());
         dispatch(deleteRecordSuccess(record, record.key));
         dispatch(publishMessage(successMessage("record.delete-success")));
       })

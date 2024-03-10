@@ -12,7 +12,6 @@ describe("Records", function () {
     records,
     recordsLoaded,
     recordDeleted,
-    recordsDeleting = [],
     formTemplatesLoaded = {},
     pagination,
     filterAndSort,
@@ -80,7 +79,6 @@ describe("Records", function () {
           handlers={handlers}
           pagination={pagination}
           filterAndSort={filterAndSort}
-          recordsDeleting={recordsDeleting}
           currentUser={admin}
         />
       </IntlProvider>,
