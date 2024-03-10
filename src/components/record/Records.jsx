@@ -23,7 +23,6 @@ class Records extends React.Component {
     intl: PropTypes.object.isRequired,
     recordsLoaded: PropTypes.object,
     recordDeleted: PropTypes.object,
-    recordsDeleting: PropTypes.array,
     handlers: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
     formTemplatesLoaded: PropTypes.object.isRequired,

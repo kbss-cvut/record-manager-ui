@@ -73,7 +73,7 @@ class RecordsController extends React.Component {
   };
 
   _onDeleteRecord = (record) => {
-    trackPromise(this.props.deleteRecord(record), "records");
+    trackPromise(this.props.deleteRecord(record), "record-" + record.key);
   };
 
   _onPublishRecords = async () => {
@@ -125,7 +125,7 @@ class RecordsController extends React.Component {
   };
 
   render() {
-    const { formTemplatesLoaded, recordsLoaded, recordDeleted, recordsDeleting, currentUser } = this.props;
+    const { formTemplatesLoaded, recordsLoaded, recordDeleted, currentUser } = this.props;
     const formTemplate = extractQueryParam(this.props.location.search, "formTemplate");
     if (!currentUser) {
       return null;
@@ -156,7 +156,6 @@ class RecordsController extends React.Component {
         filterAndSort={filterAndSort}
         recordsLoaded={recordsLoaded}
         recordDeleted={recordDeleted}
-        recordsDeleting={recordsDeleting}
         formTemplate={formTemplate}
         currentUser={currentUser}
         formTemplatesLoaded={formTemplatesLoaded}
@@ -191,7 +190,6 @@ function mapStateToProps(state) {
     recordDeleted: state.record.recordDeleted,
     recordsLoaded: state.records.recordsLoaded,
     formTemplatesLoaded: state.formTemplates.formTemplatesLoaded,
-    recordsDeleting: state.record.recordsDeleting,
     currentUser: state.auth.user,
   };
 }

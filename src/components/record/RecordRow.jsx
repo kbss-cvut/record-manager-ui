@@ -2,11 +2,11 @@ import React from "react";
 import { formatDate } from "../../utils/Utils";
 import HelpIcon from "../HelpIcon";
 import { Button } from "react-bootstrap";
-import { LoaderSmall } from "../Loader";
 import PropTypes from "prop-types";
 import { RECORD_PHASE, ROLE } from "../../constants/DefaultConstants";
 import { useI18n } from "../../hooks/useI18n";
 import { IfGranted } from "react-authorization";
+import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 
 const StatusInfo = {};
 StatusInfo[RECORD_PHASE.OPEN] = {
@@ -33,13 +33,12 @@ let RecordRow = (props) => {
     deleteButton = props.disableDelete ? null : (
       <Button variant="warning" size="sm" title={i18n("records.delete-tooltip")} onClick={() => props.onDelete(record)}>
         {i18n("delete")}
-        {props.deletionLoading && <LoaderSmall />}
       </Button>
     );
   const statusInfo = StatusInfo[record.phase];
 
   return (
-    <tr>
+    <tr className="position-relative">
       <IfGranted expected={ROLE.ADMIN} actual={props.currentUser.role}>
         <td className="report-row">
           <Button variant="link" size="sm" onClick={() => props.onEdit(record)}>
@@ -66,6 +65,7 @@ let RecordRow = (props) => {
       </td>
 
       <td className="report-row actions">
+        <PromiseTrackingMask area={`record-${record.key}`} />
         <Button variant="primary" size="sm" title={i18n("records.open-tooltip")} onClick={() => props.onEdit(record)}>
           {i18n("open")}
         </Button>
@@ -89,7 +89,6 @@ RecordRow.propTypes = {
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   disableDelete: PropTypes.bool.isRequired,
-  deletionLoading: PropTypes.bool.isRequired,
   currentUser: PropTypes.object.isRequired,
 };
 
