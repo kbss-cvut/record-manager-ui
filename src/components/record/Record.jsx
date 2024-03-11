@@ -25,6 +25,7 @@ class Record extends React.Component {
     this.recordForm = React.createRef();
     this.state = {
       isFormValid: false,
+      form: null,
     };
   }
 
@@ -40,6 +41,10 @@ class Record extends React.Component {
 
   isFormValid = (isFormValid) => {
     this.setState({ isFormValid });
+  };
+
+  updateForm = (form) => {
+    this.setState({ form });
   };
 
   render() {
@@ -100,6 +105,8 @@ class Record extends React.Component {
         formgen={formgen}
         currentUser={this.props.currentUser}
         isFormValid={this.isFormValid}
+        form={this.state.form}
+        updateForm={this.updateForm}
       />
     ) : null;
   }

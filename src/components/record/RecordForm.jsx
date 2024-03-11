@@ -24,9 +24,8 @@ class RecordForm extends React.Component {
   constructor(props) {
     super(props);
     this.i18n = this.props.i18n;
-    this.state = {
-      form: null,
-    };
+    this.form = this.props.form;
+    this.updateForm = this.props.updateForm;
     this.refForm = React.createRef();
   }
 
@@ -45,7 +44,9 @@ class RecordForm extends React.Component {
 
   loadWizard() {
     trackPromise(this.props.loadFormgen(this.props.record), "sform")
-      .then((data) => this.setState({ form: data }))
+      .then((data) => {
+        this.props.updateForm(data);
+      })
       .catch(() => Logger.error("Received no valid wizard."));
   }
 
@@ -105,10 +106,10 @@ class RecordForm extends React.Component {
     return (
       <>
         <PromiseTrackingMask area="sform" />
-        {!!this.state.form && (
+        {!!this.props.form && (
           <SForms
             ref={this.refForm}
-            form={this.state.form}
+            form={this.props.form}
             formData={this.props.record.question}
             options={options}
             fetchTypeAheadValues={this.fetchTypeAheadValues}
@@ -129,6 +130,8 @@ RecordForm.propTypes = {
   loadFormgen: PropTypes.func,
   formgen: PropTypes.object,
   isFormValid: PropTypes.func,
+  form: PropTypes.object,
+  updateForm: PropTypes.func,
 };
 
 export default injectIntl(withI18n(RecordForm, { forwardRef: true }), { forwardRef: true });
