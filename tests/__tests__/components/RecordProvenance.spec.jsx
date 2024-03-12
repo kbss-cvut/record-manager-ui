@@ -3,9 +3,9 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import RecordProvenance from "../../../js/components/record/RecordProvenance";
-import * as RecordState from "../../../js/model/RecordState";
-import enLang from "../../../js/i18n/en";
+import RecordProvenance from "../../../src/components/record/RecordProvenance";
+import * as RecordState from "../../../src/model/RecordState";
+import enLang from "../../../src/i18n/en";
 
 describe("RequiredProvenance", function () {
   const intlData = enLang;

@@ -1,9 +1,9 @@
 "use strict";
 
 import React from "react";
-import * as ActionConstants from "../../../js/constants/ActionConstants";
-import UsersReducer from "../../../js/reducers/UsersReducer";
-import { ACTION_STATUS } from "../../../js/constants/DefaultConstants";
+import * as ActionConstants from "../../../src/constants/ActionConstants";
+import UsersReducer from "../../../src/reducers/UsersReducer";
+import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
 
 describe("UsersReducer", function () {
   const users = [{ username: "test1" }, { username: "test2" }],

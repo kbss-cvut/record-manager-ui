@@ -1,5 +1,5 @@
-import * as ActionConstants from "../../../js/constants/ActionConstants";
-import { setTransitionPayload, setViewHandlers } from "../../../js/actions/RouterActions";
+import * as ActionConstants from "../../../src/constants/ActionConstants";
+import { setTransitionPayload, setViewHandlers } from "../../../src/actions/RouterActions";
 
 describe("Router synchronize actions", function () {
   const routeName = "user",

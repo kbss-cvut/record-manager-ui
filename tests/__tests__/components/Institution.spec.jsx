@@ -3,9 +3,9 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import { ACTION_STATUS, ROLE, SortDirection } from "../../../js/constants/DefaultConstants";
-import Institution from "../../../js/components/institution/Institution";
-import enLang from "../../../js/i18n/en";
+import { ACTION_STATUS, ROLE, SortDirection } from "../../../src/constants/DefaultConstants";
+import Institution from "../../../src/components/institution/Institution";
+import enLang from "../../../src/i18n/en";
 
 describe("Institution", function () {
   const intlData = enLang;

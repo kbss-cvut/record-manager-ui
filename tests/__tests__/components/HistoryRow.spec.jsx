@@ -3,8 +3,8 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import HistoryRow from "../../../js/components/history/HistoryRow";
-import enLang from "../../../js/i18n/en";
+import HistoryRow from "../../../src/components/history/HistoryRow";
+import enLang from "../../../src/i18n/en";
 
 describe("HistoryRow", function () {
   const intlData = enLang;

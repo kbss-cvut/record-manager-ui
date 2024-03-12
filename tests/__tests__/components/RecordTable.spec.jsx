@@ -1,10 +1,10 @@
 import TestUtils from "react-dom/test-utils";
 import React from "react";
 import { IntlProvider } from "react-intl";
-import RecordTable from "../../../js/components/record/RecordTable";
-import { ACTION_STATUS } from "../../../js/constants/DefaultConstants";
-import enLang from "../../../js/i18n/en";
-import { ROLE } from "../../../js/constants/DefaultConstants";
+import RecordTable from "../../../src/components/record/RecordTable";
+import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
+import enLang from "../../../src/i18n/en";
+import { ROLE } from "../../../src/constants/DefaultConstants";
 
 describe("RecordTable", function () {
   const intlData = enLang;

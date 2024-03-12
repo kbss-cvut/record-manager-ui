@@ -1,18 +1,18 @@
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import * as ActionConstants from "../../../js/constants/ActionConstants";
+import * as ActionConstants from "../../../src/constants/ActionConstants";
 import MockAdapter from "axios-mock-adapter";
 import { TEST_TIMEOUT } from "../../constants/DefaultTestConstants";
-import { axiosBackend } from "../../../js/actions";
+import { axiosBackend } from "../../../src/actions";
 import {
   loadInstitutions,
   loadInstitutionsError,
   loadInstitutionsPending,
   loadInstitutionsSuccess,
-} from "../../../js/actions/InstitutionsActions";
+} from "../../../src/actions/InstitutionsActions";
 import { API_URL } from "../../../config";
 import { mockDateNow, restoreDateNow } from "../../environment/Environment";
-import { errorMessage } from "../../../js/model/Message";
+import { errorMessage } from "../../../src/model/Message";
 
 const institutions = [{ key: 786785600 }, { key: 86875960 }];
 

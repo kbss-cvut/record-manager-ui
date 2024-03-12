@@ -1,9 +1,9 @@
 import TestUtils from "react-dom/test-utils";
 import React from "react";
 import { IntlProvider } from "react-intl";
-import InstitutionPatients from "../../../js/components/institution/InstitutionPatients";
-import enLang from "../../../js/i18n/en";
-import { ROLE, SortDirection } from "../../../js/constants/DefaultConstants";
+import InstitutionPatients from "../../../src/components/institution/InstitutionPatients";
+import enLang from "../../../src/i18n/en";
+import { ROLE, SortDirection } from "../../../src/constants/DefaultConstants";
 
 describe("InstitutionPatients", function () {
   const intlData = enLang;

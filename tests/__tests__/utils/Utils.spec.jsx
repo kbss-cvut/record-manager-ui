@@ -1,5 +1,5 @@
-import { extractLastPageNumber, paramsSerializer } from "../../../js/utils/Utils";
-import { HttpHeaders } from "../../../js/constants/DefaultConstants";
+import { extractLastPageNumber, paramsSerializer } from "../../../src/utils/Utils";
+import { HttpHeaders } from "../../../src/constants/DefaultConstants";
 
 describe("Utils", () => {
   describe("paramsSerializer", () => {

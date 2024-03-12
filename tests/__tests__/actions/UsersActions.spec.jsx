@@ -1,13 +1,13 @@
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import * as ActionConstants from "../../../js/constants/ActionConstants";
+import * as ActionConstants from "../../../src/constants/ActionConstants";
 import MockAdapter from "axios-mock-adapter";
 import { TEST_TIMEOUT } from "../../constants/DefaultTestConstants";
-import { axiosBackend } from "../../../js/actions";
-import { loadUsers, loadUsersError, loadUsersPending, loadUsersSuccess } from "../../../js/actions/UsersActions";
+import { axiosBackend } from "../../../src/actions";
+import { loadUsers, loadUsersError, loadUsersPending, loadUsersSuccess } from "../../../src/actions/UsersActions";
 import { API_URL } from "../../../config";
 import { mockDateNow, restoreDateNow } from "../../environment/Environment";
-import { errorMessage } from "../../../js/model/Message";
+import { errorMessage } from "../../../src/model/Message";
 
 describe("Users synchronous actions", function () {
   it("creates an action to fetch all users", () => {

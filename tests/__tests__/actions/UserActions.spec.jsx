@@ -1,10 +1,10 @@
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import * as ActionConstants from "../../../js/constants/ActionConstants";
+import * as ActionConstants from "../../../src/constants/ActionConstants";
 import MockAdapter from "axios-mock-adapter";
-import { ACTION_FLAG, ROLE } from "../../../js/constants/DefaultConstants";
+import { ACTION_FLAG, ROLE } from "../../../src/constants/DefaultConstants";
 import { TEST_TIMEOUT } from "../../constants/DefaultTestConstants";
-import { axiosBackend } from "../../../js/actions";
+import { axiosBackend } from "../../../src/actions";
 import {
   changePassword,
   createUser,
@@ -31,11 +31,11 @@ import {
   unloadSavedUser,
   unloadUser,
   updateUser,
-} from "../../../js/actions/UserActions";
+} from "../../../src/actions/UserActions";
 import { API_URL } from "../../../config";
-import en from "../../../js/i18n/en";
+import en from "../../../src/i18n/en";
 import { mockDateNow, restoreDateNow } from "../../environment/Environment";
-import { errorMessage, successMessage } from "../../../js/model/Message";
+import { errorMessage, successMessage } from "../../../src/model/Message";
 
 const members = [{ username: "record1" }, { username: "record2" }];
 

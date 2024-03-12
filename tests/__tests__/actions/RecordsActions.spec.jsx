@@ -1,21 +1,21 @@
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import * as ActionConstants from "../../../js/constants/ActionConstants";
+import * as ActionConstants from "../../../src/constants/ActionConstants";
 import MockAdapter from "axios-mock-adapter";
 import { TEST_TIMEOUT } from "../../constants/DefaultTestConstants";
-import { axiosBackend } from "../../../js/actions";
-import { ROLE } from "../../../js/constants/DefaultConstants";
+import { axiosBackend } from "../../../src/actions";
+import { ROLE } from "../../../src/constants/DefaultConstants";
 import {
   loadRecords,
   loadRecordsByInstitution,
   loadRecordsError,
   loadRecordsPending,
   loadRecordsSuccess,
-} from "../../../js/actions/RecordsActions";
+} from "../../../src/actions/RecordsActions";
 import { API_URL } from "../../../config";
 import { mockDateNow, restoreDateNow } from "../../environment/Environment";
-import { errorMessage } from "../../../js/model/Message";
-import en from "../../../js/i18n/en";
+import { errorMessage } from "../../../src/model/Message";
+import en from "../../../src/i18n/en";
 
 const records = [{ key: 786785600 }, { key: 86875960 }];
 

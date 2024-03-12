@@ -3,8 +3,8 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import HistorySearch from "../../../js/components/history/HistorySearch";
-import enLang from "../../../js/i18n/en";
+import HistorySearch from "../../../src/components/history/HistorySearch";
+import enLang from "../../../src/i18n/en";
 
 describe("HistorySearch", function () {
   const intlData = enLang;

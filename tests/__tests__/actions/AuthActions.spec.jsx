@@ -1,10 +1,10 @@
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import * as ActionConstants from "../../../js/constants/ActionConstants";
+import * as ActionConstants from "../../../src/constants/ActionConstants";
 import MockAdapter from "axios-mock-adapter";
 import { TEST_TIMEOUT } from "../../constants/DefaultTestConstants";
-import { axiosBackend } from "../../../js/actions";
-import * as actions from "../../../js/actions/AuthActions";
+import { axiosBackend } from "../../../src/actions";
+import * as actions from "../../../src/actions/AuthActions";
 import { API_URL } from "../../../config";
 
 describe("Auth synchronize actions", function () {

@@ -3,9 +3,9 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import UserTable from "../../../js/components/user/UserTable";
-import { ACTION_STATUS } from "../../../js/constants/DefaultConstants";
-import enLang from "../../../js/i18n/en";
+import UserTable from "../../../src/components/user/UserTable";
+import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
+import enLang from "../../../src/i18n/en";
 
 describe("UserTable", function () {
   const intlData = enLang;

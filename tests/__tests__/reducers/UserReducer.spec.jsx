@@ -1,10 +1,10 @@
 "use strict";
 
 import React from "react";
-import UserReducer from "../../../js/reducers/UserReducer";
-import * as ActionConstants from "../../../js/constants/ActionConstants";
-import { ACTION_FLAG, ACTION_STATUS } from "../../../js/constants/DefaultConstants";
-import InstitutionReducer from "../../../js/reducers/InstitutionReducer";
+import UserReducer from "../../../src/reducers/UserReducer";
+import * as ActionConstants from "../../../src/constants/ActionConstants";
+import { ACTION_FLAG, ACTION_STATUS } from "../../../src/constants/DefaultConstants";
+import InstitutionReducer from "../../../src/reducers/InstitutionReducer";
 
 describe("UserReducer", function () {
   const user = { username: "test" },

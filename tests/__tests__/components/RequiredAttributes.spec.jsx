@@ -3,9 +3,9 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import RequiredAttributes from "../../../js/components/record/RequiredAttributes";
-import * as RecordState from "../../../js/model/RecordState";
-import enLang from "../../../js/i18n/en";
+import RequiredAttributes from "../../../src/components/record/RequiredAttributes";
+import * as RecordState from "../../../src/model/RecordState";
+import enLang from "../../../src/i18n/en";
 
 describe("RequiredAttributes", function () {
   const intlData = enLang;

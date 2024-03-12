@@ -1,14 +1,14 @@
-import * as ActionConstants from "../../../js/constants/ActionConstants";
+import * as ActionConstants from "../../../src/constants/ActionConstants";
 import { TEST_TIMEOUT } from "../../constants/DefaultTestConstants";
-import { axiosBackend } from "../../../js/actions";
+import { axiosBackend } from "../../../src/actions";
 import MockAdapter from "axios-mock-adapter";
 import thunk from "redux-thunk";
 import configureMockStore from "redux-mock-store";
-import { loadActionByKey, loadActions } from "../../../js/actions/HistoryActions";
+import { loadActionByKey, loadActions } from "../../../src/actions/HistoryActions";
 import { API_URL } from "../../../config";
-import { errorMessage } from "../../../js/model/Message";
+import { errorMessage } from "../../../src/model/Message";
 import { mockDateNow, restoreDateNow } from "../../environment/Environment";
-import { DEFAULT_PAGE_SIZE } from "../../../js/constants/DefaultConstants";
+import { DEFAULT_PAGE_SIZE } from "../../../src/constants/DefaultConstants";
 
 const middlewares = [thunk.withExtraArgument(axiosBackend)];
 const mockStore = configureMockStore(middlewares);

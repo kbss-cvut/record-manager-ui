@@ -3,8 +3,8 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import InstitutionRow from "../../../js/components/institution/InstitutionRow";
-import enLang from "../../../js/i18n/en";
+import InstitutionRow from "../../../src/components/institution/InstitutionRow";
+import enLang from "../../../src/i18n/en";
 
 describe("InstitutionRow", function () {
   const intlData = enLang;

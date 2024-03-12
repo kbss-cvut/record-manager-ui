@@ -1,6 +1,6 @@
-import HistoryReducer from "../../../js/reducers/HistoryReducer";
-import * as ActionConstants from "../../../js/constants/ActionConstants";
-import { ACTION_STATUS } from "../../../js/constants/DefaultConstants";
+import HistoryReducer from "../../../src/reducers/HistoryReducer";
+import * as ActionConstants from "../../../src/constants/ActionConstants";
+import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
 
 describe("HistoryReducer", function () {
   const error = {

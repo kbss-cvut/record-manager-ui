@@ -3,10 +3,10 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import User from "../../../js/components/user/User";
-import { ACTION_STATUS, ROLE } from "../../../js/constants/DefaultConstants";
-import * as EntityFactory from "../../../js/utils/EntityFactory";
-import enLang from "../../../js/i18n/en";
+import User from "../../../src/components/user/User";
+import { ACTION_STATUS, ROLE } from "../../../src/constants/DefaultConstants";
+import * as EntityFactory from "../../../src/utils/EntityFactory";
+import enLang from "../../../src/i18n/en";
 
 describe("User", function () {
   const intlData = enLang;

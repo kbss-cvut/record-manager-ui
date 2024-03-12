@@ -1,6 +1,6 @@
-import { ACTION_STATUS } from "../../../js/constants/DefaultConstants";
-import * as ActionConstants from "../../../js/constants/ActionConstants";
-import InstitutionsReducer from "../../../js/reducers/InstitutionsReducer";
+import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
+import * as ActionConstants from "../../../src/constants/ActionConstants";
+import InstitutionsReducer from "../../../src/reducers/InstitutionsReducer";
 
 describe("InstitutionsReducer", function () {
   const institutions = [{ key: "test1" }, { key: "test2" }],
