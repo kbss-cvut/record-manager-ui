@@ -1,9 +1,9 @@
 import React from "react";
-import * as ActionConstants from "../../../js/constants/ActionConstants";
-import { ACTION_STATUS } from "../../../js/constants/DefaultConstants";
-import { getRole } from "../../../js/utils/Utils";
-import AuthReducer from "../../../js/reducers/AuthReducer";
-import UserReducer from "../../../js/reducers/UserReducer";
+import * as ActionConstants from "../../../src/constants/ActionConstants";
+import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
+import { getRole } from "../../../src/utils/Utils";
+import AuthReducer from "../../../src/reducers/AuthReducer";
+import UserReducer from "../../../src/reducers/UserReducer";
 
 describe("AuthReducer", function () {
   const user = {

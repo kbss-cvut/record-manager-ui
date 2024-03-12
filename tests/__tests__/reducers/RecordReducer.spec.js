@@ -1,6 +1,6 @@
-import RecordReducer from "../../../js/reducers/RecordReducer";
-import * as ActionConstants from "../../../js/constants/ActionConstants";
-import { ACTION_FLAG, ACTION_STATUS } from "../../../js/constants/DefaultConstants";
+import RecordReducer from "../../../src/reducers/RecordReducer";
+import * as ActionConstants from "../../../src/constants/ActionConstants";
+import { ACTION_FLAG, ACTION_STATUS } from "../../../src/constants/DefaultConstants";
 
 describe("RecordReducer", function () {
   const record = { key: 12345678 },

@@ -1,9 +1,9 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import Users from "../../../js/components/user/Users";
-import { ACTION_STATUS } from "../../../js/constants/DefaultConstants";
-import enLang from "../../../js/i18n/en";
+import Users from "../../../src/components/user/Users";
+import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
+import enLang from "../../../src/i18n/en";
 
 describe("Users", function () {
   const intlData = enLang;

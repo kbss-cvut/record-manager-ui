@@ -3,12 +3,12 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import { ACTION_STATUS, ROLE } from "../../../js/constants/DefaultConstants";
-import Record from "../../../js/components/record/Record";
-import * as RecordState from "../../../js/model/RecordState";
-import enLang from "../../../js/i18n/en";
+import { ACTION_STATUS, ROLE } from "../../../src/constants/DefaultConstants";
+import Record from "../../../src/components/record/Record";
+import * as RecordState from "../../../src/model/RecordState";
+import enLang from "../../../src/i18n/en";
 
-jest.mock("../../../js/components/record/TypeaheadAnswer", () => () => <input />);
+jest.mock("../../../src/components/record/TypeaheadAnswer", () => () => <input />);
 
 describe.skip("Record", function () {
   const intlData = enLang;

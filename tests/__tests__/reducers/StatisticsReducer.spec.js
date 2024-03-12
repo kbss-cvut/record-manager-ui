@@ -1,6 +1,6 @@
-import StatisticsReducer from "../../../js/reducers/StatisticsReducer";
-import * as ActionConstants from "../../../js/constants/ActionConstants";
-import { ACTION_STATUS } from "../../../js/constants/DefaultConstants";
+import StatisticsReducer from "../../../src/reducers/StatisticsReducer";
+import * as ActionConstants from "../../../src/constants/ActionConstants";
+import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
 
 describe("StatisticsReducer", function () {
   const error = {

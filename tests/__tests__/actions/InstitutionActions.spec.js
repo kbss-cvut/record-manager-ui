@@ -1,10 +1,10 @@
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import * as ActionConstants from "../../../js/constants/ActionConstants";
+import * as ActionConstants from "../../../src/constants/ActionConstants";
 import MockAdapter from "axios-mock-adapter";
-import { ACTION_FLAG } from "../../../js/constants/DefaultConstants";
+import { ACTION_FLAG } from "../../../src/constants/DefaultConstants";
 import { TEST_TIMEOUT } from "../../constants/DefaultTestConstants";
-import { axiosBackend } from "../../../js/actions";
+import { axiosBackend } from "../../../src/actions";
 import {
   createInstitution,
   deleteInstitution,
@@ -21,10 +21,10 @@ import {
   unloadInstitution,
   unloadSavedInstitution,
   updateInstitution,
-} from "../../../js/actions/InstitutionActions";
+} from "../../../src/actions/InstitutionActions";
 import { API_URL } from "../../../config";
-import en from "../../../js/i18n/en";
-import { errorMessage, successMessage } from "../../../js/model/Message";
+import en from "../../../src/i18n/en";
+import { errorMessage, successMessage } from "../../../src/model/Message";
 import { mockDateNow, restoreDateNow } from "../../environment/Environment";
 
 describe("Institution synchronous actions", function () {

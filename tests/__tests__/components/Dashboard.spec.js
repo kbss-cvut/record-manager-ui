@@ -1,9 +1,9 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import { ROLE } from "../../../js/constants/DefaultConstants";
-import Dashboard from "../../../js/components/dashboard/Dashboard";
-import enLang from "../../../js/i18n/en";
+import { ROLE } from "../../../src/constants/DefaultConstants";
+import Dashboard from "../../../src/components/dashboard/Dashboard";
+import enLang from "../../../src/i18n/en";
 
 describe("Dashboard", function () {
   const intlData = enLang;

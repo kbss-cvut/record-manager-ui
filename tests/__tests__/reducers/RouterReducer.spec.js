@@ -1,5 +1,5 @@
-import * as ActionConstants from "../../../js/constants/ActionConstants";
-import RouterReducer from "../../../js/reducers/RouterReducer";
+import * as ActionConstants from "../../../src/constants/ActionConstants";
+import RouterReducer from "../../../src/reducers/RouterReducer";
 
 describe("RouterReducer", function () {
   const routeName = "user",

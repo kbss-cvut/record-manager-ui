@@ -3,10 +3,10 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import { ROLE } from "../../../js/constants/DefaultConstants";
-import PasswordChange from "../../../js/components/user/PasswordChange";
-import * as UserFactory from "../../../js/utils/EntityFactory";
-import enLang from "../../../js/i18n/en";
+import { ROLE } from "../../../src/constants/DefaultConstants";
+import PasswordChange from "../../../src/components/user/PasswordChange";
+import * as UserFactory from "../../../src/utils/EntityFactory";
+import enLang from "../../../src/i18n/en";
 
 describe("PasswordChange", function () {
   const intlData = enLang;

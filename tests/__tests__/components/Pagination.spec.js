@@ -1,8 +1,8 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import Pagination from "../../../js/components/misc/Pagination";
-import enLang from "../../../js/i18n/en";
+import Pagination from "../../../src/components/misc/Pagination";
+import enLang from "../../../src/i18n/en";
 
 describe("Pagination", function () {
   const intlData = enLang;

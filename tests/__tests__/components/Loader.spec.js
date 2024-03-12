@@ -1,8 +1,8 @@
 import React from "react";
 import TestUtils from "react-dom/test-utils";
-import Loader, { LoaderMask, LoaderCard } from "../../../js/components/Loader";
+import Loader, { LoaderMask, LoaderCard } from "../../../src/components/Loader";
 import { IntlProvider } from "react-intl";
-import enLang from "../../../js/i18n/en";
+import enLang from "../../../src/i18n/en";
 
 describe("Loader", function () {
   const intlData = enLang;

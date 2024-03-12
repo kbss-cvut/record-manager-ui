@@ -1,12 +1,12 @@
-import * as ActionConstants from "../../../js/constants/ActionConstants";
+import * as ActionConstants from "../../../src/constants/ActionConstants";
 import { TEST_TIMEOUT } from "../../constants/DefaultTestConstants";
-import { axiosBackend } from "../../../js/actions";
+import { axiosBackend } from "../../../src/actions";
 import MockAdapter from "axios-mock-adapter";
 import thunk from "redux-thunk";
 import configureMockStore from "redux-mock-store";
-import { loadStatistics } from "../../../js/actions/StatisticsActions";
+import { loadStatistics } from "../../../src/actions/StatisticsActions";
 import { API_URL } from "../../../config";
-import { errorMessage } from "../../../js/model/Message";
+import { errorMessage } from "../../../src/model/Message";
 import { mockDateNow, restoreDateNow } from "../../environment/Environment";
 
 const middlewares = [thunk.withExtraArgument(axiosBackend)];

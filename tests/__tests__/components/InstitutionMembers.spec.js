@@ -1,9 +1,9 @@
 import TestUtils from "react-dom/test-utils";
-import { ACTION_STATUS, ROLE } from "../../../js/constants/DefaultConstants";
+import { ACTION_STATUS, ROLE } from "../../../src/constants/DefaultConstants";
 import React from "react";
 import { IntlProvider } from "react-intl";
-import InstitutionMembers from "../../../js/components/institution/InstitutionMembers";
-import enLang from "../../../js/i18n/en";
+import InstitutionMembers from "../../../src/components/institution/InstitutionMembers";
+import enLang from "../../../src/i18n/en";
 
 describe("InstitutionMembers", function () {
   const intlData = enLang;

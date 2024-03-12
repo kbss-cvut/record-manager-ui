@@ -3,8 +3,8 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import RecordRow from "../../../js/components/record/RecordRow";
-import enLang from "../../../js/i18n/en";
+import RecordRow from "../../../src/components/record/RecordRow";
+import enLang from "../../../src/i18n/en";
 
 describe("RecordRow", function () {
   const intlData = enLang;

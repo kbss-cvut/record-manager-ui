@@ -3,8 +3,8 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import UserRow from "../../../js/components/user/UserRow";
-import enLang from "../../../js/i18n/en";
+import UserRow from "../../../src/components/user/UserRow";
+import enLang from "../../../src/i18n/en";
 
 describe("UserRow", function () {
   const intlData = enLang;

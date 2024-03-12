@@ -1,10 +1,10 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import Records from "../../../js/components/record/Records";
-import { ACTION_STATUS, ROLE, SortDirection } from "../../../js/constants/DefaultConstants";
-import enLang from "../../../js/i18n/en";
-import { INITIAL_PAGE } from "../../../js/components/misc/Pagination";
+import Records from "../../../src/components/record/Records";
+import { ACTION_STATUS, ROLE, SortDirection } from "../../../src/constants/DefaultConstants";
+import enLang from "../../../src/i18n/en";
+import { INITIAL_PAGE } from "../../../src/components/misc/Pagination";
 
 describe("Records", function () {
   const intlData = enLang;

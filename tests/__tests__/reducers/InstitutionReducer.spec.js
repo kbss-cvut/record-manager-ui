@@ -1,6 +1,6 @@
-import { ACTION_FLAG, ACTION_STATUS } from "../../../js/constants/DefaultConstants";
-import * as ActionConstants from "../../../js/constants/ActionConstants";
-import InstitutionReducer from "../../../js/reducers/InstitutionReducer";
+import { ACTION_FLAG, ACTION_STATUS } from "../../../src/constants/DefaultConstants";
+import * as ActionConstants from "../../../src/constants/ActionConstants";
+import InstitutionReducer from "../../../src/reducers/InstitutionReducer";
 
 describe("InstitutionReducer", function () {
   const institution = {
