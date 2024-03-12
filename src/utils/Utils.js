@@ -415,3 +415,32 @@ export function sortToParams(sort) {
     .filter((k) => sort[k] !== undefined)
     .map((k) => `${sort[k]}${k}`);
 }
+
+/**
+ * Retrieves an array of objects from the provided array where a specific key matches a given value,
+ * or where the key does not exist.
+ * @param {Array<Object>} array The array of objects to search.
+ * @param {string} key The key to check within each object in the array.
+ * @param {any} value The value to compare against the value associated with the key in each object.
+ * @param {boolean} [keyMustExist=true] Flag indicating whether the specified key must exist in the object.
+ *                                      Defaults to true. If set to false, objects without the specified key will also be included.
+ * @returns {Array<Object>} An array containing all objects from the provided array
+ *                          where the specified key matches the provided value, or where the key does not exist.
+ */
+export function filterObjectsByKeyValuePair(array, key, value, keyMustExist = true) {
+  const matchingObjects = [];
+
+  if (!array || array.length === 0) {
+    return matchingObjects;
+  }
+  for (let obj of array) {
+    if (obj) {
+      if ((keyMustExist && obj.hasOwnProperty(key)) || !keyMustExist) {
+        if (!keyMustExist || obj[key] === value) {
+          matchingObjects.push(obj);
+        }
+      }
+    }
+  }
+  return matchingObjects;
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { FormattedMessage, injectIntl } from "react-intl";
 import withI18n from "../../i18n/withI18n";
@@ -13,6 +13,7 @@ import { processTypeaheadOptions } from "./TypeaheadAnswer";
 import { EXTENSIONS } from "../../../config";
 import { isAdmin } from "../../utils/SecurityUtils";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
+import { filterObjectsByKeyValuePair } from "../../utils/Utils.js";
 
 class Record extends React.Component {
   static propTypes = {
@@ -26,6 +27,9 @@ class Record extends React.Component {
     this.state = {
       isFormValid: false,
       form: null,
+      showModal: false,
+      invalidQuestions: [],
+      incompleteQuestions: [],
     };
   }
 
@@ -45,6 +49,52 @@ class Record extends React.Component {
 
   updateForm = (form) => {
     this.setState({ form });
+  };
+
+  _handleOnSave = () => {
+    const { form } = this.state;
+    if (form) {
+      this.setState(
+        {
+          invalidQuestions: filterObjectsByKeyValuePair(form["@graph"], "has-validation-severity", "error"),
+        },
+        () => {
+          const { invalidQuestions } = this.state;
+          if (invalidQuestions.length > 0) {
+            this.setState({ showModal: true });
+          } else {
+            this.props.handlers.onSave();
+          }
+        },
+      );
+    }
+  };
+
+  _handleOnComplete = () => {
+    const { form } = this.state;
+    if (form) {
+      this.setState(
+        {
+          incompleteQuestions: filterObjectsByKeyValuePair(form["@graph"], "has-validation-severity", "warning"),
+        },
+        () => {
+          const { incompleteQuestions } = this.state;
+          if (incompleteQuestions.length > 0) {
+            this.setState({ showModal: true });
+          } else {
+            this.props.handlers.onComplete();
+          }
+        },
+      );
+    }
+  };
+
+  _handleOnCloseModal = () => {
+    this.setState({
+      showModal: false,
+      invalidQuestions: [],
+      incompleteQuestions: [],
+    });
   };
 
   render() {
@@ -76,6 +126,7 @@ class Record extends React.Component {
         </form>
         {this._renderForm()}
         {this._renderButtons()}
+        {this._renderModal()}
       </div>
     );
   }
@@ -151,7 +202,7 @@ class Record extends React.Component {
                 !record.state.isComplete() ||
                 record.phase === RECORD_PHASE.COMPLETED
               }
-              onClick={this.props.handlers.onComplete}
+              onClick={this._handleOnComplete}
             >
               {this.i18n("complete")}
               {recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
@@ -172,7 +223,7 @@ class Record extends React.Component {
             !this._isAdmin() &&
             [RECORD_PHASE.COMPLETED, RECORD_PHASE.REJECTED, RECORD_PHASE.PUBLISHED].includes(record.phase)
           }
-          onClick={this.props.handlers.onSave}
+          onClick={this._handleOnSave}
         >
           {this.i18n("save")}
           {recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
@@ -202,6 +253,37 @@ class Record extends React.Component {
           />
         </div>
       </div>
+    );
+  }
+
+  _renderModal() {
+    const { showModal, invalidQuestions, incompleteQuestions } = this.state;
+    const questionsToShow = invalidQuestions.length > 0 ? invalidQuestions : incompleteQuestions;
+
+    let modalMessage = "";
+    if (questionsToShow === invalidQuestions) {
+      modalMessage = "Some questions are invalid. Correct them to save:";
+    }
+    if (questionsToShow === incompleteQuestions) {
+      modalMessage = "Some questions are incomplete. Fill them to complete the form:";
+    }
+
+    return (
+      <Modal show={showModal} onHide={this._handleOnCloseModal} centered={true}>
+        <Modal.Header closeButton>
+          <Modal.Title>{modalMessage}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {questionsToShow.map((questionValidator, index) => {
+            return <li key={index}>{questionValidator.label + " : " + questionValidator["has-validation-message"]}</li>;
+          })}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={this._handleOnCloseModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     );
   }
 
