@@ -1,5 +1,5 @@
-import enzyme, { shallow, mount } from "enzyme";
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
+const Adapter = require("@cfaester/enzyme-adapter-react-18").default;
+const enzyme = require("enzyme");
 
 enzyme.configure({ adapter: new Adapter() });
 
@@ -8,5 +8,5 @@ require("dotenv-safe").config({
   path: "./.env.test",
   sample: "./.env.example",
 });
-global.shallow = shallow;
-global.mount = mount;
+global.shallow = enzyme.shallow;
+global.mount = enzyme.mount;
