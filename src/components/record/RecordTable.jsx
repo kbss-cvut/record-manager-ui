@@ -30,7 +30,6 @@ class RecordTable extends React.Component {
     handlers: PropTypes.object.isRequired,
     recordDeleted: PropTypes.object,
     disableDelete: PropTypes.bool,
-    recordsDeleting: PropTypes.array,
     currentUser: PropTypes.object.isRequired,
     filterAndSort: PropTypes.object.isRequired,
   };
@@ -105,7 +104,7 @@ class RecordTable extends React.Component {
   }
 
   _renderRows(filteredRecords) {
-    const { formTemplatesLoaded, handlers, recordsDeleting, intl } = this.props;
+    const { formTemplatesLoaded, handlers, intl } = this.props;
     const formTemplateOptions = formTemplatesLoaded.formTemplates
       ? processTypeaheadOptions(formTemplatesLoaded.formTemplates, intl)
       : [];
@@ -120,7 +119,6 @@ class RecordTable extends React.Component {
           formTemplateOptions={formTemplateOptions}
           currentUser={this.props.currentUser}
           disableDelete={this.props.disableDelete}
-          deletionLoading={!this.props.disableDelete && !!recordsDeleting.includes(filteredRecords[i].key)}
         />,
       );
     }

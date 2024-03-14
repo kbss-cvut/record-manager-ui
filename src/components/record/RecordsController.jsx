@@ -22,16 +22,18 @@ import { INITIAL_PAGE } from "../misc/Pagination";
 import BrowserStorage from "../../utils/BrowserStorage";
 import PropTypes from "prop-types";
 
+const INITIAL_STATE = {
+  pageNumber: INITIAL_PAGE,
+  sort: {
+    date: SortDirection.DESC,
+  },
+  filters: {},
+};
+
 class RecordsController extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      pageNumber: INITIAL_PAGE,
-      sort: {
-        date: SortDirection.DESC,
-      },
-      filters: {},
-    };
+    this.state = Object.assign({}, INITIAL_STATE);
   }
 
   componentDidMount() {
@@ -73,7 +75,9 @@ class RecordsController extends React.Component {
   };
 
   _onDeleteRecord = (record) => {
-    trackPromise(this.props.deleteRecord(record), "records");
+    trackPromise(this.props.deleteRecord(record), "record-" + record.key).then(() => {
+      this.setState(Object.assign({}, INITIAL_STATE), this._loadRecords);
+    });
   };
 
   _onPublishRecords = async () => {
@@ -125,7 +129,7 @@ class RecordsController extends React.Component {
   };
 
   render() {
-    const { formTemplatesLoaded, recordsLoaded, recordDeleted, recordsDeleting, currentUser } = this.props;
+    const { formTemplatesLoaded, recordsLoaded, recordDeleted, currentUser } = this.props;
     const formTemplate = extractQueryParam(this.props.location.search, "formTemplate");
     if (!currentUser) {
       return null;
@@ -156,7 +160,6 @@ class RecordsController extends React.Component {
         filterAndSort={filterAndSort}
         recordsLoaded={recordsLoaded}
         recordDeleted={recordDeleted}
-        recordsDeleting={recordsDeleting}
         formTemplate={formTemplate}
         currentUser={currentUser}
         formTemplatesLoaded={formTemplatesLoaded}
@@ -179,7 +182,6 @@ RecordsController.propTypes = {
     pageCount: PropTypes.number.isRequired,
   }).isRequired,
   recordDeleted: PropTypes.func.isRequired,
-  recordsDeleting: PropTypes.bool.isRequired,
   currentUser: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
 };
@@ -191,7 +193,6 @@ function mapStateToProps(state) {
     recordDeleted: state.record.recordDeleted,
     recordsLoaded: state.records.recordsLoaded,
     formTemplatesLoaded: state.formTemplates.formTemplatesLoaded,
-    recordsDeleting: state.record.recordsDeleting,
     currentUser: state.auth.user,
   };
 }
