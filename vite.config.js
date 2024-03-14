@@ -39,7 +39,7 @@ export default defineConfig({
   resolve: {
     alias: {
       querystring: "querystring-es3",
-      url: "url",
+      url: "url-parse",
     },
   },
 });
