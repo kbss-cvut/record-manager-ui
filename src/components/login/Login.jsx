@@ -60,7 +60,6 @@ class Login extends React.Component {
       return (
         <span key={browser.name}>
           {browser.linkMobile && browser.linkDesktop ? (
-            // Using target="_blank" without rel="noreferrer" (which implies rel="noopener") is a security risk in older browsers: see https://mathiasbynens.github.io/rel-noopener/#recommendations
             <a
               href={deviceIsMobile() ? browser.linkMobile : browser.linkDesktop}
               target="_blank"
