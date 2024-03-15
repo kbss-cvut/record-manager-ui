@@ -1,4 +1,3 @@
-/* eslint-disable react/no-string-refs */
 import React from "react";
 import { Button, Card } from "react-bootstrap";
 import { FormattedMessage, injectIntl } from "react-intl";
@@ -138,7 +137,6 @@ class Institution extends React.Component {
         <Button
           variant="success"
           size="sm"
-          ref="submit"
           disabled={
             !InstitutionValidator.isValid(this.props.institution) ||
             this.props.institutionSaved.status === ACTION_STATUS.PENDING
