@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import * as React from "react";
 import PropTypes from "prop-types";
 
@@ -26,6 +25,11 @@ export default function withI18n(Component, options) {
       );
     }
   }
+
+  Wrapper.propTypes = {
+    intl: PropTypes.object,
+    forwardedRef: PropTypes.func,
+  };
 
   if (forwardRef) {
     return React.forwardRef((props, ref) => <Wrapper {...props} forwardedRef={ref} />);
