@@ -105,8 +105,8 @@ const DateIntervalFilter = ({ minDate, maxDate, sort, onChange }) => {
 };
 
 DateIntervalFilter.propTypes = {
-  minDate: PropTypes.instanceOf(Date).isRequired,
-  maxDate: PropTypes.instanceOf(Date).isRequired,
+  minDate: PropTypes.instanceOf(Date),
+  maxDate: PropTypes.instanceOf(Date),
   sort: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };

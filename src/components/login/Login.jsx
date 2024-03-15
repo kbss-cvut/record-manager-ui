@@ -145,7 +145,7 @@ Login.propTypes = {
   login: PropTypes.func,
   error: PropTypes.object,
   isLogging: PropTypes.bool,
-  i18n: PropTypes.object.isRequired, // Or whichever type 'i18n' is
+  i18n: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(Login)));

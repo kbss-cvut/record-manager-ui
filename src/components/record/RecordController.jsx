@@ -206,22 +206,22 @@ class RecordController extends React.Component {
 RecordController.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      key: PropTypes.string.isRequired,
+      key: PropTypes.string,
     }).isRequired,
   }).isRequired,
   loadRecord: PropTypes.func.isRequired,
   recordSaved: PropTypes.shape({
-    actionFlag: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired,
+    actionFlag: PropTypes.string,
+    status: PropTypes.string,
     record: PropTypes.shape({
-      key: PropTypes.string.isRequired,
-    }).isRequired,
+      key: PropTypes.string,
+    }),
   }).isRequired,
   recordLoaded: PropTypes.shape({
-    status: PropTypes.string.isRequired,
+    status: PropTypes.string,
     record: PropTypes.shape({
-      state: PropTypes.string.isRequired,
-    }).isRequired,
+      state: PropTypes.object,
+    }),
   }).isRequired,
   unloadSavedRecord: PropTypes.func.isRequired,
   transitionToWithOpts: PropTypes.func.isRequired,

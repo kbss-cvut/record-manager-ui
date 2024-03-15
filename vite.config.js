@@ -12,14 +12,35 @@ export default defineConfig({
   plugins: [
     react(),
     eslintPlugin({
-      cache: false, // disable eslint cache to avoid conflicts
+      cache: false,
     }),
   ],
   build: {
     sourcemap: true,
     emptyOutDir: true,
+    rollupOptions: {
+      onwarn: (warning, defaultHandler) => {
+        // TODO: workaround for dangerous use of eval method that should be solved in SForms library issue https://github.com/kbss-cvut/s-forms/issues/283
+        const isFromKbssCvutPackageWarning =
+        warning.code === "EVAL" && warning.message.includes("node_modules/store/plugins/lib/json2.js");
+        // TODO: Rollup Pure Annotation warning should be resolved by https://github.com/kbss-cvut/s-forms/issues/282
+        const isRollupPureAnnotationWarning =
+          warning.code === "INVALID_ANNOTATION" && warning.message.includes("*#__PURE__*");
+        if (isFromKbssCvutPackageWarning || isRollupPureAnnotationWarning) {
+          return;
+        }
+        defaultHandler(warning);
+      },
+    },
+    cssMinify: false, // TODO: workaround for CSS syntax error from SForms library that should be resolved by https://github.com/kbss-cvut/s-forms/issues/283
   },
   define: {
     "process.env": process.env, // workaround for parse-link-header library that depends on 2 vars defined in `process.env`, see https://github.com/thlorenz/parse-link-header/issues/31
+  },
+  resolve: {
+    alias: {
+      querystring: "querystring-es3", // workaround for parse-link-header library that replaces nodejs builtin module with the module adapted for browser
+      url: "url-parse", // workaround for parse-link-header library that replaces nodejs builtin module with the module adapted for browser
+    },
   },
 });

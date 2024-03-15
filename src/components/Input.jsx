@@ -40,7 +40,7 @@ const Input = forwardRef(function InputWithRef(props, ref) {
     return (
       <FormGroup size="sm">
         {renderLabel()}
-        <FormControl as="select" {...props}>
+        <FormControl as="select" ref={ref} {...props}>
           {props.children}
         </FormControl>
         {props.validation && <FormControl.Feedback />}
@@ -57,7 +57,7 @@ const Input = forwardRef(function InputWithRef(props, ref) {
     return (
       <FormGroup size="sm">
         {renderLabel()}
-        <FormControl as="textarea" style={{ height: "auto" }} ref={props} {...props} />
+        <FormControl as="textarea" style={{ height: "auto" }} ref={ref} {...props} />
         {props.validation && <FormControl.Feedback />}
         {renderHelp()}
       </FormGroup>

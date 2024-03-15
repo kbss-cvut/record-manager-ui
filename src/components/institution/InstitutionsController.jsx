@@ -72,8 +72,8 @@ InstitutionsController.propTypes = {
   currentUser: PropTypes.shape({
     role: PropTypes.string.isRequired,
   }).isRequired,
-  institutionsLoaded: PropTypes.bool.isRequired,
-  institutionDeleted: PropTypes.bool.isRequired,
+  institutionsLoaded: PropTypes.object,
+  institutionDeleted: PropTypes.object,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(InstitutionsController)));

@@ -72,8 +72,8 @@ UsersController.propTypes = {
   currentUser: PropTypes.shape({
     role: PropTypes.string.isRequired,
   }).isRequired,
-  usersLoaded: PropTypes.bool.isRequired,
-  userDeleted: PropTypes.bool.isRequired,
+  usersLoaded: PropTypes.object,
+  userDeleted: PropTypes.object,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(UsersController)));
