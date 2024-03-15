@@ -31,7 +31,7 @@ export default defineConfig({
         defaultHandler(warning);
       },
     },
-    cssMinify: false,
+    cssMinify: false, // TODO: workaround for CSS syntax error from SForms library that should be resolved by https://github.com/kbss-cvut/s-forms/issues/283
   },
   define: {
     "process.env": process.env, // workaround for parse-link-header library that depends on 2 vars defined in `process.env`, see https://github.com/thlorenz/parse-link-header/issues/31
