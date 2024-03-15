@@ -5,7 +5,7 @@ import { FormLabel, FormGroup, FormControl, FormText, FormCheck } from "react-bo
 import PropTypes from "prop-types";
 
 const Input = forwardRef(function InputWithRef(props, ref) {
-  const renderBaseOnInputType = () => {
+  const renderInputOnType = () => {
     switch (props.type) {
       case "radio":
         return renderRadio();
@@ -79,7 +79,7 @@ const Input = forwardRef(function InputWithRef(props, ref) {
     );
   };
 
-  return renderBaseOnInputType();
+  return renderInputOnType();
 });
 
 Input.propTypes = {
