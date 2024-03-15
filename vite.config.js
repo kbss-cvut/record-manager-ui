@@ -20,7 +20,8 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       onwarn: (warning, defaultHandler) => {
-        // TODO: workaround for dangerous use of eval method that should be solved in SForms library issue https://github.com/kbss-cvut/s-forms/issues/283        const isFromKbssCvutPackageWarning =
+        // TODO: workaround for dangerous use of eval method that should be solved in SForms library issue https://github.com/kbss-cvut/s-forms/issues/283
+        const isFromKbssCvutPackageWarning =
         warning.code === "EVAL" && warning.message.includes("node_modules/store/plugins/lib/json2.js");
         // TODO: Rollup Pure Annotation warning should be resolved by https://github.com/kbss-cvut/s-forms/issues/282
         const isRollupPureAnnotationWarning =
