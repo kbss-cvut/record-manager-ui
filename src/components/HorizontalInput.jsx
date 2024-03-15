@@ -6,8 +6,7 @@ import PropTypes from "prop-types";
 import Row from "react-bootstrap/Row";
 import TypeaheadAnswer from "./record/TypeaheadAnswer";
 
-// eslint-disable-next-line react/display-name
-const HorizontalInput = forwardRef((props, ref) => {
+const HorizontalInput = forwardRef(function HorizontalInputWithRef(props, ref) {
   const renderInputOnType = () => {
     switch (props.type) {
       case "radio":
