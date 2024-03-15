@@ -1,187 +1,173 @@
 "use strict";
 
-import React from "react";
-import ReactDOM from "react-dom";
+import React, { forwardRef } from "react";
 import { Col, FormCheck, FormControl, FormGroup, FormLabel, FormText, InputGroup } from "react-bootstrap";
 import PropTypes from "prop-types";
 import Row from "react-bootstrap/Row";
 import TypeaheadAnswer from "./record/TypeaheadAnswer";
 
-export default class HorizontalInput extends React.Component {
-  static propTypes = {
-    type: PropTypes.string,
-    label: PropTypes.string,
-    value: PropTypes.any,
-    onChange: PropTypes.func,
-    help: PropTypes.string,
-    validation: PropTypes.oneOf(["success", "warning", "error"]),
-    labelWidth: PropTypes.number, // Width of the label
-    inputWidth: PropTypes.number, // Width of the input component container
-    inputOffset: PropTypes.number, // Offset to put before the input component. Applicable only for
-    possibleValueQuery: PropTypes.string,
-    // checkboxes and radios
-    iconRight: PropTypes.object,
-    children: PropTypes.node.isRequired,
-  };
-
-  static defaultProps = {
-    type: "text",
-    labelWidth: 4,
-    inputWidth: 9,
-    inputOffset: 4,
-  };
-
-  constructor(props) {
-    super(props);
-  }
-
-  focus() {
-    /* eslint-disable react/no-find-dom-node */
-    // Do not use findDOMNode. It doesn’t work with function components and is deprecated in StrictMode. See https://reactjs.org/docs/react-dom.html#finddomnodeeslintreact/no-find-dom-node
-    ReactDOM.findDOMNode(this.input).focus();
-  }
-
-  getInputDOMNode() {
-    return ReactDOM.findDOMNode(this.input);
-  }
-
-  render() {
-    switch (this.props.type) {
+// eslint-disable-next-line react/display-name
+const HorizontalInput = forwardRef((props, ref) => {
+  const renderInputOnType = () => {
+    switch (props.type) {
       case "radio":
-        return this._renderRadio();
+        return renderRadio();
       case "checkbox":
-        return this._renderCheckbox();
+        return renderCheckbox();
       case "select":
-        return this._renderSelect();
+        return renderSelect();
       case "textarea":
-        return this._renderTextArea();
+        return renderTextArea();
       case "autocomplete":
-        return this._renderAutocomplete();
+        return renderAutocomplete();
       default:
-        return this._renderInput();
+        return renderInput();
     }
-  }
+  };
 
-  _getInputProps() {
-    let props = { ...this.props };
-    delete props.inputOffset;
-    delete props.inputWidth;
-    delete props.labelWidth;
-    delete props.help;
-    delete props.validation;
-    delete props.iconRight;
+  const getInputProps = () => {
+    const newInputProps = { ...props };
 
-    return props;
-  }
+    delete newInputProps.inputOffset;
+    delete newInputProps.inputWidth;
+    delete newInputProps.labelWidth;
+    delete newInputProps.help;
+    delete newInputProps.validation;
+    delete newInputProps.iconRight;
 
-  _renderCheckbox() {
+    return newInputProps;
+  };
+
+  const renderCheckbox = () => {
     return (
       <FormGroup as={Row}>
-        <Col lgOffset={this.props.inputOffset} lg={this.props.inputWidth}>
-          <FormCheck type="checkbox" ref={(c) => (this.input = c)} {...this._getInputProps()}>
-            {this.props.label}
+        <Col lgOffset={props.inputOffset} lg={props.inputWidth}>
+          <FormCheck type="checkbox" ref={ref} {...getInputProps()}>
+            {props.label}
           </FormCheck>
         </Col>
       </FormGroup>
     );
-  }
+  };
 
-  _renderRadio() {
+  const renderRadio = () => {
     return (
       <FormGroup as={Row}>
-        <Col lgOffset={this.props.inputOffset} lg={this.props.inputWidth}>
-          <FormCheck type="radio" ref={(c) => (this.input = c)} {...this._getInputProps()}>
-            {this.props.label}
+        <Col lgOffset={props.inputOffset} lg={props.inputWidth}>
+          <FormCheck type="radio" ref={ref} {...getInputProps()}>
+            {props.label}
           </FormCheck>
         </Col>
       </FormGroup>
     );
-  }
+  };
 
-  _renderSelect() {
+  const renderSelect = () => {
     // TODO validation
     return (
       <FormGroup as={Row}>
-        {this._renderLabel()}
-        <Col lg={this.props.inputWidth}>
-          <FormControl as="select" ref={(c) => (this.input = c)} {...this._getInputProps()}>
-            {this.props.children}
+        {renderLabel()}
+        <Col lg={props.inputWidth}>
+          <FormControl as="select" ref={ref} {...getInputProps()}>
+            {props.children}
           </FormControl>
-          {this.props.validation && <FormControl.Feedback />}
-          {this._renderHelp()}
+          {props.validation && <FormControl.Feedback />}
+          {renderHelp()}
         </Col>
       </FormGroup>
     );
-  }
+  };
 
-  _renderAutocomplete() {
+  const renderAutocomplete = () => {
     // TODO validation
     return (
       <FormGroup as={Row}>
-        {this._renderLabel()}
-        <Col lg={this.props.inputWidth}>
-          <TypeaheadAnswer {...this._getInputProps()} />
-          {this.props.validation && <FormControl.Feedback />}
-          {this._renderHelp()}
+        {renderLabel()}
+        <Col lg={props.inputWidth}>
+          <TypeaheadAnswer {...getInputProps()} />
+          {props.validation && <FormControl.Feedback />}
+          {renderHelp()}
         </Col>
       </FormGroup>
     );
-  }
+  };
 
-  _renderLabel() {
-    return this.props.label ? (
-      <Col as={FormLabel} lg={this.props.labelWidth} className="font-weight-bold text-lg-right align-self-center">
-        {this.props.label}
+  const renderLabel = () => {
+    return props.label ? (
+      <Col as={FormLabel} lg={props.labelWidth} className="font-weight-bold text-lg-right align-self-center">
+        {props.label}
       </Col>
     ) : null;
-  }
+  };
 
-  _renderTextArea() {
+  const renderTextArea = () => {
     // TODO validation
     return (
       <FormGroup as={Row}>
-        {this._renderLabel()}
-        <Col lg={this.props.inputWidth}>
-          <FormControl
-            as="textarea"
-            style={{ height: "auto" }}
-            ref={(c) => (this.input = c)}
-            {...this._getInputProps()}
-          />
-          {this.props.validation && <FormControl.Feedback />}
-          {this._renderHelp()}
+        {renderLabel()}
+        <Col lg={props.inputWidth}>
+          <FormControl as="textarea" style={{ height: "auto" }} ref={ref} {...getInputProps()} />
+          {props.validation && <FormControl.Feedback />}
+          {renderHelp()}
         </Col>
       </FormGroup>
     );
-  }
+  };
 
-  _renderHelp() {
-    return this.props.help ? <FormText>{this.props.help}</FormText> : null;
-  }
+  const renderHelp = () => {
+    return props.help ? <FormText>{props.help}</FormText> : null;
+  };
 
-  _renderInput() {
+  const renderInput = () => {
     // TODO validation
-    const formControl = <FormControl ref={(c) => (this.input = c)} as="input" {...this._getInputProps()} />;
+    const formControl = <FormControl ref={ref} as="input" {...getInputProps()} />;
     return (
       <FormGroup as={Row}>
-        {this._renderLabel()}
-        <Col lg={this.props.inputWidth}>
-          {this.props.iconRight ? (
+        {renderLabel()}
+        <Col lg={props.inputWidth}>
+          {props.iconRight ? (
             <InputGroup>
               {formControl}
               <InputGroup.Append>
-                <InputGroup.Text className="py-0">{this.props.iconRight}</InputGroup.Text>
+                <InputGroup.Text className="py-0">{props.iconRight}</InputGroup.Text>
               </InputGroup.Append>
             </InputGroup>
           ) : (
             <div>
               {formControl}
-              {this.props.validation && <FormControl.Feedback />}
-              {this._renderHelp()}
+              {props.validation && <FormControl.Feedback />}
+              {renderHelp()}
             </div>
           )}
         </Col>
       </FormGroup>
     );
-  }
-}
+  };
+
+  return renderInputOnType();
+});
+
+HorizontalInput.propTypes = {
+  type: PropTypes.string,
+  label: PropTypes.string,
+  value: PropTypes.any,
+  onChange: PropTypes.func,
+  help: PropTypes.string,
+  validation: PropTypes.oneOf(["success", "warning", "error"]),
+  labelWidth: PropTypes.number, // Width of the label
+  inputWidth: PropTypes.number, // Width of the input component container
+  inputOffset: PropTypes.number, // Offset to put before the input component. Applicable only for
+  possibleValueQuery: PropTypes.string,
+  // checkboxes and radios
+  iconRight: PropTypes.object,
+  children: PropTypes.node,
+};
+
+HorizontalInput.defaultProps = {
+  type: "text",
+  labelWidth: 4,
+  inputWidth: 9,
+  inputOffset: 4,
+};
+
+export default HorizontalInput;
