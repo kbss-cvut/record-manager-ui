@@ -47,6 +47,10 @@ class Record extends React.Component {
     this.setState({ isFormValid });
   };
 
+  validateForm = () => {
+    this.recordForm.current.validateForm();
+  };
+
   updateForm = (form) => {
     this.setState({ form });
   };
@@ -54,6 +58,7 @@ class Record extends React.Component {
   _handleOnSave = () => {
     const { form } = this.state;
     if (form) {
+      this.validateForm();
       this.setState(
         {
           invalidQuestions: filterObjectsByKeyValuePair(form["@graph"], "has-validation-severity", "error"),

@@ -54,6 +54,10 @@ class RecordForm extends React.Component {
     return this.refForm.current.getFormData();
   };
 
+  validateForm = () => {
+    this.refForm.current.validateForm();
+  };
+
   fetchTypeAheadValues = async (query) => {
     const FORM_GEN_POSSIBLE_VALUES_URL = `${API_URL}/rest/formGen/possibleValues`;
 
