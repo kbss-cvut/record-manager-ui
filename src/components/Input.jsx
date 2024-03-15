@@ -1,109 +1,99 @@
-/* eslint-disable react/no-find-dom-node */
 "use strict";
 
-import React from "react";
-import ReactDOM from "react-dom";
+import React, { forwardRef } from "react";
 import { FormLabel, FormGroup, FormControl, FormText, FormCheck } from "react-bootstrap";
 import PropTypes from "prop-types";
 
-export default class Input extends React.Component {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-    type: PropTypes.string,
-    label: PropTypes.string,
-    value: PropTypes.any,
-    onChange: PropTypes.func,
-    help: PropTypes.string,
-    validation: PropTypes.oneOf(["success", "warning", "error"]),
-  };
-
-  static defaultProps = {
-    type: "text",
-  };
-
-  constructor(props) {
-    super(props);
-  }
-
-  focus() {
-    ReactDOM.findDOMNode(this.input).focus();
-  }
-
-  getInputDOMNode() {
-    return ReactDOM.findDOMNode(this.input);
-  }
-
-  render() {
-    switch (this.props.type) {
+const Input = forwardRef(function InputWithRef(props, ref) {
+  const renderBaseOnInputType = () => {
+    switch (props.type) {
       case "radio":
-        return this._renderRadio();
+        return renderRadio();
       case "checkbox":
-        return this._renderCheckbox();
+        return renderCheckbox();
       case "select":
-        return this._renderSelect();
+        return renderSelect();
       case "textarea":
-        return this._renderTextArea();
+        return renderTextArea();
       default:
-        return this._renderInput();
+        return renderInput();
     }
-  }
+  };
 
-  _renderCheckbox() {
+  const renderCheckbox = () => {
     return (
-      <FormCheck ref={(c) => (this.input = c)} {...this.props}>
-        {this.props.label}
+      <FormCheck ref={ref} {...props}>
+        {props.label}
       </FormCheck>
     );
-  }
+  };
 
-  _renderRadio() {
+  const renderRadio = () => {
     return (
-      <FormCheck ref={(c) => (this.input = c)} {...this.props}>
-        {this.props.label}
+      <FormCheck ref={ref} {...props}>
+        {props.label}
       </FormCheck>
     );
-  }
+  };
 
-  _renderSelect() {
+  const renderSelect = () => {
     return (
       <FormGroup size="sm">
-        {this._renderLabel()}
-        <FormControl as="select" ref={(c) => (this.input = c)} {...this.props}>
-          {this.props.children}
+        {renderLabel()}
+        <FormControl as="select" ref={ref} {...props}>
+          {props.children}
         </FormControl>
-        {this.props.validation && <FormControl.Feedback />}
-        {this._renderHelp()}
+        {props.validation && <FormControl.Feedback />}
+        {renderHelp()}
       </FormGroup>
     );
-  }
+  };
 
-  _renderLabel() {
-    return this.props.label ? <FormLabel>{this.props.label}</FormLabel> : null;
-  }
+  const renderLabel = () => {
+    return props.label ? <FormLabel>{props.label}</FormLabel> : null;
+  };
 
-  _renderTextArea() {
+  const renderTextArea = () => {
     return (
       <FormGroup size="sm">
-        {this._renderLabel()}
-        <FormControl as="textarea" style={{ height: "auto" }} ref={(c) => (this.input = c)} {...this.props} />
-        {this.props.validation && <FormControl.Feedback />}
-        {this._renderHelp()}
+        {renderLabel()}
+        <FormControl as="textarea" style={{ height: "auto" }} ref={ref} {...props} />
+        {props.validation && <FormControl.Feedback />}
+        {renderHelp()}
       </FormGroup>
     );
-  }
+  };
 
-  _renderHelp() {
-    return this.props.help ? <FormText>{this.props.help}</FormText> : null;
-  }
+  const renderHelp = () => {
+    return props.help ? <FormText>{props.help}</FormText> : null;
+  };
 
-  _renderInput() {
+  const renderInput = () => {
     return (
       <FormGroup size="sm">
-        {this._renderLabel()}
-        <FormControl ref={(c) => (this.input = c)} as="input" {...this.props} />
-        {this.props.validation && <FormControl.Feedback />}
-        {this._renderHelp()}
+        {renderLabel()}
+        <FormControl ref={ref} as="input" {...props} />
+        {props.validation && <FormControl.Feedback />}
+        {renderHelp()}
       </FormGroup>
     );
-  }
-}
+  };
+
+  return renderBaseOnInputType();
+});
+
+Input.propTypes = {
+  children: PropTypes.node.isRequired,
+  type: PropTypes.string,
+  label: PropTypes.string,
+  value: PropTypes.any,
+  onChange: PropTypes.func,
+  help: PropTypes.string,
+  validation: PropTypes.oneOf(["success", "warning", "error"]),
+};
+
+Input.defaultProps = {
+  type: "text",
+};
+
+export default Input;
