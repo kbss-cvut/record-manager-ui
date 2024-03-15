@@ -20,9 +20,9 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       onwarn: (warning, defaultHandler) => {
-        // TODO: remove isFromKbssCvutPackageWarning and solve the root cause, see https://github.com/kbss-cvut/record-manager-ui/issues/113
-        const isFromKbssCvutPackageWarning =
-          warning.code === "EVAL" && warning.message.includes("node_modules/store/plugins/lib/json2.js");
+        // TODO: workaround for dangerous use of eval method that should be solved in SForms library issue https://github.com/kbss-cvut/s-forms/issues/283        const isFromKbssCvutPackageWarning =
+        warning.code === "EVAL" && warning.message.includes("node_modules/store/plugins/lib/json2.js");
+        // TODO: Rollup Pure Annotation warning should be resolved by https://github.com/kbss-cvut/s-forms/issues/282
         const isRollupPureAnnotationWarning =
           warning.code === "INVALID_ANNOTATION" && warning.message.includes("*#__PURE__*");
         if (isFromKbssCvutPackageWarning || isRollupPureAnnotationWarning) {
@@ -38,8 +38,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      querystring: "querystring-es3",
-      url: "url-parse",
+      querystring: "querystring-es3", // workaround for parse-link-header library that replaces nodejs builtin module with the module adapted for browser
+      url: "url-parse", // workaround for parse-link-header library that replaces nodejs builtin module with the module adapted for browser
     },
   },
 });
