@@ -1,4 +1,3 @@
-/* eslint-disable react/no-string-refs */
 import React from "react";
 import { Button, Card } from "react-bootstrap";
 import withI18n from "../../i18n/withI18n";
@@ -99,7 +98,6 @@ class PasswordChange extends React.Component {
                   style={{ margin: "0 0.3em 0 0" }}
                   variant="success"
                   size="sm"
-                  ref="submit"
                   onClick={() => this._onSaveWithEmail()}
                   className="d-inline-flex"
                   disabled={!UserValidator.isPasswordValid(password) || passwordChange.status === ACTION_STATUS.PENDING}
@@ -114,7 +112,6 @@ class PasswordChange extends React.Component {
               <Button
                 variant="success"
                 size="sm"
-                ref="submit"
                 onClick={() => this._onSave()}
                 className="d-inline-flex"
                 disabled={!UserValidator.isPasswordValid(password) || passwordChange.status === ACTION_STATUS.PENDING}

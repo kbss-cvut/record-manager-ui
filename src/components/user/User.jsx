@@ -1,4 +1,3 @@
-/* eslint-disable react/no-string-refs */
 import React from "react";
 import { Button, Card } from "react-bootstrap";
 import withI18n from "../../i18n/withI18n";
@@ -104,14 +103,7 @@ class User extends React.Component {
       return null;
     } else {
       return (
-        <Button
-          style={{ margin: "0 0.3em 0 0" }}
-          variant="primary"
-          size="sm"
-          // eslint-disable-next-line react/no-string-refs
-          ref="submit"
-          onClick={handlers.onPasswordChange}
-        >
+        <Button style={{ margin: "0 0.3em 0 0" }} variant="primary" size="sm" onClick={handlers.onPasswordChange}>
           {this.i18n("user.password-change")}
         </Button>
       );
@@ -124,13 +116,7 @@ class User extends React.Component {
       return null;
     } else {
       return (
-        <Button
-          style={{ margin: "0 0.3em 0 0" }}
-          variant="primary"
-          size="sm"
-          ref="submit"
-          onClick={handlers.onKeycloakRedirect}
-        >
+        <Button style={{ margin: "0 0.3em 0 0" }} variant="primary" size="sm" onClick={handlers.onKeycloakRedirect}>
           {this.i18n("user.edit")}
         </Button>
       );
@@ -146,7 +132,6 @@ class User extends React.Component {
           <Button
             variant="warning"
             size="sm"
-            ref="submit"
             disabled={
               invitationSent.status === ACTION_STATUS.PENDING || invitationDelete.status === ACTION_STATUS.PENDING
             }
@@ -181,7 +166,6 @@ class User extends React.Component {
           style={{ margin: "0 0.3em 0 0" }}
           variant="danger"
           size="sm"
-          ref="submit"
           disabled={impersonation.status === ACTION_STATUS.PENDING}
           onClick={handlers.impersonate}
         >
@@ -202,7 +186,6 @@ class User extends React.Component {
           style={{ margin: "0 0.3em 0 0" }}
           variant="success"
           size="sm"
-          ref="submit"
           disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
           onClick={() => this._onSaveAndSendEmail()}
           className="d-inline-flex"
@@ -359,7 +342,6 @@ class User extends React.Component {
                 <Button
                   variant="success"
                   size="sm"
-                  ref="submit"
                   className="action-button"
                   disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
                   onClick={() => this._onSave()}
