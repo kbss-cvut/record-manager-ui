@@ -22,7 +22,7 @@ export default defineConfig({
       onwarn: (warning, defaultHandler) => {
         // TODO: workaround for dangerous use of eval method that should be solved in SForms library issue https://github.com/kbss-cvut/s-forms/issues/283
         const isFromKbssCvutPackageWarning =
-        warning.code === "EVAL" && warning.message.includes("node_modules/store/plugins/lib/json2.js");
+          warning.code === "EVAL" && warning.message.includes("node_modules/store/plugins/lib/json2.js");
         // TODO: Rollup Pure Annotation warning should be resolved by https://github.com/kbss-cvut/s-forms/issues/282
         const isRollupPureAnnotationWarning =
           warning.code === "INVALID_ANNOTATION" && warning.message.includes("*#__PURE__*");
@@ -41,6 +41,17 @@ export default defineConfig({
     alias: {
       querystring: "querystring-es3", // workaround for parse-link-header library that replaces nodejs builtin module with the module adapted for browser
       url: "url-parse", // workaround for parse-link-header library that replaces nodejs builtin module with the module adapted for browser
+    },
+  },
+  test: {
+    open: true,
+    setupFiles: ["<rootDir>/tests/setup.js"],
+    testTransformMode: {
+      web: ["jsdom"],
+    },
+    browser: {
+      enabled: true,
+      provider: "playwright",
     },
   },
 });

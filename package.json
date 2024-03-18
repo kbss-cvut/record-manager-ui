@@ -46,6 +46,7 @@
     "@babel/plugin-transform-runtime": "^7.24.0",
     "@babel/preset-react": "^7.23.3",
     "@cfaester/enzyme-adapter-react-18": "^0.7.1",
+    "@vitest/browser": "^1.4.0",
     "axios-mock-adapter": "^1.18.1",
     "core-js": "^3.6.5",
     "cross-env": "^7.0.2",
@@ -62,7 +63,8 @@
     "npm-run-all": "^4.1.5",
     "prettier": "3.2.5",
     "querystring-es3": "^0.2.1",
-    "redux-mock-store": "^1.5.4"
+    "redux-mock-store": "^1.5.4",
+    "vitest": "^1.4.0"
   },
   "scripts": {
     "dev": "vite",
@@ -71,7 +73,7 @@
     "prettier:check": "npx prettier --check .",
     "prettier:format": "npx prettier --write .",
     "prepare": "husky",
-    "test": "jest",
+    "test": "vitest",
     "validate": "npm-run-all --parallel lint build test",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
