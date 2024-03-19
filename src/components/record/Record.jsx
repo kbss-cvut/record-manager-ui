@@ -61,27 +61,22 @@ class Record extends React.Component {
     this.setState({ form });
   };
 
+  _filterQuestionsBySeverity = (severity) => {
+    return filterObjectsByKeyValuePair(this.getFormQuestionsData(), SConstants.HAS_VALIDATION_SEVERITY, severity);
+  };
+
   _handleOnSave = () => {
     const { form } = this.state;
     if (form) {
       this.validateForm();
-      this.setState(
-        {
-          invalidQuestions: filterObjectsByKeyValuePair(
-            this.getFormQuestionsData(),
-            SConstants.HAS_VALIDATION_SEVERITY,
-            "error",
-          ),
-        },
-        () => {
-          const { invalidQuestions } = this.state;
-          if (invalidQuestions.length > 0) {
-            this.setState({ showModal: true });
-          } else {
-            this.props.handlers.onSave();
-          }
-        },
-      );
+      const invalidQuestions = this._filterQuestionsBySeverity("error");
+      this.setState({ invalidQuestions }, () => {
+        if (invalidQuestions.length > 0) {
+          this.setState({ showModal: true });
+        } else {
+          this.props.handlers.onSave();
+        }
+      });
     }
   };
 
@@ -89,23 +84,14 @@ class Record extends React.Component {
     const { form } = this.state;
     if (form) {
       this.validateForm();
-      this.setState(
-        {
-          incompleteQuestions: filterObjectsByKeyValuePair(
-            this.getFormQuestionsData(),
-            SConstants.HAS_VALIDATION_SEVERITY,
-            "warning",
-          ),
-        },
-        () => {
-          const { incompleteQuestions } = this.state;
-          if (incompleteQuestions.length > 0) {
-            this.setState({ showModal: true });
-          } else {
-            this.props.handlers.onComplete();
-          }
-        },
-      );
+      const incompleteQuestions = this._filterQuestionsBySeverity("warning");
+      this.setState({ incompleteQuestions }, () => {
+        if (incompleteQuestions.length > 0) {
+          this.setState({ showModal: true });
+        } else {
+          this.props.handlers.onComplete();
+        }
+      });
     }
   };
 
