@@ -45,7 +45,7 @@ class RecordForm extends React.Component {
   loadWizard() {
     trackPromise(this.props.loadFormgen(this.props.record), "sform")
       .then((data) => {
-        this.props.updateForm(data);
+        this.props.updateForm({ form: this.props.form, ...data });
       })
       .catch(() => Logger.error("Received no valid wizard."));
   }
@@ -56,6 +56,10 @@ class RecordForm extends React.Component {
 
   validateForm = () => {
     this.refForm.current.validateForm();
+  };
+
+  getFormQuestionsData = () => {
+    return this.refForm.current.getFormQuestionsData();
   };
 
   fetchTypeAheadValues = async (query) => {

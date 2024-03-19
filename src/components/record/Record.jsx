@@ -14,6 +14,8 @@ import { EXTENSIONS } from "../../../config";
 import { isAdmin } from "../../utils/SecurityUtils";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 import { filterObjectsByKeyValuePair } from "../../utils/Utils.js";
+import { Constants as SConstants } from "@kbss-cvut/s-forms";
+import FormValidationDialog from "../FormValidationDialog.jsx";
 
 class Record extends React.Component {
   static propTypes = {
@@ -51,6 +53,10 @@ class Record extends React.Component {
     this.recordForm.current.validateForm();
   };
 
+  getFormQuestionsData = () => {
+    return this.recordForm.current.getFormQuestionsData();
+  };
+
   updateForm = (form) => {
     this.setState({ form });
   };
@@ -61,7 +67,11 @@ class Record extends React.Component {
       this.validateForm();
       this.setState(
         {
-          invalidQuestions: filterObjectsByKeyValuePair(form["@graph"], "has-validation-severity", "error"),
+          invalidQuestions: filterObjectsByKeyValuePair(
+            this.getFormQuestionsData(),
+            SConstants.HAS_VALIDATION_SEVERITY,
+            "error",
+          ),
         },
         () => {
           const { invalidQuestions } = this.state;
@@ -78,9 +88,14 @@ class Record extends React.Component {
   _handleOnComplete = () => {
     const { form } = this.state;
     if (form) {
+      this.validateForm();
       this.setState(
         {
-          incompleteQuestions: filterObjectsByKeyValuePair(form["@graph"], "has-validation-severity", "warning"),
+          incompleteQuestions: filterObjectsByKeyValuePair(
+            this.getFormQuestionsData(),
+            SConstants.HAS_VALIDATION_SEVERITY,
+            "warning",
+          ),
         },
         () => {
           const { incompleteQuestions } = this.state;
@@ -152,6 +167,7 @@ class Record extends React.Component {
 
   _renderForm() {
     const { record, loadFormgen, formgen } = this.props;
+    const { form } = this.state;
 
     return !record.state.isInitial() ? (
       <RecordForm
@@ -161,7 +177,7 @@ class Record extends React.Component {
         formgen={formgen}
         currentUser={this.props.currentUser}
         isFormValid={this.isFormValid}
-        form={this.state.form}
+        form={form}
         updateForm={this.updateForm}
       />
     ) : null;
@@ -274,21 +290,12 @@ class Record extends React.Component {
     }
 
     return (
-      <Modal show={showModal} onHide={this._handleOnCloseModal} centered={true}>
-        <Modal.Header closeButton>
-          <Modal.Title>{modalMessage}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {questionsToShow.map((questionValidator, index) => {
-            return <li key={index}>{questionValidator.label + " : " + questionValidator["has-validation-message"]}</li>;
-          })}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={this._handleOnCloseModal}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <FormValidationDialog
+        show={showModal}
+        modalMessage={modalMessage}
+        questionsToShow={questionsToShow}
+        handleOnCloseModal={this._handleOnCloseModal}
+      />
     );
   }
 
