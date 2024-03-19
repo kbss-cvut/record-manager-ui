@@ -44,14 +44,21 @@ export default defineConfig({
     },
   },
   test: {
+    include: ["**/*.spec.js", "**/*.spec.jsx"],
     open: true,
-    setupFiles: ["<rootDir>/tests/setup.js"],
+    environment: "jsdom",
+    loader: "jsx",
+    globals: true,
+    setupFiles: ["./tests/setup.js"],
     testTransformMode: {
       web: ["jsdom"],
     },
-    browser: {
-      enabled: true,
-      provider: "playwright",
+    deps: {
+      optimizer: {
+        web: {
+          enabled: true,
+        },
+      },
     },
   },
 });
