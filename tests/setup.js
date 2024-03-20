@@ -3,7 +3,7 @@ const enzyme = require("enzyme");
 const jest = require("jest");
 const jestMock = require("jest-mock");
 
-import { it, describe } from "vitest";
+import { it, describe, expect } from "vitest";
 
 enzyme.configure({ adapter: new Adapter() });
 
@@ -22,3 +22,4 @@ jest.spyOn = jestMock.spyOn;
 global.jest = jest;
 global.xit = it.skip;
 global.describe = describe;
+global.expect = expect;
