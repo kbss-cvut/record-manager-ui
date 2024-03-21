@@ -13,7 +13,7 @@ import { processTypeaheadOptions } from "./TypeaheadAnswer";
 import { EXTENSIONS } from "../../../config";
 import { isAdmin } from "../../utils/SecurityUtils";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
-import { filterObjectsByKeyValuePair, filterSubquestionsByKeyValuePair } from "../../utils/Utils.js";
+import { dfsTraverseQuestionTree } from "../../utils/Utils.js";
 import { Constants as SConstants } from "@kbss-cvut/s-forms";
 import FormValidationDialog from "../FormValidationDialog.jsx";
 
@@ -62,17 +62,17 @@ class Record extends React.Component {
   };
 
   _filterQuestionsBySeverity = (severity) => {
-    const filteredQuestion = filterObjectsByKeyValuePair(
-      this.getFormQuestionsData(),
-      SConstants.HAS_VALIDATION_SEVERITY,
-      severity,
-    );
-    const filteredSubQuestions = filterSubquestionsByKeyValuePair(
-      this.getFormQuestionsData(),
-      SConstants.HAS_VALIDATION_SEVERITY,
-      severity,
-    );
-    return filteredQuestion.concat(filteredSubQuestions);
+    const matchedQuestion = [];
+
+    const collectIfTriggered = (question) => {
+      if (question?.[SConstants.HAS_VALIDATION_SEVERITY] === severity) {
+        matchedQuestion.push(question);
+      }
+    };
+
+    dfsTraverseQuestionTree(this.getFormQuestionsData(), collectIfTriggered);
+
+    return matchedQuestion;
   };
 
   _handleOnSave = () => {
