@@ -260,5 +260,8 @@ export default {
       "Instituci se zaměstnanci nebo se záznamy nelze odstranit.",
     "error.password.validation.thePassedUsersCurrentPasswordIsDifferentFromTheSpecifiedOne":
       "Původní heslo uživatele neodpovídá heslu uloženému.",
+
+    "form.validation.error": "Některé odpovědi jsou neplatné. Opravte je a uložte je:",
+    "form.validation.warning": "Některé odpovědi nejsou uvedeny. Vyplňte je a vyplňte formulář:",
   },
 };
