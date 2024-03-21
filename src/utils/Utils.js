@@ -418,15 +418,12 @@ export function sortToParams(sort) {
 }
 
 /**
- * Retrieves an array of objects from the provided array where a specific key matches a given value,
- * or where the key does not exist.
- * @param {Array<Object>} array The array of objects to search.
- * @param {string} key The key to check within each object in the array.
- * @param {any} value The value to compare against the value associated with the key in each object.
- * @param {boolean} [keyMustExist=true] Flag indicating whether the specified key must exist in the object.
- *                                      Defaults to true. If set to false, objects without the specified key will also be included.
- * @returns {Array<Object>} An array containing all objects from the provided array
- *                          where the specified key matches the provided value, or where the key does not exist.
+ * Filters an array of objects based on a key-value pair.
+ * @param {Array<Object>} array - The array of objects to filter.
+ * @param {string} key - The key to filter the objects by.
+ * @param {*} value - The value to match against the key.
+ * @param {boolean} [keyMustExist=true] - Indicates whether the key must exist in the objects. Defaults to true.
+ * @returns {Array<Object>} An array containing objects that match the given key-value pair.
  */
 export function filterObjectsByKeyValuePair(array, key, value, keyMustExist = true) {
   const matchingObjects = [];
@@ -441,16 +438,37 @@ export function filterObjectsByKeyValuePair(array, key, value, keyMustExist = tr
           matchingObjects.push(obj);
         }
       }
-      if (obj[SConstants.HAS_SUBQUESTION]) {
-        for (let subQuestion of obj[SConstants.HAS_SUBQUESTION]) {
-          if ((keyMustExist && subQuestion.hasOwnProperty(key)) || !keyMustExist) {
-            if (!keyMustExist || subQuestion[key] === value) {
-              matchingObjects.push(subQuestion);
-            }
+    }
+  }
+
+  return matchingObjects;
+}
+
+/**
+ * Filters an array of objects based on a key-value pair within subquestions.
+ * @param {Array<Object>} array - The array of objects containing subquestions.
+ * @param {string} key - The key to filter the subquestions by.
+ * @param {*} value - The value to match against the key.
+ * @param {boolean} [keyMustExist=true] - Indicates whether the key must exist in the subquestions. Defaults to true.
+ * @returns {Array<Object>} An array containing subquestions that match the given key-value pair.
+ */
+export function filterSubquestionsByKeyValuePair(array, key, value, keyMustExist = true) {
+  const matchingSubquestions = [];
+
+  if (!array || array.length === 0) {
+    return matchingSubquestions;
+  }
+  for (let obj of array) {
+    if (obj && obj[SConstants.HAS_SUBQUESTION]) {
+      for (let subQuestion of obj[SConstants.HAS_SUBQUESTION]) {
+        if ((keyMustExist && subQuestion.hasOwnProperty(key)) || !keyMustExist) {
+          if (!keyMustExist || subQuestion[key] === value) {
+            matchingSubquestions.push(subQuestion);
           }
         }
       }
     }
   }
-  return matchingObjects;
+
+  return matchingSubquestions;
 }

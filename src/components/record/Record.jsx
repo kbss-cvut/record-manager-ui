@@ -13,7 +13,7 @@ import { processTypeaheadOptions } from "./TypeaheadAnswer";
 import { EXTENSIONS } from "../../../config";
 import { isAdmin } from "../../utils/SecurityUtils";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
-import { filterObjectsByKeyValuePair } from "../../utils/Utils.js";
+import { filterObjectsByKeyValuePair, filterSubquestionsByKeyValuePair } from "../../utils/Utils.js";
 import { Constants as SConstants } from "@kbss-cvut/s-forms";
 import FormValidationDialog from "../FormValidationDialog.jsx";
 
@@ -62,7 +62,17 @@ class Record extends React.Component {
   };
 
   _filterQuestionsBySeverity = (severity) => {
-    return filterObjectsByKeyValuePair(this.getFormQuestionsData(), SConstants.HAS_VALIDATION_SEVERITY, severity);
+    const filteredQuestion = filterObjectsByKeyValuePair(
+      this.getFormQuestionsData(),
+      SConstants.HAS_VALIDATION_SEVERITY,
+      severity,
+    );
+    const filteredSubQuestions = filterSubquestionsByKeyValuePair(
+      this.getFormQuestionsData(),
+      SConstants.HAS_VALIDATION_SEVERITY,
+      severity,
+    );
+    return filteredQuestion.concat(filteredSubQuestions);
   };
 
   _handleOnSave = () => {
@@ -269,10 +279,10 @@ class Record extends React.Component {
 
     let modalMessage = "";
     if (questionsToShow === invalidQuestions) {
-      modalMessage = "Some questions are invalid. Correct them to save:";
+      modalMessage = this.i18n("form.validation.error");
     }
     if (questionsToShow === incompleteQuestions) {
-      modalMessage = "Some questions are incomplete. Fill them to complete the form:";
+      modalMessage = this.i18n("form.validation.warning");
     }
 
     return (
