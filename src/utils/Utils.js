@@ -416,37 +416,3 @@ export function sortToParams(sort) {
     .filter((k) => sort[k] !== undefined)
     .map((k) => `${sort[k]}${k}`);
 }
-
-/**
- * Wraps passed object into new array if it is not array already.
- * @param object_or_array An object or array.
- * @returns {*} New array containing passed object or passed array.
- */
-function asArray(object_or_array) {
-  if (!object_or_array) {
-    return [];
-  }
-  if (object_or_array.constructor === Array) {
-    return object_or_array;
-  }
-  return [object_or_array];
-}
-
-/**
- * Traverse provided array of questions recursively by DFS algorithm
- * and execute on each traversed question provided function.
- * @param {Array<Object>} questions - The array of questions to be traversed.
- * @param func - The function to be executed on each recursively traversed question.
- */
-export function dfsTraverseQuestionTree(questions, func) {
-  function recursiveTraverse(question) {
-    func(question);
-    this.asArray(question[SConstants.HAS_SUBQUESTION]).forEach((q) => {
-      recursiveTraverse(q);
-    });
-  }
-
-  questions.forEach((q) => {
-    recursiveTraverse(q);
-  });
-}
