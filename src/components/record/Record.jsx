@@ -13,8 +13,7 @@ import { processTypeaheadOptions } from "./TypeaheadAnswer";
 import { EXTENSIONS } from "../../../config";
 import { isAdmin } from "../../utils/SecurityUtils";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
-import { dfsTraverseQuestionTree } from "../../utils/Utils.js";
-import { Constants as SConstants } from "@kbss-cvut/s-forms";
+import { Constants as SConstants, FormUtils } from "@kbss-cvut/s-forms";
 import FormValidationDialog from "../FormValidationDialog.jsx";
 
 class Record extends React.Component {
@@ -70,7 +69,7 @@ class Record extends React.Component {
       }
     };
 
-    dfsTraverseQuestionTree(this.getFormQuestionsData(), collectIfTriggered);
+    FormUtils.dfsTraverseQuestionTree(this.getFormQuestionsData(), collectIfTriggered);
 
     return matchedQuestion;
   };
