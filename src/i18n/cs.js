@@ -261,7 +261,7 @@ export default {
     "error.password.validation.thePassedUsersCurrentPasswordIsDifferentFromTheSpecifiedOne":
       "Původní heslo uživatele neodpovídá heslu uloženému.",
 
-    "form.validation.error": "Některé odpovědi jsou neplatné. Opravte je a uložte je:",
-    "form.validation.warning": "Některé odpovědi nejsou uvedeny. Vyplňte je a vyplňte formulář:",
+    "form.validation.error": "Některé odpovědi jsou chybné. Opravte je před uložením formuláře:",
+    "form.validation.warning": "Některé odpovědi nejsou uvedeny. Vyplňte je pro kompletizaci formulářě:",
   },
 };
