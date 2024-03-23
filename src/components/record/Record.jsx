@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { FormattedMessage, injectIntl } from "react-intl";
 import withI18n from "../../i18n/withI18n";
@@ -13,6 +13,8 @@ import { processTypeaheadOptions } from "./TypeaheadAnswer";
 import { EXTENSIONS } from "../../../config";
 import { isAdmin } from "../../utils/SecurityUtils";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
+import { Constants as SConstants, FormUtils } from "@kbss-cvut/s-forms";
+import FormValidationDialog from "../FormValidationDialog.jsx";
 
 class Record extends React.Component {
   static propTypes = {
@@ -25,6 +27,10 @@ class Record extends React.Component {
     this.recordForm = React.createRef();
     this.state = {
       isFormValid: false,
+      form: null,
+      showModal: false,
+      invalidQuestions: [],
+      incompleteQuestions: [],
     };
   }
 
@@ -40,6 +46,70 @@ class Record extends React.Component {
 
   isFormValid = (isFormValid) => {
     this.setState({ isFormValid });
+  };
+
+  validateForm = () => {
+    this.recordForm.current.validateForm();
+  };
+
+  getFormQuestionsData = () => {
+    return this.recordForm.current.getFormQuestionsData();
+  };
+
+  updateForm = (form) => {
+    this.setState({ form });
+  };
+
+  _filterQuestionsBySeverity = (severity) => {
+    const matchedQuestion = [];
+
+    const collectIfTriggered = (question) => {
+      if (question?.[SConstants.HAS_VALIDATION_SEVERITY] === severity) {
+        matchedQuestion.push(question);
+      }
+    };
+
+    FormUtils.dfsTraverseQuestionTree(this.getFormQuestionsData(), collectIfTriggered);
+
+    return matchedQuestion;
+  };
+
+  _handleOnSave = () => {
+    const { form } = this.state;
+    if (form) {
+      this.validateForm();
+      const invalidQuestions = this._filterQuestionsBySeverity("error");
+      this.setState({ invalidQuestions }, () => {
+        if (invalidQuestions.length > 0) {
+          this.setState({ showModal: true });
+        } else {
+          this.props.handlers.onSave();
+        }
+      });
+    }
+  };
+
+  _handleOnComplete = () => {
+    const { form } = this.state;
+    if (form) {
+      this.validateForm();
+      const incompleteQuestions = this._filterQuestionsBySeverity("warning");
+      this.setState({ incompleteQuestions }, () => {
+        if (incompleteQuestions.length > 0) {
+          this.setState({ showModal: true });
+        } else {
+          this.props.handlers.onComplete();
+        }
+      });
+    }
+  };
+
+  _handleOnCloseModal = () => {
+    this.setState({
+      showModal: false,
+      invalidQuestions: [],
+      incompleteQuestions: [],
+    });
   };
 
   render() {
@@ -71,6 +141,7 @@ class Record extends React.Component {
         </form>
         {this._renderForm()}
         {this._renderButtons()}
+        {this._renderModal()}
       </div>
     );
   }
@@ -91,6 +162,7 @@ class Record extends React.Component {
 
   _renderForm() {
     const { record, loadFormgen, formgen } = this.props;
+    const { form } = this.state;
 
     return !record.state.isInitial() ? (
       <RecordForm
@@ -100,6 +172,8 @@ class Record extends React.Component {
         formgen={formgen}
         currentUser={this.props.currentUser}
         isFormValid={this.isFormValid}
+        form={form}
+        updateForm={this.updateForm}
       />
     ) : null;
   }
@@ -144,7 +218,7 @@ class Record extends React.Component {
                 !record.state.isComplete() ||
                 record.phase === RECORD_PHASE.COMPLETED
               }
-              onClick={this.props.handlers.onComplete}
+              onClick={this._handleOnComplete}
             >
               {this.i18n("complete")}
               {recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
@@ -165,7 +239,7 @@ class Record extends React.Component {
             !this._isAdmin() &&
             [RECORD_PHASE.COMPLETED, RECORD_PHASE.REJECTED, RECORD_PHASE.PUBLISHED].includes(record.phase)
           }
-          onClick={this.props.handlers.onSave}
+          onClick={this._handleOnSave}
         >
           {this.i18n("save")}
           {recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
@@ -195,6 +269,28 @@ class Record extends React.Component {
           />
         </div>
       </div>
+    );
+  }
+
+  _renderModal() {
+    const { showModal, invalidQuestions, incompleteQuestions } = this.state;
+    const questionsToShow = invalidQuestions.length > 0 ? invalidQuestions : incompleteQuestions;
+
+    let modalMessage = "";
+    if (questionsToShow === invalidQuestions) {
+      modalMessage = this.i18n("form.validation.error");
+    }
+    if (questionsToShow === incompleteQuestions) {
+      modalMessage = this.i18n("form.validation.warning");
+    }
+
+    return (
+      <FormValidationDialog
+        show={showModal}
+        modalMessage={modalMessage}
+        questionsToShow={questionsToShow}
+        handleOnCloseModal={this._handleOnCloseModal}
+      />
     );
   }
 

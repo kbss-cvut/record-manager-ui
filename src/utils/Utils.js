@@ -1,6 +1,7 @@
 "use strict";
 import Bowser from "bowser";
 import * as Constants from "../constants/DefaultConstants";
+import { Constants as SConstants } from "@kbss-cvut/s-forms";
 import { HttpHeaders, ROLE } from "../constants/DefaultConstants";
 import * as Vocabulary from "../constants/Vocabulary";
 import * as supportedDevices from "../constants/SupportedDevices";

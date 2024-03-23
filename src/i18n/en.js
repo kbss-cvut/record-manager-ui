@@ -264,5 +264,8 @@ export default {
       "Institution with members or patient records cannot be deleted.",
     "error.password.validation.thePassedUsersCurrentPasswordIsDifferentFromTheSpecifiedOne":
       "The user's current password is different from the specified one.",
+
+    "form.validation.error": "Some answers are invalid. Correct them to save:",
+    "form.validation.warning": "Some answers are not provided. Fill them to complete the form:",
   },
 };
