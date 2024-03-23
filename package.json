@@ -6,7 +6,7 @@
   "type": "module",
   "main": "src/index.jsx",
   "dependencies": {
-    "@kbss-cvut/s-forms": "0.7.1-beta-48c6cc4.0",
+    "@kbss-cvut/s-forms": "file:../s-forms/kbss-cvut-s-forms-0.7.0.tgz",
     "@vitejs/plugin-react": "^4.2.1",
     "axios": "^0.21.1",
     "bootstrap": "^4.4.1",
@@ -60,6 +60,7 @@
     "husky": "^9.0.11",
     "jest": "^25.4.0",
     "jest-mock": "^29.7.0",
+    "jsdom": "^24.0.0",
     "lint-staged": "^15.2.2",
     "npm-run-all": "^4.1.5",
     "prettier": "3.2.5",

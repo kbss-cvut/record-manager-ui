@@ -44,21 +44,19 @@ export default defineConfig({
     },
   },
   test: {
-    include: ["**/*.spec.js", "**/*.spec.jsx"],
     open: true,
     environment: "jsdom",
-    loader: "jsx",
     globals: true,
     setupFiles: ["./tests/setup.js"],
     testTransformMode: {
       web: ["jsdom"],
     },
-    deps: {
-      optimizer: {
-        web: {
-          enabled: true,
-        },
+    pool: "vmThreads", // Pool used to run tests in.
+    poolOptions: {
+      vmThreads: {
+        memoryLimit: "1MB",
       },
     },
+    // Vitest  "deps.inline" is deprecated. If you rely on vite-node directly, use "server.deps.inline" instead. Otherwise, consider using "deps.optimizer.web.include"
   },
 });
