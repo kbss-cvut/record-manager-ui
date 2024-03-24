@@ -1,10 +1,12 @@
+import { vi } from "vitest";
+
 let dateNowSpy;
 
 /**
  * Mocks Date.now result to return a predefined value.
  */
 export function mockDateNow(value = Date.now()) {
-  dateNowSpy = jest.spyOn(Date, "now").mockReturnValue(value);
+  dateNowSpy = vi.spyOn(Date, "now").mockReturnValue(value);
 }
 
 /**

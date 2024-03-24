@@ -9,7 +9,11 @@ import * as RecordState from "../../../src/model/RecordState";
 import enLang from "../../../src/i18n/en";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 
-jest.mock("../../../src/components/record/TypeaheadAnswer", () => () => <input />);
+vi.mock("../../../src/components/record/TypeaheadAnswer", () => {
+  return {
+    default: () => ({}),
+  };
+});
 
 describe.skip("Record", function () {
   const intlData = enLang;
