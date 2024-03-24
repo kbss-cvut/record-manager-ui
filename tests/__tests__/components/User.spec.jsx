@@ -7,6 +7,7 @@ import User from "../../../src/components/user/User";
 import { ACTION_STATUS, ROLE } from "../../../src/constants/DefaultConstants";
 import * as EntityFactory from "../../../src/utils/EntityFactory";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 
 describe("User", function () {
   const intlData = enLang;
@@ -21,9 +22,9 @@ describe("User", function () {
     currentUser,
     currentUserAdmin,
     handlers = {
-      onSave: jest.fn(),
-      onCancel: jest.fn(),
-      onChange: jest.fn(),
+      onSave: vi.fn(),
+      onCancel: vi.fn(),
+      onChange: vi.fn(),
     };
 
   currentUser = {

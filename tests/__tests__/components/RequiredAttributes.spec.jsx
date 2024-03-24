@@ -6,12 +6,13 @@ import TestUtils from "react-dom/test-utils";
 import RequiredAttributes from "../../../src/components/record/RequiredAttributes";
 import * as RecordState from "../../../src/model/RecordState";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, vi } from "vitest";
 
 describe("RequiredAttributes", function () {
   const intlData = enLang;
   let record,
     completed = true,
-    onChange = jest.fn();
+    onChange = vi.fn();
 
   record = {
     author: { firstName: "test", lastName: "test" },

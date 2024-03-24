@@ -5,6 +5,7 @@ import Records from "../../../src/components/record/Records";
 import { ACTION_STATUS, ROLE, SortDirection } from "../../../src/constants/DefaultConstants";
 import enLang from "../../../src/i18n/en";
 import { INITIAL_PAGE } from "../../../src/components/misc/Pagination";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 
 describe("Records", function () {
   const intlData = enLang;
@@ -46,7 +47,7 @@ describe("Records", function () {
     };
     pagination = {
       pageNumber: INITIAL_PAGE,
-      handlePagination: jest.fn(),
+      handlePagination: vi.fn(),
       itemCount: records.length,
       pageCount: 1,
     };
@@ -55,16 +56,16 @@ describe("Records", function () {
         date: SortDirection.DESC,
       },
       filters: {},
-      onChange: jest.fn(),
+      onChange: vi.fn(),
     };
     recordDeleted = {
       status: ACTION_STATUS.SUCCESS,
     };
     handlers = {
-      onEdit: jest.fn(),
-      onCreate: jest.fn(),
-      onDelete: jest.fn(),
-      onExport: jest.fn(),
+      onEdit: vi.fn(),
+      onCreate: vi.fn(),
+      onDelete: vi.fn(),
+      onExport: vi.fn(),
     };
   });
 
@@ -74,7 +75,7 @@ describe("Records", function () {
         <Records
           recordsLoaded={recordsLoaded}
           formTemplatesLoaded={formTemplatesLoaded}
-          filters={{ filters: {}, onChange: jest.fn() }}
+          filters={{ filters: {}, onChange: vi.fn() }}
           recordDeleted={recordDeleted}
           handlers={handlers}
           pagination={pagination}

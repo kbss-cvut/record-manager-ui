@@ -5,6 +5,7 @@ import RecordTable from "../../../src/components/record/RecordTable";
 import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
 import enLang from "../../../src/i18n/en";
 import { ROLE } from "../../../src/constants/DefaultConstants";
+import { describe, expect, vi, beforeEach } from "vitest";
 
 describe("RecordTable", function () {
   const intlData = enLang;
@@ -12,7 +13,7 @@ describe("RecordTable", function () {
     recordsLoaded,
     formTemplatesLoaded = {},
     recordDeleted = { status: ACTION_STATUS.SUCCESS },
-    handlers = { onEdit: jest.fn() },
+    handlers = { onEdit: vi.fn() },
     currentUser = {
       username: "testUser",
       role: ROLE.DOCTOR,

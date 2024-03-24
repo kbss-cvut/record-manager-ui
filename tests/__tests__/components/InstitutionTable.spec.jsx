@@ -6,6 +6,7 @@ import TestUtils from "react-dom/test-utils";
 import InstitutionTable from "../../../src/components/institution/InstitutionTable";
 import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, it, vi } from "vitest";
 
 describe("InstitutionTable", function () {
   const intlData = enLang;
@@ -14,9 +15,9 @@ describe("InstitutionTable", function () {
       status: ACTION_STATUS.SUCCESS,
     },
     handlers = {
-      onEdit: jest.fn(),
-      onCreate: jest.fn(),
-      onDelete: jest.fn(),
+      onEdit: vi.fn(),
+      onCreate: vi.fn(),
+      onDelete: vi.fn(),
     };
 
   institutions = [

@@ -5,14 +5,15 @@ import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
 import RecordRow from "../../../src/components/record/RecordRow";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, vi } from "vitest";
 
 describe("RecordRow", function () {
   const intlData = enLang;
   let record,
     disableDelete = false,
     deletionLoading = false,
-    onEdit = jest.fn(),
-    onDelete = jest.fn();
+    onEdit = vi.fn(),
+    onDelete = vi.fn();
 
   record = {
     uri: "http://onto.fel.cvut.cz/ontologies/record-manager/patient-record#instance456619208",

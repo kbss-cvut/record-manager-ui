@@ -26,6 +26,7 @@ import { API_URL } from "../../../config";
 import en from "../../../src/i18n/en";
 import { mockDateNow, restoreDateNow } from "../../environment/Environment";
 import { errorMessage, successMessage } from "../../../src/model/Message";
+import { it, describe, expect, beforeEach, afterEach } from "vitest";
 
 describe("Record synchronous actions", function () {
   const record = { key: 7979868757 },

@@ -5,14 +5,15 @@ import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
 import HistorySearch from "../../../src/components/history/HistorySearch";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, it, vi } from "vitest";
 
 describe("HistorySearch", function () {
   const intlData = enLang;
   let searchData = {},
     handlers = {
-      handleChange: jest.fn(),
-      handleSearch: jest.fn(),
-      handleReset: jest.fn(),
+      handleChange: vi.fn(),
+      handleSearch: vi.fn(),
+      handleReset: vi.fn(),
     };
 
   it("renders search with 3 inputs and 2 buttons", function () {

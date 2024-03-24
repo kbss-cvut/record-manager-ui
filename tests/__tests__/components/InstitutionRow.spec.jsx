@@ -5,13 +5,14 @@ import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
 import InstitutionRow from "../../../src/components/institution/InstitutionRow";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, it, vi } from "vitest";
 
 describe("InstitutionRow", function () {
   const intlData = enLang;
   let institution,
     deletionLoading = false,
-    onEdit = jest.fn(),
-    onDelete = jest.fn();
+    onEdit = vi.fn(),
+    onDelete = vi.fn();
 
   institution = {
     uri: "http://test.io",

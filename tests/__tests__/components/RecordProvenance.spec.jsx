@@ -6,6 +6,7 @@ import TestUtils from "react-dom/test-utils";
 import RecordProvenance from "../../../src/components/record/RecordProvenance";
 import * as RecordState from "../../../src/model/RecordState";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, it } from "vitest";
 
 describe("RequiredProvenance", function () {
   const intlData = enLang;

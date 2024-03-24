@@ -1,10 +1,11 @@
 import * as ActionConstants from "../../../src/constants/ActionConstants";
 import RouterReducer from "../../../src/reducers/RouterReducer";
+import { describe, expect, it, vi } from "vitest";
 
 describe("RouterReducer", function () {
   const routeName = "user",
     payload = { data: 123456 },
-    handlers = { onEvent: jest.fn() };
+    handlers = { onEvent: vi.fn() };
 
   it("leaves state unchanged if action not recognized", () => {
     const initialState = {

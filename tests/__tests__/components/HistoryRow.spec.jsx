@@ -5,11 +5,12 @@ import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
 import HistoryRow from "../../../src/components/history/HistoryRow";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, it, vi } from "vitest";
 
 describe("HistoryRow", function () {
   const intlData = enLang;
   let action = { key: "12345", type: "TEST", author: { username: "test" }, timestamp: 1526074842 },
-    onOpen = jest.fn();
+    onOpen = vi.fn();
 
   it("renders one row of table with 4 columns and 1 button", function () {
     const tree = TestUtils.renderIntoDocument(

@@ -36,6 +36,7 @@ import { API_URL } from "../../../config";
 import en from "../../../src/i18n/en";
 import { mockDateNow, restoreDateNow } from "../../environment/Environment";
 import { errorMessage, successMessage } from "../../../src/model/Message";
+import { vi, expect, describe, it, beforeEach, afterEach } from "vitest";
 
 const members = [{ username: "record1" }, { username: "record2" }];
 
@@ -519,7 +520,7 @@ describe("User asynchronous actions", function () {
 
   it("creates IMPERSONATE_SUCCESS action when user is successfully impersonated", function (done) {
     delete window.location;
-    window.location = { reload: jest.fn() };
+    window.location = { reload: vi.fn() };
 
     const expectedActions = [
       { type: ActionConstants.IMPERSONATE_PENDING },

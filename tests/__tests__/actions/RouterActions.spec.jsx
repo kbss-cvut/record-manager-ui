@@ -1,10 +1,11 @@
 import * as ActionConstants from "../../../src/constants/ActionConstants";
 import { setTransitionPayload, setViewHandlers } from "../../../src/actions/RouterActions";
+import { vi, it, describe, expect } from "vitest";
 
 describe("Router synchronize actions", function () {
   const routeName = "user",
     payload = { data: 123456 },
-    handlers = { onEvent: jest.fn() };
+    handlers = { onEvent: vi.fn() };
 
   it("creates an action to set view handlers", () => {
     const expectedAction = {

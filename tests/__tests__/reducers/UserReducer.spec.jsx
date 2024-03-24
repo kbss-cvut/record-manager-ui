@@ -5,6 +5,7 @@ import UserReducer from "../../../src/reducers/UserReducer";
 import * as ActionConstants from "../../../src/constants/ActionConstants";
 import { ACTION_FLAG, ACTION_STATUS } from "../../../src/constants/DefaultConstants";
 import InstitutionReducer from "../../../src/reducers/InstitutionReducer";
+import { describe, expect, it } from "vitest";
 
 describe("UserReducer", function () {
   const user = { username: "test" },

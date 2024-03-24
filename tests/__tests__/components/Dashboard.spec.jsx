@@ -4,6 +4,7 @@ import TestUtils from "react-dom/test-utils";
 import { ROLE } from "../../../src/constants/DefaultConstants";
 import Dashboard from "../../../src/components/dashboard/Dashboard";
 import enLang from "../../../src/i18n/en";
+import { vi, describe, expect } from "vitest";
 
 describe("Dashboard", function () {
   const intlData = enLang;
@@ -22,13 +23,13 @@ describe("Dashboard", function () {
       role: ROLE.DOCTOR,
     },
     handlers = {
-      showUsers: jest.fn(),
-      showInstitutions: jest.fn(),
-      showRecords: jest.fn(),
-      createRecord: jest.fn(),
-      showMyInstitution: jest.fn(),
-      showMyProfile: jest.fn(),
-      showStatistics: jest.fn(),
+      showUsers: vi.fn(),
+      showInstitutions: vi.fn(),
+      showRecords: vi.fn(),
+      createRecord: vi.fn(),
+      showMyInstitution: vi.fn(),
+      showMyProfile: vi.fn(),
+      showStatistics: vi.fn(),
     };
 
   xit("renders dashboard with title and four buttons", function () {

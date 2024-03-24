@@ -1,5 +1,6 @@
 import { extractLastPageNumber, paramsSerializer } from "../../../src/utils/Utils";
 import { HttpHeaders } from "../../../src/constants/DefaultConstants";
+import { describe, expect, it } from "vitest";
 
 describe("Utils", () => {
   describe("paramsSerializer", () => {

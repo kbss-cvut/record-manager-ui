@@ -4,6 +4,7 @@ import TestUtils from "react-dom/test-utils";
 import Users from "../../../src/components/user/Users";
 import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 
 describe("Users", function () {
   const intlData = enLang;
@@ -20,9 +21,9 @@ describe("Users", function () {
 
   beforeEach(() => {
     handlers = {
-      onEdit: jest.fn(),
-      onCreate: jest.fn(),
-      onDelete: jest.fn(),
+      onEdit: vi.fn(),
+      onCreate: vi.fn(),
+      onDelete: vi.fn(),
     };
     usersLoaded = {
       status: ACTION_STATUS.SUCCESS,

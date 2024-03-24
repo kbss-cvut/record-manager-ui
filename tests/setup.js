@@ -10,3 +10,4 @@ require("dotenv-safe").config({
 });
 global.shallow = shallow;
 global.mount = mount;
+global.xit = test.skip;

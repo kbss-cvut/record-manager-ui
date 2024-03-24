@@ -4,6 +4,7 @@ import React from "react";
 import { IntlProvider } from "react-intl";
 import InstitutionMembers from "../../../src/components/institution/InstitutionMembers";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 
 describe("InstitutionMembers", function () {
   const intlData = enLang;
@@ -11,9 +12,9 @@ describe("InstitutionMembers", function () {
     institutionMembersEmpty,
     members,
     institution,
-    onEditUser = jest.fn(),
-    onAddNewUser = jest.fn(),
-    onDelete = jest.fn(),
+    onEditUser = vi.fn(),
+    onAddNewUser = vi.fn(),
+    onDelete = vi.fn(),
     user,
     admin,
     userDeleted;
