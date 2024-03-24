@@ -43,20 +43,4 @@ export default defineConfig({
       url: "url-parse", // workaround for parse-link-header library that replaces nodejs builtin module with the module adapted for browser
     },
   },
-  test: {
-    open: true,
-    environment: "jsdom",
-    globals: true,
-    setupFiles: ["./tests/setup.js"],
-    testTransformMode: {
-      web: ["jsdom"],
-    },
-    pool: "vmThreads", // Pool used to run tests in.
-    poolOptions: {
-      vmThreads: {
-        memoryLimit: "1MB",
-      },
-    },
-    // Vitest  "deps.inline" is deprecated. If you rely on vite-node directly, use "server.deps.inline" instead. Otherwise, consider using "deps.optimizer.web.include"
-  },
 });
