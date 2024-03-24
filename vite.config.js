@@ -48,5 +48,10 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     setupFiles: ["./tests/setup.js"],
+    server: {
+      deps: {
+        inline: ["@kbss-cvut/s-forms"],
+      },
+    },
   },
 });
