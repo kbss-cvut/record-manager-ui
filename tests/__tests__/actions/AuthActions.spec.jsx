@@ -82,183 +82,193 @@ describe("Auth asynchronize actions", function () {
     store = mockStore();
   });
 
-  it("creates AUTH_USER_SUCCESS action when logging in successfully is done", function (done) {
-    const reply = {
-      errorMessage: null,
-      loggedIn: true,
-      success: true,
-      username: "test",
-    };
-    const expectedActions = [
-      { type: ActionConstants.AUTH_USER_PENDING },
-      { type: ActionConstants.AUTH_USER_SUCCESS, username: user.username },
-      { type: ActionConstants.LOAD_USER_PROFILE_PENDING },
-      { type: ActionConstants.LOAD_USER_PROFILE_SUCCESS, user },
-    ];
+  it("creates AUTH_USER_SUCCESS action when logging in successfully is done", () =>
+    new Promise((done) => {
+      const reply = {
+        errorMessage: null,
+        loggedIn: true,
+        success: true,
+        username: "test",
+      };
+      const expectedActions = [
+        { type: ActionConstants.AUTH_USER_PENDING },
+        { type: ActionConstants.AUTH_USER_SUCCESS, username: user.username },
+        { type: ActionConstants.LOAD_USER_PROFILE_PENDING },
+        { type: ActionConstants.LOAD_USER_PROFILE_SUCCESS, user },
+      ];
 
-    mockApi.onPost(`${API_URL}/j_spring_security_check`).reply(200, reply);
-    mockApi.onGet(`${API_URL}/rest/users/current`).reply(200, user);
+      mockApi.onPost(`${API_URL}/j_spring_security_check`).reply(200, reply);
+      mockApi.onGet(`${API_URL}/rest/users/current`).reply(200, user);
 
-    store.dispatch(actions.login(user.username, user.password, null));
+      store.dispatch(actions.login(user.username, user.password, null));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates AUTH_USER_ERROR action when logging in fails", function (done) {
-    const reply = {
-      errorMessage: "User with username test not found.",
-      loggedIn: false,
-      success: false,
-      username: null,
-    };
-    const expectedActions = [
-      { type: ActionConstants.AUTH_USER_PENDING },
-      { type: ActionConstants.AUTH_USER_ERROR, error: reply },
-    ];
+  it("creates AUTH_USER_ERROR action when logging in fails", () =>
+    new Promise((done) => {
+      const reply = {
+        errorMessage: "User with username test not found.",
+        loggedIn: false,
+        success: false,
+        username: null,
+      };
+      const expectedActions = [
+        { type: ActionConstants.AUTH_USER_PENDING },
+        { type: ActionConstants.AUTH_USER_ERROR, error: reply },
+      ];
 
-    mockApi.onPost(`${API_URL}/j_spring_security_check`).reply(400, reply);
+      mockApi.onPost(`${API_URL}/j_spring_security_check`).reply(400, reply);
 
-    store.dispatch(actions.login(user.username, user.password, null));
+      store.dispatch(actions.login(user.username, user.password, null));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates UNAUTH_USER action when user successfully logs out", function (done) {
-    const expectedActions = [{ type: ActionConstants.UNAUTH_USER }];
-    store.getState().auth = { user };
+  it("creates UNAUTH_USER action when user successfully logs out", () =>
+    new Promise((done) => {
+      const expectedActions = [{ type: ActionConstants.UNAUTH_USER }];
+      store.getState().auth = { user };
 
-    mockApi.onPost(`${API_URL}/j_spring_security_logout`).reply(200);
+      mockApi.onPost(`${API_URL}/j_spring_security_logout`).reply(200);
 
-    store.dispatch(actions.logout(user));
+      store.dispatch(actions.logout(user));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates LOAD_USER_PROFILE_SUCCESS action when current user is successfully loaded", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_USER_PROFILE_PENDING },
-      { type: ActionConstants.LOAD_USER_PROFILE_SUCCESS, user },
-    ];
+  it("creates LOAD_USER_PROFILE_SUCCESS action when current user is successfully loaded", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_USER_PROFILE_PENDING },
+        { type: ActionConstants.LOAD_USER_PROFILE_SUCCESS, user },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/users/current`).reply(200, user);
+      mockApi.onGet(`${API_URL}/rest/users/current`).reply(200, user);
 
-    store.dispatch(actions.loadUserProfile());
+      store.dispatch(actions.loadUserProfile());
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates LOAD_USER_PROFILE_ERROR action when current user is successfully loaded", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_USER_PROFILE_PENDING },
-      { type: ActionConstants.LOAD_USER_PROFILE_ERROR, error },
-    ];
+  it("creates LOAD_USER_PROFILE_ERROR action when current user is successfully loaded", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_USER_PROFILE_PENDING },
+        { type: ActionConstants.LOAD_USER_PROFILE_ERROR, error },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/users/current`).reply(400, error);
+      mockApi.onGet(`${API_URL}/rest/users/current`).reply(400, error);
 
-    store.dispatch(actions.loadUserProfile());
+      store.dispatch(actions.loadUserProfile());
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates PASSWORD_RESET_SUCCESS action when password is successfully reset", function (done) {
-    const email = "admin@gmail.com";
-    const expectedActions = [
-      { type: ActionConstants.PASSWORD_RESET_PENDING },
-      { type: ActionConstants.PASSWORD_RESET_SUCCESS, email },
-    ];
+  it("creates PASSWORD_RESET_SUCCESS action when password is successfully reset", () =>
+    new Promise((done) => {
+      const email = "admin@gmail.com";
+      const expectedActions = [
+        { type: ActionConstants.PASSWORD_RESET_PENDING },
+        { type: ActionConstants.PASSWORD_RESET_SUCCESS, email },
+      ];
 
-    mockApi.onPost(`${API_URL}/rest/users/password-reset`).reply(200);
+      mockApi.onPost(`${API_URL}/rest/users/password-reset`).reply(200);
 
-    store.dispatch(actions.passwordReset(email));
+      store.dispatch(actions.passwordReset(email));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates VALIDATE_TOKEN_SUCCESS action when token exists", function (done) {
-    const token = "12345";
-    const expectedActions = [
-      { type: ActionConstants.VALIDATE_TOKEN_PENDING },
-      { type: ActionConstants.VALIDATE_TOKEN_SUCCESS },
-    ];
+  it("creates VALIDATE_TOKEN_SUCCESS action when token exists", () =>
+    new Promise((done) => {
+      const token = "12345";
+      const expectedActions = [
+        { type: ActionConstants.VALIDATE_TOKEN_PENDING },
+        { type: ActionConstants.VALIDATE_TOKEN_SUCCESS },
+      ];
 
-    mockApi.onPost(`${API_URL}/rest/users/validate-token`).reply(200);
+      mockApi.onPost(`${API_URL}/rest/users/validate-token`).reply(200);
 
-    store.dispatch(actions.validateToken(token));
+      store.dispatch(actions.validateToken(token));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates VALIDATE_TOKEN_ERROR action when token does not exist", function (done) {
-    const token = "12345";
-    const expectedActions = [
-      { type: ActionConstants.VALIDATE_TOKEN_PENDING },
-      { type: ActionConstants.VALIDATE_TOKEN_ERROR },
-    ];
+  it("creates VALIDATE_TOKEN_ERROR action when token does not exist", () =>
+    new Promise((done) => {
+      const token = "12345";
+      const expectedActions = [
+        { type: ActionConstants.VALIDATE_TOKEN_PENDING },
+        { type: ActionConstants.VALIDATE_TOKEN_ERROR },
+      ];
 
-    mockApi.onPost(`${API_URL}/rest/users/validate-token`).reply(400);
+      mockApi.onPost(`${API_URL}/rest/users/validate-token`).reply(400);
 
-    store.dispatch(actions.validateToken(token));
+      store.dispatch(actions.validateToken(token));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates PASSWORD_CHANGE_TOKEN_SUCCESS action when token exists", function (done) {
-    const token = "12345";
-    const password = "12345";
-    const expectedActions = [
-      { type: ActionConstants.PASSWORD_CHANGE_TOKEN_PENDING },
-      { type: ActionConstants.PASSWORD_CHANGE_TOKEN_SUCCESS },
-    ];
+  it("creates PASSWORD_CHANGE_TOKEN_SUCCESS action when token exists", () =>
+    new Promise((done) => {
+      const token = "12345";
+      const password = "12345";
+      const expectedActions = [
+        { type: ActionConstants.PASSWORD_CHANGE_TOKEN_PENDING },
+        { type: ActionConstants.PASSWORD_CHANGE_TOKEN_SUCCESS },
+      ];
 
-    mockApi.onPut(`${API_URL}/rest/users/password-change-token`).reply(200);
+      mockApi.onPut(`${API_URL}/rest/users/password-change-token`).reply(200);
 
-    store.dispatch(actions.changePasswordToken(password, token));
+      store.dispatch(actions.changePasswordToken(password, token));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates PASSWORD_CHANGE_TOKEN_ERROR action when token does not exist", function (done) {
-    const token = "12345";
-    const password = "12345";
-    const expectedActions = [
-      { type: ActionConstants.PASSWORD_CHANGE_TOKEN_PENDING },
-      { type: ActionConstants.PASSWORD_CHANGE_TOKEN_ERROR },
-    ];
+  it("creates PASSWORD_CHANGE_TOKEN_ERROR action when token does not exist", () =>
+    new Promise((done) => {
+      const token = "12345";
+      const password = "12345";
+      const expectedActions = [
+        { type: ActionConstants.PASSWORD_CHANGE_TOKEN_PENDING },
+        { type: ActionConstants.PASSWORD_CHANGE_TOKEN_ERROR },
+      ];
 
-    mockApi.onPut(`${API_URL}/rest/users/password-change-token`).reply(400);
+      mockApi.onPut(`${API_URL}/rest/users/password-change-token`).reply(400);
 
-    store.dispatch(actions.changePasswordToken(password, token));
+      store.dispatch(actions.changePasswordToken(password, token));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 });

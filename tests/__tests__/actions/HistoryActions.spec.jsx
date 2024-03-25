@@ -33,71 +33,75 @@ describe("History asynchronize actions", function () {
     restoreDateNow();
   });
 
-  test.skip("creates LOAD_ACTION_HISTORY_SUCCESS action when loading of action is successfully done", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_ACTION_HISTORY_PENDING },
-      { type: ActionConstants.LOAD_ACTION_HISTORY_SUCCESS, actionHistory: action },
-    ];
+  test.skip("creates LOAD_ACTION_HISTORY_SUCCESS action when loading of action is successfully done", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_ACTION_HISTORY_PENDING },
+        { type: ActionConstants.LOAD_ACTION_HISTORY_SUCCESS, actionHistory: action },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/history/${key}`).reply(200, action);
+      mockApi.onGet(`${API_URL}/rest/history/${key}`).reply(200, action);
 
-    store.dispatch(loadActionByKey(key));
+      store.dispatch(loadActionByKey(key));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  test.skip("creates LOAD_ACTION_HISTORY_ERROR action if an error occurred during loading of action", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_ACTION_HISTORY_PENDING },
-      { type: ActionConstants.LOAD_ACTION_HISTORY_ERROR, error },
-    ];
+  test.skip("creates LOAD_ACTION_HISTORY_ERROR action if an error occurred during loading of action", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_ACTION_HISTORY_PENDING },
+        { type: ActionConstants.LOAD_ACTION_HISTORY_ERROR, error },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/history/${key}`).reply(400, error);
+      mockApi.onGet(`${API_URL}/rest/history/${key}`).reply(400, error);
 
-    store.dispatch(loadActionByKey(key));
+      store.dispatch(loadActionByKey(key));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  test.skip("creates LOAD_ACTIONS_HISTORY_SUCCESS action when loading of actions is successfully done", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_ACTIONS_HISTORY_PENDING },
-      { type: ActionConstants.LOAD_ACTIONS_HISTORY_SUCCESS, actionsHistory: actions },
-    ];
+  test.skip("creates LOAD_ACTIONS_HISTORY_SUCCESS action when loading of actions is successfully done", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_ACTIONS_HISTORY_PENDING },
+        { type: ActionConstants.LOAD_ACTIONS_HISTORY_SUCCESS, actionsHistory: actions },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/history?page=1`).reply(200, actions);
+      mockApi.onGet(`${API_URL}/rest/history?page=1`).reply(200, actions);
 
-    store.dispatch(loadActions(1, null));
+      store.dispatch(loadActions(1, null));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates LOAD_ACTIONS_HISTORY_ERROR action if an error occurred during loading of actions", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_ACTIONS_HISTORY_PENDING },
-      { type: ActionConstants.LOAD_ACTIONS_HISTORY_ERROR, error },
-      {
-        type: ActionConstants.PUBLISH_MESSAGE,
-        message: errorMessage("history.loading-error", { error: error.message }),
-      },
-    ];
+  it("creates LOAD_ACTIONS_HISTORY_ERROR action if an error occurred during loading of actions", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_ACTIONS_HISTORY_PENDING },
+        { type: ActionConstants.LOAD_ACTIONS_HISTORY_ERROR, error },
+        {
+          type: ActionConstants.PUBLISH_MESSAGE,
+          message: errorMessage("history.loading-error", { error: error.message }),
+        },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/history?page=1&size=${DEFAULT_PAGE_SIZE}`).reply(400, error);
+      mockApi.onGet(`${API_URL}/rest/history?page=1&size=${DEFAULT_PAGE_SIZE}`).reply(400, error);
 
-    store.dispatch(loadActions(1, null));
+      store.dispatch(loadActions(1, null));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 });
