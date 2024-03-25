@@ -6,7 +6,7 @@ import TestUtils from "react-dom/test-utils";
 import RequiredAttributes from "../../../src/components/record/RequiredAttributes";
 import * as RecordState from "../../../src/model/RecordState";
 import enLang from "../../../src/i18n/en";
-import { describe, expect, vi } from "vitest";
+import { describe, expect, vi, test } from "vitest";
 
 describe("RequiredAttributes", function () {
   const intlData = enLang;
@@ -24,7 +24,7 @@ describe("RequiredAttributes", function () {
     state: RecordState.createRecordState(),
   };
 
-  xit("renders form with one input and help", function () {
+  test.skip("renders form with one input and help", function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
         <RequiredAttributes record={record} onChange={onChange} completed={completed} />

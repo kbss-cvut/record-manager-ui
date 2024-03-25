@@ -9,7 +9,7 @@ import { API_URL } from "../../../config";
 import { errorMessage } from "../../../src/model/Message";
 import { mockDateNow, restoreDateNow } from "../../environment/Environment";
 import { DEFAULT_PAGE_SIZE } from "../../../src/constants/DefaultConstants";
-import { it, describe, expect, beforeEach, afterEach } from "vitest";
+import { it, describe, expect, beforeEach, afterEach, test } from "vitest";
 
 const middlewares = [thunk.withExtraArgument(axiosBackend)];
 const mockStore = configureMockStore(middlewares);
@@ -33,7 +33,7 @@ describe("History asynchronize actions", function () {
     restoreDateNow();
   });
 
-  xit("creates LOAD_ACTION_HISTORY_SUCCESS action when loading of action is successfully done", function (done) {
+  test.skip("creates LOAD_ACTION_HISTORY_SUCCESS action when loading of action is successfully done", function (done) {
     const expectedActions = [
       { type: ActionConstants.LOAD_ACTION_HISTORY_PENDING },
       { type: ActionConstants.LOAD_ACTION_HISTORY_SUCCESS, actionHistory: action },
@@ -49,7 +49,7 @@ describe("History asynchronize actions", function () {
     }, TEST_TIMEOUT);
   });
 
-  xit("creates LOAD_ACTION_HISTORY_ERROR action if an error occurred during loading of action", function (done) {
+  test.skip("creates LOAD_ACTION_HISTORY_ERROR action if an error occurred during loading of action", function (done) {
     const expectedActions = [
       { type: ActionConstants.LOAD_ACTION_HISTORY_PENDING },
       { type: ActionConstants.LOAD_ACTION_HISTORY_ERROR, error },
@@ -65,7 +65,7 @@ describe("History asynchronize actions", function () {
     }, TEST_TIMEOUT);
   });
 
-  xit("creates LOAD_ACTIONS_HISTORY_SUCCESS action when loading of actions is successfully done", function (done) {
+  test.skip("creates LOAD_ACTIONS_HISTORY_SUCCESS action when loading of actions is successfully done", function (done) {
     const expectedActions = [
       { type: ActionConstants.LOAD_ACTIONS_HISTORY_PENDING },
       { type: ActionConstants.LOAD_ACTIONS_HISTORY_SUCCESS, actionsHistory: actions },

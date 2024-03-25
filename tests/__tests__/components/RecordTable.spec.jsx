@@ -5,7 +5,7 @@ import RecordTable from "../../../src/components/record/RecordTable";
 import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
 import enLang from "../../../src/i18n/en";
 import { ROLE } from "../../../src/constants/DefaultConstants";
-import { describe, expect, vi, beforeEach } from "vitest";
+import { describe, expect, vi, beforeEach, test } from "vitest";
 
 describe("RecordTable", function () {
   const intlData = enLang;
@@ -36,7 +36,7 @@ describe("RecordTable", function () {
     };
   });
 
-  xit("renders table with headers and columns", function () {
+  test.skip("renders table with headers and columns", function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
         <RecordTable
@@ -57,7 +57,7 @@ describe("RecordTable", function () {
     expect(td.length).toEqual(10);
   });
 
-  xit('renders 2 "Open" buttons and 4 link buttons and click on it', function () {
+  test.skip('renders 2 "Open" buttons and 4 link buttons and click on it', function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
         <RecordTable
