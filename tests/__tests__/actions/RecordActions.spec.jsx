@@ -216,26 +216,25 @@ describe("Record asynchronous actions", function () {
       }, TEST_TIMEOUT);
     }));
 
-  it("creates DELETE_RECORD_SUCCESS action when deleting record successfully is done", () =>
-    new Promise((done) => {
-      const expectedActions = [
-        { type: ActionConstants.DELETE_RECORD_PENDING, key: record.key },
-        { type: ActionConstants.LOAD_RECORDS_PENDING },
-        { type: ActionConstants.DELETE_RECORD_SUCCESS, record, key: record.key },
-        { type: ActionConstants.PUBLISH_MESSAGE, message: successMessage("record.delete-success") },
-        { type: ActionConstants.LOAD_RECORDS_SUCCESS, records },
-      ];
+  it("creates DELETE_RECORD_SUCCESS action when deleting record successfully is done", (done) => {
+    const expectedActions = [
+      { type: ActionConstants.DELETE_RECORD_PENDING, key: record.key },
+      { type: ActionConstants.LOAD_RECORDS_PENDING },
+      { type: ActionConstants.DELETE_RECORD_SUCCESS, record, key: record.key },
+      { type: ActionConstants.PUBLISH_MESSAGE, message: successMessage("record.delete-success") },
+      { type: ActionConstants.LOAD_RECORDS_SUCCESS, records },
+    ];
 
-      mockApi.onDelete(`${API_URL}/rest/records/${record.key}`).reply(200);
-      mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
+    mockApi.onDelete(`${API_URL}/rest/records/${record.key}`).reply(200);
+    mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
 
-      store.dispatch(deleteRecord(record));
+    store.dispatch(deleteRecord(record));
 
-      setTimeout(() => {
-        expect(store.getActions()).toEqual(expectedActions);
-        done();
-      }, TEST_TIMEOUT);
-    }));
+    setTimeout(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+      done();
+    }, 5000);
+  });
 
   it("creates DELETE_RECORD_ERROR action if an error occurred during deleting record", () =>
     new Promise((done) => {
