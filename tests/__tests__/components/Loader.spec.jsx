@@ -3,6 +3,7 @@ import TestUtils from "react-dom/test-utils";
 import Loader, { LoaderMask, LoaderCard } from "../../../src/components/Loader";
 import { IntlProvider } from "react-intl";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, it } from "vitest";
 
 describe("Loader", function () {
   const intlData = enLang;

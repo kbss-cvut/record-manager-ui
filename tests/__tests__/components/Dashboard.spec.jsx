@@ -4,6 +4,7 @@ import TestUtils from "react-dom/test-utils";
 import { ROLE } from "../../../src/constants/DefaultConstants";
 import Dashboard from "../../../src/components/dashboard/Dashboard";
 import enLang from "../../../src/i18n/en";
+import { vi, describe, expect, test } from "vitest";
 
 describe("Dashboard", function () {
   const intlData = enLang;
@@ -22,16 +23,16 @@ describe("Dashboard", function () {
       role: ROLE.DOCTOR,
     },
     handlers = {
-      showUsers: jest.fn(),
-      showInstitutions: jest.fn(),
-      showRecords: jest.fn(),
-      createRecord: jest.fn(),
-      showMyInstitution: jest.fn(),
-      showMyProfile: jest.fn(),
-      showStatistics: jest.fn(),
+      showUsers: vi.fn(),
+      showInstitutions: vi.fn(),
+      showRecords: vi.fn(),
+      createRecord: vi.fn(),
+      showMyInstitution: vi.fn(),
+      showMyProfile: vi.fn(),
+      showStatistics: vi.fn(),
     };
 
-  xit("renders dashboard with title and four buttons", function () {
+  test.skip("renders dashboard with title and four buttons", function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
         <Dashboard currentUser={currentUserAdmin} handlers={handlers} />
@@ -53,7 +54,7 @@ describe("Dashboard", function () {
     expect(cols.length).toEqual(5);
   });
 
-  xit("renders four buttons to admin and click on them", function () {
+  test.skip("renders four buttons to admin and click on them", function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
         <Dashboard currentUser={currentUserAdmin} handlers={handlers} />
@@ -78,7 +79,7 @@ describe("Dashboard", function () {
     expect(handlers.showStatistics).toHaveBeenCalled();
   });
 
-  xit("renders four buttons to doctor with institution and click on them", function () {
+  test.skip("renders four buttons to doctor with institution and click on them", function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
         <Dashboard currentUser={doctorWithInstitution} handlers={handlers} />
@@ -100,7 +101,7 @@ describe("Dashboard", function () {
     expect(handlers.showRecords).toHaveBeenCalled();
   });
 
-  xit("renders three buttons to doctor without institution and click on them", function () {
+  test.skip("renders three buttons to doctor without institution and click on them", function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
         <Dashboard currentUser={doctorWithoutInstitution} handlers={handlers} />

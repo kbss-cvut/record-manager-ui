@@ -7,6 +7,7 @@ import { ROLE } from "../../../src/constants/DefaultConstants";
 import PasswordChange from "../../../src/components/user/PasswordChange";
 import * as UserFactory from "../../../src/utils/EntityFactory";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 
 describe("PasswordChange", function () {
   const intlData = enLang;
@@ -14,9 +15,9 @@ describe("PasswordChange", function () {
 
   beforeEach(() => {
     handlers = {
-      onSave: jest.fn(),
-      onCancel: jest.fn(),
-      onChange: jest.fn(),
+      onSave: vi.fn(),
+      onCancel: vi.fn(),
+      onChange: vi.fn(),
     };
     valid = true;
   });

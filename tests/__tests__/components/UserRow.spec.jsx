@@ -5,13 +5,14 @@ import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
 import UserRow from "../../../src/components/user/UserRow";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, it, vi } from "vitest";
 
 describe("UserRow", function () {
   const intlData = enLang;
   let user,
     deletionLoading = false,
-    onEdit = jest.fn(),
-    onDelete = jest.fn();
+    onEdit = vi.fn(),
+    onDelete = vi.fn();
 
   user = {
     uri: "http://onto.fel.cvut.cz/ontologies/record-manager/Admin-Administratorowitch",

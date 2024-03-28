@@ -6,6 +6,7 @@ import TestUtils from "react-dom/test-utils";
 import { ACTION_STATUS, ROLE, SortDirection } from "../../../src/constants/DefaultConstants";
 import Institution from "../../../src/components/institution/Institution";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 
 describe("Institution", function () {
   const intlData = enLang;
@@ -22,14 +23,14 @@ describe("Institution", function () {
     filterAndSort,
     formTemplatesLoaded = {},
     handlers = {
-      onSave: jest.fn(),
-      onCancel: jest.fn(),
-      onChange: jest.fn(),
-      onEditUser: jest.fn(),
-      onAddNewUser: jest.fn(),
-      onDelete: jest.fn(),
-      onEditPatient: jest.fn(),
-      onExportRecords: jest.fn(),
+      onSave: vi.fn(),
+      onCancel: vi.fn(),
+      onChange: vi.fn(),
+      onEditUser: vi.fn(),
+      onAddNewUser: vi.fn(),
+      onDelete: vi.fn(),
+      onEditPatient: vi.fn(),
+      onExportRecords: vi.fn(),
     };
 
   user = {
@@ -72,7 +73,7 @@ describe("Institution", function () {
     filterAndSort = {
       sort: { date: SortDirection.DESC },
       filters: {},
-      onChange: jest.fn(),
+      onChange: vi.fn(),
     };
   });
 

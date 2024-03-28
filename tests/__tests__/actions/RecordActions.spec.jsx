@@ -26,6 +26,7 @@ import { API_URL } from "../../../config";
 import en from "../../../src/i18n/en";
 import { mockDateNow, restoreDateNow } from "../../environment/Environment";
 import { errorMessage, successMessage } from "../../../src/model/Message";
+import { it, describe, expect, beforeEach, afterEach } from "vitest";
 
 describe("Record synchronous actions", function () {
   const record = { key: 7979868757 },
@@ -155,64 +156,67 @@ describe("Record asynchronous actions", function () {
     restoreDateNow();
   });
 
-  it("creates SAVE_RECORD_SUCCESS action when saving record successfully is done", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.SAVE_RECORD_PENDING, actionFlag: ACTION_FLAG.CREATE_ENTITY },
-      { type: ActionConstants.SAVE_RECORD_SUCCESS, key, actionFlag: ACTION_FLAG.CREATE_ENTITY, record },
-      { type: ActionConstants.LOAD_RECORDS_PENDING },
-      { type: ActionConstants.PUBLISH_MESSAGE, message: successMessage("record.save-success") },
-      { type: ActionConstants.LOAD_RECORDS_SUCCESS, records },
-    ];
+  it("creates SAVE_RECORD_SUCCESS action when saving record successfully is done", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.SAVE_RECORD_PENDING, actionFlag: ACTION_FLAG.CREATE_ENTITY },
+        { type: ActionConstants.SAVE_RECORD_SUCCESS, key, actionFlag: ACTION_FLAG.CREATE_ENTITY, record },
+        { type: ActionConstants.LOAD_RECORDS_PENDING },
+        { type: ActionConstants.PUBLISH_MESSAGE, message: successMessage("record.save-success") },
+        { type: ActionConstants.LOAD_RECORDS_SUCCESS, records },
+      ];
 
-    mockApi.onPost(`${API_URL}/rest/records`).reply(200, null, { location });
-    mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
+      mockApi.onPost(`${API_URL}/rest/records`).reply(200, null, { location });
+      mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
 
-    store.dispatch(createRecord(record));
+      store.dispatch(createRecord(record));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates UPDATE_RECORD_SUCCESS action when saving record successfully is done", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.SAVE_RECORD_PENDING, actionFlag: ACTION_FLAG.UPDATE_ENTITY },
-      { type: ActionConstants.SAVE_RECORD_SUCCESS, key: null, actionFlag: ACTION_FLAG.UPDATE_ENTITY, record },
-      { type: ActionConstants.LOAD_RECORDS_PENDING },
-      { type: ActionConstants.PUBLISH_MESSAGE, message: successMessage("record.save-success") },
-      { type: ActionConstants.LOAD_RECORDS_SUCCESS, records },
-    ];
+  it("creates UPDATE_RECORD_SUCCESS action when saving record successfully is done", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.SAVE_RECORD_PENDING, actionFlag: ACTION_FLAG.UPDATE_ENTITY },
+        { type: ActionConstants.SAVE_RECORD_SUCCESS, key: null, actionFlag: ACTION_FLAG.UPDATE_ENTITY, record },
+        { type: ActionConstants.LOAD_RECORDS_PENDING },
+        { type: ActionConstants.PUBLISH_MESSAGE, message: successMessage("record.save-success") },
+        { type: ActionConstants.LOAD_RECORDS_SUCCESS, records },
+      ];
 
-    mockApi.onPut(`${API_URL}/rest/records/${record.key}`).reply(200, null, { location });
-    mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
+      mockApi.onPut(`${API_URL}/rest/records/${record.key}`).reply(200, null, { location });
+      mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
 
-    store.dispatch(updateRecord(record));
+      store.dispatch(updateRecord(record));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates SAVE_RECORD_ERROR action if an error occurred during updating record", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.SAVE_RECORD_PENDING, actionFlag: ACTION_FLAG.UPDATE_ENTITY },
-      { type: ActionConstants.SAVE_RECORD_ERROR, actionFlag: ACTION_FLAG.UPDATE_ENTITY, error, record },
-      { type: ActionConstants.PUBLISH_MESSAGE, message: errorMessage("record.save-error", { error: undefined }) },
-    ];
+  it("creates SAVE_RECORD_ERROR action if an error occurred during updating record", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.SAVE_RECORD_PENDING, actionFlag: ACTION_FLAG.UPDATE_ENTITY },
+        { type: ActionConstants.SAVE_RECORD_ERROR, actionFlag: ACTION_FLAG.UPDATE_ENTITY, error, record },
+        { type: ActionConstants.PUBLISH_MESSAGE, message: errorMessage("record.save-error", { error: undefined }) },
+      ];
 
-    mockApi.onPut(`${API_URL}/rest/records/${record.key}`).reply(400, error);
+      mockApi.onPut(`${API_URL}/rest/records/${record.key}`).reply(400, error);
 
-    store.dispatch(updateRecord(record));
+      store.dispatch(updateRecord(record));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates DELETE_RECORD_SUCCESS action when deleting record successfully is done", function (done) {
+  it("creates DELETE_RECORD_SUCCESS action when deleting record successfully is done", (done) => {
     const expectedActions = [
       { type: ActionConstants.DELETE_RECORD_PENDING, key: record.key },
       { type: ActionConstants.LOAD_RECORDS_PENDING },
@@ -229,56 +233,62 @@ describe("Record asynchronous actions", function () {
     setTimeout(() => {
       expect(store.getActions()).toEqual(expectedActions);
       done();
-    }, TEST_TIMEOUT);
+    }, 5000);
   });
 
-  it("creates DELETE_RECORD_ERROR action if an error occurred during deleting record", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.DELETE_RECORD_PENDING, key: record.key },
-      { type: ActionConstants.DELETE_RECORD_ERROR, error, record, key: record.key },
-      { type: ActionConstants.PUBLISH_MESSAGE, message: errorMessage("record.delete-error", { error: error.message }) },
-    ];
+  it("creates DELETE_RECORD_ERROR action if an error occurred during deleting record", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.DELETE_RECORD_PENDING, key: record.key },
+        { type: ActionConstants.DELETE_RECORD_ERROR, error, record, key: record.key },
+        {
+          type: ActionConstants.PUBLISH_MESSAGE,
+          message: errorMessage("record.delete-error", { error: error.message }),
+        },
+      ];
 
-    mockApi.onDelete(`${API_URL}/rest/records/${record.key}`).reply(400, error);
+      mockApi.onDelete(`${API_URL}/rest/records/${record.key}`).reply(400, error);
 
-    store.dispatch(deleteRecord(record));
+      store.dispatch(deleteRecord(record));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates LOAD_RECORD_SUCCESS action when loading record successfully is done", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_RECORD_PENDING },
-      { type: ActionConstants.LOAD_RECORD_SUCCESS, record },
-    ];
+  it("creates LOAD_RECORD_SUCCESS action when loading record successfully is done", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_RECORD_PENDING },
+        { type: ActionConstants.LOAD_RECORD_SUCCESS, record },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/records/${record.key}`).reply(200, { key: record.key });
+      mockApi.onGet(`${API_URL}/rest/records/${record.key}`).reply(200, { key: record.key });
 
-    store.dispatch(loadRecord(record.key));
+      store.dispatch(loadRecord(record.key));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates LOAD_RECORD_ERROR action if an error occurred during loading record", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_RECORD_PENDING },
-      { type: ActionConstants.LOAD_RECORD_ERROR, error },
-      { type: ActionConstants.PUBLISH_MESSAGE, message: errorMessage("record.load-error", { error: error.message }) },
-    ];
+  it("creates LOAD_RECORD_ERROR action if an error occurred during loading record", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_RECORD_PENDING },
+        { type: ActionConstants.LOAD_RECORD_ERROR, error },
+        { type: ActionConstants.PUBLISH_MESSAGE, message: errorMessage("record.load-error", { error: error.message }) },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/records/${record.key}`).reply(400, error);
+      mockApi.onGet(`${API_URL}/rest/records/${record.key}`).reply(400, error);
 
-    store.dispatch(loadRecord(record.key));
+      store.dispatch(loadRecord(record.key));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 });

@@ -6,6 +6,7 @@ import TestUtils from "react-dom/test-utils";
 import Institutions from "../../../src/components/institution/Institutions";
 import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 
 describe("Institutions", function () {
   const intlData = enLang;
@@ -31,9 +32,9 @@ describe("Institutions", function () {
       status: ACTION_STATUS.SUCCESS,
     };
     handlers = {
-      onEdit: jest.fn(),
-      onCreate: jest.fn(),
-      onDelete: jest.fn(),
+      onEdit: vi.fn(),
+      onCreate: vi.fn(),
+      onDelete: vi.fn(),
     };
     institutionsLoaded = {
       status: ACTION_STATUS.SUCCESS,

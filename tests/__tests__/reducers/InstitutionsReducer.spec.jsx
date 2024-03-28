@@ -1,6 +1,7 @@
 import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
 import * as ActionConstants from "../../../src/constants/ActionConstants";
 import InstitutionsReducer from "../../../src/reducers/InstitutionsReducer";
+import { describe, expect, it } from "vitest";
 
 describe("InstitutionsReducer", function () {
   const institutions = [{ key: "test1" }, { key: "test2" }],

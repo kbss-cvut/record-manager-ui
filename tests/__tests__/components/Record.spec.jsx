@@ -7,8 +7,13 @@ import { ACTION_STATUS, ROLE } from "../../../src/constants/DefaultConstants";
 import Record from "../../../src/components/record/Record";
 import * as RecordState from "../../../src/model/RecordState";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 
-jest.mock("../../../src/components/record/TypeaheadAnswer", () => () => <input />);
+vi.mock("../../../src/components/record/TypeaheadAnswer", () => {
+  return {
+    default: () => ({}),
+  };
+});
 
 describe.skip("Record", function () {
   const intlData = enLang;
@@ -20,12 +25,12 @@ describe.skip("Record", function () {
     formgen = {},
     currentUser,
     handlers = {
-      onSave: jest.fn(),
-      onCancel: jest.fn(),
-      onChange: jest.fn(),
-      onEditUser: jest.fn(),
-      onAddNewUser: jest.fn(),
-      onDelete: jest.fn(),
+      onSave: vi.fn(),
+      onCancel: vi.fn(),
+      onChange: vi.fn(),
+      onEditUser: vi.fn(),
+      onAddNewUser: vi.fn(),
+      onDelete: vi.fn(),
     };
 
   beforeEach(() => {

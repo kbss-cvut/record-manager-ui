@@ -3,10 +3,11 @@ import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
 import Pagination from "../../../src/components/misc/Pagination";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, it, vi } from "vitest";
 
 describe("Pagination", function () {
   const intlData = enLang;
-  let handlePagination = jest.fn();
+  let handlePagination = vi.fn();
 
   it("renders pagination with first, previous and next button", function () {
     const tree = TestUtils.renderIntoDocument(

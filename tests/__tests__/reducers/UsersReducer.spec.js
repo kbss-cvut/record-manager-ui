@@ -4,6 +4,7 @@ import React from "react";
 import * as ActionConstants from "../../../src/constants/ActionConstants";
 import UsersReducer from "../../../src/reducers/UsersReducer";
 import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
+import { describe, expect, it } from "vitest";
 
 describe("UsersReducer", function () {
   const users = [{ username: "test1" }, { username: "test2" }],

@@ -1,6 +1,7 @@
 import { ACTION_FLAG, ACTION_STATUS } from "../../../src/constants/DefaultConstants";
 import * as ActionConstants from "../../../src/constants/ActionConstants";
 import InstitutionReducer from "../../../src/reducers/InstitutionReducer";
+import { describe, expect, it } from "vitest";
 
 describe("InstitutionReducer", function () {
   const institution = {

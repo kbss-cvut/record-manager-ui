@@ -4,6 +4,7 @@ import { IntlProvider } from "react-intl";
 import InstitutionPatients from "../../../src/components/institution/InstitutionPatients";
 import enLang from "../../../src/i18n/en";
 import { ROLE, SortDirection } from "../../../src/constants/DefaultConstants";
+import { describe, expect, it, vi } from "vitest";
 
 describe("InstitutionPatients", function () {
   const intlData = enLang;
@@ -18,10 +19,10 @@ describe("InstitutionPatients", function () {
         date: SortDirection.DESC,
       },
       filters: {},
-      onChange: jest.fn(),
+      onChange: vi.fn(),
     },
-    onEdit = jest.fn(),
-    onExport = jest.fn();
+    onEdit = vi.fn(),
+    onExport = vi.fn();
 
   it("renders card", function () {
     recordsLoaded = {

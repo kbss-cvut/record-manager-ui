@@ -26,6 +26,7 @@ import { API_URL } from "../../../config";
 import en from "../../../src/i18n/en";
 import { errorMessage, successMessage } from "../../../src/model/Message";
 import { mockDateNow, restoreDateNow } from "../../environment/Environment";
+import { it, describe, expect, beforeEach, afterEach } from "vitest";
 
 describe("Institution synchronous actions", function () {
   const institution = { key: 7979868757 },
@@ -150,164 +151,172 @@ describe("Institution asynchronous actions", function () {
     restoreDateNow();
   });
 
-  it("creates SAVE_INSTITUTION_SUCCESS action when saving institution successfully is done", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.SAVE_INSTITUTION_PENDING, actionFlag: ACTION_FLAG.CREATE_ENTITY },
-      { type: ActionConstants.SAVE_INSTITUTION_SUCCESS, key, actionFlag: ACTION_FLAG.CREATE_ENTITY, institution },
-      { type: ActionConstants.LOAD_INSTITUTIONS_PENDING },
-      { type: ActionConstants.PUBLISH_MESSAGE, message: successMessage("institution.save-success") },
-      { type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS, institutions },
-    ];
+  it("creates SAVE_INSTITUTION_SUCCESS action when saving institution successfully is done", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.SAVE_INSTITUTION_PENDING, actionFlag: ACTION_FLAG.CREATE_ENTITY },
+        { type: ActionConstants.SAVE_INSTITUTION_SUCCESS, key, actionFlag: ACTION_FLAG.CREATE_ENTITY, institution },
+        { type: ActionConstants.LOAD_INSTITUTIONS_PENDING },
+        { type: ActionConstants.PUBLISH_MESSAGE, message: successMessage("institution.save-success") },
+        { type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS, institutions },
+      ];
 
-    mockApi.onPost(`${API_URL}/rest/institutions`).reply(200, null, { location });
-    mockApi.onGet(`${API_URL}/rest/institutions`).reply(200, institutions);
+      mockApi.onPost(`${API_URL}/rest/institutions`).reply(200, null, { location });
+      mockApi.onGet(`${API_URL}/rest/institutions`).reply(200, institutions);
 
-    store.dispatch(createInstitution(institution));
+      store.dispatch(createInstitution(institution));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates SAVE_INSTITUTION_ERROR action if an error occurred during creating institution", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.SAVE_INSTITUTION_PENDING, actionFlag: ACTION_FLAG.CREATE_ENTITY },
-      { type: ActionConstants.SAVE_INSTITUTION_ERROR, actionFlag: ACTION_FLAG.CREATE_ENTITY, error, institution },
-      {
-        type: ActionConstants.PUBLISH_MESSAGE,
-        message: errorMessage("institution.save-error", { error: error.message }),
-      },
-    ];
+  it("creates SAVE_INSTITUTION_ERROR action if an error occurred during creating institution", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.SAVE_INSTITUTION_PENDING, actionFlag: ACTION_FLAG.CREATE_ENTITY },
+        { type: ActionConstants.SAVE_INSTITUTION_ERROR, actionFlag: ACTION_FLAG.CREATE_ENTITY, error, institution },
+        {
+          type: ActionConstants.PUBLISH_MESSAGE,
+          message: errorMessage("institution.save-error", { error: error.message }),
+        },
+      ];
 
-    mockApi.onPost(`${API_URL}/rest/institutions`).reply(400, error);
+      mockApi.onPost(`${API_URL}/rest/institutions`).reply(400, error);
 
-    store.dispatch(createInstitution(institution));
+      store.dispatch(createInstitution(institution));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates UPDATE_INSTITUTION_SUCCESS action when saving institution successfully is done", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.SAVE_INSTITUTION_PENDING, actionFlag: ACTION_FLAG.UPDATE_ENTITY },
-      {
-        type: ActionConstants.SAVE_INSTITUTION_SUCCESS,
-        key: null,
-        actionFlag: ACTION_FLAG.UPDATE_ENTITY,
-        institution,
-      },
-      { type: ActionConstants.LOAD_INSTITUTIONS_PENDING },
-      { type: ActionConstants.PUBLISH_MESSAGE, message: successMessage("institution.save-success") },
-      { type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS, institutions },
-    ];
+  it("creates UPDATE_INSTITUTION_SUCCESS action when saving institution successfully is done", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.SAVE_INSTITUTION_PENDING, actionFlag: ACTION_FLAG.UPDATE_ENTITY },
+        {
+          type: ActionConstants.SAVE_INSTITUTION_SUCCESS,
+          key: null,
+          actionFlag: ACTION_FLAG.UPDATE_ENTITY,
+          institution,
+        },
+        { type: ActionConstants.LOAD_INSTITUTIONS_PENDING },
+        { type: ActionConstants.PUBLISH_MESSAGE, message: successMessage("institution.save-success") },
+        { type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS, institutions },
+      ];
 
-    mockApi.onPut(`${API_URL}/rest/institutions/${institution.key}`).reply(200, null, { location });
-    mockApi.onGet(`${API_URL}/rest/institutions`).reply(200, institutions);
+      mockApi.onPut(`${API_URL}/rest/institutions/${institution.key}`).reply(200, null, { location });
+      mockApi.onGet(`${API_URL}/rest/institutions`).reply(200, institutions);
 
-    store.dispatch(updateInstitution(institution));
+      store.dispatch(updateInstitution(institution));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates SAVE_INSTITUTION_ERROR action if an error occurred during updating institution", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.SAVE_INSTITUTION_PENDING, actionFlag: ACTION_FLAG.UPDATE_ENTITY },
-      { type: ActionConstants.SAVE_INSTITUTION_ERROR, actionFlag: ACTION_FLAG.UPDATE_ENTITY, error, institution },
-      {
-        type: ActionConstants.PUBLISH_MESSAGE,
-        message: errorMessage("institution.save-error", { error: error.message }),
-      },
-    ];
+  it("creates SAVE_INSTITUTION_ERROR action if an error occurred during updating institution", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.SAVE_INSTITUTION_PENDING, actionFlag: ACTION_FLAG.UPDATE_ENTITY },
+        { type: ActionConstants.SAVE_INSTITUTION_ERROR, actionFlag: ACTION_FLAG.UPDATE_ENTITY, error, institution },
+        {
+          type: ActionConstants.PUBLISH_MESSAGE,
+          message: errorMessage("institution.save-error", { error: error.message }),
+        },
+      ];
 
-    mockApi.onPut(`${API_URL}/rest/institutions/${institution.key}`).reply(400, error);
+      mockApi.onPut(`${API_URL}/rest/institutions/${institution.key}`).reply(400, error);
 
-    store.dispatch(updateInstitution(institution));
+      store.dispatch(updateInstitution(institution));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates DELETE_INSTITUTION_SUCCESS action when deleting institution successfully is done", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.DELETE_INSTITUTION_PENDING, key: institution.key },
-      { type: ActionConstants.LOAD_INSTITUTIONS_PENDING },
-      { type: ActionConstants.DELETE_INSTITUTION_SUCCESS, institution },
-      { type: ActionConstants.PUBLISH_MESSAGE, message: successMessage("institution.delete-success") },
-      { type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS, institutions },
-    ];
+  it("creates DELETE_INSTITUTION_SUCCESS action when deleting institution successfully is done", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.DELETE_INSTITUTION_PENDING, key: institution.key },
+        { type: ActionConstants.LOAD_INSTITUTIONS_PENDING },
+        { type: ActionConstants.DELETE_INSTITUTION_SUCCESS, institution },
+        { type: ActionConstants.PUBLISH_MESSAGE, message: successMessage("institution.delete-success") },
+        { type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS, institutions },
+      ];
 
-    mockApi.onDelete(`${API_URL}/rest/institutions/${institution.key}`).reply(200);
-    mockApi.onGet(`${API_URL}/rest/institutions`).reply(200, institutions);
+      mockApi.onDelete(`${API_URL}/rest/institutions/${institution.key}`).reply(200);
+      mockApi.onGet(`${API_URL}/rest/institutions`).reply(200, institutions);
 
-    store.dispatch(deleteInstitution(institution));
+      store.dispatch(deleteInstitution(institution));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates DELETE_INSTITUTION_ERROR action if an error occurred during institution delete", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.DELETE_INSTITUTION_PENDING, key: institution.key },
-      { type: ActionConstants.DELETE_INSTITUTION_ERROR, error, institution },
-      {
-        type: ActionConstants.PUBLISH_MESSAGE,
-        message: errorMessage("institution.delete-error", { error: undefined }),
-      },
-    ];
+  it("creates DELETE_INSTITUTION_ERROR action if an error occurred during institution delete", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.DELETE_INSTITUTION_PENDING, key: institution.key },
+        { type: ActionConstants.DELETE_INSTITUTION_ERROR, error, institution },
+        {
+          type: ActionConstants.PUBLISH_MESSAGE,
+          message: errorMessage("institution.delete-error", { error: undefined }),
+        },
+      ];
 
-    mockApi.onDelete(`${API_URL}/rest/institutions/${institution.key}`).reply(400, error);
+      mockApi.onDelete(`${API_URL}/rest/institutions/${institution.key}`).reply(400, error);
 
-    store.dispatch(deleteInstitution(institution));
+      store.dispatch(deleteInstitution(institution));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates LOAD_INSTITUTION_SUCCESS action when loading institution successfully is done", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_INSTITUTION_PENDING },
-      { type: ActionConstants.LOAD_INSTITUTION_SUCCESS, institution },
-    ];
+  it("creates LOAD_INSTITUTION_SUCCESS action when loading institution successfully is done", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_INSTITUTION_PENDING },
+        { type: ActionConstants.LOAD_INSTITUTION_SUCCESS, institution },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/institutions/${institution.key}`).reply(200, { key: institution.key });
+      mockApi.onGet(`${API_URL}/rest/institutions/${institution.key}`).reply(200, { key: institution.key });
 
-    store.dispatch(loadInstitution(institution.key));
+      store.dispatch(loadInstitution(institution.key));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates LOAD_INSTITUTION_ERROR action if an error occurred during loading institution", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_INSTITUTION_PENDING },
-      { type: ActionConstants.LOAD_INSTITUTION_ERROR, error },
-      {
-        type: ActionConstants.PUBLISH_MESSAGE,
-        message: errorMessage("institution.load-error", { error: error.message }),
-      },
-    ];
+  it("creates LOAD_INSTITUTION_ERROR action if an error occurred during loading institution", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_INSTITUTION_PENDING },
+        { type: ActionConstants.LOAD_INSTITUTION_ERROR, error },
+        {
+          type: ActionConstants.PUBLISH_MESSAGE,
+          message: errorMessage("institution.load-error", { error: error.message }),
+        },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/institutions/${institution.key}`).reply(400, error);
+      mockApi.onGet(`${API_URL}/rest/institutions/${institution.key}`).reply(400, error);
 
-    store.dispatch(loadInstitution(institution.key));
+      store.dispatch(loadInstitution(institution.key));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 });

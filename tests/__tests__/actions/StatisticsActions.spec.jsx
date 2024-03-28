@@ -8,6 +8,7 @@ import { loadStatistics } from "../../../src/actions/StatisticsActions";
 import { API_URL } from "../../../config";
 import { errorMessage } from "../../../src/model/Message";
 import { mockDateNow, restoreDateNow } from "../../environment/Environment";
+import { it, describe, expect, beforeEach, afterEach } from "vitest";
 
 const middlewares = [thunk.withExtraArgument(axiosBackend)];
 const mockStore = configureMockStore(middlewares);
@@ -29,39 +30,41 @@ describe("Statistics asynchronous actions", function () {
     restoreDateNow();
   });
 
-  it("creates LOAD_STATISTICS_SUCCESS action when loading statistics is successfully done", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_STATISTICS_PENDING },
-      { type: ActionConstants.LOAD_STATISTICS_SUCCESS, payload },
-    ];
+  it("creates LOAD_STATISTICS_SUCCESS action when loading statistics is successfully done", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_STATISTICS_PENDING },
+        { type: ActionConstants.LOAD_STATISTICS_SUCCESS, payload },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/statistics`).reply(200, payload);
+      mockApi.onGet(`${API_URL}/rest/statistics`).reply(200, payload);
 
-    store.dispatch(loadStatistics());
+      store.dispatch(loadStatistics());
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates LOAD_STATISTICS_ERROR action if an error occurred during loading statistics", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_STATISTICS_PENDING },
-      { type: ActionConstants.LOAD_STATISTICS_ERROR, error },
-      {
-        type: ActionConstants.PUBLISH_MESSAGE,
-        message: errorMessage("history.loading-error", { error: error.message }),
-      },
-    ];
+  it("creates LOAD_STATISTICS_ERROR action if an error occurred during loading statistics", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_STATISTICS_PENDING },
+        { type: ActionConstants.LOAD_STATISTICS_ERROR, error },
+        {
+          type: ActionConstants.PUBLISH_MESSAGE,
+          message: errorMessage("history.loading-error", { error: error.message }),
+        },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/statistics`).reply(400, error);
+      mockApi.onGet(`${API_URL}/rest/statistics`).reply(400, error);
 
-    store.dispatch(loadStatistics());
+      store.dispatch(loadStatistics());
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 });

@@ -16,6 +16,7 @@ import { API_URL } from "../../../config";
 import { mockDateNow, restoreDateNow } from "../../environment/Environment";
 import { errorMessage } from "../../../src/model/Message";
 import en from "../../../src/i18n/en";
+import { it, describe, expect, beforeEach, afterEach } from "vitest";
 
 const records = [{ key: 786785600 }, { key: 86875960 }];
 
@@ -75,72 +76,76 @@ describe("Records asynchronous actions", function () {
     restoreDateNow();
   });
 
-  it("creates LOAD_RECORDS_SUCCESS action when loading all records successfully is done", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_RECORDS_PENDING },
-      { type: ActionConstants.LOAD_RECORDS_SUCCESS, records },
-    ];
+  it("creates LOAD_RECORDS_SUCCESS action when loading all records successfully is done", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_RECORDS_PENDING },
+        { type: ActionConstants.LOAD_RECORDS_SUCCESS, records },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
+      mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
 
-    store.dispatch(loadRecords());
+      store.dispatch(loadRecords());
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates LOAD_RECORDS_SUCCESS action when loading doctor's institution records is done successfully", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_RECORDS_PENDING },
-      { type: ActionConstants.LOAD_RECORDS_SUCCESS, records },
-    ];
-    store.getState().auth.user = doctor;
+  it("creates LOAD_RECORDS_SUCCESS action when loading doctor's institution records is done successfully", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_RECORDS_PENDING },
+        { type: ActionConstants.LOAD_RECORDS_SUCCESS, records },
+      ];
+      store.getState().auth.user = doctor;
 
-    mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
+      mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
 
-    store.dispatch(loadRecords());
+      store.dispatch(loadRecords());
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates LOAD_RECORDS_SUCCESS action when loading institution records by institution key is done successfully", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_RECORDS_PENDING },
-      { type: ActionConstants.LOAD_RECORDS_SUCCESS, records },
-    ];
+  it("creates LOAD_RECORDS_SUCCESS action when loading institution records by institution key is done successfully", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_RECORDS_PENDING },
+        { type: ActionConstants.LOAD_RECORDS_SUCCESS, records },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
+      mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
 
-    store.dispatch(loadRecordsByInstitution(institutionKey));
+      store.dispatch(loadRecordsByInstitution(institutionKey));
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates LOAD_RECORDS_ERROR action if an error occurred during loading records", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_RECORDS_PENDING },
-      { type: ActionConstants.LOAD_RECORDS_ERROR, error },
-      {
-        type: ActionConstants.PUBLISH_MESSAGE,
-        message: errorMessage("records.loading-error", { error: error.message }),
-      },
-    ];
+  it("creates LOAD_RECORDS_ERROR action if an error occurred during loading records", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_RECORDS_PENDING },
+        { type: ActionConstants.LOAD_RECORDS_ERROR, error },
+        {
+          type: ActionConstants.PUBLISH_MESSAGE,
+          message: errorMessage("records.loading-error", { error: error.message }),
+        },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/records`).reply(400, error);
+      mockApi.onGet(`${API_URL}/rest/records`).reply(400, error);
 
-    store.dispatch(loadRecords());
+      store.dispatch(loadRecords());
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 });

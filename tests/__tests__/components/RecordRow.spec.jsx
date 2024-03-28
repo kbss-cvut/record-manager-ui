@@ -5,14 +5,15 @@ import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
 import RecordRow from "../../../src/components/record/RecordRow";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, vi, test } from "vitest";
 
 describe("RecordRow", function () {
   const intlData = enLang;
   let record,
     disableDelete = false,
     deletionLoading = false,
-    onEdit = jest.fn(),
-    onDelete = jest.fn();
+    onEdit = vi.fn(),
+    onDelete = vi.fn();
 
   record = {
     uri: "http://onto.fel.cvut.cz/ontologies/record-manager/patient-record#instance456619208",
@@ -23,7 +24,7 @@ describe("RecordRow", function () {
     institution: { key: 12345678 },
   };
 
-  xit("renders one row of table with 5 columns and 2 buttons", function () {
+  test.skip("renders one row of table with 5 columns and 2 buttons", function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
         <table>
@@ -45,7 +46,7 @@ describe("RecordRow", function () {
     expect(buttons.length).toEqual(4);
   });
 
-  xit('renders "Open" button and click on it', function () {
+  test.skip('renders "Open" button and click on it', function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
         <table>
@@ -68,7 +69,7 @@ describe("RecordRow", function () {
     expect(onEdit).toHaveBeenCalled();
   });
 
-  xit("renders id and patients identifier buttons together with open and delete button and click on one but delete button", function () {
+  test.skip("renders id and patients identifier buttons together with open and delete button and click on one but delete button", function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
         <table>
@@ -92,7 +93,7 @@ describe("RecordRow", function () {
     expect(onEdit).toHaveBeenCalled();
   });
 
-  xit('renders "Delete" button and click on it', function () {
+  test.skip('renders "Delete" button and click on it', function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
         <table>

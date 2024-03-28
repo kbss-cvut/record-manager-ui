@@ -13,6 +13,7 @@ import {
 import { API_URL } from "../../../config";
 import { mockDateNow, restoreDateNow } from "../../environment/Environment";
 import { errorMessage } from "../../../src/model/Message";
+import { it, describe, expect, beforeEach, afterEach } from "vitest";
 
 const institutions = [{ key: 786785600 }, { key: 86875960 }];
 
@@ -62,39 +63,41 @@ describe("Institutions asynchronize actions", function () {
     restoreDateNow();
   });
 
-  it("creates LOAD_INSTITUTIONS_SUCCESS action when loading institutions successfully is done", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_INSTITUTIONS_PENDING },
-      { type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS, institutions },
-    ];
+  it("creates LOAD_INSTITUTIONS_SUCCESS action when loading institutions successfully is done", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_INSTITUTIONS_PENDING },
+        { type: ActionConstants.LOAD_INSTITUTIONS_SUCCESS, institutions },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/institutions`).reply(200, institutions);
+      mockApi.onGet(`${API_URL}/rest/institutions`).reply(200, institutions);
 
-    store.dispatch(loadInstitutions());
+      store.dispatch(loadInstitutions());
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates LOAD_INSTITUTIONS_ERROR action if an error occurred during loading institutions", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_INSTITUTIONS_PENDING },
-      { type: ActionConstants.LOAD_INSTITUTIONS_ERROR, error },
-      {
-        type: ActionConstants.PUBLISH_MESSAGE,
-        message: errorMessage("institutions.loading-error", { error: error.message }),
-      },
-    ];
+  it("creates LOAD_INSTITUTIONS_ERROR action if an error occurred during loading institutions", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_INSTITUTIONS_PENDING },
+        { type: ActionConstants.LOAD_INSTITUTIONS_ERROR, error },
+        {
+          type: ActionConstants.PUBLISH_MESSAGE,
+          message: errorMessage("institutions.loading-error", { error: error.message }),
+        },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/institutions`).reply(400, error);
+      mockApi.onGet(`${API_URL}/rest/institutions`).reply(400, error);
 
-    store.dispatch(loadInstitutions());
+      store.dispatch(loadInstitutions());
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 });

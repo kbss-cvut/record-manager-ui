@@ -8,6 +8,7 @@ import { loadUsers, loadUsersError, loadUsersPending, loadUsersSuccess } from ".
 import { API_URL } from "../../../config";
 import { mockDateNow, restoreDateNow } from "../../environment/Environment";
 import { errorMessage } from "../../../src/model/Message";
+import { it, describe, expect, beforeEach, afterEach } from "vitest";
 
 describe("Users synchronous actions", function () {
   it("creates an action to fetch all users", () => {
@@ -57,36 +58,41 @@ describe("Users asynchronous actions", function () {
     restoreDateNow();
   });
 
-  it("creates LOAD_USERS_SUCCESS action when loading users successfully is done", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_USERS_PENDING },
-      { type: ActionConstants.LOAD_USERS_SUCCESS, users },
-    ];
+  it("creates LOAD_USERS_SUCCESS action when loading users successfully is done", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_USERS_PENDING },
+        { type: ActionConstants.LOAD_USERS_SUCCESS, users },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/users`).reply(200, users);
+      mockApi.onGet(`${API_URL}/rest/users`).reply(200, users);
 
-    store.dispatch(loadUsers());
+      store.dispatch(loadUsers());
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 
-  it("creates LOAD_USERS_ERROR action if an error occurred during loading users", function (done) {
-    const expectedActions = [
-      { type: ActionConstants.LOAD_USERS_PENDING },
-      { type: ActionConstants.LOAD_USERS_ERROR, error },
-      { type: ActionConstants.PUBLISH_MESSAGE, message: errorMessage("users.loading-error", { error: error.message }) },
-    ];
+  it("creates LOAD_USERS_ERROR action if an error occurred during loading users", () =>
+    new Promise((done) => {
+      const expectedActions = [
+        { type: ActionConstants.LOAD_USERS_PENDING },
+        { type: ActionConstants.LOAD_USERS_ERROR, error },
+        {
+          type: ActionConstants.PUBLISH_MESSAGE,
+          message: errorMessage("users.loading-error", { error: error.message }),
+        },
+      ];
 
-    mockApi.onGet(`${API_URL}/rest/users`).reply(400, error);
+      mockApi.onGet(`${API_URL}/rest/users`).reply(400, error);
 
-    store.dispatch(loadUsers());
+      store.dispatch(loadUsers());
 
-    setTimeout(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-      done();
-    }, TEST_TIMEOUT);
-  });
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, TEST_TIMEOUT);
+    }));
 });

@@ -4,6 +4,7 @@ import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
 import { getRole } from "../../../src/utils/Utils";
 import AuthReducer from "../../../src/reducers/AuthReducer";
 import UserReducer from "../../../src/reducers/UserReducer";
+import { describe, expect, it } from "vitest";
 
 describe("AuthReducer", function () {
   const user = {

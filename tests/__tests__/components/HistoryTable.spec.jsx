@@ -5,17 +5,18 @@ import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
 import HistoryTable from "../../../src/components/history/HistoryTable";
 import enLang from "../../../src/i18n/en";
+import { describe, expect, it, vi } from "vitest";
 
 describe("HistoryTable", function () {
   const intlData = enLang;
   let actions = [],
     searchData = {},
     handlers = {
-      handleSearch: jest.fn(),
-      handleReset: jest.fn(),
-      handleChange: jest.fn(),
-      onKeyPress: jest.fn(),
-      onOpen: jest.fn(),
+      handleSearch: vi.fn(),
+      handleReset: vi.fn(),
+      handleChange: vi.fn(),
+      onKeyPress: vi.fn(),
+      onOpen: vi.fn(),
     };
 
   it("renders table with 4 headers columns", function () {
