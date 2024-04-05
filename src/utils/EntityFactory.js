@@ -1,5 +1,3 @@
-"use strict";
-
 import * as Utils from "./Utils";
 import * as RecordState from "../model/RecordState";
 import * as Vocabulary from "../constants/Vocabulary";

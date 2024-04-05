@@ -1,5 +1,3 @@
-"use strict";
-
 import React, { forwardRef } from "react";
 import { Col, FormCheck, FormControl, FormGroup, FormLabel, FormText, InputGroup } from "react-bootstrap";
 import PropTypes from "prop-types";

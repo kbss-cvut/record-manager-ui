@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Filters data according to specified filter(s).
  *

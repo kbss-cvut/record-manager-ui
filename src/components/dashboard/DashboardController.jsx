@@ -1,5 +1,3 @@
-"use strict";
-
 import Dashboard from "./Dashboard";
 import React from "react";
 import { connect } from "react-redux";

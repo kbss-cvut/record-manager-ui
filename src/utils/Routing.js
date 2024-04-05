@@ -1,5 +1,3 @@
-"use strict";
-
 import { execute } from "./RoutingRules";
 import { setTransitionPayload } from "../actions/RouterActions";
 import { createBrowserHistory } from "history";

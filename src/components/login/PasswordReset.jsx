@@ -1,5 +1,3 @@
-"use strict";
-
 import React from "react";
 import { Button, Form, Card } from "react-bootstrap";
 import HorizontalInput from "../HorizontalInput";

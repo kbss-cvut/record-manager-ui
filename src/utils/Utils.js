@@ -1,4 +1,3 @@
-"use strict";
 import Bowser from "bowser";
 import * as Constants from "../constants/DefaultConstants";
 import { Constants as SConstants } from "@kbss-cvut/s-forms";

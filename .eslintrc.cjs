@@ -8,8 +8,15 @@ module.exports = {
     },
   },
   plugins: ["react", "react-hooks"],
-  rules: {}, // add specific rules here
-  ignorePatterns: ["dist", "tests", ".eslintrc.cjs"],
+  overrides: [
+    {
+      files: ["*.js", "*.jsx"], // Target all JSX files
+      rules: {
+        strict: ["error", "global"], // Apply "use strict" globally within src folder
+      },
+    },
+  ],
+  ignorePatterns: ["dist", "tests", "public", ".eslintrc.cjs"],
   settings: {
     react: {
       version: "detect",

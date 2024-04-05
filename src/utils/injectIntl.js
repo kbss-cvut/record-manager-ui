@@ -1,5 +1,3 @@
-"use strict";
-
 import { injectIntl } from "react-intl";
 
 /**
