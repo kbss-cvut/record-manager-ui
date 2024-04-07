@@ -25,7 +25,6 @@ export const unauthRoutes = (
     <Route exact path={Routes.passwordToken.path} component={PasswordToken} />
     <Route exact path={Routes.passwordReset.path} component={PasswordReset} />
     <Route exact path={Routes.login.path} component={Login} />
-    <Redirect from="*" to={Routes.login.path} />
   </Switch>
 );
 
@@ -46,6 +45,5 @@ export const authRoutes = (
     <Route exact path={Routes.historyActions.path} component={requireAuth(HistoryActions)} />
     <Route exact path={Routes.historyAction.path} component={requireAuth(HistoryAction)} />
     <Route exact path={Routes.dashboard.path} component={requireAuth(DashboardController)} />
-    <Redirect from="*" to={"/"} />
   </Switch>
 );
