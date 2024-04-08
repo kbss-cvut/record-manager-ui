@@ -7,6 +7,8 @@ import { RECORD_PHASE, ROLE } from "../../constants/DefaultConstants";
 import { useI18n } from "../../hooks/useI18n";
 import { IfGranted } from "react-authorization";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
+import Routes from "../../constants/RoutesConstants.js";
+import { Link } from "react-router-dom";
 
 const StatusInfo = {};
 StatusInfo[RECORD_PHASE.OPEN] = {
@@ -41,15 +43,11 @@ let RecordRow = (props) => {
     <tr className="position-relative">
       <IfGranted expected={ROLE.ADMIN} actual={props.currentUser.role}>
         <td className="report-row">
-          <Button variant="link" size="sm" onClick={() => props.onEdit(record)}>
-            {record.key}
-          </Button>
+          <Link to={Routes.records.path + "/" + record.key}>{record.key}</Link>
         </td>
       </IfGranted>
       <td className="report-row">
-        <Button variant="link" size="sm" onClick={() => props.onEdit(record)}>
-          {record.localName}
-        </Button>
+        <Link to={Routes.records.path + "/" + record.key}>{record.localName}</Link>
       </td>
       <IfGranted expected={ROLE.ADMIN} actual={props.currentUser.role}>
         <td className="report-row">{record.institution.name}</td>
