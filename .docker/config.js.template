@@ -2,6 +2,7 @@
 window.__config__ = {
   API_URL: '${API_URL}',
   APP_TITLE: '${APP_TITLE}',
+  APP_INFO: '${APP_INFO}',
   LANGUAGE: '${LANGUAGE}',
   NAVIGATOR_LANGUAGE: '${NAVIGATOR_LANGUAGE}',
   BASENAME: '${BASENAME}',
