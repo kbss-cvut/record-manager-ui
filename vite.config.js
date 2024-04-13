@@ -7,7 +7,6 @@ import eslintPlugin from "vite-plugin-eslint";
 dotenv.config();
 
 export default defineConfig({
-  base: "",
   root: "",
   envPrefix: "RECORD_MANAGER_",
   plugins: [
