@@ -1,6 +1,6 @@
 module.exports = {
   parser: "@babel/eslint-parser",
-  extends: ["plugin:react/recommended", "prettier"],
+  extends: ["plugin:react/recommended", "plugin:jsx-a11y/recommended", "prettier"],
   parserOptions: {
     requireConfigFile: false,
     babelOptions: {
