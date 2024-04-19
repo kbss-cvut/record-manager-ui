@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { FormattedMessage, injectIntl } from "react-intl";
 import withI18n from "../../i18n/withI18n";
@@ -94,10 +94,12 @@ class Record extends React.Component {
     if (form) {
       this.validateForm();
       const incompleteQuestions = this._filterQuestionsBySeverity("warning");
-      this.setState({ incompleteQuestions }, () => {
-        if (incompleteQuestions.length > 0) {
+      const invalidQuestions = this._filterQuestionsBySeverity("error");
+      this.setState({ incompleteQuestions, invalidQuestions }, () => {
+        if (incompleteQuestions.length > 0 || invalidQuestions.length > 0) {
           this.setState({ showModal: true });
         } else {
+          this.props.handlers.onSave();
           this.props.handlers.onComplete();
         }
       });
