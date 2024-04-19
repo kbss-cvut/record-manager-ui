@@ -8,6 +8,9 @@ module.exports = {
     },
   },
   plugins: ["react", "react-hooks"],
+  rules: {
+    "prefer-const": "warn", // Add prefer-const rule with warning level
+  },
   overrides: [
     {
       files: ["*.js", "*.jsx"], // Target all JSX files

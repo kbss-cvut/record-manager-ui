@@ -36,7 +36,7 @@ class PasswordReset extends React.Component {
   }
 
   onChange = (e) => {
-    let state = this.state;
+    const state = this.state;
     state[e.target.name] = e.target.value;
     this.setState(state);
   };

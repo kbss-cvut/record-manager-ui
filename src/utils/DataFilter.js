@@ -11,7 +11,7 @@ const filterData = (data, filter) => {
     return data;
   }
   return data.filter(function (item) {
-    for (let key in filter) {
+    for (const key in filter) {
       if (filter[key] === "all") {
         continue;
       }
@@ -35,7 +35,7 @@ const _canSkipFilter = (filter) => {
   if (!filter) {
     return true;
   }
-  for (let key in filter) {
+  for (const key in filter) {
     if (filter[key] !== "all") {
       return false;
     }

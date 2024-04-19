@@ -108,7 +108,7 @@ class RecordTable extends React.Component {
     const formTemplateOptions = formTemplatesLoaded.formTemplates
       ? processTypeaheadOptions(formTemplatesLoaded.formTemplates, intl)
       : [];
-    let rows = [];
+    const rows = [];
     for (let i = 0, len = filteredRecords.length; i < len; i++) {
       rows.push(
         <RecordRow

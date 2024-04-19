@@ -28,7 +28,7 @@ class PasswordChange extends React.Component {
   }
 
   _onChange = (e) => {
-    let change = {};
+    const change = {};
     change[e.target.name] = e.target.value;
     this.props.handlers.onChange(change);
   };

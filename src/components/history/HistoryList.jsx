@@ -34,7 +34,7 @@ class HistoryList extends React.Component {
   };
 
   _handleChange = (e) => {
-    let change = {};
+    const change = {};
     change[e.target.name] = e.target.value;
     this.setState({ searchData: { ...this.state.searchData, ...change }, pageNumber: 1 });
   };

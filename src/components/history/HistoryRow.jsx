@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { formatDateWithMilliseconds } from "../../utils/Utils";
 import { useI18n } from "../../hooks/useI18n";
 
-let HistoryRow = (props) => {
+const HistoryRow = (props) => {
   const { i18n } = useI18n();
   const action = props.action;
   const username = action.author ? action.author.username : i18n("history.non-logged");
