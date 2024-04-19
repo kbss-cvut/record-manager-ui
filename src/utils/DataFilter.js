@@ -10,7 +10,7 @@ const filterData = (data, filter) => {
   if (this._canSkipFilter(filter)) {
     return data;
   }
-  return data.filter(function (item) {
+  return data.filter((item) => {
     for (const key in filter) {
       if (filter[key] === "all") {
         continue;

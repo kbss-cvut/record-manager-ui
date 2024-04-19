@@ -9,7 +9,8 @@ module.exports = {
   },
   plugins: ["react", "react-hooks"],
   rules: {
-    "prefer-const": "warn", // Add prefer-const rule with warning level
+    "prefer-const": "warn",
+    "prefer-arrow-callback": "warn",
   },
   overrides: [
     {

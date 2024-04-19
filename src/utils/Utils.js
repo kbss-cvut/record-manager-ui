@@ -250,7 +250,7 @@ export function getStringHash(str) {
 export function addParametersToUrl(url, parameters) {
   if (parameters) {
     url += URL_CONTAINS_QUERY.test(url) ? "&" : "?";
-    Object.getOwnPropertyNames(parameters).forEach(function (param) {
+    Object.getOwnPropertyNames(parameters).forEach((param) => {
       url += param + "=" + parameters[param] + "&"; // '&' at the end of request URI should not be a problem
     });
   }
