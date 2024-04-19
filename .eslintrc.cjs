@@ -1,13 +1,13 @@
 module.exports = {
   parser: "@babel/eslint-parser",
-  extends: ["plugin:react/recommended", "plugin:jsx-a11y/recommended", "prettier"],
+  extends: ["plugin:react/recommended", "plugin:jsx-a11y/recommended", "plugin:react-hooks/recommended", "prettier"],
   parserOptions: {
     requireConfigFile: false,
     babelOptions: {
       presets: ["@babel/preset-react"],
     },
   },
-  plugins: ["react", "react-hooks"],
+  plugins: ["react"],
   rules: {
     "prefer-const": "warn",
     "prefer-arrow-callback": "warn",
