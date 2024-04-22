@@ -1,7 +1,7 @@
 "use strict";
 
 import React from "react";
-import SForms, { Constants } from "@kbss-cvut/s-forms";
+import SForms, { Constants, IntlContextProvider } from "@kbss-cvut/s-forms";
 import PropTypes from "prop-types";
 import { injectIntl } from "react-intl";
 import withI18n from "../../i18n/withI18n";
@@ -116,16 +116,18 @@ class RecordForm extends React.Component {
       <>
         <PromiseTrackingMask area="sform" />
         {!!this.props.form && (
-          <SForms
-            ref={this.refForm}
-            form={this.props.form}
-            formData={this.props.record.question}
-            options={options}
-            fetchTypeAheadValues={this.fetchTypeAheadValues}
-            isFormValid={this.props.isFormValid}
-            enableForwardSkip={true}
-            loader={<Loader />}
-          />
+          <IntlContextProvider locale={options.intl.locale}>
+            <SForms
+              ref={this.refForm}
+              form={this.props.form}
+              formData={this.props.record.question}
+              options={options}
+              fetchTypeAheadValues={this.fetchTypeAheadValues}
+              isFormValid={this.props.isFormValid}
+              enableForwardSkip={true}
+              loader={<Loader />}
+            />
+          </IntlContextProvider>
         )}
       </>
     );
