@@ -407,8 +407,42 @@ export function extractLastPageNumber(response) {
   if (!linkHeader) {
     return undefined;
   }
-  const links = parseLinkHeader(linkHeader);
+  const links = customParseLinkHeader(linkHeader);
   return links.last ? Number(links.last.page) : undefined;
+}
+
+function customParseLinkHeader(header) {
+  const linkPairs = header.split(",");
+  const parsedLinks = {};
+
+  if (typeof header !== "string") {
+    throw new Error("Invalid input: header must be a string");
+  }
+
+  linkPairs.forEach((linkPair) => {
+    try {
+      const match = linkPair.match(/<([^>]+)>;\s*rel="([^"]+)"/);
+      if (!match) {
+        throw new Error("Invalid format: linkPair does not contain a valid URL or rel");
+      }
+
+      const url = match[1];
+      const rel = match[2];
+      const urlObj = new URL(url);
+
+      const pageParam = urlObj.searchParams.get("page");
+      const page = pageParam ? parseInt(pageParam, 10) : null;
+
+      parsedLinks[rel] = {
+        url: url,
+        page: isNaN(page) ? null : page,
+      };
+    } catch (error) {
+      console.error(`Error parsing link: ${error.message}`);
+    }
+  });
+
+  return parsedLinks;
 }
 
 export function sortToParams(sort) {
