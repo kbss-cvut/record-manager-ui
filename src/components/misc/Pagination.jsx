@@ -38,8 +38,8 @@ const Pagination = ({ pageNumber, handlePagination, itemCount, pageCount, allowS
           <BSPagination.Prev disabled={pageNumber === INITIAL_PAGE} onClick={() => handlePagination(pageNumber - 1)} />
           <BSPagination.Item active={true}>{pageNumber + 1}</BSPagination.Item>
           <BSPagination.Next disabled={itemCount < pageSize} onClick={() => handlePagination(pageNumber + 1)} />
-          {pageCount !== undefined && (
-            <BSPagination.Last disabled={pageNumber === pageCount} onClick={() => handlePagination(pageCount)} />
+          {pageCount !== undefined && pageNumber < pageCount && (
+            <BSPagination.Item onClick={() => handlePagination(pageCount)}>{pageCount + 1}</BSPagination.Item>
           )}
         </BSPagination>
       </div>
