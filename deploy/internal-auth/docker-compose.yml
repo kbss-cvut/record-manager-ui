@@ -31,7 +31,7 @@ services:
       RECORD_MANAGER_ROOT_PATH: "${RECORD_MANAGER_ROOT_PATH:-/record-manager}"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/templates/nginx.conf.template:ro
-      - ./nginx/error.html:/usr/share/nginx/html/error.html:ro
+      - ../shared/nginx/error.html:/usr/share/nginx/html/error.html:ro
 
   record-manager:
     image: ghcr.io/kbss-cvut/kbss-cvut/record-manager-ui:latest
