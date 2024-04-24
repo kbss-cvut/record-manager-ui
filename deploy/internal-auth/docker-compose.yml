@@ -4,6 +4,11 @@ version: "3.9"
 x-access-for-local-development: &local-dev-env
   cors.allowedOrigins: "http://localhost:4173,http://localhost:5173"
 
+# Provide logging to Java application (e.g. record-manager)
+x-logging-java-application: &logging-java
+  LOGGING_LEVEL_ROOT: "debug"
+
+
 services:
   nginx:
     image: nginx:latest
