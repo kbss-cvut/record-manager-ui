@@ -109,7 +109,6 @@ class RecordForm extends React.Component {
       intl: I18nStore.getIntl(),
       ...this._getUsersOptions(),
       ...this._getIconsOptions(),
-      enableForwardSkip: true,
     };
 
     return (
