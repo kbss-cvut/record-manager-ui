@@ -10,8 +10,8 @@ x-logging-java-application: &logging-java
 
 # Expose port to access db-server directly, bypassing nginx
 x-access-db-server-development-port: &db-server-dev-port
-    ports:
-      - "127.0.0.1:${DB_SERVER_DEV_PORT:-7205}:7200"
+  ports:
+    - "127.0.0.1:${DB_SERVER_DEV_PORT:-7205}:7200"
 
 services:
   nginx:
@@ -74,7 +74,6 @@ services:
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI: "http://auth-server:8080/realms/record-manager/protocol/openid-connect/certs"
       SERVER_MAXHTTPREQUESTHEADERSIZE: "40KB"
 
-
   s-pipes-engine:
     image: ghcr.io/kbss-cvut/s-pipes/s-pipes-engine:latest
     container_name: ${RECORD_SET_NAME:-rm}-s-pipes-engine
@@ -135,7 +134,7 @@ services:
       DB_SERVER_URL: "http://db-server:7200"
       DB_SERVER_REPOSITORY_ID: "record-manager-app"
       REPOSITORY_LANGUAGE: "en"
-      VOCABULARY_USER_TYPE: "http://onto.fel.cvut.cz/ontologies/record-manager/user"
+      VOCABULARY_USER_TYPE: "http://xmlns.com/foaf/0.1/Person"
       VOCABULARY_USER_FIRST_NAME: "http://xmlns.com/foaf/0.1/firstName"
       VOCABULARY_USER_LAST_NAME: "http://xmlns.com/foaf/0.1/lastName"
       VOCABULARY_USER_USERNAME: "http://xmlns.com/foaf/0.1/accountName"
