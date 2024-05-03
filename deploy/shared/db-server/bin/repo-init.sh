@@ -45,7 +45,7 @@ for DIR in ${DATA_DIR}/*/; do
 
     echo "INFO: Updating data in repository $REPO_NAME ..."
 
-    find ${DATA_DIR}/${REPO_NAME} -name '*.form.ttl' | while read DATA_FILE; do
+    find ${DATA_DIR}/${REPO_NAME} -name '*-form.ttl' | while read DATA_FILE; do
 	CONTEXT=`$SCRIPT_DIR/get-rdf-subject-by-type.py $DATA_FILE 'http://onto.fel.cvut.cz/ontologies/form/form-template' | sed 's/[<>]//g'`
 
 	echo "INFO: Replacing context ${CONTEXT} with form template from file ${DATA_FILE}."
