@@ -37,7 +37,7 @@ services:
       - ../shared/nginx/images:/usr/share/nginx/html/images:ro
 
   record-manager:
-    image: ghcr.io/kbss-cvut/kbss-cvut/record-manager-ui:latest
+    image: ghcr.io/kbss-cvut/record-manager-ui:latest
     container_name: ${RECORD_SET_NAME:-rm}-record-manager
     expose:
       - "80"
@@ -54,7 +54,7 @@ services:
       EXTENSIONS: "${RECORD_MANAGER_EXTENSIONS:-supplier}"
 
   record-manager-server:
-    image: ghcr.io/kbss-cvut/kbss-cvut/record-manager:latest
+    image: ghcr.io/kbss-cvut/record-manager:latest
     container_name: ${RECORD_SET_NAME:-rm}-record-manager-server
     expose:
       - "8080"
