@@ -2,9 +2,9 @@ name: Publish Docker Image
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
   workflow_dispatch:
 env:
   # The last two fragments of the identifier of the docker image
