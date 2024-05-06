@@ -100,8 +100,6 @@ services:
 
   ava-analytics-ui:
     image: ghcr.io/kbss-cvut/ava-analytics-ui:latest
-    expose:
-      - "8081:80"
 
 volumes:
   db-server:
