@@ -10,8 +10,8 @@ x-logging-java-application: &logging-java
 
 # Expose port to access db-server directly, bypassing nginx
 x-access-db-server-development-port: &db-server-dev-port
-    ports:
-      - "127.0.0.1:${DB_SERVER_DEV_PORT:-7205}:7200"
+  ports:
+    - "127.0.0.1:${DB_SERVER_DEV_PORT:-7205}:7200"
 
 services:
   nginx:
@@ -25,6 +25,7 @@ services:
       - record-manager-server
       - s-pipes-engine
       - db-server
+      - ava-analytics-ui
     environment:
       NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx
       APP_ORIGIN: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}"
@@ -96,6 +97,9 @@ services:
     volumes:
       - ../shared/db-server/import:/root/graphdb-import:ro
       - db-server:/opt/graphdb/home
+
+  ava-analytics-ui:
+    image: ghcr.io/kbss-cvut/ava-analytics-ui:latest
 
 volumes:
   db-server:

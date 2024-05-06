@@ -33,3 +33,4 @@ export const NAVIGATOR_LANGUAGE = JSON.parse(getEnv("NAVIGATOR_LANGUAGE", "true"
 export const BASENAME = getEnv("BASENAME", "");
 export const EXTENSIONS = getEnv("EXTENSIONS", "");
 export const APP_INFO = getEnv("APP_INFO", "© KBSS at FEE CTU in Prague, 2024");
+export const ANALYTICS_URL = getEnv("ANALYTICS_URL", "");
