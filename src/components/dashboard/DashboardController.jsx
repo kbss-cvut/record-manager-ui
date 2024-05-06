@@ -11,6 +11,8 @@ import withI18n from "../../i18n/withI18n";
 import { loadFormTemplates } from "../../actions/FormTemplatesActions";
 import { importRecords } from "../../actions/RecordsActions";
 import PropTypes from "prop-types";
+import { ANALYTICS_URL } from "../../../config/index.js";
+import routes from "../../constants/RoutesConstants";
 
 class DashboardController extends React.Component {
   constructor(props) {
@@ -46,7 +48,11 @@ class DashboardController extends React.Component {
   };
 
   _showStatistics = () => {
-    transitionTo(Routes.statistics);
+    if (ANALYTICS_URL === "") {
+      transitionTo(routes.statistics);
+    } else {
+      window.location.href = ANALYTICS_URL;
+    }
   };
 
   _createRecord = () => {
