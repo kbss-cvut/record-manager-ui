@@ -9,6 +9,7 @@ import ImportRecordsDialog from "../record/ImportRecordsDialog";
 import { isAdmin } from "../../utils/SecurityUtils";
 import { trackPromise } from "react-promise-tracker";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
+import { ANALYTICS_URL } from "../../../config/index.js";
 
 class Dashboard extends React.Component {
   static propTypes = {
@@ -141,8 +142,8 @@ class Dashboard extends React.Component {
   _renderStatisticsTile() {
     return this._isAdmin() ? (
       <Col md={3} className="dashboard-sector">
-        <DashboardTile onClick={this.props.handlers.showStatistics}>
-          {this.i18n("dashboard.statistics-tile")}
+        <DashboardTile>
+          <a href={ANALYTICS_URL}>{this.i18n("dashboard.statistics-tile")}</a>
         </DashboardTile>
       </Col>
     ) : null;
