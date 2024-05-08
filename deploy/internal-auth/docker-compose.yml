@@ -25,17 +25,18 @@ services:
       - record-manager-server
       - s-pipes-engine
       - db-server
-      - ava-analytics-ui
     environment:
       NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx
       APP_ORIGIN: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}"
       APP_ROOT_PATH: "${APP_ROOT_PATH:-}"
       RECORD_MANAGER_PATH: "${RECORD_MANAGER_PATH:-/record-manager}"
+      ANALYTICS_PATH: "${ANALYTICS_PATH:-/statistics}"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/templates/nginx.conf.template:ro
       - ../shared/nginx/error.html:/usr/share/nginx/html/error.html:ro
       - ./nginx/index.html:/usr/share/nginx/html/index.html:ro
       - ../shared/nginx/images:/usr/share/nginx/html/images:ro
+      - ../shared/nginx/statistics.html:/usr/share/nginx/html/statistics.html:ro
 
   record-manager:
     image: ghcr.io/kbss-cvut/record-manager-ui:latest
@@ -52,6 +53,7 @@ services:
       LANGUAGE: "${LANGUAGE:-en}"
       NAVIGATOR_LANGUAGE: "false"
       BASENAME: "${APP_ROOT_PATH:-}${RECORD_MANAGER_PATH:-/record-manager}"
+      ANALYTICS_URL: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${APP_ROOT_PATH:-}${ANALYTICS_PATH:-/statistics}"
       EXTENSIONS: "${RECORD_MANAGER_EXTENSIONS:-supplier}"
 
   record-manager-server:
@@ -97,9 +99,6 @@ services:
     volumes:
       - ../shared/db-server/import:/root/graphdb-import:ro
       - db-server:/opt/graphdb/home
-
-  ava-analytics-ui:
-    image: ghcr.io/kbss-cvut/ava-analytics-ui:latest
 
 volumes:
   db-server:
