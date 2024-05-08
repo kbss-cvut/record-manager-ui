@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+    <title>Record Manager Statistics</title>
+    <style>
+      body {
+        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+        color: #ededed;
+        margin: 0;
+        padding: 0;
+        background-image: url("./images/background.jpg");
+        background-size: cover;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      h1 {
+        font-size: 3em;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+
+      .statistics-container {
+        background: rgba(255, 255, 255, 0.13);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10.5px);
+        -webkit-backdrop-filter: blur(10.5px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 20px;
+        margin-top: 20px;
+        max-width: 800px;
+      }
+
+      .statistics-heading {
+        font-size: 2em;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .statistics-list {
+        list-style-type: none;
+        padding: 0;
+        text-align: center;
+      }
+
+      .statistics-item {
+        margin-bottom: 10px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #333;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="statistics-container">
+      <h1>Record Manager Statistics</h1>
+
+      <div class="statistics-heading">General Statistics</div>
+      <ul class="statistics-list">
+        <li class="statistics-item">Number of Entry Clerks: <strong>10</strong></li>
+        <li class="statistics-item">Number of Participating Institutions: <strong>5</strong></li>
+        <li class="statistics-item">Number of Completed Records: <strong>500</strong></li>
+        <li class="statistics-item">Number of Invalid Records: <strong>20</strong></li>
+        <li class="statistics-item">Number of Rejected Records: <strong>50</strong></li>
+        <li class="statistics-item">Number of Confirmed Records: <strong>430</strong></li>
+        <li class="statistics-item">Period of Record Entries: <strong>01/01/2024 - 03/01/2024</strong></li>
+      </ul>
+
+      <div class="statistics-heading">Record Statistics</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Number of Records Completed</th>
+            <th>Number of Invalid Records</th>
+            <th>Number of Rejected Records</th>
+            <th>Number of Confirmed Records</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>01/01/2024</td>
+            <td>50</td>
+            <td>2</td>
+            <td>5</td>
+            <td>43</td>
+          </tr>
+          <tr>
+            <td>01/02/2024</td>
+            <td>60</td>
+            <td>3</td>
+            <td>6</td>
+            <td>51</td>
+          </tr>
+          <tr>
+            <td>01/03/2024</td>
+            <td>70</td>
+            <td>4</td>
+            <td>7</td>
+            <td>59</td>
+          </tr>
+          <!-- Additional rows can be added similarly -->
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
