@@ -1,4 +1,4 @@
-FROM ontotext/graphdb:10.2.0
+FROM ontotext/graphdb:10.6.3
 
 # Override parent entrypoint
 ENTRYPOINT []
@@ -22,8 +22,10 @@ RUN if command -v apk >/dev/null; then \
     apk add perl-uri; \
 fi
 
-# Copy initialization data and repository config
-#COPY init-data /root/graphdb-import
+
+
+
+# Copy initialization repository config
 COPY init-config /repo-config
 COPY bin/* ${GRAPHDB_INSTALL_DIR}/bin/
 
