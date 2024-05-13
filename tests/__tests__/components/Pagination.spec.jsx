@@ -17,7 +17,7 @@ describe("Pagination", function () {
     );
     const pagination = TestUtils.findRenderedDOMComponentWithClass(tree, "pagination");
     expect(pagination).not.toBeNull();
-    const li = TestUtils.scryRenderedDOMComponentsWithTag(tree, "li");
-    expect(li.length).toEqual(4);
+    const li = TestUtils.scryRenderedDOMComponentsWithClass(tree, "test-pag-arrow");
+    expect(li.length).toEqual(3);
   });
 });

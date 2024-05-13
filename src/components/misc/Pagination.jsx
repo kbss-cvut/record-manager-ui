@@ -63,8 +63,16 @@ const Pagination = ({ pageNumber, handlePagination, itemCount, pageCount, allowS
     <>
       <div className="d-flex justify-content-center">
         <BSPagination>
-          <BSPagination.First disabled={pageNumber === INITIAL_PAGE} onClick={() => handlePagination(INITIAL_PAGE)} />
-          <BSPagination.Prev disabled={pageNumber === INITIAL_PAGE} onClick={() => handlePagination(pageNumber - 1)} />
+          <BSPagination.First
+            className="test-pag-arrow"
+            disabled={pageNumber === INITIAL_PAGE}
+            onClick={() => handlePagination(INITIAL_PAGE)}
+          />
+          <BSPagination.Prev
+            className="test-pag-arrow"
+            disabled={pageNumber === INITIAL_PAGE}
+            onClick={() => handlePagination(pageNumber - 1)}
+          />
           {generatePageNumbers().map((pageNum, i) => {
             if (pageNum === "...") {
               return <BSPagination.Ellipsis key={i} />;
@@ -80,7 +88,11 @@ const Pagination = ({ pageNumber, handlePagination, itemCount, pageCount, allowS
               {pageCount + 1}
             </BSPagination.Item>
           )}
-          <BSPagination.Next disabled={pageNumber >= pageCount} onClick={() => handlePagination(pageNumber + 1)} />
+          <BSPagination.Next
+            className="test-pag-arrow"
+            disabled={pageNumber >= pageCount}
+            onClick={() => handlePagination(pageNumber + 1)}
+          />
         </BSPagination>
       </div>
       {allowSizeChange && (
