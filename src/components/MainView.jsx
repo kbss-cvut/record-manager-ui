@@ -20,6 +20,7 @@ import { isAdmin } from "../utils/SecurityUtils";
 import Messages from "./message/Messages";
 import Footer from "../Footer";
 import PropTypes from "prop-types";
+import { ANALYTICS_URL } from "../../config/index.js";
 
 class MainView extends React.Component {
   constructor(props) {
@@ -60,6 +61,14 @@ class MainView extends React.Component {
       this.props.transitionToWithOpts(Routes.editUser, { params: { username: this.props.user.username } });
     }
   }
+
+  showStatistics = () => {
+    if (ANALYTICS_URL === "") {
+      transitionTo(routes.statistics);
+    } else {
+      window.location.href = ANALYTICS_URL;
+    }
+  };
 
   render() {
     if (this.props.status === ACTION_STATUS.PENDING) {
@@ -120,14 +129,10 @@ class MainView extends React.Component {
                     </NavItem>
                   </IfGranted>
                   <IfGranted expected={ROLE.ADMIN} actual={user.role}>
-                    <NavItem>
-                      <NavLink
-                        className="nav-link"
-                        isActive={() => path.startsWith(Routes.statistics.path)}
-                        to={Routes.statistics.path}
-                      >
+                    <NavItem style={{ cursor: "pointer" }}>
+                      <div className="nav-link" onClick={() => this.showStatistics()}>
                         {this.i18n("statistics.panel-title")}
-                      </NavLink>
+                      </div>
                     </NavItem>
                   </IfGranted>
                   <IfGranted expected={ROLE.ADMIN} actual={user.role}>
