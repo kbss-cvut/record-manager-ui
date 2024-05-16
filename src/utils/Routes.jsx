@@ -10,7 +10,6 @@ import requireAuth from "../components/misc/hoc/RequireAuth";
 import UsersController from "../components/user/UsersController";
 import UserController from "../components/user/UserController";
 import PasswordChangeController from "../components/user/PasswordChangeController";
-import Statistics from "../components/statistics/Statistics";
 import InstitutionsController from "../components/institution/InstitutionsController";
 import InstitutionController from "../components/institution/InstitutionController";
 import RecordsController from "../components/record/RecordsController";
@@ -35,7 +34,6 @@ export const authRoutes = (
     <Route exact path={Routes.createUser.path} component={requireAuth(UserController)} />
     <Route exact path={Routes.editUser.path} component={requireAuth(UserController)} />
     <Route exact path={Routes.passwordChange.path} component={requireAuth(PasswordChangeController)} />
-    <Route exact path={Routes.statistics.path} component={requireAuth(Statistics)} />
     <Route exact path={Routes.institutions.path} component={requireAuth(InstitutionsController)} />
     <Route exact path={Routes.createInstitution.path} component={requireAuth(InstitutionController)} />
     <Route exact path={Routes.editInstitution.path} component={requireAuth(InstitutionController)} />
