@@ -20,6 +20,7 @@ import { isAdmin } from "../utils/SecurityUtils";
 import Messages from "./message/Messages";
 import Footer from "../Footer";
 import PropTypes from "prop-types";
+import { ANALYTICS_URL } from "../../config/index.js";
 
 class MainView extends React.Component {
   constructor(props) {
@@ -59,6 +60,26 @@ class MainView extends React.Component {
     } else {
       this.props.transitionToWithOpts(Routes.editUser, { params: { username: this.props.user.username } });
     }
+  }
+
+  _renderStatisticsNavLink(path) {
+    return (
+      <>
+        {ANALYTICS_URL === "" ? (
+          <NavLink
+            className="nav-link"
+            isActive={() => path.startsWith(Routes.statistics.path)}
+            to={Routes.statistics.path}
+          >
+            {this.i18n("statistics.panel-title")}
+          </NavLink>
+        ) : (
+          <Nav.Link className="nav-link" href={ANALYTICS_URL}>
+            {this.i18n("statistics.panel-title")}
+          </Nav.Link>
+        )}
+      </>
+    );
   }
 
   render() {
@@ -120,15 +141,7 @@ class MainView extends React.Component {
                     </NavItem>
                   </IfGranted>
                   <IfGranted expected={ROLE.ADMIN} actual={user.role}>
-                    <NavItem>
-                      <NavLink
-                        className="nav-link"
-                        isActive={() => path.startsWith(Routes.statistics.path)}
-                        to={Routes.statistics.path}
-                      >
-                        {this.i18n("statistics.panel-title")}
-                      </NavLink>
-                    </NavItem>
+                    <NavItem>{this._renderStatisticsNavLink(path)}</NavItem>
                   </IfGranted>
                   <IfGranted expected={ROLE.ADMIN} actual={user.role}>
                     <NavItem>
