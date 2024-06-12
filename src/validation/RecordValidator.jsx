@@ -1,4 +1,3 @@
-"use strict";
 import * as Constants from "../constants/DefaultConstants";
 
 export default class RecordValidator {

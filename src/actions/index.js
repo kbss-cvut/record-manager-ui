@@ -6,7 +6,7 @@ import { getOidcToken } from "../utils/SecurityUtils";
 import { isUsingOidcAuth } from "../utils/OidcUtils";
 
 // Axios instance for communicating with Backend
-export let axiosBackend = axios.create({
+export const axiosBackend = axios.create({
   withCredentials: true,
 });
 

@@ -1,5 +1,3 @@
-"use strict";
-
 import { execute } from "./RoutingRules";
 import { setTransitionPayload } from "../actions/RouterActions";
 import { createBrowserHistory } from "history";
@@ -16,7 +14,7 @@ export const history = createBrowserHistory({
  * @param route Route object
  */
 export function transitionTo(route) {
-  let path = route.path;
+  const path = route.path;
   execute(route.name);
   history.push({
     pathname: path,
@@ -53,7 +51,7 @@ export function transitionToWithOpts(route, options) {
 
 // TODO
 function setPathParams(path, params) {
-  for (let paramName in params) {
+  for (const paramName in params) {
     if (params.hasOwnProperty(paramName)) {
       path = path.replace(":" + paramName, params[paramName]);
     }

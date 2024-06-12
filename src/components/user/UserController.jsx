@@ -1,5 +1,3 @@
-"use strict";
-
 import React from "react";
 import { injectIntl } from "react-intl";
 import withI18n from "../../i18n/withI18n";
@@ -99,7 +97,7 @@ class UserController extends React.Component {
   }
 
   _onSave = (sendEmail = true) => {
-    let user = this.state.user;
+    const user = this.state.user;
     this.setState({ saved: true, invited: false });
     if (user.isNew || (this._isNew() && this.props.userSaved.status === ACTION_STATUS.ERROR)) {
       this.props.createUser(omit(user, "isNew"));
@@ -135,7 +133,7 @@ class UserController extends React.Component {
   };
 
   _getPayload() {
-    let payload = this._isNew()
+    const payload = this._isNew()
       ? this.props.transitionPayload[Routes.createUser.name]
       : this.props.transitionPayload[Routes.editUser.name];
     this._isNew()

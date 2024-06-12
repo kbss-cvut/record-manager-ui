@@ -18,7 +18,7 @@ import PropTypes from "prop-types";
 const App = (props) => {
   useEffect(() => {
     document.title = APP_TITLE;
-  }, [APP_TITLE]);
+  }, []);
 
   return (
     <IntlProvider {...props.intl}>

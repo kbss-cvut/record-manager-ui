@@ -89,7 +89,7 @@ class InstitutionMembers extends React.Component {
 
   _renderRows() {
     const { institution, onEditUser, currentUser, userDeleted } = this.props;
-    let rows = [];
+    const rows = [];
     const members = this.props.institutionMembers.members;
     for (let i = 0, len = members.length; i < len; i++) {
       const deletionLoading = !!(

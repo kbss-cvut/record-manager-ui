@@ -26,7 +26,7 @@ StatusInfo[RECORD_PHASE.REJECTED] = {
   tooltip: "records.completion-status-tooltip.rejected",
 };
 
-let RecordRow = (props) => {
+const RecordRow = (props) => {
   const { i18n } = useI18n();
   const record = props.record,
     formTemplateOptions = props.formTemplateOptions,

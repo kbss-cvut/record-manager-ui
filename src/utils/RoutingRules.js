@@ -1,6 +1,4 @@
-"use strict";
-
-let rules = {};
+const rules = {};
 
 /**
  * Rules for each route is just an array of functions, that should be executed.

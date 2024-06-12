@@ -1,4 +1,3 @@
-"use strict";
 import Bowser from "bowser";
 import * as Constants from "../constants/DefaultConstants";
 import { Constants as SConstants } from "@kbss-cvut/s-forms";
@@ -86,9 +85,9 @@ export function constantToString(constant, capitalize) {
   if (!capitalize) {
     return constant.replace(/_/g, " ");
   }
-  let words = constant.split("_");
+  const words = constant.split("_");
   for (let i = 0, len = words.length; i < len; i++) {
-    let word = words[i];
+    const word = words[i];
     if (i > 0 && PREPOSITIONS.indexOf(word.toLowerCase()) !== -1) {
       words[i] = word.toLowerCase();
     } else {
@@ -225,8 +224,8 @@ export function getLastPathFragment(url) {
  * @return {number}
  */
 export function getStringHash(str) {
+  const srtlen = str ? str.length : 0;
   let hash = 0,
-    strlen = str ? str.length : 0,
     i,
     c;
   if (strlen === 0) {
@@ -251,7 +250,7 @@ export function getStringHash(str) {
 export function addParametersToUrl(url, parameters) {
   if (parameters) {
     url += URL_CONTAINS_QUERY.test(url) ? "&" : "?";
-    Object.getOwnPropertyNames(parameters).forEach(function (param) {
+    Object.getOwnPropertyNames(parameters).forEach((param) => {
       url += param + "=" + parameters[param] + "&"; // '&' at the end of request URI should not be a problem
     });
   }

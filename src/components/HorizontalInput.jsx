@@ -1,12 +1,10 @@
-"use strict";
-
 import React, { forwardRef } from "react";
 import { Col, FormCheck, FormControl, FormGroup, FormLabel, FormText, InputGroup } from "react-bootstrap";
 import PropTypes from "prop-types";
 import Row from "react-bootstrap/Row";
 import TypeaheadAnswer from "./record/TypeaheadAnswer";
 
-const HorizontalInput = forwardRef(function HorizontalInputWithRef(props, ref) {
+const HorizontalInput = (props, ref) => {
   const renderInputOnType = () => {
     switch (props.type) {
       case "radio":
@@ -144,7 +142,7 @@ const HorizontalInput = forwardRef(function HorizontalInputWithRef(props, ref) {
   };
 
   return renderInputOnType();
-});
+};
 
 HorizontalInput.propTypes = {
   type: PropTypes.string,
@@ -169,4 +167,4 @@ HorizontalInput.defaultProps = {
   inputOffset: 4,
 };
 
-export default HorizontalInput;
+export default forwardRef(HorizontalInput);

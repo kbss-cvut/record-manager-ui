@@ -1,5 +1,3 @@
-"use strict";
-
 import React from "react";
 import { injectIntl } from "react-intl";
 import withI18n from "../../i18n/withI18n";

@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Internationalization store for access from non-react components and objects.
  */
