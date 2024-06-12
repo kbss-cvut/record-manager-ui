@@ -11,6 +11,7 @@ import { ROLE } from "../../constants/DefaultConstants";
 import DateIntervalFilter from "./filter/DateIntervalFilter";
 import PhaseFilter from "./filter/PhaseFilter";
 import InstitutionFilter from "./filter/InstitutionFilter";
+import TemplateFilter from "./filter/TemplateFilter.jsx";
 import SortIndicator from "../misc/SortIndicator";
 import { useI18n } from "../../hooks/useI18n";
 import FilterIndicator from "../misc/FilterIndicator";
@@ -93,7 +94,7 @@ class RecordTable extends React.Component {
           <th className="col-2 content-center">{this.i18n("records.local-name")}</th>
           <IfGranted expected={ROLE.ADMIN} actual={this.props.currentUser.role}>
             <FilterableInstitutionHeader filters={filters} onFilterChange={onChange} />
-            <th className="col-2 content-center">{this.i18n("records.form-template")}</th>
+            <FilterableTemplateHeader filters={filters} onFilterChange={onChange} />
           </IfGranted>
           <FilterableLastModifiedHeader filters={filters} sort={sort} onFilterAndSortChange={onChange} />
           <FilterablePhaseHeader filters={filters} onFilterChange={onChange} />
@@ -169,6 +170,7 @@ FilterableInstitutionHeader.propTypes = {
     minDate: PropTypes.instanceOf(Date),
     maxDate: PropTypes.instanceOf(Date),
     phase: PropTypes.string,
+    formTemplate: PropTypes.string,
   }),
   onFilterChange: PropTypes.func,
 };
@@ -212,6 +214,7 @@ FilterableLastModifiedHeader.propTypes = {
     minDate: PropTypes.instanceOf(Date),
     maxDate: PropTypes.instanceOf(Date),
     phase: PropTypes.string,
+    formTemplate: PropTypes.string,
   }),
   sort: PropTypes.shape({
     date: PropTypes.string,
@@ -248,6 +251,41 @@ FilterablePhaseHeader.propTypes = {
     minDate: PropTypes.instanceOf(Date),
     maxDate: PropTypes.instanceOf(Date),
     phase: PropTypes.string,
+    formTemplate: PropTypes.string,
+  }),
+  onFilterChange: PropTypes.func,
+};
+
+const FilterableTemplateHeader = ({ filters, onFilterChange }) => {
+  const { i18n } = useI18n();
+  return (
+    <OverlayTrigger
+      trigger="click"
+      placement="bottom"
+      rootClose={true}
+      overlay={
+        <Popover id="records-filters-template" className="record-filters-popup">
+          <Popover.Content>
+            <TemplateFilter value={filters.formTemplate} onChange={onFilterChange} />
+          </Popover.Content>
+        </Popover>
+      }
+    >
+      <th id="records-template" className="col-2 content-center cursor-pointer" title={i18n("table.column.filterable")}>
+        {i18n("records.form-template")}
+        <FilterIndicator filterValue={filters.formTemplate} />
+      </th>
+    </OverlayTrigger>
+  );
+};
+
+FilterableTemplateHeader.propTypes = {
+  filters: PropTypes.shape({
+    institution: PropTypes.string,
+    minDate: PropTypes.instanceOf(Date),
+    maxDate: PropTypes.instanceOf(Date),
+    phase: PropTypes.string,
+    formTemplate: PropTypes.string,
   }),
   onFilterChange: PropTypes.func,
 };
