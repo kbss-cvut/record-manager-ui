@@ -104,6 +104,7 @@ class RecordsController extends React.Component {
       this.props.exportRecords(exportType, {
         ...this.state.filters,
         sort: sortToParams(this.state.sort),
+        page: this.state.pageNumber,
       }),
       "records",
     );
