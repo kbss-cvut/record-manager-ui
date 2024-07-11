@@ -106,7 +106,7 @@ export const HttpHeaders = {
 
 export const MediaType = {
   FORM_URLENCODED: "application/x-www-form-urlencoded",
-  EXCEL: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  EXCEL: "application/vnd.ms-excel",
   JSON: "application/json",
 };
 

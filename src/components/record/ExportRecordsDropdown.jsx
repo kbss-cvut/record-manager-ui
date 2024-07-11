@@ -18,7 +18,6 @@ const ExportRecordsDropdown = ({ records, onExport }) => {
       variant="primary"
       className="action-button"
     >
-      {/*Excel export is currently not supported by the backend, uncommenting for demonstration purposes*/}
       <Dropdown.Item onClick={() => onExport(ExportType.EXCEL)}>{i18n("records.export.excel")}</Dropdown.Item>
       <Dropdown.Item onClick={() => onExport(ExportType.JSON)}>{i18n("records.export.json")}</Dropdown.Item>
     </DropdownButton>
