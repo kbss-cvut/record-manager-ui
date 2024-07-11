@@ -61,6 +61,9 @@ export function exportRecords(exportType, params = {}) {
       .get(`${API_URL}/rest/records/export`, {
         params,
         paramsSerializer,
+        headers: {
+          accept: exportType.mediaType,
+        },
         responseType: "arraybuffer",
       })
       .then((resp) => {
