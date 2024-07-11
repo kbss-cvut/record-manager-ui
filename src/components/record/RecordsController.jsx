@@ -103,9 +103,10 @@ class RecordsController extends React.Component {
     trackPromise(
       this.props.exportRecords(exportType, {
         ...this.state.filters,
-        sort: sortToParams(this.state.sort),
-        page: this.state.pageNumber,
-        size: BrowserStorage.get(STORAGE_TABLE_PAGE_SIZE_KEY, DEFAULT_PAGE_SIZE),
+        // Uncomment if paging is required for export
+        // sort: sortToParams(this.state.sort),
+        // page: this.state.pageNumber,
+        // size: BrowserStorage.get(STORAGE_TABLE_PAGE_SIZE_KEY, DEFAULT_PAGE_SIZE),
       }),
       "records",
     );
