@@ -20,8 +20,8 @@ See `.env.example` for detailed description of options.
 
 ## Docker Compose Deployment
 
-This repo contains example Docker Compose configurations that can be used to spin up Record Manager (runs at [http://localhost:1235/record-manager](http://localhost:1235/record-manager)) quickly, with Record Manager server (runs at [http://localhost:1235/services/record-manager-server](http://localhost:1235/services/record-manager-server)),
-a GraphDB repository (runs at [http://localhost:1235/services/db-server](http://localhost:1235/services/db-server)), S-pipes form generation, and Keycloak (runs at [http://localhost:1235/services/auth](http://localhost:1235/services/auth)) as the authentication service optionally. The configuration uses published images
+This repo contains example Docker Compose configurations that can be used to spin up Record Manager (runs at [/record-manager](http://localhost:1235/record-manager)) quickly, with Record Manager server (runs at [http://localhost:1235/services/record-manager-server](/services/record-manager-server)),
+a GraphDB repository (runs at [/services/db-server](http://localhost:1235/services/db-server)), S-pipes form generation, and Keycloak (runs at [/services/auth](http://localhost:1235/services/auth)) as the authentication service optionally. The configuration uses published images
 of the dependent services.
 
 ### Set up with Internal Authorization
