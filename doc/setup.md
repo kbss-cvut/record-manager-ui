@@ -66,7 +66,7 @@ are configured for both the Record Manager backend and frontend.
 
 To run the deployment for the first time, follow these steps:
 
-1. Create the `.env` file and set the following variables in it: `KC_ADMIN_USER`, `KC_ADMIN_PASSWORD`.
+1. Create the `.env` file in directory [deploy/keycloak-auth](../deploy/keycloak-auth/docker-compose.yml) and set the following variables in it: `KC_ADMIN_USER`, `KC_ADMIN_PASSWORD`.
 2. Run `docker compose up -d db-server` first. It uses a script that creates GraphDB repositories needed by the system.
 3. Wait approximately 20s (check the log and wait for GraphDB to be fully up).
 4. Start the rest of the system by running `docker compose up -d --build` (`--build` is used because Record Manager backend needs to be build)
