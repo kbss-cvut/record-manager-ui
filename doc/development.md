@@ -6,7 +6,7 @@ This file contains info for contributors to the Record Manager UI codebase.
 
 To configure the application use [Setup Guide](./setup.md).
 To run the application in development mode use `npm run dev`.
-By default, the application is accessible from http://localhost:3000.
+By default, the application is accessible from http://localhost:5173.
 
 ### Running with Dockerized Services and Internal Authorization
 
