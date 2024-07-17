@@ -102,7 +102,7 @@ services:
       - "7200"
     restart: always
     volumes:
-      - ../shared/db-server/init-data/forms:/root/graphdb-import/forms:ro
+      - ../shared/db-server/import:/root/graphdb-import:ro
       - db-server:/opt/graphdb/home
 
   auth-server-db:
