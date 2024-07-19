@@ -165,7 +165,7 @@ describe("Record asynchronous actions", function () {
         { type: ActionConstants.PUBLISH_MESSAGE, message: successMessage("record.save-success") },
         { type: ActionConstants.LOAD_RECORDS_SUCCESS, records },
       ];
-
+      mockApi.onGet(`${API_URL}/rest/users/current`).reply(200, { institution: "Test Institution" });
       mockApi.onPost(`${API_URL}/rest/records`).reply(200, null, { location });
       mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
 
