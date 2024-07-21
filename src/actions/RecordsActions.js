@@ -82,10 +82,30 @@ export function exportRecords(exportType, params = {}) {
 export function importRecords(file) {
   return (dispatch) => {
     dispatch(asyncRequest(ActionConstants.IMPORT_RECORDS_PENDING));
-    return file
-      .text()
-      .then((content) => {
-        return axiosBackend.post(`${API_URL}/rest/records/import`, JSON.parse(content));
+
+    const fileExtension = file.name.split(".").pop().toLowerCase();
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    let apiUrl = `${API_URL}/rest/records/import`;
+    if (fileExtension === "json") {
+      apiUrl = `${API_URL}/rest/records/import/json`;
+    } else if (["xls", "xlsx"].includes(fileExtension)) {
+      apiUrl = `${API_URL}/rest/records/import/excel`;
+    } else if (["tsv"].includes(fileExtension)) {
+      apiUrl = `${API_URL}/rest/records/import/tsv`;
+    } else {
+      const error = new Error("Unsupported file format");
+      dispatch(asyncError(ActionConstants.IMPORT_RECORDS_ERROR, error));
+      return Promise.reject(error);
+    }
+
+    return axiosBackend
+      .post(apiUrl, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       })
       .then((resp) => {
         dispatch(asyncSuccess(ActionConstants.IMPORT_RECORDS_SUCCESS));
@@ -108,7 +128,7 @@ export function importRecords(file) {
         }
       })
       .catch((error) => {
-        dispatch(asyncError(ActionConstants.IMPORT_RECORDS_ERROR, error.response.data));
+        dispatch(asyncError(ActionConstants.IMPORT_RECORDS_ERROR, error.response?.data || error.message));
         dispatch(showServerResponseErrorMessage(error, "records.import.error.message"));
       });
   };
