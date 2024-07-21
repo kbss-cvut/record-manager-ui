@@ -93,6 +93,8 @@ export function importRecords(file) {
       apiUrl = `${API_URL}/rest/records/import/json`;
     } else if (["xls", "xlsx"].includes(fileExtension)) {
       apiUrl = `${API_URL}/rest/records/import/excel`;
+    } else if (["tsv"].includes(fileExtension)) {
+      apiUrl = `${API_URL}/rest/records/import/tsv`;
     } else {
       const error = new Error("Unsupported file format");
       dispatch(asyncError(ActionConstants.IMPORT_RECORDS_ERROR, error));
