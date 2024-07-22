@@ -185,6 +185,7 @@ export default {
     "record.last-edited-msg": "Naposledy upravil(a) {name} {date}.",
     "record.save-success": "Záznam úspěšně uložen.",
     "record.save-error": "Záznam se nepodařilo uložit. {error}",
+    "record.save-error.user-not-assigned-to-institution": "Uživatel není přiřazen k žádné instituci.",
     "record.form.please-wait": "Nahrávám formulář, prosím, čekejte...",
     "record.delete-success": "Záznam úspěšně odstraněn",
     "record.delete-error": "Záznam se nepodařilo smazat. {error}",
