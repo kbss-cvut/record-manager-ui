@@ -79,6 +79,45 @@ export function exportRecords(exportType, params = {}) {
   };
 }
 
+export function publishRecords(params = {}) {
+  return (dispatch, getState) => {
+    dispatch(asyncRequest(ActionConstants.PUBLISH_RECORDS_PENDING));
+    const currentUser = getState().auth.user;
+    if (currentUser && !isAdmin(currentUser) && currentUser.institution) {
+      params.institution = currentUser.institution.key;
+    }
+    return axiosBackend
+      .post(`${API_URL}/rest/records/publish`, null, {
+        params,
+        paramsSerializer,
+      })
+      .then((resp) => {
+        dispatch(asyncSuccess(ActionConstants.PUBLISH_RECORDS_SUCCESS));
+        dispatch(loadRecords());
+        if (resp.data.importedCount < resp.data.totalCount) {
+          dispatch(
+            publishMessage(
+              infoMessage("records.import.partialSuccess.message", {
+                importedCount: resp.data.importedCount,
+                totalCount: resp.data.totalCount,
+              }),
+            ),
+          );
+        } else {
+          dispatch(
+            publishMessage(
+              successMessage("records.import.success.message", { importedCount: resp.data.importedCount }),
+            ),
+          );
+        }
+      })
+      .catch((error) => {
+        dispatch(asyncError(ActionConstants.PUBLISH_RECORDS_ERROR, error.response?.data || error.message));
+        dispatch(showServerResponseErrorMessage(error, "records.import.error.message"));
+      });
+  };
+}
+
 export function importRecords(file) {
   return (dispatch) => {
     dispatch(asyncRequest(ActionConstants.IMPORT_RECORDS_PENDING));
