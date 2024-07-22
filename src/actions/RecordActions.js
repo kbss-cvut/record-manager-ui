@@ -106,11 +106,9 @@ export function createRecord(record) {
       })
       .catch((error) => {
         dispatch(saveRecordError(error.response.data, record, ACTION_FLAG.CREATE_ENTITY));
-        dispatch(
-          publishMessage(
-            errorMessage("record.save-error", { error: getState().intl.messages[error.response.data.messageId] }),
-          ),
-        );
+        const errorMessageText =
+          getState().intl.messages[error.response.data.messageId] || error.response.data || "An error occurred";
+        dispatch(publishMessage(errorMessage("record.save-error", { error: errorMessageText })));
       });
   };
 }
