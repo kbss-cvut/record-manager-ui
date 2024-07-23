@@ -48,8 +48,8 @@ class Records extends React.Component {
   };
 
   onImport = (file) => {
-    trackPromise(this.props.handlers.onImport(file), "records");
     this.closeImportDialog();
+    trackPromise(this.props.handlers.onImport(file));
   };
 
   render() {
