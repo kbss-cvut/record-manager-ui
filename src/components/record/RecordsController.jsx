@@ -3,7 +3,7 @@ import React from "react";
 import Records from "./Records";
 import Routes from "../../constants/RoutesConstants";
 import { transitionToWithOpts } from "../../utils/Routing";
-import { exportRecords, importRecords, loadRecords } from "../../actions/RecordsActions";
+import { exportRecords, importRecords, loadRecords, publishRecords } from "../../actions/RecordsActions";
 import { injectIntl } from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import { connect } from "react-redux";
@@ -81,22 +81,8 @@ class RecordsController extends React.Component {
   };
 
   _onPublishRecords = async () => {
-    this.setState(
-      {
-        records: this.props.recordsLoaded.records,
-      },
-      async () => {
-        const updatedRecords = this.state.records.map(async (record) => {
-          if (record.phase === RECORD_PHASE.COMPLETED) {
-            const updatedRecord = { ...record, phase: RECORD_PHASE.PUBLISHED };
-            await this.props.updateRecord(updatedRecord);
-            return updatedRecord;
-          }
-        });
-
-        return await Promise.all(updatedRecords);
-      },
-    );
+    trackPromise(this.props.publishRecords(), "records");
+    //TODO maybe refresh updated records in list ??
   };
 
   _onExportRecords = (exportType) => {
@@ -178,6 +164,7 @@ RecordsController.propTypes = {
   deleteRecord: PropTypes.func.isRequired,
   updateRecord: PropTypes.func.isRequired,
   exportRecords: PropTypes.func.isRequired,
+  publishRecords: PropTypes.func.isRequired,
   importRecords: PropTypes.func.isRequired,
   formTemplatesLoaded: PropTypes.object.isRequired,
   recordsLoaded: PropTypes.shape({
@@ -206,6 +193,7 @@ function mapDispatchToProps(dispatch) {
     updateRecord: bindActionCreators(updateRecord, dispatch),
     loadRecords: bindActionCreators(loadRecords, dispatch),
     exportRecords: bindActionCreators(exportRecords, dispatch),
+    publishRecords: bindActionCreators(publishRecords, dispatch),
     importRecords: bindActionCreators(importRecords, dispatch),
     loadFormTemplates: bindActionCreators(loadFormTemplates, dispatch),
     transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),
