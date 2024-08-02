@@ -1,21 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { IntelligentTreeSelect } from "intelligent-tree-select";
 import { RECORD_PHASE } from "../../../constants/DefaultConstants";
 import { useI18n } from "../../../hooks/useI18n";
 import { sanitizeArray } from "../../../utils/Utils";
 import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { loadRecordsPhases } from "../../../actions/RecordsActions.js";
 
 const PhaseFilter = ({ value, onChange }) => {
   const { i18n } = useI18n();
-  const options = React.useMemo(
-    () =>
-      Object.keys(RECORD_PHASE).map((phase) => ({
-        label: i18n("records.completion-status." + RECORD_PHASE[phase]),
-        value: phase,
-      })),
-    [i18n],
-  );
+
+  const phases = useSelector((state) => state.records.recordsPhases.data);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadRecordsPhases());
+  }, [dispatch]);
+
+  const options = React.useMemo(() => {
+    if (!phases) {
+      return [];
+    }
+    return phases.map((phase) => ({
+      label: i18n("records.completion-status." + phase),
+      value: phase,
+    }));
+  }, [phases, i18n]);
+
   const values = sanitizeArray(value);
   const selected = options.filter((o) => values.indexOf(o.value) !== -1);
   return (

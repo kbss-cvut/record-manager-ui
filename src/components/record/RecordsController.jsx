@@ -3,7 +3,13 @@ import React from "react";
 import Records from "./Records";
 import Routes from "../../constants/RoutesConstants";
 import { transitionToWithOpts } from "../../utils/Routing";
-import { exportRecords, importRecords, loadRecords, publishRecords } from "../../actions/RecordsActions";
+import {
+  exportRecords,
+  importRecords,
+  loadRecords,
+  loadRecordsPhases,
+  publishRecords,
+} from "../../actions/RecordsActions";
 import { injectIntl } from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import { connect } from "react-redux";
@@ -192,6 +198,7 @@ function mapDispatchToProps(dispatch) {
     deleteRecord: bindActionCreators(deleteRecord, dispatch),
     updateRecord: bindActionCreators(updateRecord, dispatch),
     loadRecords: bindActionCreators(loadRecords, dispatch),
+    loadRecordsPhase: bindActionCreators(loadRecordsPhases, dispatch),
     exportRecords: bindActionCreators(exportRecords, dispatch),
     publishRecords: bindActionCreators(publishRecords, dispatch),
     importRecords: bindActionCreators(importRecords, dispatch),

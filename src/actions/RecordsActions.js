@@ -172,3 +172,32 @@ export function importRecords(file) {
       });
   };
 }
+
+export function loadRecordsPhases() {
+  return function (dispatch) {
+    dispatch(loadRecordsPhasesPending());
+    return axiosBackend
+      .get(`${API_URL}/rest/records/used-record-phases`)
+      .then((response) => {
+        dispatch(loadRecordsPhasesSuccess(response.data));
+      })
+      .catch((error) => {
+        dispatch(loadRecordsPhasesError(error.response.data));
+      });
+  };
+}
+
+export function loadRecordsPhasesPending() {
+  return asyncRequest(ActionConstants.LOAD_RECORDS_PHASES_PENDING);
+}
+
+export function loadRecordsPhasesSuccess(phases) {
+  return {
+    type: ActionConstants.LOAD_RECORDS_PHASES_SUCCESS,
+    phases,
+  };
+}
+
+export function loadRecordsPhasesError(error) {
+  return asyncError(ActionConstants.LOAD_RECORDS_PHASES_ERROR, error);
+}
