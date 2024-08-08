@@ -186,6 +186,7 @@ export default {
     "record.last-edited-msg": "Last modified {date} by {name}.",
     "record.save-success": "Form successfully saved.",
     "record.save-error": "Unable to save record. {error}",
+    "record.save-error.user-not-assigned-to-institution": "User is not assigned to any institution.",
     "record.form.please-wait": "Loading form, please wait...",
     "record.delete-success": "Form deleted successfully",
     "record.delete-error": "Unable to delete record. {error}",
