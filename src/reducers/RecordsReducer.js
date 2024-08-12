@@ -3,6 +3,7 @@ import { ACTION_STATUS } from "../constants/DefaultConstants";
 
 const initialState = {
   recordsLoaded: {},
+  recordsPhases: {},
 };
 
 export default function (state = initialState, action) {
@@ -29,6 +30,31 @@ export default function (state = initialState, action) {
       return {
         ...state,
         recordsLoaded: {
+          status: ACTION_STATUS.ERROR,
+          error: action.error,
+        },
+      };
+    case ActionConstants.LOAD_RECORDS_PHASES_PENDING:
+      return {
+        ...state,
+        recordsPhases: {
+          ...state.phases,
+          status: ACTION_STATUS.PENDING,
+        },
+      };
+    case ActionConstants.LOAD_RECORDS_PHASES_SUCCESS:
+      return {
+        ...state,
+        recordsPhases: {
+          status: ACTION_STATUS.SUCCESS,
+          data: action.phases,
+          error: "",
+        },
+      };
+    case ActionConstants.LOAD_RECORDS_PHASES_ERROR:
+      return {
+        ...state,
+        recordsPhases: {
           status: ACTION_STATUS.ERROR,
           error: action.error,
         },
