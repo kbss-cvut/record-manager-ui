@@ -1,6 +1,7 @@
 import Routes from "./RoutesConstants";
 import { APP_TITLE } from "../../config";
 
+import * as Vocabulary from "./Vocabulary.js";
 export const WEB_LANG = "en";
 
 export const APP_NAME = APP_TITLE;
@@ -87,8 +88,36 @@ export const ACTION_STATUS = {
 
 export const ROLE = {
   ADMIN: "Admin",
-  DOCTOR: "Regular User",
+  DOCTOR: "Doctor",
+  COMPLETE_RECORDS: "rm_complete_records",
+  REJECT_RECORDS: "rm_reject_records",
+  PUBLISH_RECORDS: "rm_publish_records",
+  DELETE_ALL_RECORDS: "rm_delete_all_records",
+  EDIT_ALL_RECORDS: "rm_edit_all_records",
+  VIEW_ALL_RECORDS: "rm_view_all_records",
+  DELETE_ORGANIZATION_RECORDS: "rm_delete_organization_records",
+  EDIT_ORGANIZATION_RECORDS: "rm_edit_organization_records",
+  VIEW_ORGANIZATION_RECORDS: "rm_view_organization_records",
+  EDIT_USERS: "rm_edit_users",
+  IMPORT_CODELISTS: "rm_import_codelists",
 };
+
+export const TYPE_ROLE = {
+  [Vocabulary.ADMIN_TYPE]: ROLE.ADMIN,
+  [Vocabulary.DOCTOR_TYPE]: ROLE.DOCTOR,
+  [Vocabulary.COMPLETE_RECORDS_TYPE]: ROLE.COMPLETE_RECORDS,
+  [Vocabulary.REJECT_RECORDS_TYPE]: ROLE.REJECT_RECORDS,
+  [Vocabulary.PUBLISH_RECORDS_TYPE]: ROLE.PUBLISH_RECORDS,
+  [Vocabulary.DELETE_ALL_RECORDS_TYPE]: ROLE.DELETE_ALL_RECORDS,
+  [Vocabulary.EDIT_ALL_RECORDS_TYPE]: ROLE.EDIT_ALL_RECORDS,
+  [Vocabulary.VIEW_ALL_RECORDS_TYPE]: ROLE.VIEW_ALL_RECORDS,
+  [Vocabulary.DELETE_ORGANIZATION_RECORDS_TYPE]: ROLE.DELETE_ORGANIZATION_RECORDS,
+  [Vocabulary.EDIT_ORGANIZATION_RECORDS_TYPE]: ROLE.EDIT_ORGANIZATION_RECORDS,
+  [Vocabulary.VIEW_ORGANIZATION_RECORDS_TYPE]: ROLE.VIEW_ORGANIZATION_RECORDS,
+  [Vocabulary.EDIT_USERS_TYPE]: ROLE.EDIT_USERS,
+  [Vocabulary.IMPORT_CODELISTS_TYPE]: ROLE.IMPORT_CODELISTS,
+};
+
 // Default number of table elements per page.
 export const DEFAULT_PAGE_SIZE = 10;
 
