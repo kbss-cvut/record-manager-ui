@@ -238,9 +238,7 @@ class User extends React.Component {
                   type="text"
                   name="firstName"
                   label={`${this.i18n("user.first-name")}*`}
-                  disabled={
-                    (currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username) || isUsingOidcAuth()
-                  }
+                  disabled={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
                   value={user.firstName}
                   labelWidth={3}
                   inputWidth={8}
