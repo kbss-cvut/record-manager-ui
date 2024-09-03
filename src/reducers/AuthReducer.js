@@ -1,5 +1,5 @@
 import * as ActionConstants from "../constants/ActionConstants";
-import { getRole } from "../utils/Utils";
+import { getRoles } from "../utils/SecurityUtils.js";
 import { ACTION_STATUS } from "../constants/DefaultConstants";
 
 const initialState = {
@@ -47,7 +47,7 @@ export default function (state = initialState, action) {
         status: ACTION_STATUS.SUCCESS,
         user: {
           ...action.user,
-          role: getRole(action.user),
+          roles: getRoles(action.user),
         },
       };
     case ActionConstants.LOAD_USER_PROFILE_ERROR:

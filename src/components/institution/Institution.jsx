@@ -13,6 +13,7 @@ import { LoaderSmall } from "../Loader";
 import InstitutionValidator from "../../validation/InstitutionValidator";
 import HelpIcon from "../HelpIcon";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
+import { isAdmin } from "../../utils/SecurityUtils.js";
 
 /**
  * Institution detail. Editable only for admins.
@@ -63,7 +64,7 @@ class Institution extends React.Component {
                       name="name"
                       label={`${this.i18n("institution.name")}*`}
                       value={institution.name}
-                      readOnly={currentUser.role !== ROLE.ADMIN}
+                      readOnly={!isAdmin(currentUser)}
                       onChange={this._onChange}
                       labelWidth={3}
                       inputWidth={8}
@@ -75,7 +76,7 @@ class Institution extends React.Component {
                       name="emailAddress"
                       label={this.i18n("institution.email")}
                       value={institution.emailAddress || ""}
-                      readOnly={currentUser.role !== ROLE.ADMIN}
+                      readOnly={!isAdmin(currentUser)}
                       onChange={this._onChange}
                       labelWidth={3}
                       inputWidth={8}
@@ -122,7 +123,7 @@ class Institution extends React.Component {
 
   _renderButtons() {
     const { currentUser, handlers, institutionSaved } = this.props;
-    if (currentUser.role !== ROLE.ADMIN) {
+    if (!isAdmin(currentUser)) {
       return (
         <div className="row justify-content-center">
           <Button variant="primary" size="sm" className="action-button" onClick={handlers.onCancel}>

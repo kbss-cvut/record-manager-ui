@@ -37,7 +37,7 @@ class MainView extends React.Component {
     const path = this.props.location.pathname;
 
     return (
-      <IfGranted expected={ROLE.ADMIN} actual={this.props.user.role}>
+      <IfGranted expected={ROLE.ADMIN} actual={this.props.user.roles}>
         <NavItem>
           <NavLink to={Routes.users.path} isActive={() => path.startsWith(Routes.users.path)} className="nav-link">
             {this.i18n("main.users-nav")}
@@ -95,7 +95,6 @@ class MainView extends React.Component {
     const user = this.props.user;
     const name = user.firstName.substring(0, 1) + ". " + user.lastName;
     const path = this.props.location.pathname;
-
     return (
       <div className="main-view-wrapper">
         <header>
@@ -129,7 +128,7 @@ class MainView extends React.Component {
                       </NavLink>
                     </NavItem>
                   ) : null}
-                  <IfGranted expected={ROLE.ADMIN} actual={user.role}>
+                  <IfGranted expected={ROLE.ADMIN} actual={user.roles}>
                     <NavItem>
                       <NavLink
                         className="nav-link"
@@ -140,10 +139,10 @@ class MainView extends React.Component {
                       </NavLink>
                     </NavItem>
                   </IfGranted>
-                  <IfGranted expected={ROLE.ADMIN} actual={user.role}>
+                  <IfGranted expected={ROLE.ADMIN} actual={user.roles}>
                     <NavItem>{this._renderStatisticsNavLink(path)}</NavItem>
                   </IfGranted>
-                  <IfGranted expected={ROLE.ADMIN} actual={user.role}>
+                  <IfGranted expected={ROLE.ADMIN} actual={user.roles}>
                     <NavItem>
                       <NavLink
                         className="nav-link"

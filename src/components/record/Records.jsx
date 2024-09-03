@@ -2,12 +2,12 @@ import React from "react";
 import { Alert, Button, Card } from "react-bootstrap";
 import { injectIntl } from "react-intl";
 import withI18n from "../../i18n/withI18n";
-import { EXTENSION_CONSTANTS } from "../../constants/DefaultConstants";
+import { EXTENSION_CONSTANTS, ROLE } from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
 import { processTypeaheadOptions } from "./TypeaheadAnswer";
 import { EXTENSIONS } from "../../../config";
 import ExportRecordsDropdown from "./ExportRecordsDropdown";
-import { isAdmin } from "../../utils/SecurityUtils";
+import { hasRole, isAdmin } from "../../utils/SecurityUtils";
 import ImportRecordsDialog from "./ImportRecordsDialog";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 import { trackPromise } from "react-promise-tracker";
@@ -57,7 +57,7 @@ class Records extends React.Component {
     const showCreateButton = STUDY_CREATE_AT_MOST_ONE_RECORD
       ? !recordsLoaded.records || recordsLoaded.records.length < 1
       : true;
-    const showPublishButton = isAdmin(this.props.currentUser) && EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR;
+    const showPublishButton = isAdmin(this.props.currentUser) && hasRole(this.props.currentUser, ROLE.PUBLISH_RECORDS);
     const createRecordDisabled = STUDY_CLOSED_FOR_ADDITION && !isAdmin(this.props.currentUser);
     const createRecordTooltip = this.i18n(
       createRecordDisabled ? "records.closed-study.create-tooltip" : "records.opened-study.create-tooltip",
