@@ -4,7 +4,7 @@ import withI18n from "../../i18n/withI18n";
 import { injectIntl } from "react-intl";
 import HorizontalInput from "../HorizontalInput";
 import UserValidator from "../../validation/UserValidator";
-import { ACTION_STATUS, ROLE } from "../../constants/DefaultConstants";
+import { ACTION_STATUS, ROLE, ROLE_TYPE } from "../../constants/DefaultConstants";
 import { getRole, processInstitutions } from "../../utils/Utils";
 import * as Vocabulary from "../../constants/Vocabulary";
 import { LoaderCard, LoaderSmall } from "../Loader";
@@ -12,7 +12,8 @@ import HelpIcon from "../HelpIcon";
 import PropTypes from "prop-types";
 import { FaRandom } from "react-icons/fa";
 import { isUsingOidcAuth } from "../../utils/OidcUtils";
-import { isAdmin } from "../../utils/SecurityUtils";
+import { getRoles, isAdmin } from "../../utils/SecurityUtils";
+import RoleSelector from "../../RoleSelector.jsx";
 
 class User extends React.Component {
   static propTypes = {
@@ -38,6 +39,7 @@ class User extends React.Component {
     this.i18n = this.props.i18n;
     this.formatMessage = this.props.formatMessage;
     this.state = { savedWithEmail: false };
+    this._onRoleSelected = this._onRoleSelected.bind(this);
   }
 
   _onChange = (e) => {
@@ -160,7 +162,7 @@ class User extends React.Component {
 
   _impersonateButton() {
     const { user, currentUser, handlers, impersonation } = this.props;
-    if (!user.isNew && isAdmin(currentUser) && getRole(user) !== ROLE.ADMIN) {
+    if (!user.isNew && isAdmin(currentUser) && !isAdmin(user)) {
       return (
         <Button
           style={{ margin: "0 0.3em 0 0" }}
@@ -199,6 +201,13 @@ class User extends React.Component {
     } else {
       return null;
     }
+  }
+
+  _onRoleSelected(roles) {
+    const types = roles.map((role) => {
+      return ROLE_TYPE[role];
+    });
+    this.props.handlers.onChange({ types: types });
   }
 
   _onSaveAndSendEmail() {
@@ -302,20 +311,6 @@ class User extends React.Component {
                   </HorizontalInput>
                 </div>
               )}
-              <div className="col-12 col-sm-6">
-                <HorizontalInput
-                  type="select"
-                  name="role"
-                  label={`${this.i18n("user.role")}*`}
-                  onChange={this._onAdminStatusChange}
-                  disabled={!isAdmin(currentUser) || isUsingOidcAuth()}
-                  value={user.types && getRole(user)}
-                  labelWidth={3}
-                  inputWidth={8}
-                >
-                  {this._generateRolesOptions()}
-                </HorizontalInput>
-              </div>
             </div>
             {user.isNew && (
               <div className="row">
@@ -332,6 +327,14 @@ class User extends React.Component {
                 </div>
               </div>
             )}
+            <div className="col-12 col-sm-8">
+              <RoleSelector
+                selected={getRoles(user)}
+                handler={this._onRoleSelected}
+                readOnly={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
+                label={this.i18n("user.roles")}
+              />
+            </div>
             <div className="buttons-line-height mt-3 text-center">
               {this._impersonateButton()}
               {isUsingOidcAuth() ? this._redirectToKeycloakButton() : this._passwordChangeButton()}
