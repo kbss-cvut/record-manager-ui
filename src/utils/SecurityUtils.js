@@ -16,8 +16,11 @@ export function clearToken() {
   sessionStorage.removeItem(getOidcIdentityStorageKey());
 }
 
-export function isAdmin(currentUser) {
-  return currentUser.roles ? currentUser.roles.includes(ROLE.ADMIN) : false;
+export function isAdmin(user) {
+  if (user.roles) {
+    return user.roles.includes(ROLE.ADMIN);
+  }
+  return user.types ? getRoles(user).includes(ROLE.ADMIN) : false;
 }
 
 export function hasRole(currentUser, role) {
@@ -30,7 +33,7 @@ export function isImpersonator(currentUser) {
 }
 
 export function getRoles(user) {
-  if (!user) {
+  if (!user || !user.types) {
     return undefined;
   }
   let roles = [];

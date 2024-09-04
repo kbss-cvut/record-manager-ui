@@ -117,6 +117,7 @@ export const TYPE_ROLE = {
   [Vocabulary.EDIT_USERS_TYPE]: ROLE.EDIT_USERS,
   [Vocabulary.IMPORT_CODELISTS_TYPE]: ROLE.IMPORT_CODELISTS,
 };
+export const ROLE_TYPE = Object.fromEntries(Object.entries(TYPE_ROLE).map(([key, value]) => [value, key]));
 
 // Default number of table elements per page.
 export const DEFAULT_PAGE_SIZE = 10;
