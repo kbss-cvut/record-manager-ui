@@ -102,6 +102,12 @@ export const ROLE = {
   IMPORT_CODELISTS: "rm_import_codelists",
 };
 
+export const GROUP = {
+  OPERATOR: "Operator",
+  SUPPLIER: "Supplier",
+  EXTERNAL_USER: "External User",
+};
+
 export const TYPE_ROLE = {
   [Vocabulary.ADMIN_TYPE]: ROLE.ADMIN,
   [Vocabulary.DOCTOR_TYPE]: ROLE.DOCTOR,

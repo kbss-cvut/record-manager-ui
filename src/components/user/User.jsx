@@ -4,15 +4,14 @@ import withI18n from "../../i18n/withI18n";
 import { injectIntl } from "react-intl";
 import HorizontalInput from "../HorizontalInput";
 import UserValidator from "../../validation/UserValidator";
-import { ACTION_STATUS, ROLE, ROLE_TYPE } from "../../constants/DefaultConstants";
-import { getRole, processInstitutions } from "../../utils/Utils";
-import * as Vocabulary from "../../constants/Vocabulary";
+import { ACTION_STATUS, GROUP, ROLE_TYPE } from "../../constants/DefaultConstants";
+import { processInstitutions } from "../../utils/Utils";
 import { LoaderCard, LoaderSmall } from "../Loader";
 import HelpIcon from "../HelpIcon";
 import PropTypes from "prop-types";
 import { FaRandom } from "react-icons/fa";
 import { isUsingOidcAuth } from "../../utils/OidcUtils";
-import { getRoles, isAdmin } from "../../utils/SecurityUtils";
+import { getRoles, isAdmin, roleToType } from "../../utils/SecurityUtils";
 import RoleSelector from "../../RoleSelector.jsx";
 
 class User extends React.Component {
@@ -57,17 +56,6 @@ class User extends React.Component {
     this.props.handlers.onChange(change);
   };
 
-  _onAdminStatusChange = (e) => {
-    const role = e.target.value;
-    let types = this.props.user.types.slice();
-    if (role === ROLE.ADMIN) {
-      types.push(Vocabulary.ADMIN_TYPE);
-    } else {
-      types.splice(types.indexOf(Vocabulary.ADMIN_TYPE), 1);
-    }
-    this.props.handlers.onChange({ types: types });
-  };
-
   _generateInstitutionsOptions = () => {
     let options = [];
     const institutions = processInstitutions(this.props.institutions);
@@ -88,15 +76,21 @@ class User extends React.Component {
     return options;
   };
 
-  _generateRolesOptions = () => {
-    const roles = ROLE;
-    return Object.keys(roles).map((key) => {
+  _generateGroupOptions = () => {
+    let options = Object.keys(GROUP).map((key) => {
       return (
-        <option key={roles[key]} value={roles[key]}>
-          {roles[key]}
+        <option key={"opt_" + key} value={key}>
+          {GROUP[key]}
         </option>
       );
     });
+
+    options.unshift(
+      <option key="opt_default" value="" disabled style={{ display: "none" }}>
+        {this.i18n("select.default")}
+      </option>,
+    );
+    return options;
   };
 
   _passwordChangeButton() {
@@ -210,6 +204,10 @@ class User extends React.Component {
     this.props.handlers.onChange({ types: types });
   }
 
+  _onGroupSelected(group) {
+    this.props.handlers.onChange({ group: group });
+  }
+
   _onSaveAndSendEmail() {
     this.props.handlers.onSave();
     this.setState({ savedWithEmail: true });
@@ -295,6 +293,20 @@ class User extends React.Component {
               </div>
             </div>
             <div className="row">
+              <div className="col-12 col-sm-6">
+                <HorizontalInput
+                  type="select"
+                  name="group"
+                  label={`${this.i18n("user.group")}*`}
+                  disabled={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
+                  value={user.group}
+                  labelWidth={3}
+                  inputWidth={8}
+                  onChange={this._onGroupSelected}
+                >
+                  {this._generateGroupOptions()}
+                </HorizontalInput>
+              </div>
               {isAdmin(currentUser) && (
                 <div className="col-12 col-sm-6">
                   <HorizontalInput
@@ -332,7 +344,7 @@ class User extends React.Component {
                 selected={getRoles(user)}
                 handler={this._onRoleSelected}
                 readOnly={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
-                label={this.i18n("user.roles")}
+                label={`${this.i18n("user.roles")}*`}
               />
             </div>
             <div className="buttons-line-height mt-3 text-center">
