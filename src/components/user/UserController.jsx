@@ -25,10 +25,10 @@ import {
 } from "../../actions/UserActions";
 import * as UserFactory from "../../utils/EntityFactory";
 import omit from "lodash/omit";
-import { getRole } from "../../utils/Utils";
 import { isUsingOidcAuth, userProfileLink } from "../../utils/OidcUtils";
 import { isAdmin } from "../../utils/SecurityUtils";
 import PropTypes from "prop-types";
+import { generateRandomUsername } from "../../utils/Utils.js";
 
 class UserController extends React.Component {
   constructor(props) {
@@ -131,7 +131,7 @@ class UserController extends React.Component {
   };
 
   _generateUsername = () => {
-    this.props.generateUsername(getRole(this.state.user).toLowerCase());
+    this.props.generateUsername(generateRandomUsername().toLowerCase());
   };
 
   _getPayload() {
