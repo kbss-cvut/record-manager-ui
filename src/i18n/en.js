@@ -100,6 +100,7 @@ export default {
     "user.passwords-not-matching-tooltip": "Passwords don't match",
     "user.role": "Role",
     "user.roles": "Roles",
+    "user.group": "Group",
     "user.save-success": "User saved successfully",
     "user.save-success-with-email": "User saved successfully and informed by email.",
     "user.save-error": "Unable to save user. {error}",

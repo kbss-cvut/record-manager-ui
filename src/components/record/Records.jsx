@@ -2,7 +2,7 @@ import React from "react";
 import { Alert, Button, Card } from "react-bootstrap";
 import { injectIntl } from "react-intl";
 import withI18n from "../../i18n/withI18n";
-import { EXTENSION_CONSTANTS, ROLE } from "../../constants/DefaultConstants";
+import { ROLE } from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
 import { processTypeaheadOptions } from "./TypeaheadAnswer";
 import { EXTENSIONS } from "../../../config";

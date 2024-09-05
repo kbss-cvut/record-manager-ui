@@ -189,7 +189,7 @@ describe("User", function () {
       }
     }
     const selects = TestUtils.scryRenderedDOMComponentsWithTag(tree, "select");
-    expect(selects.length).toEqual(1);
+    expect(selects.length).toEqual(2);
     const randomButton = TestUtils.scryRenderedDOMComponentsWithClass(tree, "button-random");
     expect(randomButton.length).toEqual(1);
   });
@@ -316,7 +316,7 @@ describe("User", function () {
       }
     }
     const selects = TestUtils.scryRenderedDOMComponentsWithTag(tree, "select");
-    expect(selects.length).toEqual(1);
+    expect(selects.length).toEqual(2);
     expect(selects[0].disabled).toBeFalsy();
     const randomButton = TestUtils.scryRenderedDOMComponentsWithClass(tree, "glyphicon");
     expect(randomButton.length).toEqual(0);
@@ -361,7 +361,7 @@ describe("User", function () {
       }
     }
     const selects = TestUtils.scryRenderedDOMComponentsWithTag(tree, "select");
-    expect(selects.length).toEqual(1);
+    expect(selects.length).toEqual(2);
     expect(selects[0].disabled).toBeFalsy();
   });
 
