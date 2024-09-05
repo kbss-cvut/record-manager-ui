@@ -100,6 +100,7 @@ export default {
     "user.passwords-not-matching-tooltip": "Hesla se neshodují",
     "user.role": "Role",
     "user.roles": "Roles",
+    "user.group": "Skupina",
     "user.save-success": "Uživatel úspěšně uložen",
     "user.save-success-with-email": "Uživatel úspěšně uložen a informován emailem.",
     "user.save-error": "Uživatele se nepodařilo uložit. {error}",
