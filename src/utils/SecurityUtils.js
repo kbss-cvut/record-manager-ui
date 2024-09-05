@@ -23,8 +23,11 @@ export function isAdmin(user) {
   return user.types ? getRoles(user).includes(ROLE.ADMIN) : false;
 }
 
-export function hasRole(currentUser, role) {
-  return currentUser.roles ? currentUser.roles.includes(role) : false;
+export function hasRole(user, role) {
+  if (user.roles) {
+    return user.roles.includes(role);
+  }
+  return user.types ? getRoles(user).includes(role) : false;
 }
 
 export function isImpersonator(currentUser) {
