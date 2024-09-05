@@ -19,7 +19,7 @@ describe("Records", function () {
     handlers;
   admin = {
     username: "admin",
-    role: ROLE.ADMIN,
+    roles: [ROLE.ADMIN],
   };
   records = [
     {
