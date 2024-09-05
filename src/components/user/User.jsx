@@ -4,14 +4,14 @@ import withI18n from "../../i18n/withI18n";
 import { injectIntl } from "react-intl";
 import HorizontalInput from "../HorizontalInput";
 import UserValidator from "../../validation/UserValidator";
-import { ACTION_STATUS, GROUP, ROLE_TYPE } from "../../constants/DefaultConstants";
+import { ACTION_STATUS, GROUP, ROLE, ROLE_TYPE } from "../../constants/DefaultConstants";
 import { processInstitutions } from "../../utils/Utils";
 import { LoaderCard, LoaderSmall } from "../Loader";
 import HelpIcon from "../HelpIcon";
 import PropTypes from "prop-types";
 import { FaRandom } from "react-icons/fa";
 import { isUsingOidcAuth } from "../../utils/OidcUtils";
-import { getRoles, isAdmin, roleToType } from "../../utils/SecurityUtils";
+import { getRoles, hasRole, isAdmin, roleToType } from "../../utils/SecurityUtils";
 import RoleSelector from "../../RoleSelector.jsx";
 
 class User extends React.Component {
@@ -245,7 +245,10 @@ class User extends React.Component {
                   type="text"
                   name="firstName"
                   label={`${this.i18n("user.first-name")}*`}
-                  disabled={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
+                  disabled={
+                    (currentUser.username !== user.username && !hasRole(currentUser, ROLE.EDIT_USERS)) ||
+                    isUsingOidcAuth()
+                  }
                   value={user.firstName}
                   labelWidth={3}
                   inputWidth={8}
@@ -257,7 +260,10 @@ class User extends React.Component {
                   type="text"
                   name="lastName"
                   label={`${this.i18n("user.last-name")}*`}
-                  disabled={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
+                  disabled={
+                    (currentUser.username !== user.username && !hasRole(currentUser, ROLE.EDIT_USERS)) ||
+                    isUsingOidcAuth()
+                  }
                   value={user.lastName}
                   labelWidth={3}
                   inputWidth={8}
@@ -284,7 +290,10 @@ class User extends React.Component {
                   type="email"
                   name="emailAddress"
                   label={`${this.i18n("users.email")}*`}
-                  disabled={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
+                  disabled={
+                    (currentUser.username !== user.username && !hasRole(currentUser, ROLE.EDIT_USERS)) ||
+                    isUsingOidcAuth()
+                  }
                   value={user.emailAddress}
                   labelWidth={3}
                   inputWidth={8}
@@ -298,7 +307,11 @@ class User extends React.Component {
                   type="select"
                   name="group"
                   label={`${this.i18n("user.group")}*`}
-                  disabled={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
+                  disabled={
+                    !isAdmin(currentUser) ||
+                    (currentUser.username !== user.username && !hasRole(currentUser, ROLE.EDIT_USERS)) ||
+                    isUsingOidcAuth()
+                  }
                   value={user.group}
                   labelWidth={3}
                   inputWidth={8}
@@ -314,7 +327,10 @@ class User extends React.Component {
                     name="institution"
                     label={`${this.i18n("institution.panel-title")}*`}
                     onChange={this._onInstitutionSelected}
-                    disabled={!isAdmin(currentUser)}
+                    disabled={
+                      !isAdmin(currentUser) ||
+                      (currentUser.username !== user.username && !hasRole(currentUser, ROLE.EDIT_USERS))
+                    }
                     value={user.institution ? user.institution.uri : ""}
                     labelWidth={3}
                     inputWidth={8}
@@ -343,7 +359,11 @@ class User extends React.Component {
               <RoleSelector
                 selected={getRoles(user)}
                 handler={this._onRoleSelected}
-                readOnly={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
+                readOnly={
+                  !isAdmin(currentUser) ||
+                  (currentUser.username !== user.username && !hasRole(currentUser, ROLE.EDIT_USERS)) ||
+                  isUsingOidcAuth()
+                }
                 label={`${this.i18n("user.roles")}*`}
               />
             </div>
