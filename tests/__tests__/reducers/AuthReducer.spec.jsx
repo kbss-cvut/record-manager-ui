@@ -1,10 +1,10 @@
 import React from "react";
 import * as ActionConstants from "../../../src/constants/ActionConstants";
 import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
-import { getRole } from "../../../src/utils/Utils";
 import AuthReducer from "../../../src/reducers/AuthReducer";
 import UserReducer from "../../../src/reducers/UserReducer";
 import { describe, expect, it } from "vitest";
+import { getRoles } from "../../../src/utils/SecurityUtils.js";
 
 describe("AuthReducer", function () {
   const user = {
@@ -127,7 +127,7 @@ describe("AuthReducer", function () {
       status: ACTION_STATUS.SUCCESS,
       user: {
         ...user,
-        role: getRole(user),
+        roles: getRoles(user),
       },
       testEntry: initialState.testEntry,
     };

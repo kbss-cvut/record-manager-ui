@@ -187,7 +187,7 @@ describe("User asynchronous actions", function () {
       currentPassword: "1234",
     },
     currentUserAdmin = {
-      role: ROLE.ADMIN,
+      roles: [ROLE.ADMIN],
     },
     usernamePrefix = "doctor";
 

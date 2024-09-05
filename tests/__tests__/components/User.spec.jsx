@@ -29,11 +29,11 @@ describe("User", function () {
 
   currentUser = {
     username: "test",
-    role: ROLE.DOCTOR,
+    roles: [ROLE.DOCTOR],
   };
   currentUserAdmin = {
     username: "test",
-    role: ROLE.ADMIN,
+    roles: [ROLE.ADMIN],
   };
   newUser = {
     ...newUser,
@@ -162,7 +162,7 @@ describe("User", function () {
       </IntlProvider>,
     );
     const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, "input");
-    expect(result.length).toEqual(5);
+    expect(result.length).toEqual(7);
     for (let input of result) {
       switch (input.name) {
         case "firstName":
@@ -189,9 +189,7 @@ describe("User", function () {
       }
     }
     const selects = TestUtils.scryRenderedDOMComponentsWithTag(tree, "select");
-    expect(selects.length).toEqual(2);
-    expect(selects[1].value).toEqual(ROLE.DOCTOR);
-
+    expect(selects.length).toEqual(1);
     const randomButton = TestUtils.scryRenderedDOMComponentsWithClass(tree, "button-random");
     expect(randomButton.length).toEqual(1);
   });
@@ -295,7 +293,7 @@ describe("User", function () {
       </IntlProvider>,
     );
     const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, "input");
-    expect(result.length).toEqual(4);
+    expect(result.length).toEqual(6);
     for (let input of result) {
       switch (input.name) {
         case "firstName":
@@ -318,10 +316,8 @@ describe("User", function () {
       }
     }
     const selects = TestUtils.scryRenderedDOMComponentsWithTag(tree, "select");
-    expect(selects.length).toEqual(2);
+    expect(selects.length).toEqual(1);
     expect(selects[0].disabled).toBeFalsy();
-    expect(selects[1].disabled).toBeFalsy();
-
     const randomButton = TestUtils.scryRenderedDOMComponentsWithClass(tree, "glyphicon");
     expect(randomButton.length).toEqual(0);
   });
@@ -342,52 +338,7 @@ describe("User", function () {
       </IntlProvider>,
     );
     const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, "input");
-    expect(result.length).toEqual(4);
-    for (let input of result) {
-      switch (input.name) {
-        case "firstName":
-          expect(input.value).toEqual("Test1");
-          expect(input.type).toEqual("text");
-          break;
-        case "lastName":
-          expect(input.value).toEqual("Man");
-          expect(input.type).toEqual("text");
-          break;
-        case "username":
-          expect(input.value).toEqual("testman1");
-          expect(input.type).toEqual("text");
-          expect(input.disabled).toBeTruthy();
-          break;
-        case "emailAddress":
-          expect(input.value).toEqual("");
-          expect(input.type).toEqual("email");
-          break;
-      }
-    }
-    const selects = TestUtils.scryRenderedDOMComponentsWithTag(tree, "select");
-    expect(selects.length).toEqual(2);
-    expect(selects[1].value).toEqual(ROLE.ADMIN);
-    expect(selects[0].disabled).toBeFalsy();
-    expect(selects[1].disabled).toBeFalsy();
-  });
-
-  it("renders filled user's form", function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <User
-          user={admin}
-          handlers={handlers}
-          backToInstitution={backToInstitution}
-          userSaved={userSaved}
-          showAlert={showAlert}
-          userLoaded={userLoaded}
-          currentUser={currentUser}
-          institutions={institutions}
-        />
-      </IntlProvider>,
-    );
-    const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, "input");
-    expect(result.length).toEqual(4);
+    expect(result.length).toEqual(7);
     for (let input of result) {
       switch (input.name) {
         case "firstName":
@@ -411,8 +362,47 @@ describe("User", function () {
     }
     const selects = TestUtils.scryRenderedDOMComponentsWithTag(tree, "select");
     expect(selects.length).toEqual(1);
-    expect(selects[0].value).toEqual(ROLE.ADMIN);
-    expect(selects[0].disabled).toBeTruthy();
+    expect(selects[0].disabled).toBeFalsy();
+  });
+
+  it("renders filled user's form", function () {
+    const tree = TestUtils.renderIntoDocument(
+      <IntlProvider locale="en" {...intlData}>
+        <User
+          user={admin}
+          handlers={handlers}
+          backToInstitution={backToInstitution}
+          userSaved={userSaved}
+          showAlert={showAlert}
+          userLoaded={userLoaded}
+          currentUser={currentUser}
+          institutions={institutions}
+        />
+      </IntlProvider>,
+    );
+    const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, "input");
+    expect(result.length).toEqual(5);
+    for (let input of result) {
+      switch (input.name) {
+        case "firstName":
+          expect(input.value).toEqual("Test1");
+          expect(input.type).toEqual("text");
+          break;
+        case "lastName":
+          expect(input.value).toEqual("Man");
+          expect(input.type).toEqual("text");
+          break;
+        case "username":
+          expect(input.value).toEqual("testman1");
+          expect(input.type).toEqual("text");
+          expect(input.disabled).toBeTruthy();
+          break;
+        case "emailAddress":
+          expect(input.value).toEqual("");
+          expect(input.type).toEqual("email");
+          break;
+      }
+    }
   });
 
   it('renders "Cancel" button and click on it', function () {
