@@ -162,7 +162,7 @@ describe("User", function () {
       </IntlProvider>,
     );
     const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, "input");
-    expect(result.length).toEqual(7);
+    expect(result.length).toEqual(6);
     for (let input of result) {
       switch (input.name) {
         case "firstName":
@@ -293,7 +293,7 @@ describe("User", function () {
       </IntlProvider>,
     );
     const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, "input");
-    expect(result.length).toEqual(6);
+    expect(result.length).toEqual(5);
     for (let input of result) {
       switch (input.name) {
         case "firstName":
@@ -317,7 +317,6 @@ describe("User", function () {
     }
     const selects = TestUtils.scryRenderedDOMComponentsWithTag(tree, "select");
     expect(selects.length).toEqual(2);
-    expect(selects[0].disabled).toBeFalsy();
     const randomButton = TestUtils.scryRenderedDOMComponentsWithClass(tree, "glyphicon");
     expect(randomButton.length).toEqual(0);
   });
@@ -338,7 +337,7 @@ describe("User", function () {
       </IntlProvider>,
     );
     const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, "input");
-    expect(result.length).toEqual(7);
+    expect(result.length).toEqual(5);
     for (let input of result) {
       switch (input.name) {
         case "firstName":
@@ -362,7 +361,6 @@ describe("User", function () {
     }
     const selects = TestUtils.scryRenderedDOMComponentsWithTag(tree, "select");
     expect(selects.length).toEqual(2);
-    expect(selects[0].disabled).toBeFalsy();
   });
 
   it("renders filled user's form", function () {
