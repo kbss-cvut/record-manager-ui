@@ -52,7 +52,7 @@ describe.skip("Record", function () {
     currentUser = {
       firstName: "Test",
       lastName: "User",
-      role: ROLE.DOCTOR,
+      role: ROLE.USER,
     };
   });
 

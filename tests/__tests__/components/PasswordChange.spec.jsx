@@ -24,7 +24,7 @@ describe("PasswordChange", function () {
 
   currentUser = {
     username: "testUser",
-    role: ROLE.DOCTOR,
+    role: ROLE.USER,
   };
   currentUserAdmin = {
     username: "testAdmin",
