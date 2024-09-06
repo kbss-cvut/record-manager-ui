@@ -87,7 +87,9 @@ export const ACTION_STATUS = {
 };
 
 export const ROLE = {
+  // DEPRECATED
   ADMIN: "ROLE_ADMIN",
+  // DEPRECATED
   USER: "ROLE_USER",
   COMPLETE_RECORDS: "rm-complete-records",
   REJECT_RECORDS: "rm-reject-records",
