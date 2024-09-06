@@ -4,7 +4,7 @@ import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
 import User from "../../../src/components/user/User";
-import { ACTION_STATUS, ROLE } from "../../../src/constants/DefaultConstants";
+import { ACTION_STATUS, GROUP, ROLE } from "../../../src/constants/DefaultConstants";
 import * as EntityFactory from "../../../src/utils/EntityFactory";
 import enLang from "../../../src/i18n/en";
 import { describe, expect, it, vi, beforeEach } from "vitest";
@@ -15,6 +15,7 @@ describe("User", function () {
     admin,
     newUser = EntityFactory.initNewUser(),
     institutions,
+    roleGroups,
     backToInstitution,
     userSaved,
     showAlert,
@@ -29,7 +30,7 @@ describe("User", function () {
 
   currentUser = {
     username: "test",
-    roles: [ROLE.DOCTOR],
+    roles: [ROLE.USER],
   };
   currentUserAdmin = {
     username: "test",
@@ -56,6 +57,11 @@ describe("User", function () {
       "http://onto.fel.cvut.cz/ontologies/record-manager/administrator",
       "http://onto.fel.cvut.cz/ontologies/record-manager/doctor",
     ],
+    roleGroup: {
+      uri: "http://onto.fel.cvut.cz/ontologies/record-manager/role-group/1",
+      name: "Operator",
+      roles: [ROLE.ADMIN],
+    },
   };
 
   user = {
@@ -69,6 +75,11 @@ describe("User", function () {
       key: 18691,
     },
     types: ["http://onto.fel.cvut.cz/ontologies/record-manager/doctor"],
+    roleGroup: {
+      uri: "http://onto.fel.cvut.cz/ontologies/record-manager/role-",
+      name: "User",
+      roles: [ROLE.USER],
+    },
   };
 
   institutions = [
@@ -83,6 +94,33 @@ describe("User", function () {
       key: "823372507340798301",
       name: "Test2 Institution",
       emailAddress: "test2@institution.io",
+    },
+  ];
+
+  roleGroups = [
+    {
+      uri: "http://onto.fel.cvut.cz/ontologies/record-manager/admin-role-group",
+      name: "admin-role-group",
+      roles: [
+        "rm-reject-records",
+        "ROLE_USER",
+        "rm-delete-all-records",
+        "rm-delete-organization-records",
+        "rm-complete-records",
+        "rm-view-organization-records",
+        "rm-edit-all-records",
+        "rm-edit-users",
+        "rm-import-codelists",
+        "rm-publish-records",
+        "rm-edit-organization-records",
+        "ROLE_ADMIN",
+        "rm-view-all-records",
+      ],
+    },
+    {
+      uri: "http://onto.fel.cvut.cz/ontologies/record-manager/user-role-group",
+      name: "user-role-group",
+      roles: ["ROLE_USER"],
     },
   ];
 
@@ -113,6 +151,7 @@ describe("User", function () {
           userLoaded={userLoaded}
           currentUser={currentUser}
           institutions={institutions}
+          roleGroups={roleGroups}
         />
       </IntlProvider>,
     );
@@ -139,6 +178,7 @@ describe("User", function () {
           userLoaded={userLoaded}
           currentUser={currentUser}
           institutions={institutions}
+          roleGroups={roleGroups}
         />
       </IntlProvider>,
     );
@@ -158,6 +198,7 @@ describe("User", function () {
           userLoaded={userLoaded}
           currentUser={currentUserAdmin}
           institutions={institutions}
+          roleGroups={roleGroups}
         />
       </IntlProvider>,
     );
@@ -214,6 +255,7 @@ describe("User", function () {
           userLoaded={userLoaded}
           currentUser={currentUser}
           institutions={institutions}
+          roleGroups={roleGroups}
         />
       </IntlProvider>,
     );
@@ -242,6 +284,7 @@ describe("User", function () {
           userLoaded={userLoaded}
           currentUser={currentUser}
           institutions={institutions}
+          roleGroups={roleGroups}
         />
       </IntlProvider>,
     );
@@ -269,6 +312,7 @@ describe("User", function () {
           userLoaded={userLoaded}
           currentUser={currentUser}
           institutions={institutions}
+          roleGroups={roleGroups}
         />
       </IntlProvider>,
     );
@@ -289,6 +333,7 @@ describe("User", function () {
           currentUser={currentUserAdmin}
           institutions={institutions}
           impersonation={{}}
+          roleGroups={roleGroups}
         />
       </IntlProvider>,
     );
@@ -333,6 +378,8 @@ describe("User", function () {
           userLoaded={userLoaded}
           currentUser={currentUserAdmin}
           institutions={institutions}
+          impersonation={{}}
+          roleGroups={roleGroups}
         />
       </IntlProvider>,
     );
@@ -375,6 +422,7 @@ describe("User", function () {
           userLoaded={userLoaded}
           currentUser={currentUser}
           institutions={institutions}
+          roleGroups={roleGroups}
         />
       </IntlProvider>,
     );
@@ -424,6 +472,7 @@ describe("User", function () {
           userLoaded={userLoaded}
           currentUser={currentUser}
           institutions={institutions}
+          roleGroups={roleGroups}
         />
       </IntlProvider>,
     );
@@ -456,6 +505,7 @@ describe("User", function () {
           userLoaded={userLoaded}
           currentUser={currentUser}
           institutions={institutions}
+          roleGroups={roleGroups}
         />
       </IntlProvider>,
     );
@@ -492,6 +542,7 @@ describe("User", function () {
           userLoaded={userLoaded}
           currentUser={currentUser}
           institutions={institutions}
+          roleGroups={roleGroups}
         />
       </IntlProvider>,
     );

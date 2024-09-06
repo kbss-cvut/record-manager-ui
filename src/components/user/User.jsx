@@ -4,15 +4,16 @@ import withI18n from "../../i18n/withI18n";
 import { injectIntl } from "react-intl";
 import HorizontalInput from "../HorizontalInput";
 import UserValidator from "../../validation/UserValidator";
-import { ACTION_STATUS, GROUP, ROLE, ROLE_TYPE } from "../../constants/DefaultConstants";
+import { ACTION_STATUS, ROLE } from "../../constants/DefaultConstants";
 import { processInstitutions } from "../../utils/Utils";
 import { LoaderCard, LoaderSmall } from "../Loader";
 import HelpIcon from "../HelpIcon";
 import PropTypes from "prop-types";
 import { FaRandom } from "react-icons/fa";
 import { isUsingOidcAuth } from "../../utils/OidcUtils";
-import { getRoles, hasRole, isAdmin, roleToType } from "../../utils/SecurityUtils";
+import { getRoles, hasRole, isAdmin } from "../../utils/SecurityUtils";
 import RoleSelector from "../../RoleSelector.jsx";
+import IfInternalAuth from "../misc/oidc/IfInternalAuth.jsx";
 
 class User extends React.Component {
   static propTypes = {
@@ -31,6 +32,7 @@ class User extends React.Component {
     impersonated: PropTypes.bool,
     deletedInvitation: PropTypes.bool,
     i18n: PropTypes.func.isRequired,
+    roleGroups: PropTypes.array,
   };
 
   constructor(props) {
@@ -38,7 +40,7 @@ class User extends React.Component {
     this.i18n = this.props.i18n;
     this.formatMessage = this.props.formatMessage;
     this.state = { savedWithEmail: false };
-    this._onRoleSelected = this._onRoleSelected.bind(this);
+    // this._onRoleSelected = this._onRoleSelected.bind(this);
   }
 
   _onChange = (e) => {
@@ -76,12 +78,23 @@ class User extends React.Component {
     return options;
   };
 
+  _onRoleGroupSelected = (e) => {
+    const value = e.target.value,
+      roleGroup = this.props.roleGroups.find((item) => item.uri === value),
+      change = {
+        roleGroup: roleGroup,
+      };
+    this.props.handlers.onChange(change);
+  };
+
   _generateGroupOptions = () => {
-    let options = Object.keys(GROUP).map((key) => {
-      return (
-        <option key={"opt_" + key} value={key}>
-          {GROUP[key]}
-        </option>
+    console.log(this.props.roleGroups);
+    let options = [];
+    this.props.roleGroups.map((group) => {
+      options.push(
+        <option key={"opt_" + group.uri} value={group.uri}>
+          {group.name}
+        </option>,
       );
     });
 
@@ -197,17 +210,6 @@ class User extends React.Component {
     }
   }
 
-  _onRoleSelected(roles) {
-    const types = roles.map((role) => {
-      return ROLE_TYPE[role];
-    });
-    this.props.handlers.onChange({ types: types });
-  }
-
-  _onGroupSelected(group) {
-    this.props.handlers.onChange({ group: group });
-  }
-
   _onSaveAndSendEmail() {
     this.props.handlers.onSave();
     this.setState({ savedWithEmail: true });
@@ -302,24 +304,26 @@ class User extends React.Component {
               </div>
             </div>
             <div className="row">
-              <div className="col-12 col-sm-6">
-                <HorizontalInput
-                  type="select"
-                  name="group"
-                  label={`${this.i18n("user.group")}*`}
-                  disabled={
-                    !isAdmin(currentUser) ||
-                    (currentUser.username !== user.username && !hasRole(currentUser, ROLE.EDIT_USERS)) ||
-                    isUsingOidcAuth()
-                  }
-                  value={user.group}
-                  labelWidth={3}
-                  inputWidth={8}
-                  onChange={this._onGroupSelected}
-                >
-                  {this._generateGroupOptions()}
-                </HorizontalInput>
-              </div>
+              <IfInternalAuth>
+                <div className="col-12 col-sm-6">
+                  <HorizontalInput
+                    type="select"
+                    name="roleGroup"
+                    label={`${this.i18n("user.role-group")}*`}
+                    disabled={
+                      !isAdmin(currentUser) ||
+                      (currentUser.username !== user.username && !hasRole(currentUser, ROLE.EDIT_USERS)) ||
+                      isUsingOidcAuth()
+                    }
+                    labelWidth={3}
+                    inputWidth={8}
+                    onChange={this._onRoleGroupSelected}
+                    value={user.roleGroup ? user.roleGroup : ""}
+                  >
+                    {this._generateGroupOptions()}
+                  </HorizontalInput>
+                </div>
+              </IfInternalAuth>
               {isAdmin(currentUser) && (
                 <div className="col-12 col-sm-6">
                   <HorizontalInput
@@ -355,18 +359,16 @@ class User extends React.Component {
                 </div>
               </div>
             )}
-            <div className="col-12 col-sm-8">
-              <RoleSelector
-                selected={getRoles(user)}
-                handler={this._onRoleSelected}
-                readOnly={
-                  !isAdmin(currentUser) ||
-                  (currentUser.username !== user.username && !hasRole(currentUser, ROLE.EDIT_USERS)) ||
-                  isUsingOidcAuth()
-                }
-                label={`${this.i18n("user.roles")}*`}
-              />
-            </div>
+            <IfInternalAuth>
+              <div className="col-12 col-sm-8">
+                <RoleSelector
+                  selected={getRoles(user)}
+                  // handler={this._onRoleSelected}
+                  readOnly={true}
+                  label={`${this.i18n("user.roles")}*`}
+                />
+              </div>
+            </IfInternalAuth>
             <div className="buttons-line-height mt-3 text-center">
               {this._impersonateButton()}
               {isUsingOidcAuth() ? this._redirectToKeycloakButton() : this._passwordChangeButton()}

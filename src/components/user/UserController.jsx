@@ -29,6 +29,7 @@ import { isUsingOidcAuth, userProfileLink } from "../../utils/OidcUtils";
 import { isAdmin } from "../../utils/SecurityUtils";
 import PropTypes from "prop-types";
 import { generateRandomUsername } from "../../utils/Utils.js";
+import { loadRoleGroups } from "../../actions/RoleGroupActions.js";
 
 class UserController extends React.Component {
   constructor(props) {
@@ -44,6 +45,11 @@ class UserController extends React.Component {
     if (isAdmin(this.props.currentUser) && !this.props.institutionsLoaded.institutions) {
       this.props.loadInstitutions();
     }
+
+    if (isAdmin(this.props.currentUser) && !this.props.roleGroupsLoaded.roleGroups) {
+      this.props.loadRoleGroups();
+    }
+
     if (!this.state.user) {
       this.props.loadUser(this.props.match.params.username);
     }
@@ -99,11 +105,13 @@ class UserController extends React.Component {
   }
 
   _onSave = (sendEmail = true) => {
+    console.log(this.state.user);
     let user = this.state.user;
     this.setState({ saved: true, invited: false });
     if (user.isNew || (this._isNew() && this.props.userSaved.status === ACTION_STATUS.ERROR)) {
       this.props.createUser(omit(user, "isNew"));
     } else {
+      delete user.types;
       this.props.updateUser(user, this.props.currentUser, sendEmail);
     }
   };
@@ -170,8 +178,16 @@ class UserController extends React.Component {
   };
 
   render() {
-    const { currentUser, userSaved, userLoaded, institutionsLoaded, invitationSent, impersonation, invitationDelete } =
-      this.props;
+    const {
+      currentUser,
+      userSaved,
+      userLoaded,
+      institutionsLoaded,
+      invitationSent,
+      impersonation,
+      invitationDelete,
+      roleGroupsLoaded,
+    } = this.props;
     if (!currentUser) {
       return null;
     }
@@ -195,6 +211,7 @@ class UserController extends React.Component {
         userLoaded={userLoaded}
         currentUser={currentUser}
         institutions={institutionsLoaded.institutions || []}
+        roleGroups={roleGroupsLoaded.roleGroups || []}
         invitationSent={invitationSent}
         invited={this.state.invited}
         impersonation={impersonation}
@@ -231,6 +248,8 @@ UserController.propTypes = {
   createUser: PropTypes.func.isRequired,
   updateUser: PropTypes.func.isRequired,
   viewHandlers: PropTypes.object.isRequired,
+  roleGroupsLoaded: PropTypes.object.isRequired,
+  loadRoleGroups: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(UserController)));
@@ -240,6 +259,7 @@ function mapStateToProps(state) {
     userSaved: state.user.userSaved,
     userLoaded: state.user.userLoaded,
     currentUser: state.auth.user,
+    roleGroupsLoaded: state.roleGroups.roleGroupsLoaded,
     institutionsLoaded: state.institutions.institutionsLoaded,
     transitionPayload: state.router.transitionPayload,
     viewHandlers: state.router.viewHandlers,
@@ -258,6 +278,7 @@ function mapDispatchToProps(dispatch) {
     unloadUser: bindActionCreators(unloadUser, dispatch),
     unloadSavedUser: bindActionCreators(unloadSavedUser, dispatch),
     loadInstitutions: bindActionCreators(loadInstitutions, dispatch),
+    loadRoleGroups: bindActionCreators(loadRoleGroups, dispatch),
     setTransitionPayload: bindActionCreators(setTransitionPayload, dispatch),
     transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),
     generateUsername: bindActionCreators(generateUsername, dispatch),

@@ -1,0 +1,32 @@
+@prefix : <http://onto.fel.cvut.cz/ontologies/record-manager/> .
+@prefix rm: <http://onto.fel.cvut.cz/ontologies/record-manager/> .
+@prefix doc: <http://onto.fel.cvut.cz/ontologies/documentation/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix form: <http://onto.fel.cvut.cz/ontologies/form/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ufo: <http://onto.fel.cvut.cz/ontologies/ufo/> .
+
+<http://onto.fel.cvut.cz/ontologies/record-manager/role-groups> {
+    rm:admin-role-group rdf:type owl:NamedIndividual, rm:role-group;
+        rm:has-role rm:RM_ADMIN,
+                    rm:RM_USER,
+                    rm:complete-records-role,
+                    rm:delete-organization-records-role,
+                    rm:edit-organization-records-role,
+                    rm:view-organization-records-role,
+                    rm:edit-users-role,
+                    rm:import-codelists-role,
+                    rm:reject-records-role,
+                    rm:delete-all-records-role,
+                    rm:edit-all-records-role,
+                    rm:publish-records-role,
+                    rm:view-all-records-role;
+        rdfs:label "admin-role-group"@en .
+
+    rm:user-role-group rdf:type owl:NamedIndividual, rm:role-group;
+        rm:has-role rm:RM_USER;
+        rdfs:label "user-role-group"@en .
+}

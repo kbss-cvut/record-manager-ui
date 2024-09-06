@@ -1,7 +1,7 @@
 import { getOidcIdentityStorageKey, isUsingOidcAuth } from "./OidcUtils";
 import { sanitizeArray } from "./Utils";
-import { IMPERSONATOR_TYPE } from "../constants/Vocabulary";
-import { ROLE, TYPE_ROLE } from "../constants/DefaultConstants";
+import { IMPERSONATOR_TYPE, RECORD_MANAGER_URL } from "../constants/Vocabulary";
+import { ROLE } from "../constants/DefaultConstants";
 
 export function getOidcToken() {
   const identityData = sessionStorage.getItem(getOidcIdentityStorageKey());
@@ -17,17 +17,11 @@ export function clearToken() {
 }
 
 export function isAdmin(user) {
-  if (user.roles) {
-    return user.roles.includes(ROLE.ADMIN);
-  }
-  return user.types ? getRoles(user).includes(ROLE.ADMIN) : false;
+  return user.roles ? user.roles.includes(ROLE.ADMIN) : false;
 }
 
 export function hasRole(user, role) {
-  if (user.roles) {
-    return user.roles.includes(role);
-  }
-  return user.types ? getRoles(user).includes(role) : false;
+  return user.roles ? user.roles.includes(role) : false;
 }
 
 export function isImpersonator(currentUser) {
@@ -36,12 +30,12 @@ export function isImpersonator(currentUser) {
 }
 
 export function getRoles(user) {
-  if (!user || !user.types) {
+  if (!user || !user.roleGroup || !user.roleGroup.roles) {
     return undefined;
   }
-  let roles = [];
-  user.types.map((type) => {
-    TYPE_ROLE[type] && roles.push(TYPE_ROLE[type]);
-  });
-  return roles;
+  return user.roleGroup.roles;
+}
+
+function isRoleExist(role) {
+  return Object.values(ROLE).includes(role);
 }

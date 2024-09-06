@@ -12,7 +12,6 @@ export function initNewUser() {
     username: "",
     emailAddress: "",
     password: Utils.generatePassword(),
-    types: [Vocabulary.DOCTOR_TYPE],
     isNew: true,
   };
 }
