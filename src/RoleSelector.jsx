@@ -10,7 +10,7 @@ const roleOptions = Object.keys(ROLE).map((key) => ({
   label: ROLE[key],
 }));
 
-const RoleSelector = ({ selected = [], handler, readOnly = true, label = "Roles" }) => {
+const RoleSelector = ({ selected = [], handler = () => {}, readOnly = true, label = "Roles" }) => {
   const formatSelected = (selected) => {
     return selected.map((value) => ({
       value: value,
@@ -18,17 +18,17 @@ const RoleSelector = ({ selected = [], handler, readOnly = true, label = "Roles"
     }));
   };
 
-  const [selectedRoles, setSelectedRoles] = useState(formatSelected(selected));
+  // const [selectedRoles, setSelectedRoles] = useState(formatSelected(selected));
+  //
+  // useEffect(() => {
+  //   setSelectedRoles(formatSelected(selected));
+  // }, [selected]);
 
-  useEffect(() => {
-    setSelectedRoles(formatSelected(selected));
-  }, [selected]);
-
-  const handleChange = (selectedOptions) => {
-    setSelectedRoles(selectedOptions);
-    const selectedValues = selectedOptions.map((option) => option.value);
-    handler(selectedValues);
-  };
+  // const handleChange = (selectedOptions) => {
+  //   setSelectedRoles(selectedOptions);
+  //   const selectedValues = selectedOptions.map((option) => option.value);
+  //   handler(selectedValues);
+  // };
 
   return (
     <FormGroup as={Row}>
@@ -37,8 +37,7 @@ const RoleSelector = ({ selected = [], handler, readOnly = true, label = "Roles"
       </Col>
       <Col lg={10}>
         <Select
-          value={selectedRoles}
-          onChange={handleChange}
+          value={formatSelected(selected)}
           isMulti
           name="roles"
           options={roleOptions}
