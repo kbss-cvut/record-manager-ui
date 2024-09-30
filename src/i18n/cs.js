@@ -199,6 +199,8 @@ export default {
     "record.load-error": "Záznam se nepodařilo načíst. {error}",
     "record.load-form-error": "Formulář se nepodařilo načíst. {error}",
 
+    "roleGroup.loading-error": "Nedaří se načíst skupiny rolí. {error}",
+
     "help.local-name":
       'Účelem tohoto atributu je pomoci vám identifikovat vyplněný záznam. Můžete použít např. číslování záznam ("záznam_1", "záznam_2").',
 
