@@ -8,6 +8,7 @@ import Loader, { LoaderSmall } from "../Loader";
 import PropTypes from "prop-types";
 import { isAdmin } from "../../utils/SecurityUtils";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
+import IfInternalAuth from "../misc/oidc/IfInternalAuth.jsx";
 
 class InstitutionMembers extends React.Component {
   constructor(props) {
@@ -75,13 +76,15 @@ class InstitutionMembers extends React.Component {
           ) : (
             <p className="font-italic">{this.i18n("institution.members.not-found")}</p>
           )}
-          {isAdmin(currentUser) && (
-            <div className="btn-toolbar">
-              <Button variant="primary" size="sm" onClick={() => onAddNewUser(institution)}>
-                {this.i18n("users.add-new-user")}
-              </Button>
-            </div>
-          )}
+          <IfInternalAuth>
+            {isAdmin(currentUser) && (
+              <div className="btn-toolbar">
+                <Button variant="primary" size="sm" onClick={() => onAddNewUser(institution)}>
+                  {this.i18n("users.add-new-user")}
+                </Button>
+              </div>
+            )}
+          </IfInternalAuth>
         </Card.Body>
       </Card>
     );
