@@ -46,7 +46,7 @@ class UserController extends React.Component {
       this.props.loadInstitutions();
     }
 
-    if (isAdmin(this.props.currentUser) && !this.props.roleGroupsLoaded.roleGroups) {
+    if (!isUsingOidcAuth() && isAdmin(this.props.currentUser) && !this.props.roleGroupsLoaded.roleGroups) {
       this.props.loadRoleGroups();
     }
 
