@@ -6,6 +6,7 @@ import { sanitizeArray } from "../../../utils/Utils";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { loadFormTemplates } from "../../../actions/FormTemplatesActions.js";
+import { RDFS_LABEL, getJsonAttValue } from "jsonld-utils";
 
 const TemplateFilter = ({ value, onChange }) => {
   const { i18n } = useI18n();
@@ -23,7 +24,7 @@ const TemplateFilter = ({ value, onChange }) => {
     for (const t of formTemplates) {
       templatesWithLabelAndValue.push({
         value: t["@id"],
-        label: t["http://www.w3.org/2000/01/rdf-schema#label"][0]["@value"],
+        label: getJsonAttValue(t[RDFS_LABEL][0], "@value"),
         ...t,
       });
     }
