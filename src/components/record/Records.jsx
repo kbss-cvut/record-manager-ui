@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card } from "react-bootstrap";
+import { Alert, Button, Card } from "react-bootstrap";
 import { injectIntl } from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import { EXTENSION_CONSTANTS } from "../../constants/DefaultConstants";
@@ -70,12 +70,15 @@ class Records extends React.Component {
           {this._getPanelTitle()}
         </Card.Header>
         <Card.Body>
-          {recordsLoaded.records && (
+          {recordsLoaded.records && recordsLoaded.records.length > 0 ? (
             <>
               <RecordTable {...this.props} />
               <Pagination {...pagination} />
             </>
+          ) : (
+            <Alert variant="warning">No records</Alert>
           )}
+
           <ImportRecordsDialog
             show={this.state.showImportDialog}
             onSubmit={this.onImport}
