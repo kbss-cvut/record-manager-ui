@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Filters data according to specified filter(s).
  *
@@ -12,8 +10,8 @@ const filterData = (data, filter) => {
   if (this._canSkipFilter(filter)) {
     return data;
   }
-  return data.filter(function (item) {
-    for (let key in filter) {
+  return data.filter((item) => {
+    for (const key in filter) {
       if (filter[key] === "all") {
         continue;
       }
@@ -37,7 +35,7 @@ const _canSkipFilter = (filter) => {
   if (!filter) {
     return true;
   }
-  for (let key in filter) {
+  for (const key in filter) {
     if (filter[key] !== "all") {
       return false;
     }

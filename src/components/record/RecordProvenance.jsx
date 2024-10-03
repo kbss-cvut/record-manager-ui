@@ -1,5 +1,3 @@
-"use strict";
-
 import React from "react";
 import { FormattedMessage } from "react-intl";
 import { formatDate } from "../../utils/Utils";

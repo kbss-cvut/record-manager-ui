@@ -24,9 +24,10 @@ export const processTypeaheadOptions = (options, intl) => {
   return JsonLdUtils.processTypeaheadOptions(options, intl);
 };
 
+const intl = { locale: "cs" };
+
 const TypeaheadAnswer = (props) => {
   // TODO
-  const intl = { locale: "cs" };
 
   const [isLoading, setLoading] = useState(true);
   const [options, setOptions] = useState(processTypeaheadOptions(props.options, intl));
@@ -38,7 +39,7 @@ const TypeaheadAnswer = (props) => {
         setOptions(processTypeaheadOptions(d, intl));
       });
     }
-  }, []);
+  }, [options.length, props.possibleValuesEndpoint]);
 
   const onOptionSelected = (option) => {
     const e = { target: { name: props.name, value: null } };

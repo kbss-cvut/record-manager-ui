@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Ontological vocabulary used by JSON-LD responses we get.
  */

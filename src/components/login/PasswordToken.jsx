@@ -1,5 +1,3 @@
-"use strict";
-
 import React from "react";
 import { Alert, Button, Form, Card } from "react-bootstrap";
 import HorizontalInput from "../HorizontalInput";
@@ -38,7 +36,7 @@ class PasswordReset extends React.Component {
   }
 
   onChange = (e) => {
-    let state = this.state;
+    const state = this.state;
     state[e.target.name] = e.target.value;
     this.setState(state);
   };

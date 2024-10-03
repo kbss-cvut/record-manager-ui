@@ -1,10 +1,8 @@
-"use strict";
-
 import React, { forwardRef } from "react";
 import { FormLabel, FormGroup, FormControl, FormText, FormCheck } from "react-bootstrap";
 import PropTypes from "prop-types";
 
-const Input = forwardRef(function InputWithRef(props, ref) {
+const Input = (props, ref) => {
   const renderInputOnType = () => {
     switch (props.type) {
       case "radio":
@@ -80,7 +78,7 @@ const Input = forwardRef(function InputWithRef(props, ref) {
   };
 
   return renderInputOnType();
-});
+};
 
 Input.propTypes = {
   children: PropTypes.node.isRequired,
@@ -96,4 +94,4 @@ Input.defaultProps = {
   type: "text",
 };
 
-export default Input;
+export default forwardRef(Input);

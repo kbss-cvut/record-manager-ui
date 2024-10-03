@@ -5,7 +5,7 @@ import { Button } from "react-bootstrap";
 import { LoaderSmall } from "../Loader";
 import PropTypes from "prop-types";
 
-let InstitutionRow = (props) => {
+const InstitutionRow = (props) => {
   const institution = props.institution;
   return (
     <tr>

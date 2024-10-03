@@ -1,5 +1,3 @@
-"use strict";
-
 import React from "react";
 import SForms, { Constants } from "@kbss-cvut/s-forms";
 import PropTypes from "prop-types";

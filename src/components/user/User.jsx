@@ -41,7 +41,7 @@ class User extends React.Component {
   }
 
   _onChange = (e) => {
-    let change = {};
+    const change = {};
     change[e.target.name] = e.target.value;
     this.props.handlers.onChange(change);
   };
@@ -57,7 +57,7 @@ class User extends React.Component {
 
   _onAdminStatusChange = (e) => {
     const role = e.target.value;
-    let types = this.props.user.types.slice();
+    const types = this.props.user.types.slice();
     if (role === ROLE.ADMIN) {
       types.push(Vocabulary.ADMIN_TYPE);
     } else {
@@ -67,11 +67,11 @@ class User extends React.Component {
   };
 
   _generateInstitutionsOptions = () => {
-    let options = [];
+    const options = [];
     const institutions = processInstitutions(this.props.institutions);
     const len = institutions.length;
     for (let i = 0; i < len; i++) {
-      let option = institutions[i];
+      const option = institutions[i];
       options.push(
         <option key={"opt_" + option.value} value={option.value}>
           {option.label}

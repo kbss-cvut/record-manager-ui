@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import IfInternalAuth from "../misc/oidc/IfInternalAuth";
 import { useI18n } from "../../hooks/useI18n";
 
-let UserRow = (props) => {
+const UserRow = (props) => {
   const user = props.user;
   const { i18n } = useI18n();
   return (

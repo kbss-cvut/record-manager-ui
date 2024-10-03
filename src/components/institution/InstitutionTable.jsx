@@ -1,5 +1,3 @@
-"use strict";
-
 import React from "react";
 import { Table } from "react-bootstrap";
 
@@ -82,7 +80,7 @@ class InstitutionTable extends React.Component {
   _renderRows() {
     const { institutions, institutionDeleted } = this.props;
     const onEdit = this.props.handlers.onEdit;
-    let rows = [];
+    const rows = [];
     for (let i = 0, len = institutions.length; i < len; i++) {
       rows.push(
         <InstitutionRow
