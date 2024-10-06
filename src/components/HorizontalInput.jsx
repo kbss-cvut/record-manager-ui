@@ -39,7 +39,7 @@ const HorizontalInput = forwardRef(function HorizontalInputWithRef(props, ref) {
 
   const renderCheckbox = () => {
     return (
-      <FormGroup as={Row}>
+      <FormGroup as={Row} className="mb-3">
         <Col lgOffset={props.inputOffset} lg={props.inputWidth}>
           <FormCheck type="checkbox" ref={ref} {...getInputProps()}>
             {props.label}
@@ -51,7 +51,7 @@ const HorizontalInput = forwardRef(function HorizontalInputWithRef(props, ref) {
 
   const renderRadio = () => {
     return (
-      <FormGroup as={Row}>
+      <FormGroup as={Row} className="mb-3">
         <Col lgOffset={props.inputOffset} lg={props.inputWidth}>
           <FormCheck type="radio" ref={ref} {...getInputProps()}>
             {props.label}
@@ -64,7 +64,7 @@ const HorizontalInput = forwardRef(function HorizontalInputWithRef(props, ref) {
   const renderSelect = () => {
     // TODO validation
     return (
-      <FormGroup as={Row}>
+      <FormGroup as={Row} className="mb-3">
         {renderLabel()}
         <Col lg={props.inputWidth}>
           <FormControl as="select" ref={ref} {...getInputProps()}>
@@ -80,7 +80,7 @@ const HorizontalInput = forwardRef(function HorizontalInputWithRef(props, ref) {
   const renderAutocomplete = () => {
     // TODO validation
     return (
-      <FormGroup as={Row}>
+      <FormGroup as={Row} className="mb-3">
         {renderLabel()}
         <Col lg={props.inputWidth}>
           <TypeaheadAnswer {...getInputProps()} />
@@ -93,16 +93,16 @@ const HorizontalInput = forwardRef(function HorizontalInputWithRef(props, ref) {
 
   const renderLabel = () => {
     return props.label ? (
-      <Col as={FormLabel} lg={props.labelWidth} className="font-weight-bold text-lg-right align-self-center">
+      <FormLabel column lg={props.labelWidth} className="font-weight-bold text-lg-right align-self-center">
         {props.label}
-      </Col>
+      </FormLabel>
     ) : null;
   };
 
   const renderTextArea = () => {
     // TODO validation
     return (
-      <FormGroup as={Row}>
+      <FormGroup as={Row} className="mb-3">
         {renderLabel()}
         <Col lg={props.inputWidth}>
           <FormControl as="textarea" style={{ height: "auto" }} ref={ref} {...getInputProps()} />
@@ -121,7 +121,7 @@ const HorizontalInput = forwardRef(function HorizontalInputWithRef(props, ref) {
     // TODO validation
     const formControl = <FormControl ref={ref} as="input" {...getInputProps()} />;
     return (
-      <FormGroup as={Row}>
+      <FormGroup as={Row} className="mb-3">
         {renderLabel()}
         <Col lg={props.inputWidth}>
           {props.iconRight ? (
