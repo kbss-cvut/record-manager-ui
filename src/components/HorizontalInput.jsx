@@ -93,7 +93,7 @@ const HorizontalInput = forwardRef(function HorizontalInputWithRef(props, ref) {
 
   const renderLabel = () => {
     return props.label ? (
-      <FormLabel column lg={props.labelWidth} className="font-weight-bold text-lg-right align-self-center">
+      <FormLabel column lg={props.labelWidth} className="fw-bold text-lg-end align-self-center">
         {props.label}
       </FormLabel>
     ) : null;
