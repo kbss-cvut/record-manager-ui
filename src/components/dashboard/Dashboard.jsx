@@ -1,7 +1,7 @@
 import React from "react";
 import withI18n from "../../i18n/withI18n";
 import { FormattedMessage, injectIntl } from "react-intl";
-import { Col, Container, Jumbotron, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import DashboardTile from "./DashboardTile";
 import PropTypes from "prop-types";
 import { processTypeaheadOptions } from "../record/TypeaheadAnswer";
@@ -154,7 +154,7 @@ class Dashboard extends React.Component {
 
   render() {
     return (
-      <Jumbotron>
+      <div className="shadow p-4 mb-4 bg-white rounded">
         <PromiseTrackingMask area="dashboard" coverViewport={true} />
         <ImportRecordsDialog
           show={this.state.importDialogOpen}
@@ -163,7 +163,7 @@ class Dashboard extends React.Component {
         />
         {this.renderTitle()}
         {this._renderMainDashboard()}
-      </Jumbotron>
+      </div>
     );
   }
 }
