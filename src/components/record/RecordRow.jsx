@@ -52,7 +52,7 @@ let RecordRow = (props) => {
         </Button>
       </td>
       <IfGranted expected={ROLE.ADMIN} actual={props.currentUser.role}>
-        <td className="report-row">{record.institution.name}</td>
+        <td className="report-row content-center">{record.institution.name}</td>
         <td className="report-row content-center">
           {getFormTemplateOptionName(record.formTemplate, formTemplateOptions)}
         </td>
