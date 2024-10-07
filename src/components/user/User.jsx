@@ -88,7 +88,6 @@ class User extends React.Component {
   };
 
   _generateGroupOptions = () => {
-    console.log(this.props.roleGroups);
     let options = [];
     this.props.roleGroups.map((group) => {
       options.push(
@@ -247,10 +246,7 @@ class User extends React.Component {
                   type="text"
                   name="firstName"
                   label={`${this.i18n("user.first-name")}*`}
-                  disabled={
-                    (currentUser.username !== user.username && !hasRole(currentUser, ROLE.EDIT_USERS)) ||
-                    isUsingOidcAuth()
-                  }
+                  disabled={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
                   value={user.firstName}
                   labelWidth={3}
                   inputWidth={8}
@@ -262,10 +258,7 @@ class User extends React.Component {
                   type="text"
                   name="lastName"
                   label={`${this.i18n("user.last-name")}*`}
-                  disabled={
-                    (currentUser.username !== user.username && !hasRole(currentUser, ROLE.EDIT_USERS)) ||
-                    isUsingOidcAuth()
-                  }
+                  disabled={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
                   value={user.lastName}
                   labelWidth={3}
                   inputWidth={8}
@@ -292,10 +285,7 @@ class User extends React.Component {
                   type="email"
                   name="emailAddress"
                   label={`${this.i18n("users.email")}*`}
-                  disabled={
-                    (currentUser.username !== user.username && !hasRole(currentUser, ROLE.EDIT_USERS)) ||
-                    isUsingOidcAuth()
-                  }
+                  disabled={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
                   value={user.emailAddress}
                   labelWidth={3}
                   inputWidth={8}
@@ -310,11 +300,7 @@ class User extends React.Component {
                     type="select"
                     name="roleGroup"
                     label={`${this.i18n("user.role-group")}*`}
-                    disabled={
-                      !isAdmin(currentUser) ||
-                      (currentUser.username !== user.username && !hasRole(currentUser, ROLE.EDIT_USERS)) ||
-                      isUsingOidcAuth()
-                    }
+                    disabled={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
                     labelWidth={3}
                     inputWidth={8}
                     onChange={this._onRoleGroupSelected}
@@ -331,10 +317,7 @@ class User extends React.Component {
                     name="institution"
                     label={`${this.i18n("institution.panel-title")}*`}
                     onChange={this._onInstitutionSelected}
-                    disabled={
-                      !isAdmin(currentUser) ||
-                      (currentUser.username !== user.username && !hasRole(currentUser, ROLE.EDIT_USERS))
-                    }
+                    disabled={!isAdmin(currentUser)}
                     value={user.institution ? user.institution.uri : ""}
                     labelWidth={3}
                     inputWidth={8}
