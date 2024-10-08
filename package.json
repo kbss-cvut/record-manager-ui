@@ -8,7 +8,7 @@
   "dependencies": {
     "@kbss-cvut/s-forms": "^0.7.2",
     "@vitejs/plugin-react": "^4.2.1",
-    "bootstrap": "^5.0.0",
+    "bootstrap": "^5.3.3",
     "axios": "^1.7.7",
     "bowser": "^2.9.0",
     "classnames": "^2.3.1",
