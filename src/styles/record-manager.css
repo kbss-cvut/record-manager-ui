@@ -236,7 +236,6 @@ td.actions button {
 .dashboard-tile {
   min-height: 7em;
   width: 100%;
-  max-width: 15em;
   padding: 10px 16px;
   font-size: 18px;
   line-height: 1.3;
