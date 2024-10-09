@@ -39,7 +39,7 @@ let RecordRow = (props) => {
 
   return (
     <tr className="position-relative">
-      <IfGranted expected={ROLE.ADMIN} actual={props.currentUser.role}>
+      <IfGranted expected={ROLE.ADMIN} actual={props.currentUser.roles}>
         <td className="report-row">
           <Button variant="link" size="sm" onClick={() => props.onEdit(record)}>
             {record.key}
@@ -51,7 +51,7 @@ let RecordRow = (props) => {
           {record.localName}
         </Button>
       </td>
-      <IfGranted expected={ROLE.ADMIN} actual={props.currentUser.role}>
+      <IfGranted expected={ROLE.ADMIN} actual={props.currentUser.roles}>
         <td className="report-row content-center">{record.institution.name}</td>
         <td className="report-row content-center">
           {getFormTemplateOptionName(record.formTemplate, formTemplateOptions)}

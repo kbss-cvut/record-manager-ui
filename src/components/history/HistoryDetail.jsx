@@ -24,7 +24,7 @@ const HistoryDetail = () => {
   }, [dispatch, key]);
 
   return (
-    <IfGranted expected={ROLE.ADMIN} actual={currentUser.role}>
+    <IfGranted expected={ROLE.ADMIN} actual={currentUser.roles}>
       <Card variant="primary">
         <Card.Header className="text-light bg-primary" as="h6">
           {i18n("history.panel-title")}
