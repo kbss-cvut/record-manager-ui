@@ -12,7 +12,7 @@ function selectNavigatorLocalization() {
 }
 
 function selectEnvLocalization() {
-  if (config.LANGUAGE === "cs") {
+  if (config.APP_LANGUAGE === "cs") {
     return csLang;
   }
   return enLang;
