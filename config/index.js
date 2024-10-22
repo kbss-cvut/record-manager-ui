@@ -28,7 +28,7 @@ export const getEnv = (name, defaultValue) => {
 
 export const API_URL = getEnv("API_URL");
 export const APP_TITLE = getEnv("APP_TITLE", "Record Manager");
-export const LANGUAGE = getEnv("LANGUAGE", "en");
+export const APP_LANGUAGE = getEnv("APP_LANGUAGE", "en");
 export const NAVIGATOR_LANGUAGE = JSON.parse(getEnv("NAVIGATOR_LANGUAGE", "true"));
 export const BASENAME = getEnv("BASENAME", "");
 export const EXTENSIONS = getEnv("EXTENSIONS", "");
