@@ -36,6 +36,7 @@ export default {
     reject: "Reject",
     complete: "Complete",
     publish: "Publish",
+    reason: "Reason",
     "select.placeholder": "Select...",
 
     "login.title": Constants.APP_NAME + " - Login",
@@ -178,6 +179,8 @@ export default {
     "records.import.success.message":
       "Successfully imported all {importedCount, plural, one {# record} other {# records}}.",
     "records.import.error.message": "Record import failed. Check the server log for details.",
+    "reject-dialog-title": "Why do you want to reject?",
+    "records.rejection-reason-placeholder": "Enter your reason for rejection",
 
     "record.panel-title": "Form {identifier}",
     "record.form-title": "Details",
