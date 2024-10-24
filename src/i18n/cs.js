@@ -36,6 +36,7 @@ export default {
     reject: "Odmítnout",
     complete: "Dokončit",
     publish: "Publikovat",
+    reason: "Důvod",
     "select.placeholder": "Vyberte...",
 
     "login.title": Constants.APP_NAME + " - Přihlášení",
@@ -121,6 +122,8 @@ export default {
     "user.impersonate": "Impersonace",
     "user.impersonate-error": "Impersonace se nepodařila. {error}",
     "user.edit": "Upravit profil",
+    "reject-dialog-title": "Proč chcete odmítnout?",
+    "records.rejection-reason-placeholder": "Zadejte důvod odmítnutí",
 
     "institutions.panel-title": "Instituce",
     "institutions.create-institution": "Vytvořit instituci",
