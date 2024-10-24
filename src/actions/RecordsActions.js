@@ -187,6 +187,35 @@ export function loadRecordsPhases() {
   };
 }
 
+export function loadAllowedRejectMessage() {
+  return function (dispatch) {
+    dispatch(loadAllowedRejectMessagePending());
+    return axiosBackend
+      .get(`${API_URL}/rest/records/allowedRejectMessage`)
+      .then((response) => {
+        dispatch(loadAllowedRejectMessageSuccess(response.data));
+      })
+      .catch((error) => {
+        dispatch(loadAllowedRejectMessageError(error));
+      });
+  };
+}
+
+export function loadAllowedRejectMessageSuccess(isAllowedRejectMessage) {
+  return {
+    type: ActionConstants.LOAD_ALLOWED_REJECT_MESSAGE_SUCCESS,
+    isAllowedRejectMessage,
+  };
+}
+
+export function loadAllowedRejectMessageError(error) {
+  return asyncError(ActionConstants.LOAD_ALLOWED_REJECT_MESSAGE_ERROR, error);
+}
+
+export function loadAllowedRejectMessagePending() {
+  return asyncRequest(ActionConstants.LOAD_ALLOWED_REJECT_MESSAGE_PENDING);
+}
+
 export function loadRecordsPhasesPending() {
   return asyncRequest(ActionConstants.LOAD_RECORDS_PHASES_PENDING);
 }
