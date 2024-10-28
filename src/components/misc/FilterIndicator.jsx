@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 
 const FilterIndicator = ({ filterValue }) => {
   const { i18n } = useI18n();
-  const classes = classNames("ml-1", { invisible: sanitizeArray(filterValue).length === 0 });
+  const classes = classNames("ms-1", { invisible: sanitizeArray(filterValue).length === 0 });
   return <FaFilter className={classes} title={i18n("filters.active.tooltip")} />;
 };
 

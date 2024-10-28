@@ -89,7 +89,7 @@ class Records extends React.Component {
               {showCreateButton ? (
                 <Button
                   id="records-create"
-                  className="mr-1 action-button"
+                  className="me-1 action-button"
                   variant="primary"
                   size="sm"
                   disabled={createRecordDisabled}

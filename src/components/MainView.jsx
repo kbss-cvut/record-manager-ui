@@ -158,7 +158,7 @@ class MainView extends React.Component {
 
                 <Nav>
                   <ImpersonatorBadge />
-                  <NavDropdown className="pr-0" id="logout" title={name}>
+                  <NavDropdown className="pe-0" id="logout" title={name}>
                     <NavDropdown.Item onClick={() => this.onProfileClick()}>
                       {this.i18n("main.my-profile")}
                     </NavDropdown.Item>
