@@ -146,9 +146,9 @@ const FilterableInstitutionHeader = ({ filters, onFilterChange }) => {
       rootClose={true}
       overlay={
         <Popover id="records-filters-institution" className="record-filters-popup">
-          <Popover.Content>
+          <Popover.Body>
             <InstitutionFilter value={filters.institution} onChange={onFilterChange} />
-          </Popover.Content>
+          </Popover.Body>
         </Popover>
       }
     >
@@ -184,14 +184,14 @@ const FilterableLastModifiedHeader = ({ filters, sort, onFilterAndSortChange }) 
       rootClose={true}
       overlay={
         <Popover id="records-filters-date" className="record-filters-popup">
-          <Popover.Content>
+          <Popover.Body>
             <DateIntervalFilter
               minDate={filters.minDate}
               maxDate={filters.maxDate}
               sort={sort.date}
               onChange={onFilterAndSortChange}
             />
-          </Popover.Content>
+          </Popover.Body>
         </Popover>
       }
     >
@@ -231,9 +231,9 @@ const FilterablePhaseHeader = ({ filters, onFilterChange }) => {
       rootClose={true}
       overlay={
         <Popover id="records-filters-phase" className="record-filters-popup">
-          <Popover.Content>
+          <Popover.Body>
             <PhaseFilter value={filters.phase} onChange={onFilterChange} />
-          </Popover.Content>
+          </Popover.Body>
         </Popover>
       }
     >
@@ -265,9 +265,9 @@ const FilterableTemplateHeader = ({ filters, onFilterChange }) => {
       rootClose={true}
       overlay={
         <Popover id="records-filters-template" className="record-filters-popup">
-          <Popover.Content>
+          <Popover.Body>
             <TemplateFilter value={filters.formTemplate} onChange={onFilterChange} />
-          </Popover.Content>
+          </Popover.Body>
         </Popover>
       }
     >
