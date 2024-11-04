@@ -1,14 +1,22 @@
 "use strict";
 
-import React from "react";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import React, { useRef, useState } from "react";
+import { Overlay, Tooltip } from "react-bootstrap";
 import PropTypes from "prop-types";
-import { FaEnvelope, FaQuestionCircle } from "react-icons/fa";
-import { FaCheck } from "react-icons/fa";
-import { FaTimes } from "react-icons/fa";
-import { FaTasks } from "react-icons/fa";
+import { FaEnvelope, FaQuestionCircle, FaCheck, FaTimes, FaTasks } from "react-icons/fa";
 
 const HelpIcon = (props) => {
+  const [show, setShow] = useState(false);
+  const target = useRef(null);
+
+  const handleMouseEnter = () => {
+    setShow(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShow(false);
+  };
+
   const tooltip = <Tooltip id="help-tooltip">{props.text}</Tooltip>;
 
   const icon = () => {
@@ -27,9 +35,14 @@ const HelpIcon = (props) => {
   };
 
   return (
-    <OverlayTrigger placement="right" overlay={tooltip}>
-      {icon()}
-    </OverlayTrigger>
+    <>
+      <span ref={target} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} className="position-relative">
+        {icon()}
+      </span>
+      <Overlay target={target.current} show={show} placement="right" onHide={handleMouseLeave}>
+        {tooltip}
+      </Overlay>
+    </>
   );
 };
 
