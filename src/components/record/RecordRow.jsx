@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { formatDate } from "../../utils/Utils";
 import HelpIcon from "../HelpIcon";
 import { Button } from "react-bootstrap";
@@ -38,8 +38,8 @@ const RecordRow = (props) => {
   const statusInfo = StatusInfo[record.phase];
 
   const statusInfoText = () => {
-    if (record.rejectMessage) {
-      return `${i18n(statusInfo.tooltip)}\n${i18n("reason")}: ${record.rejectMessage}`;
+    if (record.rejectReason) {
+      return `${i18n(statusInfo.tooltip)}\n${i18n("reason")}: ${record.rejectReason}`;
     } else {
       return `${i18n(statusInfo.tooltip)}`;
     }

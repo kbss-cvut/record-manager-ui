@@ -187,33 +187,33 @@ export function loadRecordsPhases() {
   };
 }
 
-export function loadAllowedRejectMessage() {
+export function loadAllowedRejectReason() {
   return function (dispatch) {
-    dispatch(loadAllowedRejectMessagePending());
+    dispatch(loadAllowedRejectReasonPending());
     return axiosBackend
-      .get(`${API_URL}/rest/records/allowedRejectMessage`)
+      .get(`${API_URL}/rest/records/allowedRejectReason`)
       .then((response) => {
-        dispatch(loadAllowedRejectMessageSuccess(response.data));
+        dispatch(loadAllowedRejectReasonSuccess(response.data));
       })
       .catch((error) => {
-        dispatch(loadAllowedRejectMessageError(error));
+        dispatch(loadAllowedRejectReasonError(error));
       });
   };
 }
 
-export function loadAllowedRejectMessageSuccess(isAllowedRejectMessage) {
+export function loadAllowedRejectReasonSuccess(isAllowedRejectReason) {
   return {
-    type: ActionConstants.LOAD_ALLOWED_REJECT_MESSAGE_SUCCESS,
-    isAllowedRejectMessage,
+    type: ActionConstants.LOAD_ALLOWED_REJECT_REASON_SUCCESS,
+    isAllowedRejectReason,
   };
 }
 
-export function loadAllowedRejectMessageError(error) {
-  return asyncError(ActionConstants.LOAD_ALLOWED_REJECT_MESSAGE_ERROR, error);
+export function loadAllowedRejectReasonError(error) {
+  return asyncError(ActionConstants.LOAD_ALLOWED_REJECT_REASON_ERROR, error);
 }
 
-export function loadAllowedRejectMessagePending() {
-  return asyncRequest(ActionConstants.LOAD_ALLOWED_REJECT_MESSAGE_PENDING);
+export function loadAllowedRejectReasonPending() {
+  return asyncRequest(ActionConstants.LOAD_ALLOWED_REJECT_REASON_PENDING);
 }
 
 export function loadRecordsPhasesPending() {

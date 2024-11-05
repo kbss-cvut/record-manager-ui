@@ -4,7 +4,7 @@ import { ACTION_STATUS } from "../constants/DefaultConstants";
 const initialState = {
   recordsLoaded: {},
   recordsPhases: {},
-  isAllowedRejectMessage: {},
+  isAllowedRejectReason: {},
 };
 
 export default function (state = initialState, action) {
@@ -60,28 +60,28 @@ export default function (state = initialState, action) {
           error: action.error,
         },
       };
-    case ActionConstants.LOAD_ALLOWED_REJECT_MESSAGE_PENDING:
+    case ActionConstants.LOAD_ALLOWED_REJECT_REASON_PENDING:
       return {
         ...state,
-        isAllowedRejectMessage: {
+        isAllowedRejectReason: {
           status: ACTION_STATUS.PENDING,
-          ...state.isAllowedRejectMessage,
+          ...state.isAllowedRejectReason,
         },
       };
 
-    case ActionConstants.LOAD_ALLOWED_REJECT_MESSAGE_SUCCESS:
+    case ActionConstants.LOAD_ALLOWED_REJECT_REASON_SUCCESS:
       return {
         ...state,
-        isAllowedRejectMessage: {
+        isAllowedRejectReason: {
           status: ACTION_STATUS.PENDING,
-          data: state.isAllowedRejectMessage,
+          data: state.isAllowedRejectReason,
           error: "",
         },
       };
-    case ActionConstants.LOAD_ALLOWED_REJECT_MESSAGE_ERROR:
+    case ActionConstants.LOAD_ALLOWED_REJECT_REASON_ERROR:
       return {
         ...state,
-        isAllowedRejectMessage: {
+        isAllowedRejectReason: {
           status: ACTION_STATUS.ERROR,
           error: action.error,
         },

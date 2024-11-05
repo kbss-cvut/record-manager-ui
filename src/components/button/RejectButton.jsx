@@ -3,7 +3,7 @@ import PropTypes from "prop-types"; // Import PropTypes
 import { Button, Modal, Form } from "react-bootstrap";
 import { useI18n } from "../../hooks/useI18n.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { loadAllowedRejectMessage } from "../../actions/RecordsActions.js";
+import { loadAllowedRejectReason } from "../../actions/RecordsActions.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const RejectButton = ({
@@ -16,12 +16,12 @@ const RejectButton = ({
 }) => {
   const { i18n } = useI18n();
   const dispatch = useDispatch();
-  const isAllowedRejectMessage = useSelector((state) => state.records.isAllowedRejectMessage.data);
+  const isAllowedRejectReason = useSelector((state) => state.records.isAllowedRejectReason.data);
   const [showModal, setShowModal] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
 
   useEffect(() => {
-    dispatch(loadAllowedRejectMessage());
+    dispatch(loadAllowedRejectReason());
   }, [dispatch]);
 
   const handleShow = () => setShowModal(true);
@@ -34,7 +34,7 @@ const RejectButton = ({
 
   return (
     <>
-      {isAllowedRejectMessage ? (
+      {isAllowedRejectReason ? (
         <Button className={className} size={size} disabled={disabled} variant={variant} onClick={handleShow}>
           {children}
         </Button>
