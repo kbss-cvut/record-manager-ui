@@ -1,6 +1,6 @@
 # Record Manager UI
 
-Frontend of Record Manager.
+Record Manager is an application for generic form-based collection of data. This repository contains the frontend of the application.
 
 ## Required Technologies
 
