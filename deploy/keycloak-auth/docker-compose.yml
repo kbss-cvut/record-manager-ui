@@ -32,6 +32,8 @@ services:
       RECORD_MANAGER_PATH: "${RECORD_MANAGER_PATH:-/record-manager}"
       ANALYTICS_PATH: "${ANALYTICS_PATH:-/statistics}"
       INTERNAL_RECORD_MANAGER_SERVER_SERVICE: "${INTERNAL_RECORD_MANAGER_SERVER_SERVICE:-http://record-manager-server:8080}"
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # support "http://host.docker.internal" for Linux (Windows/Mac works without it)
 
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/templates/nginx.conf.template:ro
