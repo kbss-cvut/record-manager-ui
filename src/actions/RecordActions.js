@@ -1,5 +1,5 @@
 import * as ActionConstants from "../constants/ActionConstants";
-import { ACTION_FLAG } from "../constants/DefaultConstants";
+import { ACTION_FLAG, FORM_ACTION_FLAG } from "../constants/DefaultConstants";
 import { axiosBackend } from "./index";
 import * as Utils from "../utils/Utils";
 import { loadRecords } from "./RecordsActions";
@@ -115,7 +115,7 @@ export function createRecord(record) {
   };
 }
 
-export function updateRecord(record) {
+export function updateRecord(record, formActionFlag) {
   return function (dispatch, getState) {
     dispatch(saveRecordPending(ACTION_FLAG.UPDATE_ENTITY));
     return axiosBackend
@@ -125,7 +125,13 @@ export function updateRecord(record) {
       .then(() => {
         dispatch(saveRecordSuccess(record, null, ACTION_FLAG.UPDATE_ENTITY));
         dispatch(loadRecords());
-        dispatch(publishMessage(successMessage("record.save-success")));
+        if (formActionFlag === FORM_ACTION_FLAG.SAVE_FORM) {
+          dispatch(publishMessage(successMessage("record.save-success")));
+        } else if (formActionFlag === FORM_ACTION_FLAG.COMPLETE_FORM) {
+          dispatch(publishMessage(successMessage("record.complete-success")));
+        } else if (formActionFlag === FORM_ACTION_FLAG.REJECT_FORM) {
+          dispatch(publishMessage(successMessage("record.reject-success")));
+        }
       })
       .catch((error) => {
         dispatch(saveRecordError(error.response.data, record, ACTION_FLAG.UPDATE_ENTITY));

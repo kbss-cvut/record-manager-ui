@@ -188,6 +188,8 @@ export default {
     "record.created-by-msg": "Created {date} by {name}.",
     "record.last-edited-msg": "Last modified {date} by {name}.",
     "record.save-success": "Form successfully saved.",
+    "record.complete-success": "Form successfully completed.",
+    "record.reject-success": "Form successfully rejected.",
     "record.save-error": "Unable to save record. {error}",
     "record.save-error.user-not-assigned-to-institution": "User is not assigned to any institution.",
     "record.form.please-wait": "Loading form, please wait...",

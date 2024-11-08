@@ -4,7 +4,7 @@ import * as ActionConstants from "../../../src/constants/ActionConstants";
 import MockAdapter from "axios-mock-adapter";
 import { TEST_TIMEOUT } from "../../constants/DefaultTestConstants";
 import { axiosBackend } from "../../../src/actions";
-import { ACTION_FLAG, ROLE } from "../../../src/constants/DefaultConstants";
+import { ACTION_FLAG, FORM_ACTION_FLAG, ROLE } from "../../../src/constants/DefaultConstants";
 import {
   createRecord,
   deleteRecord,
@@ -183,14 +183,14 @@ describe("Record asynchronous actions", function () {
         { type: ActionConstants.SAVE_RECORD_PENDING, actionFlag: ACTION_FLAG.UPDATE_ENTITY },
         { type: ActionConstants.SAVE_RECORD_SUCCESS, key: null, actionFlag: ACTION_FLAG.UPDATE_ENTITY, record },
         { type: ActionConstants.LOAD_RECORDS_PENDING },
-        { type: ActionConstants.PUBLISH_MESSAGE, message: successMessage("record.save-success") },
+        { type: ActionConstants.PUBLISH_MESSAGE, message: successMessage("record.complete-success") },
         { type: ActionConstants.LOAD_RECORDS_SUCCESS, records },
       ];
 
       mockApi.onPut(`${API_URL}/rest/records/${record.key}`).reply(200, null, { location });
       mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
 
-      store.dispatch(updateRecord(record));
+      store.dispatch(updateRecord(record, FORM_ACTION_FLAG.COMPLETE_FORM));
 
       setTimeout(() => {
         expect(store.getActions()).toEqual(expectedActions);
