@@ -44,7 +44,7 @@ const RejectButton = ({
         </Button>
       )}
 
-      <Modal show={showModal} onHide={handleClose}>
+      <Modal show={showModal} onHide={handleClose} className="justify-content-center align-content-center">
         <Modal.Header className="bg-warning">
           <Modal.Title className="h5">{i18n("reject-dialog-title")}</Modal.Title>
         </Modal.Header>
