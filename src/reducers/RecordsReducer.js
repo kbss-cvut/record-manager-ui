@@ -4,6 +4,7 @@ import { ACTION_STATUS } from "../constants/DefaultConstants";
 const initialState = {
   recordsLoaded: {},
   recordsPhases: {},
+  isAllowedRejectReason: {},
 };
 
 export default function (state = initialState, action) {
@@ -59,6 +60,33 @@ export default function (state = initialState, action) {
           error: action.error,
         },
       };
+    case ActionConstants.LOAD_ALLOWED_REJECT_REASON_PENDING:
+      return {
+        ...state,
+        isAllowedRejectReason: {
+          status: ACTION_STATUS.PENDING,
+          ...state.isAllowedRejectReason,
+        },
+      };
+
+    case ActionConstants.LOAD_ALLOWED_REJECT_REASON_SUCCESS:
+      return {
+        ...state,
+        isAllowedRejectReason: {
+          status: ACTION_STATUS.PENDING,
+          data: state.isAllowedRejectReason,
+          error: "",
+        },
+      };
+    case ActionConstants.LOAD_ALLOWED_REJECT_REASON_ERROR:
+      return {
+        ...state,
+        isAllowedRejectReason: {
+          status: ACTION_STATUS.ERROR,
+          error: action.error,
+        },
+      };
+
     default:
       return state;
   }

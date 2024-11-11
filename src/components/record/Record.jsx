@@ -15,6 +15,7 @@ import { isAdmin } from "../../utils/SecurityUtils";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 import { Constants as SConstants, FormUtils } from "@kbss-cvut/s-forms";
 import FormValidationDialog from "../FormValidationDialog.jsx";
+import RejectButton from "../button/RejectButton.jsx";
 
 class Record extends React.Component {
   static propTypes = {
@@ -188,7 +189,7 @@ class Record extends React.Component {
         {EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER &&
           !record.isNew &&
           (record.phase === RECORD_PHASE.OPEN || this._isAdmin()) && (
-            <Button
+            <RejectButton
               className="mx-1 action-button"
               variant="danger"
               size="sm"
@@ -203,7 +204,7 @@ class Record extends React.Component {
             >
               {this.i18n("reject")}
               {recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
-            </Button>
+            </RejectButton>
           )}
 
         {(EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER || EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR) &&

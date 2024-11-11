@@ -26,7 +26,7 @@ StatusInfo[RECORD_PHASE.REJECTED] = {
   tooltip: "records.completion-status-tooltip.rejected",
 };
 
-let RecordRow = (props) => {
+const RecordRow = (props) => {
   const { i18n } = useI18n();
   const record = props.record,
     formTemplateOptions = props.formTemplateOptions,
@@ -36,6 +36,14 @@ let RecordRow = (props) => {
       </Button>
     );
   const statusInfo = StatusInfo[record.phase];
+
+  const statusInfoText = () => {
+    if (record.rejectReason) {
+      return `${i18n(statusInfo.tooltip)}\n${i18n("reason")}: ${record.rejectReason}`;
+    } else {
+      return `${i18n(statusInfo.tooltip)}`;
+    }
+  };
 
   return (
     <tr className="position-relative">
@@ -61,9 +69,8 @@ let RecordRow = (props) => {
         {formatDate(new Date(record.lastModified ? record.lastModified : record.dateCreated))}
       </td>
       <td className="report-row content-center">
-        {statusInfo ? <HelpIcon text={i18n(statusInfo.tooltip)} glyph={statusInfo.glyph} /> : "N/A"}
+        {statusInfo ? <HelpIcon text={statusInfoText()} glyph={statusInfo.glyph} /> : "N/A"}
       </td>
-
       <td className="report-row actions">
         <PromiseTrackingMask area={`record-${record.key}`} />
         <Button variant="primary" size="sm" title={i18n("records.open-tooltip")} onClick={() => props.onEdit(record)}>

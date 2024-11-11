@@ -130,27 +130,35 @@ class RecordController extends React.Component {
   };
 
   _onComplete = () => {
-    this._handlePhaseChange(RECORD_PHASE.COMPLETED);
-    this._transitionToRecords();
+    this._handlePhaseChange(RECORD_PHASE.COMPLETED, () => {
+      this._handleRejectReason(null, () => {
+        this.props.updateRecord(this.state.record, this.props.currentUser);
+        this._transitionToRecords();
+      });
+    });
   };
 
-  _onReject = () => {
-    this._handlePhaseChange(RECORD_PHASE.REJECTED);
-    this._transitionToRecords();
+  _onReject = (reason) => {
+    this._handlePhaseChange(RECORD_PHASE.REJECTED, () => {
+      this._handleRejectReason(reason, () => {
+        this.props.updateRecord(this.state.record, this.props.currentUser);
+        this._transitionToRecords();
+      });
+    });
   };
 
-  _handlePhaseChange = (newPhase) => {
-    const currentUser = this.props.currentUser;
+  _handleRejectReason(reason, callback) {
+    const update = { ...this.state.record, rejectReason: reason };
+    this.setState({ record: update }, callback);
+  }
+
+  _handlePhaseChange = (newPhase, callback) => {
     const update = { ...this.state.record, phase: newPhase };
-
-    this.setState({ record: update });
-
-    this.props.updateRecord(update, currentUser);
+    this.setState({ record: update }, callback);
   };
 
   _getLocalName() {
     if (EXTENSIONS.split(",").includes("kodi")) {
-      // return name of the record based on answer of specific question
       return this._getKodiLocaLName();
     }
     return "record-" + Date.now();
