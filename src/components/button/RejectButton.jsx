@@ -12,7 +12,7 @@ const RejectButton = ({
   variant = "danger",
   size = "sm",
   disabled = true,
-  onClick = () => {},
+  onClick = (rejectReason) => {},
 }) => {
   const { i18n } = useI18n();
   const dispatch = useDispatch();
@@ -39,37 +39,38 @@ const RejectButton = ({
           {children}
         </Button>
       ) : (
-        <Button className={className} size={size} disabled={disabled} variant={variant} onClick={onClick}>
+        <Button className={className} size={size} disabled={disabled} variant={variant} onClick={() => onClick(null)}>
           {children}
         </Button>
       )}
-
-      <Modal show={showModal} onHide={handleClose} className="justify-content-center align-content-center">
-        <Modal.Header className="bg-warning">
-          <Modal.Title className="h5">{i18n("reject-dialog-title")}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="formRejectionReason">
-              <Form.Control
-                as="textarea"
-                rows={4}
-                placeholder={i18n("records.rejection-reason-placeholder")}
-                value={rejectionReason}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            {i18n("close")}
-          </Button>
-          <Button variant="danger" onClick={handleReject}>
-            {i18n("reject")}
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      {isAllowedRejectReason && (
+        <Modal show={showModal} onHide={handleClose} className="justify-content-center align-content-center">
+          <Modal.Header className="bg-warning">
+            <Modal.Title className="h5">{i18n("reject-dialog-title")}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group controlId="formRejectionReason">
+                <Form.Control
+                  as="textarea"
+                  rows={4}
+                  placeholder={i18n("records.rejection-reason-placeholder")}
+                  value={rejectionReason}
+                  onChange={handleInputChange}
+                />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              {i18n("close")}
+            </Button>
+            <Button variant="danger" onClick={handleReject}>
+              {i18n("reject")}
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
     </>
   );
 };
