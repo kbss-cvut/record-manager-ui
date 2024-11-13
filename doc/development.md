@@ -8,7 +8,11 @@ To configure the application use [Setup Guide](./setup.md).
 To run the application in development mode use `npm run dev`.
 By default, the application is accessible from http://localhost:5173.
 
-### Running with Dockerized Services and Internal Authorization
+### Development with Dockerized Services
+
+It is possible to develop the frontend over prepared docker services. 
+
+#### Using Internal Authorization
 
 This section describes the development scenario when developer uses
 [dockerized services with internal authorization](../deploy/internal-auth/docker-compose.yml) to develop.
@@ -16,7 +20,7 @@ All the services, including dockerized record-manager-ui, run by default at URL 
 To attach simultaneously frontend for the development use setup from [.env.internal-auth](../.env.internal-auth),
 e.g., by running `ln -s .env.internal-auth .env;  npm run dev`.
 
-### Running with Dockerized Services and Keycloak Authorization
+#### Using Keycloak Authorization
 
 This section describes the development scenario when developer uses
 [dockerized services with keycloak authorization](../deploy/keycloak-auth/docker-compose.yml) to develop.
@@ -26,6 +30,11 @@ e.g., by running `ln -s .env.keycloak-auth .env;  npm run dev`.
 
 `npm run dev` starts developement version of record-manager-ui at `http://localhost:5173`. In order to login to through keycloak `record-manager` realm needs to be configured: open the `record-manager` realm, under _Clients_ open the `record-manager` client and set
 _Valid redirect URIs_ (by default it should be `http://localhost:5173/*`) and _Web Origins_ (by default it should be `http://localhost:5173`).
+
+#### Additional configuration parameters
+
+The environment variable `INTERNAL_RECORD_MANAGER_SERVER_SERVICE` points to the Record Manager backend. `http://host.docker.internal` can be used to configure the backend running locally on the host computer. See more info in the appropriate .env file, e.g., [keycloak-auth/.env](../deploy/keycloak-auth/.env).
+
 
 ### Running with all Services in Development Mode
 
