@@ -196,7 +196,7 @@ export function loadAllowedRejectReason() {
         dispatch(loadAllowedRejectReasonSuccess(response.data));
       })
       .catch((error) => {
-        dispatch(loadAllowedRejectReasonError(error));
+        dispatch(loadAllowedRejectReasonError(error.response.data));
       });
   };
 }

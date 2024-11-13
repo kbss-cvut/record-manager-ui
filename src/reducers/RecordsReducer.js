@@ -74,7 +74,7 @@ export default function (state = initialState, action) {
         ...state,
         isAllowedRejectReason: {
           status: ACTION_STATUS.PENDING,
-          data: state.isAllowedRejectReason,
+          data: action.isAllowedRejectReason,
           error: "",
         },
       };

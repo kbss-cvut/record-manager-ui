@@ -138,9 +138,9 @@ class RecordController extends React.Component {
     });
   };
 
-  _onReject = (reason) => {
+  _onReject = (rejectionReason) => {
     this._handlePhaseChange(RECORD_PHASE.REJECTED, () => {
-      this._handleRejectReason(reason, () => {
+      this._handleRejectReason(rejectionReason, () => {
         this.props.updateRecord(this.state.record, this.props.currentUser);
         this._transitionToRecords();
       });
