@@ -1,6 +1,6 @@
 # Development
 
-This file contains info for contributors to the Record Manager UI codebase.
+This file contains info for contributors to the Record Manager UI codebase. The frontend uses the following [components and libraries](./components-libraries.md).
 
 ## Running in Development Mode
 
