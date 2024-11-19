@@ -62,7 +62,9 @@ class RequiredAttributes extends React.Component {
                 onChange={this.props.onChange}
               />
             </div>
-            <HelpIcon text={this.i18n("help.local-name")} glyph="help" />
+            <div className="col-1">
+              <HelpIcon text={this.i18n("help.local-name")} glyph="help" />
+            </div>
           </div>
         )}
       </div>
