@@ -6,7 +6,7 @@ import withI18n from "../../i18n/withI18n";
 import Record from "./Record";
 import Routes from "../../constants/RoutesConstants";
 import { transitionToWithOpts } from "../../utils/Routing";
-import { ACTION_FLAG, ACTION_STATUS, RECORD_PHASE } from "../../constants/DefaultConstants";
+import { ACTION_FLAG, ACTION_STATUS, FORM_ACTION_FLAG, RECORD_PHASE } from "../../constants/DefaultConstants";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
@@ -102,7 +102,7 @@ class RecordController extends React.Component {
     if (record.isNew) {
       trackPromise(this.props.createRecord(omit(record, "isNew"), currentUser), "record");
     } else {
-      trackPromise(this.props.updateRecord(record, currentUser), "record");
+      trackPromise(this.props.updateRecord(record, FORM_ACTION_FLAG.SAVE_FORM, currentUser), "record");
     }
   };
 
@@ -132,7 +132,7 @@ class RecordController extends React.Component {
   _onComplete = () => {
     this._handlePhaseChange(RECORD_PHASE.COMPLETED, () => {
       this._handleRejectReason(null, () => {
-        this.props.updateRecord(this.state.record, this.props.currentUser);
+        this.props.updateRecord(this.state.record, FORM_ACTION_FLAG.COMPLETE_FORM, this.props.currentUser);
         this._transitionToRecords();
       });
     });
@@ -141,7 +141,7 @@ class RecordController extends React.Component {
   _onReject = (rejectionReason) => {
     this._handlePhaseChange(RECORD_PHASE.REJECTED, () => {
       this._handleRejectReason(rejectionReason, () => {
-        this.props.updateRecord(this.state.record, this.props.currentUser);
+        this.props.updateRecord(this.state.record, FORM_ACTION_FLAG.REJECT_FORM, this.props.currentUser);
         this._transitionToRecords();
       });
     });
