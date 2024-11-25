@@ -83,21 +83,21 @@ ex1:last-name-6610 a doc:question ;
 ex1:ma-vlastnika-section-777 a doc:question ;
     rdfs:label "Má vlastníka" ;
     form-lt:has-layout-class "type-ahead" ;
-    form:has-non-selectable-value "fyzicka-osoba" ;
-    form:has-possible-value "fyzicka-osoba",
-        "fyzicka-osoba--chytra",
-        "fyzicka-osoba--hloupa",
-        "fyzicka-osoba--nezletila",
-        "jeste-specifickejsi-podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem",
-        "podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem",
-        "pravnicka-osoba" ;
+    form:has-non-selectable-value ex1:fyzicka-osoba ;
+    form:has-possible-value ex1:fyzicka-osoba,
+        ex1:fyzicka-osoba--chytra,
+        ex1:fyzicka-osoba--hloupa,
+        ex1:fyzicka-osoba--nezletila,
+        ex1:jeste-specifickejsi-podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem,
+        ex1:podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem,
+        ex1:pravnicka-osoba ;
     form:has-question-origin ex1:ma-vlastnika-section-777-qo .
 
 ex1:mena-8088 a doc:question ;
     rdfs:label "Měna" ;
     form-lt:has-layout-class "type-ahead" ;
-    form:has-possible-value "mena-cz",
-        "mena-sr" ;
+    form:has-possible-value ex1:mena-cz,
+        ex1:mena-sr ;
     form:has-question-origin ex1:mena-8088-qo .
 
 ex1:podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem rdfs:label "Podtřída fyzické osoby s velice dlouhým názvem" ;
@@ -288,13 +288,13 @@ ex1:provozovatel-section-666 a doc:question ;
         "section",
         "type-question" ;
     form:has-non-selectable-value "fyzicka-osoba" ;
-    form:has-possible-value "fyzicka-osoba",
-        "fyzicka-osoba--chytra",
-        "fyzicka-osoba--hloupa",
-        "fyzicka-osoba--nezletila",
-        "jeste-specifickejsi-podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem",
-        "podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem",
-        "pravnicka-osoba" ;
+    form:has-possible-value ex1:fyzicka-osoba,
+        ex1:fyzicka-osoba--chytra,
+        ex1:fyzicka-osoba--hloupa,
+        ex1:fyzicka-osoba--nezletila,
+        ex1:jeste-specifickejsi-podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem,
+        ex1:podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem,
+        ex1:pravnicka-osoba ;
     form:has-question-origin ex1:provozovatel-section-666-qo ;
     form:has-type-question "ps-type-1",
         "ps-type-2" .
