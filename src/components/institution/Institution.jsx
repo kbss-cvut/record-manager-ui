@@ -19,7 +19,7 @@ import PromiseTrackingMask from "../misc/PromiseTrackingMask";
  */
 class Institution extends React.Component {
   static propTypes = {
-    i18n: PropTypes.object,
+    i18n: PropTypes.func.isRequired,
     institution: PropTypes.object,
     institutionLoaded: PropTypes.object,
     institutionSaved: PropTypes.object,
