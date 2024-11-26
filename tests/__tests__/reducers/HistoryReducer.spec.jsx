@@ -37,6 +37,7 @@ describe("HistoryReducer", function () {
     ).toEqual({
       actionsLoaded: {
         status: ACTION_STATUS.PENDING,
+        actions: [],
       },
       testEntry: initialState.testEntry,
     });

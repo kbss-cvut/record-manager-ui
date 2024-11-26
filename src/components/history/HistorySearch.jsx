@@ -51,7 +51,7 @@ const HistorySearch = (props) => (
 );
 
 HistorySearch.propTypes = {
-  i18n: PropTypes.object,
+  i18n: PropTypes.func,
   handlers: PropTypes.object.isRequired,
   searchData: PropTypes.object.isRequired,
 };
