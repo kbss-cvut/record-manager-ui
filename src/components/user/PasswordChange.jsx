@@ -13,7 +13,7 @@ import { isAdmin } from "../../utils/SecurityUtils";
 
 class PasswordChange extends React.Component {
   static propTypes = {
-    i18n: PropTypes.object,
+    i18n: PropTypes.func,
     valid: PropTypes.bool,
     handlers: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,

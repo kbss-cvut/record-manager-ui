@@ -96,7 +96,7 @@ class HistoryList extends React.Component {
 }
 
 HistoryList.propTypes = {
-  i18n: PropTypes.object.isRequired, // Adjust the type if necessary
+  i18n: PropTypes.func.isRequired,
   loadActions: PropTypes.func.isRequired,
   transitionToWithOpts: PropTypes.func.isRequired,
   actionsLoaded: PropTypes.shape({

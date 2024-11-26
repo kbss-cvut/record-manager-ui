@@ -28,7 +28,7 @@ export default function withI18n(Component, options) {
 
   Wrapper.propTypes = {
     intl: PropTypes.object,
-    forwardedRef: PropTypes.func,
+    forwardedRef: PropTypes.object,
   };
 
   if (forwardRef) {

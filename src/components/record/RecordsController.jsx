@@ -177,7 +177,7 @@ RecordsController.propTypes = {
     records: PropTypes.array.isRequired,
     pageCount: PropTypes.number.isRequired,
   }).isRequired,
-  recordDeleted: PropTypes.func.isRequired,
+  recordDeleted: PropTypes.object,
   currentUser: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
 };

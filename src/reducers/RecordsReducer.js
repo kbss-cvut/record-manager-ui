@@ -2,7 +2,10 @@ import * as ActionConstants from "../constants/ActionConstants";
 import { ACTION_STATUS } from "../constants/DefaultConstants";
 
 const initialState = {
-  recordsLoaded: {},
+  recordsLoaded: {
+    records: [],
+    pageCount: 0,
+  },
   recordsPhases: {},
   isAllowedRejectReason: {},
 };
@@ -22,8 +25,8 @@ export default function (state = initialState, action) {
         ...state,
         recordsLoaded: {
           status: ACTION_STATUS.SUCCESS,
-          records: action.records,
-          pageCount: action.pageCount,
+          records: action.records || [],
+          pageCount: action.pageCount || 0,
           error: "",
         },
       };

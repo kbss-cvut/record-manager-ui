@@ -226,7 +226,7 @@ UserController.propTypes = {
   sendInvitation: PropTypes.func.isRequired,
   deleteInvitationOption: PropTypes.func.isRequired,
   generateUsername: PropTypes.func.isRequired,
-  transitionPayload: PropTypes.func.isRequired,
+  transitionPayload: PropTypes.object.isRequired,
   setTransitionPayload: PropTypes.func.isRequired,
   createUser: PropTypes.func.isRequired,
   updateUser: PropTypes.func.isRequired,
