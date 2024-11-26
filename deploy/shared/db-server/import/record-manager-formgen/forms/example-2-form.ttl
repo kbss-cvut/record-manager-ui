@@ -17,8 +17,8 @@ ex2:as-show-advanced-888 a doc:question ;
 
 ex2:form-root a doc:question ;
     a form:form-template ;
-    rdfs:label "Form example 1" ;
-    rdfs:comment "First example of a form" ;
+    rdfs:label "Form example 2" ;
+    rdfs:comment "Second example of a form" ;
     doc:has_related_question ex2:age-1063,
         ex2:answerable-section-with-advanced-switch,
         ex2:cena-6557,
