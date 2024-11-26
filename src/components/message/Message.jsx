@@ -29,7 +29,7 @@ Message.propTypes = {
     type: PropTypes.string.isRequired,
     messageId: PropTypes.string.isRequired,
     values: PropTypes.object,
-    message: PropTypes.string.isRequired,
+    message: PropTypes.string,
   }).isRequired,
 };
 
