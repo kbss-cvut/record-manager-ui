@@ -8,6 +8,7 @@ describe("RecordsReducer", function () {
     error = {
       message: "An error has occurred.",
     };
+  const pageCount = 0;
 
   it("handles LOAD_RECORDS_PENDING", () => {
     const initialState = {
@@ -37,7 +38,6 @@ describe("RecordsReducer", function () {
       },
       testEntry: "should not touch",
     };
-
     expect(
       RecordsReducer(initialState, {
         type: ActionConstants.LOAD_RECORDS_SUCCESS,
@@ -47,6 +47,7 @@ describe("RecordsReducer", function () {
       recordsLoaded: {
         status: ACTION_STATUS.SUCCESS,
         records,
+        pageCount,
         error: "",
       },
       testEntry: initialState.testEntry,
