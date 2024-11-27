@@ -3,10 +3,7 @@
 import React from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import PropTypes from "prop-types";
-import { FaEnvelope, FaQuestionCircle } from "react-icons/fa";
-import { FaCheck } from "react-icons/fa";
-import { FaTimes } from "react-icons/fa";
-import { FaTasks } from "react-icons/fa";
+import { FaEnvelope, FaQuestionCircle, FaCheck, FaTimes, FaTasks } from "react-icons/fa";
 
 const HelpIcon = (props) => {
   const tooltip = <Tooltip id="help-tooltip">{props.text}</Tooltip>;
@@ -28,7 +25,7 @@ const HelpIcon = (props) => {
 
   return (
     <OverlayTrigger placement="right" overlay={tooltip}>
-      {icon()}
+      <span className="position-relative">{icon()}</span>
     </OverlayTrigger>
   );
 };

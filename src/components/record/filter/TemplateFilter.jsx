@@ -55,7 +55,7 @@ const TemplateFilter = ({ value, onChange }) => {
       <hr />
       <Row>
         <Col>
-          <div className="float-right">
+          <div className="float-end">
             <Button
               size="sm"
               disabled={values.length === 0}

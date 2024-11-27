@@ -19,7 +19,7 @@ const SortIndicator = ({ direction }) => {
       break;
   }
   return (
-    <span className="ml-1" title={i18n("table.sort.tooltip")}>
+    <span className="ms-1" title={i18n("table.sort.tooltip")}>
       <Glyph />
     </span>
   );

@@ -28,7 +28,7 @@ const DateIntervalFilter = ({ minDate, maxDate, sort, onChange }) => {
             selectsStart={true}
             startDate={startDate}
             endDate={endDate}
-            className="filter-datetimepicker float-right form-control"
+            className="filter-datetimepicker float-end form-control"
             dateFormat="dd-MM-yyyy"
             onChange={(v) => onChange({ minDate: toIsoDate(v) }, {})}
           />
@@ -45,7 +45,7 @@ const DateIntervalFilter = ({ minDate, maxDate, sort, onChange }) => {
             startDate={startDate}
             endDate={endDate}
             maxDate={new Date()}
-            className="filter-datetimepicker float-right form-control"
+            className="filter-datetimepicker float-end form-control"
             dateFormat="dd-MM-yyyy"
             onChange={(v) => onChange({ maxDate: toIsoDate(v) }, {})}
           />
@@ -61,7 +61,7 @@ const DateIntervalFilter = ({ minDate, maxDate, sort, onChange }) => {
             onClick={() => onChange({}, { date: SortDirection.ASC })}
           >
             {i18n("sort.asc")}
-            {sort === SortDirection.ASC && <FaCheck className="ml-1" />}
+            {sort === SortDirection.ASC && <FaCheck className="ms-1" />}
           </Button>
         </Col>
       </Row>
@@ -74,14 +74,14 @@ const DateIntervalFilter = ({ minDate, maxDate, sort, onChange }) => {
             onClick={() => onChange({}, { date: SortDirection.DESC })}
           >
             {i18n("sort.desc")}
-            {sort === SortDirection.DESC && <FaCheck className="ml-1" />}
+            {sort === SortDirection.DESC && <FaCheck className="ms-1" />}
           </Button>
         </Col>
       </Row>
       <hr />
       <Row>
         <Col>
-          <div className="float-right">
+          <div className="float-end">
             <Button
               size="sm"
               disabled={minDate === undefined && maxDate === undefined}

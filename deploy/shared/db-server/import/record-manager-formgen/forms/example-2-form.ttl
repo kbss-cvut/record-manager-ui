@@ -83,21 +83,21 @@ ex2:last-name-6610 a doc:question ;
 ex2:ma-vlastnika-section-777 a doc:question ;
     rdfs:label "Má vlastníka" ;
     form-lt:has-layout-class "type-ahead" ;
-    form:has-non-selectable-value "fyzicka-osoba" ;
-    form:has-possible-value "fyzicka-osoba",
-        "fyzicka-osoba--chytra",
-        "fyzicka-osoba--hloupa",
-        "fyzicka-osoba--nezletila",
-        "jeste-specifickejsi-podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem",
-        "podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem",
-        "pravnicka-osoba" ;
+    form:has-non-selectable-value ex2:fyzicka-osoba ;
+    form:has-possible-value ex2:fyzicka-osoba,
+        ex2:fyzicka-osoba--chytra,
+        ex2:fyzicka-osoba--hloupa,
+        ex2:fyzicka-osoba--nezletila,
+        ex2:jeste-specifickejsi-podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem,
+        ex2:podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem,
+        ex2:pravnicka-osoba ;
     form:has-question-origin ex2:ma-vlastnika-section-777-qo .
 
 ex2:mena-8088 a doc:question ;
     rdfs:label "Měna" ;
     form-lt:has-layout-class "type-ahead" ;
-    form:has-possible-value "mena-cz",
-        "mena-sr" ;
+    form:has-possible-value ex2:mena-cz,
+        ex2:mena-sr ;
     form:has-question-origin ex2:mena-8088-qo .
 
 ex2:podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem rdfs:label "Podtřída fyzické osoby s velice dlouhým názvem" ;
@@ -288,33 +288,18 @@ ex2:provozovatel-section-666 a doc:question ;
         "section",
         "type-question" ;
     form:has-non-selectable-value "fyzicka-osoba" ;
-    form:has-possible-value "fyzicka-osoba",
-        "fyzicka-osoba--chytra",
-        "fyzicka-osoba--hloupa",
-        "fyzicka-osoba--nezletila",
-        "jeste-specifickejsi-podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem",
-        "podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem",
-        "pravnicka-osoba" ;
+    form:has-possible-value ex2:fyzicka-osoba,
+        ex2:fyzicka-osoba--chytra,
+        ex2:fyzicka-osoba--hloupa,
+        ex2:fyzicka-osoba--nezletila,
+        ex2:jeste-specifickejsi-podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem,
+        ex2:podtrida-fyzicka-osoby-s-velice-dlouhym-nazvem,
+        ex2:pravnicka-osoba ;
     form:has-question-origin ex2:provozovatel-section-666-qo ;
     form:has-type-question "ps-type-1",
         "ps-type-2" .
 
 ex2:show-advanced-question-test-advanced-switch a doc:question ;
-    rdfs:label "Advanced switch test" ;
-    form-lt:has-layout-class "checkbox" ;
-    form:has-comment [ a form:comment ;
-            form:has-author <http://fel.cvut.cz/people/max-chopart> ;
-            form:has-comment-value "Some comment" ;
-            form:has-timestamp "1636061441831" ],
-        [ a form:comment ;
-            form:has-author <http://fel.cvut.cz/people/miroslav-blasko> ;
-            form:has-comment-value "Another comment" ;
-            form:has-timestamp "1636065441831" ] ;
-    form:has-question-origin ex2:form-show-advanced-question ;
-    form:show-advanced-question true ;
-    dc:description "Advanced switch test" .
-
-ex2:show-advanced-question-test-advanced-switch-na a doc:question ;
     rdfs:label "Advanced switch test" ;
     form-lt:has-layout-class "checkbox" ;
     form:has-comment [ a form:comment ;
@@ -325,6 +310,21 @@ ex2:show-advanced-question-test-advanced-switch-na a doc:question ;
             form:has-author <http://fel.cvut.cz/people/max-chopart> ;
             form:has-comment-value "Some comment" ;
             form:has-timestamp "1636061441831" ] ;
+    form:has-question-origin ex2:form-show-advanced-question ;
+    form:show-advanced-question true ;
+    dc:description "Advanced switch test" .
+
+ex2:show-advanced-question-test-advanced-switch-na a doc:question ;
+    rdfs:label "Advanced switch test" ;
+    form-lt:has-layout-class "checkbox" ;
+    form:has-comment [ a form:comment ;
+            form:has-author <http://fel.cvut.cz/people/max-chopart> ;
+            form:has-comment-value "Some comment" ;
+            form:has-timestamp "1636061441831" ],
+        [ a form:comment ;
+            form:has-author <http://fel.cvut.cz/people/miroslav-blasko> ;
+            form:has-comment-value "Another comment" ;
+            form:has-timestamp "1636065441831" ] ;
     form:has-question-origin ex2:form-show-advanced-question ;
     form:show-advanced-question true ;
     dc:description "Advanced switch test" .
