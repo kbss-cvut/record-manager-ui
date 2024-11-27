@@ -6,7 +6,7 @@
   "type": "module",
   "main": "src/index.jsx",
   "dependencies": {
-    "@kbss-cvut/s-forms": "^0.7.2",
+    "@kbss-cvut/s-forms": "^0.8.0",
     "@vitejs/plugin-react": "^4.2.1",
     "bootstrap": "^5.3.3",
     "axios": "^1.7.7",
