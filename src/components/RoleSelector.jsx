@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import PropTypes from "prop-types";
-import { ROLE } from "./constants/DefaultConstants.js";
+import { ROLE } from "../constants/DefaultConstants.js";
 import Row from "react-bootstrap/Row";
 import { Col, FormGroup, FormLabel } from "react-bootstrap";
 
