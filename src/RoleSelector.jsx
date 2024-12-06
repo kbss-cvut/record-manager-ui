@@ -18,28 +18,17 @@ const RoleSelector = ({ selected = [], handler = () => {}, readOnly = true, labe
     }));
   };
 
-  // const [selectedRoles, setSelectedRoles] = useState(formatSelected(selected));
-  //
-  // useEffect(() => {
-  //   setSelectedRoles(formatSelected(selected));
-  // }, [selected]);
-
-  // const handleChange = (selectedOptions) => {
-  //   setSelectedRoles(selectedOptions);
-  //   const selectedValues = selectedOptions.map((option) => option.value);
-  //   handler(selectedValues);
-  // };
-
   return (
-    <FormGroup as={Row}>
-      <Col as={FormLabel} lg={2} className="font-weight-bold text-lg-right align-self-center">
+    <FormGroup as={Row} className="mb-3">
+      <FormLabel column lg={3} className="fw-bold text-lg-end align-self-center">
         {label}
-      </Col>
-      <Col lg={10}>
+      </FormLabel>
+      <Col lg={8}>
         <Select
           value={formatSelected(selected)}
           isMulti
           name="roles"
+          onChange={handler}
           options={roleOptions}
           isDisabled={readOnly}
           className="basic-multi-select"
@@ -52,7 +41,7 @@ const RoleSelector = ({ selected = [], handler = () => {}, readOnly = true, labe
 
 RoleSelector.propTypes = {
   selected: PropTypes.array,
-  handler: PropTypes.func.isRequired,
+  handler: PropTypes.func,
   readOnly: PropTypes.bool,
   label: PropTypes.string,
 };

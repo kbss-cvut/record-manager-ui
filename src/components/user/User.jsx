@@ -343,13 +343,10 @@ class User extends React.Component {
               </div>
             )}
             <IfInternalAuth>
-              <div className="col-12 col-sm-8">
-                <RoleSelector
-                  selected={getRoles(user)}
-                  // handler={this._onRoleSelected}
-                  readOnly={true}
-                  label={`${this.i18n("user.roles")}*`}
-                />
+              <div className="row">
+                <div className="col-12 col-sm-6">
+                  <RoleSelector selected={getRoles(user)} readOnly={true} label={`${this.i18n("user.roles")}*`} />
+                </div>
               </div>
             </IfInternalAuth>
             <div className="buttons-line-height mt-3 text-center">
