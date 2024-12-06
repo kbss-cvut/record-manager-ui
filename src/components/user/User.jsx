@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import { FaRandom } from "react-icons/fa";
 import { isUsingOidcAuth } from "../../utils/OidcUtils";
 import { getRoles, hasRole, isAdmin } from "../../utils/SecurityUtils";
-import RoleSelector from "../../RoleSelector.jsx";
+import RoleSelector from "../RoleSelector.jsx";
 import IfInternalAuth from "../misc/oidc/IfInternalAuth.jsx";
 
 class User extends React.Component {
@@ -40,7 +40,6 @@ class User extends React.Component {
     this.i18n = this.props.i18n;
     this.formatMessage = this.props.formatMessage;
     this.state = { savedWithEmail: false };
-    // this._onRoleSelected = this._onRoleSelected.bind(this);
   }
 
   _onChange = (e) => {
@@ -304,7 +303,7 @@ class User extends React.Component {
                     labelWidth={3}
                     inputWidth={8}
                     onChange={this._onRoleGroupSelected}
-                    value={user.roleGroup ? user.roleGroup : ""}
+                    value={user.roleGroup ? user.roleGroup.uri : ""}
                   >
                     {this._generateGroupOptions()}
                   </HorizontalInput>
