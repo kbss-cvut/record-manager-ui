@@ -15,12 +15,12 @@ describe("Dashboard", function () {
     },
     doctorWithInstitution = {
       username: "test",
-      role: ROLE.DOCTOR,
+      role: ROLE.USER,
       institution: { key: 12345678 },
     },
     doctorWithoutInstitution = {
       username: "test",
-      role: ROLE.DOCTOR,
+      role: ROLE.USER,
     },
     handlers = {
       showUsers: vi.fn(),
