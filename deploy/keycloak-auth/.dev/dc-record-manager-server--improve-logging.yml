@@ -1,0 +1,4 @@
+services:
+  record-manager-server:
+    environment:
+      LOGGING_LEVEL_ROOT: "debug"
