@@ -137,6 +137,8 @@ services:
       VOCABULARY_USER_LAST_NAME: "http://xmlns.com/foaf/0.1/lastName"
       VOCABULARY_USER_USERNAME: "http://xmlns.com/foaf/0.1/accountName"
       VOCABULARY_USER_EMAIL: "http://xmlns.com/foaf/0.1/mbox"
+      NAMESPACES: "http://xmlns.com/foaf/0.1/Person/"
+      DB_SERVER_CONTEXT: "http://xmlns.com/foaf/0.1/Person/"
       ADD_ACCOUNTS: false
       REALM_ID: "record-manager"
     expose:
