@@ -1,9 +1,3 @@
-version: "3.9"
-
-# Provide access to record-manager-ui that runs locally in dev mode
-x-access-for-local-development: &local-dev-env
-  security.cors.allowedOrigins: "http://localhost:4173,http://localhost:5173"
-
 # Provide logging to Java application (e.g. record-manager-server)
 x-logging-java-application: &logging-java
   LOGGING_LEVEL_ROOT: "debug"
@@ -32,8 +26,6 @@ services:
       RECORD_MANAGER_PATH: "${RECORD_MANAGER_PATH:-/record-manager}"
       ANALYTICS_PATH: "${ANALYTICS_PATH:-/statistics}"
       INTERNAL_RECORD_MANAGER_SERVER_SERVICE: "${INTERNAL_RECORD_MANAGER_SERVER_SERVICE:-http://record-manager-server:8080}"
-    extra_hosts:
-      - "host.docker.internal:host-gateway" # support "http://host.docker.internal" for Linux (Windows/Mac works without it)
 
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/templates/nginx.conf.template:ro
@@ -71,7 +63,6 @@ services:
       - s-pipes-engine
       - db-server
     environment:
-      <<: *local-dev-env
       appContext: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${APP_ROOT_PATH:-}${RECORD_MANAGER_PATH:-/record-manager}"
       repositoryUrl: "http://db-server:7200/repositories/record-manager-app"
       formGenRepositoryUrl: "http://db-server:7200/repositories/record-manager-formgen"
