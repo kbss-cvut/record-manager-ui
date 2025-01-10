@@ -1,9 +1,7 @@
 PREFIX rm: <http://onto.fel.cvut.cz/ontologies/record-manager/>
 
-DELETE {
-   GRAPH <http://www.ontotext.com/explicit>{
-       ?a ?p ?o .
-   }
+DELETE {   
+   ?a ?p ?o .
 }
 INSERT {
    GRAPH rm:action-history {
@@ -11,8 +9,12 @@ INSERT {
    }
 }
 WHERE {
-   GRAPH <http://www.ontotext.com/explicit> {
-       ?a ?p ?o .
-       ?a a rm:action-history .
+   ?a ?p ?o .
+   ?a a rm:action-history .
+   
+   MINUS {
+     GRAPH ?g {
+    	?a ?p ?o .
+     }
    }
 }
