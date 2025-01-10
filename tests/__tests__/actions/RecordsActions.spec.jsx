@@ -56,7 +56,7 @@ describe("Records asynchronous actions", function () {
       requestUri: "/rest/records/xxx",
     },
     doctor = {
-      role: ROLE.DOCTOR,
+      role: ROLE.USER,
       institution: {
         key: 12345678,
       },
