@@ -515,7 +515,41 @@
       "record-manager": []
     }
   },
-  "groups": [],
+  "groups": [
+    {
+      "id": "2726df27-675d-424f-9831-5bc3e1424b81",
+      "name": "AdminGroup",
+      "path": "/AdminGroup",
+      "attributes": {},
+      "realmRoles": [
+        "rm-delete-all-records",
+        "rm-edit-users",
+        "rm-impersonate",
+        "ROLE_USER",
+        "rm-edit-all-records",
+        "rm-view-organization-records",
+        "rm-complete-records",
+        "ROLE_ADMIN",
+        "rm-edit-organization-records",
+        "rm-view-all-records",
+        "rm-delete-organization-records",
+        "rm-publish-records",
+        "rm-import-codelists",
+        "rm-reject-records"
+      ],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
+      "id": "1b2faa03-ffa5-4102-abe8-cdeebd0f5880",
+      "name": "UserGroup",
+      "path": "/UserGroup",
+      "attributes": {},
+      "realmRoles": ["ROLE_USER"],
+      "clientRoles": {},
+      "subGroups": []
+    }
+  ],
   "defaultRole": {
     "id": "625020fc-3b89-4108-8c64-f1abc2ab3d33",
     "name": "default-roles-record-manager",
@@ -532,7 +566,7 @@
   "otpPolicyLookAheadWindow": 1,
   "otpPolicyPeriod": 30,
   "otpPolicyCodeReusable": false,
-  "otpSupportedApplications": ["totpAppMicrosoftAuthenticatorName", "totpAppFreeOTPName", "totpAppGoogleName"],
+  "otpSupportedApplications": ["totpAppMicrosoftAuthenticatorName", "totpAppGoogleName", "totpAppFreeOTPName"],
   "webAuthnPolicyRpEntityName": "keycloak",
   "webAuthnPolicySignatureAlgorithms": ["ES256"],
   "webAuthnPolicyRpId": "",
@@ -1475,13 +1509,13 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "saml-user-property-mapper",
-            "saml-role-list-mapper",
             "saml-user-attribute-mapper",
+            "saml-role-list-mapper",
             "oidc-usermodel-attribute-mapper",
+            "oidc-address-mapper",
             "oidc-full-name-mapper",
             "oidc-sha256-pairwise-sub-mapper",
-            "oidc-address-mapper",
+            "saml-user-property-mapper",
             "oidc-usermodel-property-mapper"
           ]
         }
@@ -1551,14 +1585,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "saml-user-attribute-mapper",
-            "oidc-sha256-pairwise-sub-mapper",
             "saml-role-list-mapper",
-            "oidc-usermodel-property-mapper",
-            "oidc-usermodel-attribute-mapper",
+            "oidc-address-mapper",
+            "oidc-sha256-pairwise-sub-mapper",
             "oidc-full-name-mapper",
+            "saml-user-attribute-mapper",
+            "oidc-usermodel-attribute-mapper",
             "saml-user-property-mapper",
-            "oidc-address-mapper"
+            "oidc-usermodel-property-mapper"
           ]
         }
       }
