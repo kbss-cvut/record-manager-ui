@@ -57,7 +57,7 @@ class Records extends React.Component {
     const showCreateButton = STUDY_CREATE_AT_MOST_ONE_RECORD
       ? !recordsLoaded.records || recordsLoaded.records.length < 1
       : true;
-    const showPublishButton = isAdmin(this.props.currentUser) && hasRole(this.props.currentUser, ROLE.PUBLISH_RECORDS);
+    const showPublishButton = isAdmin(this.props.currentUser);
     const createRecordDisabled = STUDY_CLOSED_FOR_ADDITION && !isAdmin(this.props.currentUser);
     const createRecordTooltip = this.i18n(
       createRecordDisabled ? "records.closed-study.create-tooltip" : "records.opened-study.create-tooltip",
