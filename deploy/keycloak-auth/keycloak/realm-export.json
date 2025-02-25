@@ -46,9 +46,36 @@
   "roles": {
     "realm": [
       {
+        "id": "48cf8aee-66d7-4ea8-9156-3db40aefa484",
+        "name": "rm-delete-all-records",
+        "description": "",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "7647bef1-9609-47ff-9547-1071b1d6379b",
+        "attributes": {}
+      },
+      {
+        "id": "32a34a1f-481a-4008-9056-f062606558f8",
+        "name": "rm-edit-users",
+        "description": "",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "7647bef1-9609-47ff-9547-1071b1d6379b",
+        "attributes": {}
+      },
+      {
         "id": "81369ed1-fee1-4e73-84f0-01256f1c30c0",
         "name": "ROLE_USER",
         "description": "Record Manager regular user role",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "7647bef1-9609-47ff-9547-1071b1d6379b",
+        "attributes": {}
+      },
+      {
+        "id": "d5ef6d23-643e-4d04-beb7-472e9f8d2243",
+        "name": "rm-impersonate",
+        "description": "",
         "composite": false,
         "clientRole": false,
         "containerId": "7647bef1-9609-47ff-9547-1071b1d6379b",
@@ -64,9 +91,27 @@
         "attributes": {}
       },
       {
-        "id": "7f5829b8-891b-4c75-b0bf-1d18139ef764",
-        "name": "offline_access",
-        "description": "${role_offline-access}",
+        "id": "c3fb0c08-c3be-43ed-97b5-80cbd5a2610a",
+        "name": "rm-edit-all-records",
+        "description": "",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "7647bef1-9609-47ff-9547-1071b1d6379b",
+        "attributes": {}
+      },
+      {
+        "id": "5659395d-8b10-4dd4-927a-5b34d765e35c",
+        "name": "rm-view-organization-records",
+        "description": "",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "7647bef1-9609-47ff-9547-1071b1d6379b",
+        "attributes": {}
+      },
+      {
+        "id": "7ef5086b-796b-451d-946d-2c57fd36f5cf",
+        "name": "rm-complete-records",
+        "description": "",
         "composite": false,
         "clientRole": false,
         "containerId": "7647bef1-9609-47ff-9547-1071b1d6379b",
@@ -76,6 +121,69 @@
         "id": "e0414c82-95f8-4ab8-90e6-79592bd5eb31",
         "name": "ROLE_ADMIN",
         "description": "Record Manager admin role",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "7647bef1-9609-47ff-9547-1071b1d6379b",
+        "attributes": {}
+      },
+      {
+        "id": "16c950bf-7447-402b-b5a1-ff284904d8d9",
+        "name": "rm-edit-organization-records",
+        "description": "",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "7647bef1-9609-47ff-9547-1071b1d6379b",
+        "attributes": {}
+      },
+      {
+        "id": "5c0fd9bb-b44f-41b0-b5fb-f86291f8161d",
+        "name": "rm-view-all-records",
+        "description": "",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "7647bef1-9609-47ff-9547-1071b1d6379b",
+        "attributes": {}
+      },
+      {
+        "id": "9c2cddff-bcda-4127-8faf-3ac5ba752bba",
+        "name": "rm-delete-organization-records",
+        "description": "",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "7647bef1-9609-47ff-9547-1071b1d6379b",
+        "attributes": {}
+      },
+      {
+        "id": "797e9ba0-e4bb-4a19-b943-3bc89b67095e",
+        "name": "rm-publish-records",
+        "description": "",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "7647bef1-9609-47ff-9547-1071b1d6379b",
+        "attributes": {}
+      },
+      {
+        "id": "7f5829b8-891b-4c75-b0bf-1d18139ef764",
+        "name": "offline_access",
+        "description": "${role_offline-access}",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "7647bef1-9609-47ff-9547-1071b1d6379b",
+        "attributes": {}
+      },
+      {
+        "id": "dd3d3c6f-b213-4465-b9ce-5c032cf49f7a",
+        "name": "rm-import-codelists",
+        "description": "",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "7647bef1-9609-47ff-9547-1071b1d6379b",
+        "attributes": {}
+      },
+      {
+        "id": "67f50c6f-5c17-4599-86a0-53bce0cc2c86",
+        "name": "rm-reject-records",
+        "description": "",
         "composite": false,
         "clientRole": false,
         "containerId": "7647bef1-9609-47ff-9547-1071b1d6379b",
@@ -305,6 +413,7 @@
           "attributes": {}
         }
       ],
+      "record-manager-server": [],
       "security-admin-console": [],
       "admin-cli": [],
       "account-console": [],
@@ -403,7 +512,6 @@
           "attributes": {}
         }
       ],
-      "record-manager-server": [],
       "record-manager": []
     }
   },
@@ -424,7 +532,7 @@
   "otpPolicyLookAheadWindow": 1,
   "otpPolicyPeriod": 30,
   "otpPolicyCodeReusable": false,
-  "otpSupportedApplications": ["totpAppFreeOTPName", "totpAppMicrosoftAuthenticatorName", "totpAppGoogleName"],
+  "otpSupportedApplications": ["totpAppMicrosoftAuthenticatorName", "totpAppFreeOTPName", "totpAppGoogleName"],
   "webAuthnPolicyRpEntityName": "keycloak",
   "webAuthnPolicySignatureAlgorithms": ["ES256"],
   "webAuthnPolicyRpId": "",
@@ -553,7 +661,9 @@
       "publicClient": true,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
-      "attributes": {},
+      "attributes": {
+        "post.logout.redirect.uris": "+"
+      },
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": false,
       "nodeReRegistrationTimeout": 0,
@@ -580,7 +690,9 @@
       "publicClient": false,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
-      "attributes": {},
+      "attributes": {
+        "post.logout.redirect.uris": "+"
+      },
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": false,
       "nodeReRegistrationTimeout": 0,
@@ -607,10 +719,50 @@
       "publicClient": false,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
-      "attributes": {},
+      "attributes": {
+        "post.logout.redirect.uris": "+"
+      },
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": false,
       "nodeReRegistrationTimeout": 0,
+      "defaultClientScopes": ["web-origins", "acr", "roles", "profile", "email"],
+      "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
+    },
+    {
+      "id": "d6e815c8-6fd6-4ef6-acf7-2c099b5010fc",
+      "clientId": "record-manager",
+      "name": "Record Manager",
+      "description": "Record Manager frontend",
+      "rootUrl": "http://localhost",
+      "adminUrl": "http://localhost",
+      "baseUrl": "http://localhost",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": ["http://localhost:5173/*", "http://localhost/*"],
+      "webOrigins": ["http://localhost", "http://localhost:5173"],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "publicClient": true,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "oidc.ciba.grant.enabled": "false",
+        "backchannel.logout.session.required": "true",
+        "post.logout.redirect.uris": "+",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "display.on.consent.screen": "false",
+        "backchannel.logout.revoke.offline.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
       "defaultClientScopes": ["web-origins", "acr", "roles", "profile", "email"],
       "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
     },
@@ -641,46 +793,10 @@
       "protocol": "openid-connect",
       "attributes": {
         "oidc.ciba.grant.enabled": "false",
-        "oauth2.device.authorization.grant.enabled": "false",
         "client.secret.creation.time": "1699515939",
         "backchannel.logout.session.required": "true",
-        "backchannel.logout.revoke.offline.tokens": "false"
-      },
-      "authenticationFlowBindingOverrides": {},
-      "fullScopeAllowed": true,
-      "nodeReRegistrationTimeout": -1,
-      "defaultClientScopes": ["web-origins", "acr", "roles", "profile", "email"],
-      "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
-    },
-    {
-      "id": "d6e815c8-6fd6-4ef6-acf7-2c099b5010fc",
-      "clientId": "record-manager",
-      "name": "Record Manager",
-      "description": "Record Manager frontend",
-      "rootUrl": "http://localhost",
-      "adminUrl": "http://localhost",
-      "baseUrl": "http://localhost",
-      "surrogateAuthRequired": false,
-      "enabled": true,
-      "alwaysDisplayInConsole": false,
-      "clientAuthenticatorType": "client-secret",
-      "redirectUris": ["http://localhost/*"],
-      "webOrigins": ["http://localhost"],
-      "notBefore": 0,
-      "bearerOnly": false,
-      "consentRequired": false,
-      "standardFlowEnabled": true,
-      "implicitFlowEnabled": false,
-      "directAccessGrantsEnabled": true,
-      "serviceAccountsEnabled": false,
-      "publicClient": true,
-      "frontchannelLogout": true,
-      "protocol": "openid-connect",
-      "attributes": {
-        "oidc.ciba.grant.enabled": "false",
+        "post.logout.redirect.uris": "+",
         "oauth2.device.authorization.grant.enabled": "false",
-        "display.on.consent.screen": "false",
-        "backchannel.logout.session.required": "true",
         "backchannel.logout.revoke.offline.tokens": "false"
       },
       "authenticationFlowBindingOverrides": {},
@@ -1168,6 +1284,7 @@
           "consentRequired": false,
           "config": {
             "multivalued": "true",
+            "userinfo.token.claim": "true",
             "user.attribute": "foo",
             "id.token.claim": "true",
             "access.token.claim": "true",
@@ -1241,7 +1358,8 @@
           "consentRequired": false,
           "config": {
             "id.token.claim": "true",
-            "access.token.claim": "true"
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true"
           }
         }
       ]
@@ -1357,14 +1475,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "oidc-usermodel-property-mapper",
-            "saml-user-attribute-mapper",
-            "oidc-usermodel-attribute-mapper",
             "saml-user-property-mapper",
             "saml-role-list-mapper",
-            "oidc-sha256-pairwise-sub-mapper",
+            "saml-user-attribute-mapper",
+            "oidc-usermodel-attribute-mapper",
             "oidc-full-name-mapper",
-            "oidc-address-mapper"
+            "oidc-sha256-pairwise-sub-mapper",
+            "oidc-address-mapper",
+            "oidc-usermodel-property-mapper"
           ]
         }
       },
@@ -1434,13 +1552,13 @@
         "config": {
           "allowed-protocol-mapper-types": [
             "saml-user-attribute-mapper",
-            "oidc-full-name-mapper",
             "oidc-sha256-pairwise-sub-mapper",
-            "oidc-address-mapper",
-            "oidc-usermodel-property-mapper",
             "saml-role-list-mapper",
+            "oidc-usermodel-property-mapper",
             "oidc-usermodel-attribute-mapper",
-            "saml-user-property-mapper"
+            "oidc-full-name-mapper",
+            "saml-user-property-mapper",
+            "oidc-address-mapper"
           ]
         }
       }
@@ -2119,8 +2237,12 @@
     "cibaExpiresIn": "120",
     "cibaAuthRequestedUserHint": "login_hint",
     "oauth2DeviceCodeLifespan": "600",
+    "clientOfflineSessionMaxLifespan": "0",
     "oauth2DevicePollingInterval": "5",
+    "clientSessionIdleTimeout": "0",
     "parRequestUriLifespan": "60",
+    "clientSessionMaxLifespan": "0",
+    "clientOfflineSessionIdleTimeout": "0",
     "cibaInterval": "5",
     "realmReusableOtpCode": "false"
   },
