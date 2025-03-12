@@ -122,12 +122,12 @@ ASK WHERE {
 }""" ;
     ] ;
   kbss-module:has-output-graph-constraint [
-      a sp:Ask ;
-      sp:text """# 1 - there is an answer without origin
-ASK WHERE {
-    ?q a doc:answer .
+      a sp:Select ;
+      sp:text """# 1 - there is an ?answer without origin
+SELECT ?answer WHERE {
+    ?answer a doc:answer .
     FILTER NOT EXISTS {
-        ?q form:has-answer-origin ?o .
+        ?answer form:has-answer-origin ?o .
     }
 }""" ;
     ] ;
@@ -203,6 +203,7 @@ WHERE {
     BIND (COALESCE(?_DformTemplate, str(?formTemplateStr)) AS ?formTemplate) .
 }""" ;
     ] ;
+  sml:replace true ;
 .
 
 
@@ -254,10 +255,10 @@ WHERE {
 form-mod:attach-origin-metadata
   a kbss-module:construct-form-metadata ;
   kbss-module:has-output-graph-constraint [
-      a sp:Ask ;
-      sp:text """# there are two question from sample form that have same origin path
+      a sp:Select ;
+      sp:text """# there are two questions from sample form that have same origin path
 # TODO remove: same constraint is checked in generate-abrax function
-ASK WHERE {
+SELECT ?q1 ?q2 WHERE {
     ?q1 form:has-context \"sample-question\" .
     ?q1 form:has-origin-path-id ?originPath .
     ?q2 form:has-context \"sample-question\" .
