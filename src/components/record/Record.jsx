@@ -185,7 +185,7 @@ class Record extends React.Component {
 
     return (
       <div className="mt-3 text-center">
-        {hasRole(this.props.currentUser, ROLE.ADMIN) &&
+        {EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER &&
           !record.isNew &&
           (record.phase === RECORD_PHASE.OPEN || this._isAdmin()) && (
             <RejectButton
@@ -206,7 +206,7 @@ class Record extends React.Component {
             </RejectButton>
           )}
 
-        {hasRole(this.props.currentUser, ROLE.ADMIN) &&
+        {(EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER || EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR) &&
           !record.isNew &&
           (record.phase === RECORD_PHASE.OPEN || this._isAdmin()) && (
             <Button
