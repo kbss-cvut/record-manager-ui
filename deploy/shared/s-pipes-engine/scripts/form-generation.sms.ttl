@@ -198,9 +198,9 @@ WHERE {
       sp:text """SELECT ?formTemplate
 WHERE {
     OPTIONAL {
-         ?r <http://onto.fel.cvut.cz/ontologies/record-manager/has-form-template> ?formTemplateStr .
+         ?r <http://onto.fel.cvut.cz/ontologies/record-manager/has-form-template> ?formTemplateAsserted .
     }
-    BIND (COALESCE(?_DformTemplate, str(?formTemplateStr)) AS ?formTemplate) .
+    BIND (COALESCE(?formTemplateVersion, str(?formTemplateAsserted)) AS ?formTemplate) .
 }""" ;
     ] ;
   sml:replace true ;
@@ -418,6 +418,20 @@ form-mod:clone-form_Return
 
 rm-gen:clone-form
   a sm:Function ;
+  rdfs:comment """
+Input parameters:
+- formGenRepositoryUrl
+- recordGraphId
+- formTemplateVersion
+
+It is assumed that record is defined in rdf4j context ?recordGraphId by following triples:
+`?record rm:has-form-template ?formTemplateAsserted`
+`?record rm:has-form-template-version ?formTemplateVersionAsserted`
+
+The first triple is used to define default value of ?formTemplate which can be overriden by input parameter ?formTemplateVersion. It is assumed that
+rdf4j context ?formTemplateAsserted contains the last version of formTemplate.
+The second triple is optional and it is not used within the pipeline. It is just an indicator of a version of formTemplate for which record was saved.
+""" ;
   sm:returnModule form-mod:clone-form_Return ;
   rdfs:subClassOf sm:Functions ;
 .
