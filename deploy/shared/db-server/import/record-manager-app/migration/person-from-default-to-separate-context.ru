@@ -1,4 +1,4 @@
-PREFIX foaf: <<http://xmlns.com/foaf/0.1/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
 DELETE {   
    ?a ?p ?o .
