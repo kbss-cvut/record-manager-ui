@@ -187,6 +187,7 @@ export default {
     "record.institution": "Form created at",
     "record.created-by-msg": "Created {date} by {name}.",
     "record.last-edited-msg": "Last modified {date} by {name}.",
+    "records.form-template-version": "Form template version: {version}",
     "record.save-success": "Form successfully saved.",
     "record.complete-success": "Form successfully completed.",
     "record.reject-success": "Form successfully rejected.",

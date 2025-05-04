@@ -12,10 +12,15 @@ const RecordProvenance = (props) => {
   }
   const author = record.author ? record.author.firstName + " " + record.author.lastName : "",
     created = formatDate(new Date(record.dateCreated));
+
+  const version = record.formTemplateVersion?.substring(record.formTemplateVersion?.lastIndexOf("/") + 1);
+
   if (!record.lastModified) {
     return (
       <div className="notice-small">
         <FormattedMessage id="record.created-by-msg" values={{ date: created, name: <b>{author}</b> }} />
+        <br />
+        <FormattedMessage id="record.form-template-version" values={{ version: <b>{version}</b> }} />
       </div>
     );
   }
@@ -28,6 +33,8 @@ const RecordProvenance = (props) => {
       <FormattedMessage id="record.created-by-msg" values={{ date: created, name: <b>{author}</b> }} />
       <br />
       <FormattedMessage id="record.last-edited-msg" values={{ date: lastModified, name: <b>{lastEditor}</b> }} />
+      <br />
+      <FormattedMessage id="record.form-template-version" values={{ version: <b>{version}</b> }} />
     </div>
   );
 };

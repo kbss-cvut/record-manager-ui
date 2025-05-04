@@ -29,6 +29,7 @@ export function initNewPatientRecord() {
   return {
     localName: "",
     formTemplate: "",
+    formTemplateVersion: "",
     complete: false,
     isNew: true,
     state: RecordState.createRecordState(),

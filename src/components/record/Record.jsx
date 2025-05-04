@@ -38,6 +38,9 @@ class Record extends React.Component {
   _onChange = (e) => {
     const change = {};
     change[e.target.name] = e.target.value;
+    if (e.formTemplateVersion) {
+      change.formTemplateVersion = e.formTemplateVersion;
+    }
     this.props.handlers.onChange(change);
   };
 
