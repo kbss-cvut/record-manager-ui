@@ -87,7 +87,6 @@ class RecordForm extends React.Component {
       });
     }
   };
-  // dummy
 
   _getUsersOptions() {
     const currentUser = this.props.currentUser;
