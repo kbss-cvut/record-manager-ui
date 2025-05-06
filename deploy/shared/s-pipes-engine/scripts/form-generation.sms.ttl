@@ -251,6 +251,18 @@ WHERE {
     ] ;
 .
 
+form-mod:bind-ignore-invalid-data
+  a sml:BindBySelect ;
+  sm:next form-mod:attach-origin-metadata ;
+  sml:selectQuery [
+      a sp:Select ;
+      sp:text """SELECT ?ignoreInvalidData
+WHERE {
+    #BIND(IF(?isIgnoreInvalidData = \"true\", true, false) as ?ignoreInvalidData)
+}""" ;
+    ] ;
+  sml:replace true ;
+.
 
 form-mod:attach-origin-metadata
   a kbss-module:construct-form-metadata ;
@@ -270,6 +282,8 @@ SELECT ?q1 ?q2 WHERE {
       a sp:Ask ;
       sp:text """# there is no clone of data question within sample form
 ASK WHERE {
+    FILTER(?ignoreInvalidData)
+
     ?dataQ a doc:question .
     ?dataQ form:has-origin-path-id ?originPath .
     FILTER NOT EXISTS {
@@ -292,6 +306,8 @@ form-mod:attach-cross-form-clones
       a sp:Ask ;
       sp:text """# there is no clone of data question within sample form
 ASK WHERE {
+    FILTER(?ignoreInvalidData)
+
     ?dataQ form:has-origin-path-id ?originPath .
     ?dataQ a doc:question .
     FILTER NOT EXISTS {
@@ -423,6 +439,7 @@ Input parameters:
 - formGenRepositoryUrl
 - recordGraphId
 - formTemplateVersion
+- isIgnoreInvalidData -- [`true`/`false`]. By default `false`. If `true` validation constraints are skipped.
 
 It is assumed that record is defined in rdf4j context ?recordGraphId by following triples:
 `?record rm:has-form-template ?formTemplateAsserted`
