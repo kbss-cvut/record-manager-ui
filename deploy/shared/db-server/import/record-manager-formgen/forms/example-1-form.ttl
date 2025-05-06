@@ -10,12 +10,6 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-ex1:as-show-advanced-888 a doc:question ;
-    rdfs:label "show advanced" ;
-    form-lt:has-layout-class "checkbox" ;
-    form:has-question-origin ex1:as-show-advanced-888-qo ;
-    form:show-advanced-question true .
-
 ex1:form-root a doc:question ;
     a form:form-template ;
     dcterms:hasVersion <https://example.org/sfc-example-1/form-root/0.0.2> ;
