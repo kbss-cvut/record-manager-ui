@@ -26,6 +26,7 @@ services:
       RECORD_MANAGER_PATH: "${RECORD_MANAGER_PATH:-/record-manager}"
       ANALYTICS_PATH: "${ANALYTICS_PATH:-/statistics}"
       INTERNAL_RECORD_MANAGER_SERVER_SERVICE: "${INTERNAL_RECORD_MANAGER_SERVER_SERVICE:-http://record-manager-server:8080}"
+      INTERNAL_SPIPES_ENGINE_SERVICE: "${INTERNAL_SPIPES_ENGINE_SERVICE:-http://s-pipes-engine:8080}"
 
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/templates/nginx.conf.template:ro
@@ -66,7 +67,7 @@ services:
       appContext: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${APP_ROOT_PATH:-}${RECORD_MANAGER_PATH:-/record-manager}"
       repositoryUrl: "http://db-server:7200/repositories/record-manager-app"
       formGenRepositoryUrl: "http://db-server:7200/repositories/record-manager-formgen"
-      formGenServiceUrl: "${FORMGEN_SERVICE_URL}"
+      formGenServiceUrl: "${FORMGEN_SERVICE_URL:-${INTERNAL_SPIPES_ENGINE_SERVICE:-http://s-pipes-engine:8080}/s-pipes/service?${FORMGEN_SERVICE_QUERY_PARAMS:-_pId=clone-form}}"
       SECURITY_PROVIDER: "oidc"
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${APP_ROOT_PATH:-}/services/auth/realms/record-manager"
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI: "http://auth-server:8080/realms/record-manager/protocol/openid-connect/certs"
