@@ -31,6 +31,8 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/templates/nginx.conf.template:ro
       - ../shared/nginx/error.html:/usr/share/nginx/html/error.html:ro
+      - ./nginx/index.html:/usr/share/nginx/html/index.html:ro
+      - ../shared/nginx/images:/usr/share/nginx/html/images:ro
       - ../shared/nginx/statistics.html:/usr/share/nginx/html/statistics.html:ro
 
   record-manager:
