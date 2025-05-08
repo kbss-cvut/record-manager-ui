@@ -1,6 +1,4 @@
 import { getOidcIdentityStorageKey, isUsingOidcAuth } from "./OidcUtils";
-import { sanitizeArray } from "./Utils";
-import { IMPERSONATOR_TYPE } from "../constants/Vocabulary";
 import { ROLE } from "../constants/DefaultConstants";
 
 export function getOidcToken() {
@@ -16,11 +14,26 @@ export function clearToken() {
   sessionStorage.removeItem(getOidcIdentityStorageKey());
 }
 
-export function isAdmin(currentUser) {
-  return currentUser.role === ROLE.ADMIN;
+export function isAdmin(user) {
+  return user.roles ? user.roles.includes(ROLE.ADMIN) : false;
 }
 
-export function isImpersonator(currentUser) {
+export function hasRole(user, role) {
+  return user.roles ? user.roles.includes(role) : false;
+}
+
+export function isImpersonator(user) {
   // When using OIDC, the access token does not contain any info that the current user is being impersonated
-  return !isUsingOidcAuth() && sanitizeArray(currentUser.types).indexOf(IMPERSONATOR_TYPE) !== -1;
+  return !isUsingOidcAuth() && user.roles.includes(ROLE.IMPERSONATE);
+}
+
+export function getRoles(user) {
+  if (!user || !user.roleGroup || !user.roleGroup.roles) {
+    return undefined;
+  }
+  return user.roleGroup.roles;
+}
+
+function roleExists(role) {
+  return Object.values(ROLE).includes(role);
 }

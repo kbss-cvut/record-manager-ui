@@ -4,7 +4,8 @@ import * as ActionConstants from "../constants/ActionConstants";
 import { API_URL } from "../../config";
 import { IMPERSONATOR_TYPE } from "../constants/Vocabulary";
 import { IMPERSONATE_LOGOUT_SUCCESS, IMPERSONATE_PENDING } from "../constants/ActionConstants";
-import { MediaType } from "../constants/DefaultConstants";
+import { MediaType, ROLE } from "../constants/DefaultConstants";
+import { hasRole } from "../utils/SecurityUtils.js";
 
 export function login(username, password) {
   return function (dispatch) {
@@ -56,7 +57,7 @@ export function userAuthError(error) {
 
 export function logout() {
   return function (dispatch, getState) {
-    if (getState().auth.user.types.indexOf(IMPERSONATOR_TYPE) !== -1) {
+    if (hasRole(getState().auth.user, ROLE.IMPERSONATE)) {
       return logoutImpersonator(dispatch);
     }
     return axiosBackend
