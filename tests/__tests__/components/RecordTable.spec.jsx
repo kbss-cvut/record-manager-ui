@@ -16,7 +16,7 @@ describe("RecordTable", function () {
     handlers = { onEdit: vi.fn() },
     currentUser = {
       username: "testUser",
-      role: ROLE.DOCTOR,
+      role: ROLE.USER,
     },
     disableDelete = true;
 

@@ -10,6 +10,7 @@ import { ROLE } from "../../constants/DefaultConstants";
 import { changePassword } from "../../actions/UserActions";
 import * as UserFactory from "../../utils/EntityFactory";
 import PropTypes from "prop-types";
+import { isAdmin } from "../../utils/SecurityUtils.js";
 
 class PasswordChangeController extends React.Component {
   constructor(props) {
@@ -51,7 +52,7 @@ class PasswordChangeController extends React.Component {
 
   render() {
     const { currentUser, passwordChange, match } = this.props;
-    if (!currentUser || (currentUser.role !== ROLE.ADMIN && currentUser.username !== match.params.username)) {
+    if (!currentUser || (!isAdmin(currentUser) && currentUser.username !== match.params.username)) {
       return null;
     }
     const handlers = {
@@ -81,7 +82,7 @@ PasswordChangeController.propTypes = {
   }).isRequired,
   transitionToWithOpts: PropTypes.func.isRequired,
   currentUser: PropTypes.shape({
-    role: PropTypes.string.isRequired,
+    roles: PropTypes.array.isRequired,
     username: PropTypes.string.isRequired,
   }).isRequired,
   passwordChange: PropTypes.object.isRequired,

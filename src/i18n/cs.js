@@ -99,6 +99,8 @@ export default {
     "user.password-confirm": "Potvrzení hesla",
     "user.passwords-not-matching-tooltip": "Hesla se neshodují",
     "user.role": "Role",
+    "user.roles": "Role",
+    "user.group": "Skupina rolí",
     "user.save-success": "Uživatel úspěšně uložen",
     "user.save-success-with-email": "Uživatel úspěšně uložen a informován emailem.",
     "user.save-error": "Uživatele se nepodařilo uložit. {error}",
@@ -196,6 +198,8 @@ export default {
     "record.delete-error": "Záznam se nepodařilo smazat. {error}",
     "record.load-error": "Záznam se nepodařilo načíst. {error}",
     "record.load-form-error": "Formulář se nepodařilo načíst. {error}",
+
+    "roleGroup.loading-error": "Nedaří se načíst skupiny rolí. {error}",
 
     "help.local-name":
       'Účelem tohoto atributu je pomoci vám identifikovat vyplněný záznam. Můžete použít např. číslování záznam ("záznam_1", "záznam_2").',
