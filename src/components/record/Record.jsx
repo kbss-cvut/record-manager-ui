@@ -38,6 +38,9 @@ class Record extends React.Component {
   _onChange = (e) => {
     const change = {};
     change[e.target.name] = e.target.value;
+    if (e.formTemplateVersion) {
+      change.formTemplateVersion = e.formTemplateVersion;
+    }
     this.props.handlers.onChange(change);
   };
 
@@ -121,6 +124,7 @@ class Record extends React.Component {
     if (!record?.formTemplate) {
       if (formTemplate) {
         record.formTemplate = formTemplate;
+        record.formTemplateVersion = this._getFormTemplateVersion();
       }
     }
 
@@ -295,6 +299,20 @@ class Record extends React.Component {
         handleOnCloseModal={this._handleOnCloseModal}
       />
     );
+  }
+
+  _getFormTemplateVersion() {
+    const { formTemplatesLoaded, record } = this.props;
+    const formTemplate = this.props.formTemplate || record?.formTemplate;
+    try {
+      if (formTemplate && formTemplatesLoaded) {
+        return formTemplatesLoaded.formTemplates.find((t) => t["@id"] === formTemplate)[
+          "http://purl.org/dc/terms/hasVersion"
+        ][0]["@id"];
+      }
+    } catch (e) {
+      return "";
+    }
   }
 
   _getFormTemplateName() {
