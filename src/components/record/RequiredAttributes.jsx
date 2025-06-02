@@ -43,7 +43,14 @@ class RequiredAttributes extends React.Component {
                 name="formTemplate"
                 value={record.formTemplate || formTemplate}
                 label={this.i18n("records.form-template") + "*"}
-                onChange={this.props.onChange}
+                onChange={(e, selectedOption) => {
+                  // selectedOption will contain the full template data
+                  const changes = {
+                    ...e,
+                    formTemplateVersion: selectedOption.version,
+                  };
+                  this.props.onChange(changes);
+                }}
                 possibleValuesEndpoint={possibleValuesEndpoint}
               />
             </div>
