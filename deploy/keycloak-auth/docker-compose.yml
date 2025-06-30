@@ -114,7 +114,8 @@ services:
       - auth-server-db:/var/lib/postgresql/data
 
   auth-server:
-    image: ghcr.io/kbss-cvut/keycloak-graphdb-user-replicator/keycloak-graphdb:latest
+    build:
+      context: auth-server
     container_name: ${RECORD_SET_NAME:-rm}-auth-server
     command:
       - start --import-realm --features="token-exchange,admin-fine-grained-authz"
