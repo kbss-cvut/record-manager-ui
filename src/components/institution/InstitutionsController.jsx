@@ -13,6 +13,7 @@ import { bindActionCreators } from "redux";
 import { deleteInstitution } from "../../actions/InstitutionActions";
 import { trackPromise } from "react-promise-tracker";
 import PropTypes from "prop-types";
+import { isAdmin } from "../../utils/SecurityUtils.js";
 
 class InstitutionsController extends React.Component {
   constructor(props) {
@@ -47,7 +48,7 @@ class InstitutionsController extends React.Component {
 
   render() {
     const { currentUser, institutionsLoaded, institutionDeleted } = this.props;
-    if (!currentUser || currentUser.role !== ROLE.ADMIN) {
+    if (!currentUser || !isAdmin(currentUser)) {
       return null;
     }
     const handlers = {
@@ -70,7 +71,7 @@ InstitutionsController.propTypes = {
   transitionToWithOpts: PropTypes.func.isRequired,
   deleteInstitution: PropTypes.func.isRequired,
   currentUser: PropTypes.shape({
-    role: PropTypes.string.isRequired,
+    roles: PropTypes.array.isRequired,
   }).isRequired,
   institutionsLoaded: PropTypes.object,
   institutionDeleted: PropTypes.object,

@@ -83,8 +83,9 @@ services:
       - "7200"
     restart: always
     volumes:
-      - ../shared/db-server/import:/root/graphdb-import:ro
+      - ../shared/db-server/import:/root/graphdb-import
       - db-server:/opt/graphdb/home
+      - ./db-server/import/record-manager-app/role-groups.trig:/root/graphdb-import/record-manager-app/role-groups.trig:ro
 
 volumes:
   db-server:

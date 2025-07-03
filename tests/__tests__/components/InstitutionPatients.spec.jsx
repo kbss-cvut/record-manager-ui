@@ -12,7 +12,7 @@ describe("InstitutionPatients", function () {
     formTemplatesLoaded = {},
     currentUser = {
       username: "testUser",
-      role: ROLE.DOCTOR,
+      role: ROLE.USER,
     },
     filterAndSort = {
       sort: {
