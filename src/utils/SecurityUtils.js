@@ -1,6 +1,4 @@
 import { getOidcIdentityStorageKey, isUsingOidcAuth } from "./OidcUtils";
-import { sanitizeArray } from "./Utils";
-import { IMPERSONATOR_TYPE, RECORD_MANAGER_URL } from "../constants/Vocabulary";
 import { ROLE } from "../constants/DefaultConstants";
 
 export function getOidcToken() {

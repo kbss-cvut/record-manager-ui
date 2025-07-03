@@ -7,7 +7,7 @@ import HorizontalInput from "../HorizontalInput";
 import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
 import RequiredAttributes from "./RequiredAttributes";
-import { ACTION_STATUS, RECORD_PHASE, ROLE } from "../../constants/DefaultConstants";
+import { ACTION_STATUS, EXTENSION_CONSTANTS, RECORD_PHASE } from "../../constants/DefaultConstants";
 import { LoaderCard, LoaderSmall } from "../Loader";
 import { processTypeaheadOptions } from "./TypeaheadAnswer";
 import { hasRole, isAdmin } from "../../utils/SecurityUtils";
@@ -15,6 +15,7 @@ import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 import { Constants as SConstants, FormUtils } from "@kbss-cvut/s-forms";
 import FormValidationDialog from "../FormValidationDialog.jsx";
 import RejectButton from "../button/RejectButton.jsx";
+import { EXTENSIONS } from "../../../config/index.js";
 
 class Record extends React.Component {
   static propTypes = {
@@ -185,7 +186,7 @@ class Record extends React.Component {
 
     return (
       <div className="mt-3 text-center">
-        {hasRole(this.props.currentUser, ROLE.ADMIN) &&
+        {EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER &&
           !record.isNew &&
           (record.phase === RECORD_PHASE.OPEN || this._isAdmin()) && (
             <RejectButton
@@ -206,7 +207,7 @@ class Record extends React.Component {
             </RejectButton>
           )}
 
-        {hasRole(this.props.currentUser, ROLE.ADMIN) &&
+        {(EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER || EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR) &&
           !record.isNew &&
           (record.phase === RECORD_PHASE.OPEN || this._isAdmin()) && (
             <Button

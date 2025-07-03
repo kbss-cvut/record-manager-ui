@@ -99,7 +99,7 @@ export default {
     "user.password-confirm": "Potvrzení hesla",
     "user.passwords-not-matching-tooltip": "Hesla se neshodují",
     "user.role": "Role",
-    "user.roles": "Roles",
+    "user.roles": "Role",
     "user.group": "Skupina rolí",
     "user.save-success": "Uživatel úspěšně uložen",
     "user.save-success-with-email": "Uživatel úspěšně uložen a informován emailem.",

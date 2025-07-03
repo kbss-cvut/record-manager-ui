@@ -2,7 +2,7 @@ import React from "react";
 import { Alert, Button, Card } from "react-bootstrap";
 import { injectIntl } from "react-intl";
 import withI18n from "../../i18n/withI18n";
-import { ROLE } from "../../constants/DefaultConstants";
+import { EXTENSION_CONSTANTS, ROLE } from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
 import { processTypeaheadOptions } from "./TypeaheadAnswer";
 import { EXTENSIONS } from "../../../config";
@@ -57,7 +57,7 @@ class Records extends React.Component {
     const showCreateButton = STUDY_CREATE_AT_MOST_ONE_RECORD
       ? !recordsLoaded.records || recordsLoaded.records.length < 1
       : true;
-    const showPublishButton = isAdmin(this.props.currentUser);
+    const showPublishButton = isAdmin(this.props.currentUser) && EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR;
     const createRecordDisabled = STUDY_CLOSED_FOR_ADDITION && !isAdmin(this.props.currentUser);
     const createRecordTooltip = this.i18n(
       createRecordDisabled ? "records.closed-study.create-tooltip" : "records.opened-study.create-tooltip",
