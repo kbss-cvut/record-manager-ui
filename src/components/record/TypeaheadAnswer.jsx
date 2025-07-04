@@ -21,7 +21,20 @@ export const processTypeaheadOptions = (options, intl) => {
   // sort by property
   JsonLdObjectUtils.orderPreservingToplogicalSort(options, Constants.HAS_PRECEDING_VALUE);
 
-  return JsonLdUtils.processTypeaheadOptions(options, intl);
+  let processedOptions = JsonLdUtils.processTypeaheadOptions(options, intl);
+  const versionPredicate = "http://purl.org/dc/terms/hasVersion";
+  processedOptions = processedOptions.map((option, index) => {
+    const version = options[index][versionPredicate];
+    if (version) {
+      return {
+        ...option,
+        version: options[index][versionPredicate][0]["@id"],
+      };
+    }
+
+    return option;
+  });
+  return processedOptions;
 };
 
 const TypeaheadAnswer = (props) => {
@@ -45,7 +58,7 @@ const TypeaheadAnswer = (props) => {
     if (option) {
       e.target.value = option.id;
     }
-    props.onChange(e);
+    props.onChange(e, option);
   };
 
   return (
