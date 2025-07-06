@@ -106,7 +106,7 @@ class RecordForm extends React.Component {
     };
     const options = {
       i18n,
-      intl: I18nStore.getIntl(),
+      intl: this.props.intl,
       ...this._getUsersOptions(),
       ...this._getIconsOptions(),
     };
@@ -133,6 +133,7 @@ class RecordForm extends React.Component {
 
 RecordForm.propTypes = {
   i18n: PropTypes.func,
+  intl: PropTypes.object,
   record: PropTypes.object.isRequired,
   currentUser: PropTypes.object.isRequired,
   loadFormgen: PropTypes.func,

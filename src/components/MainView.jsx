@@ -200,7 +200,6 @@ function mapStateToProps(state) {
     user: state.auth.user,
     isLoaded: state.auth.isLoaded,
     status: state.auth.status,
-    intl: state.intl,
   };
 }
 
