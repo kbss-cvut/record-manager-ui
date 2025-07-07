@@ -148,7 +148,7 @@ services:
       - "8080"
     volumes:
       - auth-server:/opt/keycloak/data
-      - ./keycloak:/opt/keycloak/data/import
+      - ./auth-server:/opt/keycloak/data/import
     depends_on:
       - auth-server-db
 
@@ -156,7 +156,7 @@ services:
     image: hashicorp/terraform:light
     working_dir: /workspace
     volumes:
-      - ./terraform:/workspace
+      - ./keycloak-config:/workspace
     depends_on:
       - auth-server
     entrypoint: ["/bin/sh", "-c"]
