@@ -10,12 +10,12 @@ import RequiredAttributes from "./RequiredAttributes";
 import { ACTION_STATUS, EXTENSION_CONSTANTS, RECORD_PHASE } from "../../constants/DefaultConstants";
 import { LoaderCard, LoaderSmall } from "../Loader";
 import { processTypeaheadOptions } from "./TypeaheadAnswer";
-import { EXTENSIONS } from "../../../config";
-import { isAdmin } from "../../utils/SecurityUtils";
+import { hasRole, isAdmin } from "../../utils/SecurityUtils";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 import { Constants as SConstants, FormUtils } from "@kbss-cvut/s-forms";
 import FormValidationDialog from "../FormValidationDialog.jsx";
 import RejectButton from "../button/RejectButton.jsx";
+import { EXTENSIONS } from "../../../config/index.js";
 
 class Record extends React.Component {
   static propTypes = {

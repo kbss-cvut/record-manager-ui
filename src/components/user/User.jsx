@@ -5,14 +5,15 @@ import { injectIntl } from "react-intl";
 import HorizontalInput from "../HorizontalInput";
 import UserValidator from "../../validation/UserValidator";
 import { ACTION_STATUS, ROLE } from "../../constants/DefaultConstants";
-import { getRole, processInstitutions } from "../../utils/Utils";
-import * as Vocabulary from "../../constants/Vocabulary";
+import { processInstitutions } from "../../utils/Utils";
 import { LoaderCard, LoaderSmall } from "../Loader";
 import HelpIcon from "../HelpIcon";
 import PropTypes from "prop-types";
 import { FaRandom } from "react-icons/fa";
 import { isUsingOidcAuth } from "../../utils/OidcUtils";
-import { isAdmin } from "../../utils/SecurityUtils";
+import { getRoles, hasRole, isAdmin } from "../../utils/SecurityUtils";
+import RoleSelector from "../RoleSelector.jsx";
+import IfInternalAuth from "../misc/oidc/IfInternalAuth.jsx";
 
 class User extends React.Component {
   static propTypes = {
@@ -31,6 +32,7 @@ class User extends React.Component {
     impersonated: PropTypes.bool,
     deletedInvitation: PropTypes.bool,
     i18n: PropTypes.func.isRequired,
+    roleGroups: PropTypes.array,
   };
 
   constructor(props) {
@@ -55,17 +57,6 @@ class User extends React.Component {
     this.props.handlers.onChange(change);
   };
 
-  _onAdminStatusChange = (e) => {
-    const role = e.target.value;
-    let types = this.props.user.types.slice();
-    if (role === ROLE.ADMIN) {
-      types.push(Vocabulary.ADMIN_TYPE);
-    } else {
-      types.splice(types.indexOf(Vocabulary.ADMIN_TYPE), 1);
-    }
-    this.props.handlers.onChange({ types: types });
-  };
-
   _generateInstitutionsOptions = () => {
     let options = [];
     const institutions = processInstitutions(this.props.institutions);
@@ -86,15 +77,31 @@ class User extends React.Component {
     return options;
   };
 
-  _generateRolesOptions = () => {
-    const roles = ROLE;
-    return Object.keys(roles).map((key) => {
-      return (
-        <option key={roles[key]} value={roles[key]}>
-          {roles[key]}
-        </option>
+  _onRoleGroupSelected = (e) => {
+    const value = e.target.value,
+      roleGroup = this.props.roleGroups.find((item) => item.uri === value),
+      change = {
+        roleGroup: roleGroup,
+      };
+    this.props.handlers.onChange(change);
+  };
+
+  _generateGroupOptions = () => {
+    let options = [];
+    this.props.roleGroups.map((group) => {
+      options.push(
+        <option key={"opt_" + group.uri} value={group.uri}>
+          {group.name}
+        </option>,
       );
     });
+
+    options.unshift(
+      <option key="opt_default" value="" disabled style={{ display: "none" }}>
+        {this.i18n("select.default")}
+      </option>,
+    );
+    return options;
   };
 
   _passwordChangeButton() {
@@ -160,7 +167,7 @@ class User extends React.Component {
 
   _impersonateButton() {
     const { user, currentUser, handlers, impersonation } = this.props;
-    if (!user.isNew && isAdmin(currentUser) && getRole(user) !== ROLE.ADMIN) {
+    if (!user.isNew && isAdmin(currentUser) && !isAdmin(user)) {
       return (
         <Button
           style={{ margin: "0 0.3em 0 0" }}
@@ -238,9 +245,7 @@ class User extends React.Component {
                   type="text"
                   name="firstName"
                   label={`${this.i18n("user.first-name")}*`}
-                  disabled={
-                    (currentUser.role !== ROLE.ADMIN && currentUser.username !== user.username) || isUsingOidcAuth()
-                  }
+                  disabled={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
                   value={user.firstName}
                   labelWidth={3}
                   inputWidth={8}
@@ -288,6 +293,22 @@ class User extends React.Component {
               </div>
             </div>
             <div className="row">
+              <IfInternalAuth>
+                <div className="col-12 col-sm-6">
+                  <HorizontalInput
+                    type="select"
+                    name="roleGroup"
+                    label={`${this.i18n("user.role-group")}*`}
+                    disabled={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
+                    labelWidth={3}
+                    inputWidth={8}
+                    onChange={this._onRoleGroupSelected}
+                    value={user.roleGroup ? user.roleGroup.uri : ""}
+                  >
+                    {this._generateGroupOptions()}
+                  </HorizontalInput>
+                </div>
+              </IfInternalAuth>
               {isAdmin(currentUser) && (
                 <div className="col-12 col-sm-6">
                   <HorizontalInput
@@ -304,20 +325,6 @@ class User extends React.Component {
                   </HorizontalInput>
                 </div>
               )}
-              <div className="col-12 col-sm-6">
-                <HorizontalInput
-                  type="select"
-                  name="role"
-                  label={`${this.i18n("user.role")}*`}
-                  onChange={this._onAdminStatusChange}
-                  disabled={!isAdmin(currentUser) || isUsingOidcAuth()}
-                  value={user.types && getRole(user)}
-                  labelWidth={3}
-                  inputWidth={8}
-                >
-                  {this._generateRolesOptions()}
-                </HorizontalInput>
-              </div>
             </div>
             {user.isNew && (
               <div className="row">
@@ -334,6 +341,13 @@ class User extends React.Component {
                 </div>
               </div>
             )}
+            <IfInternalAuth>
+              <div className="row">
+                <div className="col-12 col-sm-6">
+                  <RoleSelector selected={getRoles(user)} readOnly={true} label={`${this.i18n("user.roles")}*`} />
+                </div>
+              </div>
+            </IfInternalAuth>
             <div className="buttons-line-height mt-3 text-center">
               {this._impersonateButton()}
               {isUsingOidcAuth() ? this._redirectToKeycloakButton() : this._passwordChangeButton()}

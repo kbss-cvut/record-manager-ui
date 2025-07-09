@@ -1,6 +1,7 @@
 import Routes from "./RoutesConstants";
 import { APP_TITLE } from "../../config";
 
+import * as Vocabulary from "./Vocabulary.js";
 export const WEB_LANG = "en";
 
 export const APP_NAME = APP_TITLE;
@@ -86,9 +87,24 @@ export const ACTION_STATUS = {
 };
 
 export const ROLE = {
-  ADMIN: "Admin",
-  DOCTOR: "Regular User",
+  // DEPRECATED
+  ADMIN: "ROLE_ADMIN",
+  // DEPRECATED
+  USER: "ROLE_USER",
+  COMPLETE_RECORDS: "rm-complete-records",
+  REJECT_RECORDS: "rm-reject-records",
+  PUBLISH_RECORDS: "rm-publish-records",
+  DELETE_ALL_RECORDS: "rm-delete-all-records",
+  EDIT_ALL_RECORDS: "rm-edit-all-records",
+  VIEW_ALL_RECORDS: "rm-view-all-records",
+  DELETE_ORGANIZATION_RECORDS: "rm-delete-organization-records",
+  EDIT_ORGANIZATION_RECORDS: "rm-edit-organization-records",
+  VIEW_ORGANIZATION_RECORDS: "rm-view-organization-records",
+  EDIT_USERS: "rm-edit-users",
+  IMPORT_CODELISTS: "rm-import-codelists",
+  IMPERSONATE: "rm-impersonate",
 };
+
 // Default number of table elements per page.
 export const DEFAULT_PAGE_SIZE = 10;
 

@@ -99,6 +99,8 @@ export default {
     "user.password-confirm": "Confirm password",
     "user.passwords-not-matching-tooltip": "Passwords don't match",
     "user.role": "Role",
+    "user.roles": "Roles",
+    "user.role-group": "Role Group",
     "user.save-success": "User saved successfully",
     "user.save-success-with-email": "User saved successfully and informed by email.",
     "user.save-error": "Unable to save user. {error}",
@@ -197,6 +199,8 @@ export default {
     "record.delete-error": "Unable to delete record. {error}",
     "record.load-error": "Unable to load record. {error}",
     "record.load-form-error": "Unable to form. {error}",
+
+    "roleGroup.loading-error": "Unable to load role groups. {error}",
 
     "help.local-name": "Purpose of this entry is your local identifier of record.",
 

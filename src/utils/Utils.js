@@ -266,6 +266,17 @@ export function generatePassword() {
   return pass;
 }
 
+export function generateRandomUsername(length = 8) {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let username = "";
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    username += characters[randomIndex];
+  }
+
+  return username;
+}
 /**
  * Checks whether the currently logged in user can view patient records of the specified institutions.
  *
@@ -287,21 +298,6 @@ export function deviceIsMobile() {
     : /Android|webOS|iPhone|iPad|iPod|BlackBerry|Opera Mini|Mobile|MeeGo/i.test(
         navigator.userAgent || navigator.vendor || window.opera,
       );
-}
-
-export function getRole(user) {
-  const userToTest = user;
-  if (!userToTest) {
-    return undefined;
-  }
-  if (userToTest.types) {
-    if (userToTest.types.indexOf(Vocabulary.ADMIN_TYPE) !== -1) {
-      return ROLE.ADMIN;
-    } else {
-      return ROLE.DOCTOR;
-    }
-  }
-  return undefined;
 }
 
 export function processInstitutions(institutions) {

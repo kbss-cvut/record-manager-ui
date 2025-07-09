@@ -13,6 +13,7 @@ import StatisticsReducer from "./StatisticsReducer";
 import IntlReducer from "./IntlReducer";
 import FormTemplatesReducer from "./FormTemplatesReducer";
 import MessageReducer from "./MessageReducer";
+import RoleGroupsReducer from "./RoleGroupsReducer.js";
 
 const rootReducer = (state, action) => {
   if (action.type === ActionConstants.UNAUTH_USER) {
@@ -35,6 +36,7 @@ const appReducer = combineReducers({
   statistics: StatisticsReducer,
   institution: InstitutionReducer,
   institutions: InstitutionsReducer,
+  roleGroups: RoleGroupsReducer,
 });
 
 export default rootReducer;

@@ -35,11 +35,11 @@ describe("Institution", function () {
 
   user = {
     username: "doctor",
-    role: ROLE.DOCTOR,
+    roles: [ROLE.USER],
   };
   admin = {
     username: "admin",
-    role: ROLE.ADMIN,
+    roles: [ROLE.ADMIN],
   };
 
   institution = {
