@@ -1,0 +1,3 @@
+services:
+  record-manager-server:
+    image: record-manager:latest

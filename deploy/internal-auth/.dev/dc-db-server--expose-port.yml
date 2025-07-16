@@ -1,0 +1,4 @@
+services:
+  db-server:
+    ports:
+      - "127.0.0.1:${DB_SERVER_EXTERNAL_PORT:-7200}:7200"
