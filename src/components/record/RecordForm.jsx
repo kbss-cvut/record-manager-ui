@@ -97,6 +97,14 @@ class RecordForm extends React.Component {
     };
   }
 
+  _getStartingQuestionId() {
+    return new URLSearchParams(window.location.search).get("startingQuestionId") || null;
+  }
+
+  _getStartingQuestionOrigin() {
+    return new URLSearchParams(window.location.search).get("startingQuestionOrigin") || null;
+  }
+
   render() {
     const i18n = {
       "wizard.next": this.i18n("wizard.next"),
@@ -109,6 +117,8 @@ class RecordForm extends React.Component {
       intl: I18nStore.getIntl(),
       ...this._getUsersOptions(),
       ...this._getIconsOptions(),
+      startingQuestionId: this._getStartingQuestionId(),
+      startingQuestionOrigin: this._getStartingQuestionOrigin(),
     };
 
     return (
