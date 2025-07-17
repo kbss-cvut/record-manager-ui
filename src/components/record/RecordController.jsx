@@ -121,6 +121,9 @@ class RecordController extends React.Component {
 
   _onChange = (change) => {
     const update = { ...this.state.record, ...change };
+    if (change.formTemplateVersion) {
+      update.formTemplateVersion = change.formTemplateVersion;
+    }
     if (RecordValidator.isComplete(update)) {
       update.state.recordComplete();
     } else {

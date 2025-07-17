@@ -188,6 +188,7 @@ export default {
     "record.institution": "Záznam vyplněn v",
     "record.created-by-msg": "Vytvořil(a) {name} {date}.",
     "record.last-edited-msg": "Naposledy upravil(a) {name} {date}.",
+    "record.form-template-version": "Původní verze šablony: {version}",
     "record.save-success": "Záznam úspěšně uložen.",
     "record.complete-success": "Formulář byl úspěšně dokončen.",
     "record.reject-success": "Formulář byl úspěšně zamítnut.",

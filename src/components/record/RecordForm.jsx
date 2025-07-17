@@ -10,6 +10,7 @@ import { axiosBackend } from "../../actions";
 import { API_URL } from "../../../config";
 import * as Logger from "../../utils/Logger";
 import * as I18nStore from "../../stores/I18nStore";
+import possibleValues from "../../assets/possibleValues.json";
 // TODO enable s-forms-components
 // import SmartComponents from "s-forms-components";
 
@@ -27,6 +28,9 @@ class RecordForm extends React.Component {
     this.form = this.props.form;
     this.updateForm = this.props.updateForm;
     this.refForm = React.createRef();
+    this.state = {
+      validTypeaheadEndpoint: true,
+    };
   }
 
   componentDidMount() {
@@ -65,8 +69,23 @@ class RecordForm extends React.Component {
   fetchTypeAheadValues = async (query) => {
     const FORM_GEN_POSSIBLE_VALUES_URL = `${API_URL}/rest/formGen/possibleValues`;
 
-    const result = await axiosBackend.get(`${FORM_GEN_POSSIBLE_VALUES_URL}?query=${encodeURIComponent(query)}`);
-    return result.data;
+    if (this.state.validTypeaheadEndpoint) {
+      try {
+        const result = await axiosBackend.get(`${FORM_GEN_POSSIBLE_VALUES_URL}?query=${encodeURIComponent(query)}`);
+        return result.data;
+      } catch (e) {
+        this.setState({ validTypeaheadEndpoint: false }, () => {
+          // Fallback logic after state update
+          return new Promise((resolve) => {
+            setTimeout(() => resolve(possibleValues), 1000);
+          });
+        });
+      }
+    } else {
+      return new Promise((resolve) => {
+        setTimeout(() => resolve(possibleValues), 1000);
+      });
+    }
   };
 
   _getUsersOptions() {

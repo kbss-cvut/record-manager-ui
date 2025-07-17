@@ -55,7 +55,7 @@ describe("RequiredProvenance", function () {
       </IntlProvider>,
     );
     const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, "b");
-    expect(result.length).toEqual(1);
+    expect(result.length).toEqual(2);
   });
 
   it("renders info about date created and modified", function () {
@@ -65,6 +65,6 @@ describe("RequiredProvenance", function () {
       </IntlProvider>,
     );
     const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, "b");
-    expect(result.length).toEqual(2);
+    expect(result.length).toEqual(3);
   });
 });
