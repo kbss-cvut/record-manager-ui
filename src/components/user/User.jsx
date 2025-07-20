@@ -12,8 +12,8 @@ import PropTypes from "prop-types";
 import { FaRandom } from "react-icons/fa";
 import { isUsingOidcAuth } from "../../utils/OidcUtils";
 import { getRoles, hasRole, isAdmin } from "../../utils/SecurityUtils";
-import RoleSelector from "../RoleSelector.jsx";
 import IfInternalAuth from "../misc/oidc/IfInternalAuth.jsx";
+import RoleBadges from "../RoleBadges.jsx";
 
 class User extends React.Component {
   static propTypes = {
@@ -344,7 +344,7 @@ class User extends React.Component {
             <IfInternalAuth>
               <div className="row">
                 <div className="col-12 col-sm-6">
-                  <RoleSelector selected={getRoles(user)} readOnly={true} label={`${this.i18n("user.roles")}*`} />
+                  <RoleBadges roles={getRoles(user)} label={`${this.i18n("user.roles")}*`} />
                 </div>
               </div>
             </IfInternalAuth>
