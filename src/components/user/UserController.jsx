@@ -29,7 +29,7 @@ import { isUsingOidcAuth, userProfileLink } from "../../utils/OidcUtils";
 import { isAdmin } from "../../utils/SecurityUtils";
 import PropTypes from "prop-types";
 import { generateRandomUsername } from "../../utils/Utils.js";
-import { loadRoleGroups } from "../../actions/RoleGroupActions.js";
+import { loadAvailableRoleGroups } from "../../actions/RoleGroupActions.js";
 
 class UserController extends React.Component {
   constructor(props) {
@@ -46,8 +46,8 @@ class UserController extends React.Component {
       this.props.loadInstitutions();
     }
 
-    if (!isUsingOidcAuth() && isAdmin(this.props.currentUser) && !this.props.roleGroupsLoaded.roleGroups) {
-      this.props.loadRoleGroups();
+    if (!isUsingOidcAuth() && !this.props.roleGroupsLoaded.roleGroups) {
+      this.props.loadAvailableRoleGroups();
     }
 
     if (!this.state.user) {
@@ -249,7 +249,7 @@ UserController.propTypes = {
   updateUser: PropTypes.func.isRequired,
   viewHandlers: PropTypes.object.isRequired,
   roleGroupsLoaded: PropTypes.object.isRequired,
-  loadRoleGroups: PropTypes.func.isRequired,
+  loadAvailableRoleGroups: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(UserController)));
@@ -278,7 +278,7 @@ function mapDispatchToProps(dispatch) {
     unloadUser: bindActionCreators(unloadUser, dispatch),
     unloadSavedUser: bindActionCreators(unloadSavedUser, dispatch),
     loadInstitutions: bindActionCreators(loadInstitutions, dispatch),
-    loadRoleGroups: bindActionCreators(loadRoleGroups, dispatch),
+    loadAvailableRoleGroups: bindActionCreators(loadAvailableRoleGroups, dispatch),
     setTransitionPayload: bindActionCreators(setTransitionPayload, dispatch),
     transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),
     generateUsername: bindActionCreators(generateUsername, dispatch),
