@@ -19,12 +19,12 @@ function roleExists(role) {
 }
 
 export function hasHigherPrivileges(u1, u2) {
-  const u1Roles = getRoles(u1);
-  const u2Roles = getRoles(u2);
+  const u1Roles = getRoles(u1)?.filter((role) => role !== ROLE.IMPERSONATE);
+  const u2Roles = getRoles(u2)?.filter((role) => role !== ROLE.IMPERSONATE);
 
-  const allRolesIncluded = u2Roles.every((role) => u1Roles?.includes(role));
+  const allRolesIncluded = u2Roles?.every((role) => u1Roles?.includes(role));
 
-  const hasAdditionalRole = u1Roles.some((role) => !u2Roles.includes(role));
+  const hasAdditionalRole = u1Roles?.some((role) => !u2Roles?.includes(role));
 
   return allRolesIncluded && hasAdditionalRole;
 }
@@ -57,7 +57,7 @@ export function canWriteUserInfo(currentUser, user) {
     !isUsingOidcAuth() &&
     (hasRole(currentUser, ROLE.WRITE_ALL_USERS) ||
       (hasRole(currentUser, ROLE.WRITE_ORGANIZATION_USERS) &&
-        currentUser.institution?.name === user.institution?.name) ||
+        currentUser.institution?.name === user?.institution?.name) ||
       currentUser.username === user?.username)
   );
 }
