@@ -1,5 +1,5 @@
 import * as ActionConstants from "../constants/ActionConstants";
-import { getRoles } from "../utils/SecurityUtils.js";
+import { getRoles } from "../utils/RoleUtils.js";
 import { ACTION_STATUS } from "../constants/DefaultConstants";
 
 const initialState = {

@@ -13,7 +13,7 @@ import { ROLE } from "../../constants/DefaultConstants";
 import { deleteUser } from "../../actions/UserActions";
 import { trackPromise } from "react-promise-tracker";
 import PropTypes from "prop-types";
-import { isAdmin } from "../../utils/SecurityUtils.js";
+import { hasRole } from "../../utils/RoleUtils.js";
 
 class UsersController extends React.Component {
   constructor(props) {
@@ -52,7 +52,7 @@ class UsersController extends React.Component {
 
   render() {
     const { currentUser, usersLoaded, userDeleted } = this.props;
-    if (!currentUser || !isAdmin(currentUser)) {
+    if (!currentUser || !hasRole(currentUser, ROLE.READ_ALL_USERS)) {
       return null;
     }
     const handlers = {

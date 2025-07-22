@@ -9,7 +9,7 @@ import UserValidator from "../../validation/UserValidator";
 import { LoaderSmall } from "../Loader";
 import HelpIcon from "../HelpIcon";
 import PropTypes from "prop-types";
-import { isAdmin } from "../../utils/SecurityUtils";
+import { canWriteUserInfo } from "../../utils/RoleUtils.js";
 
 class PasswordChange extends React.Component {
   static propTypes = {
@@ -93,7 +93,7 @@ class PasswordChange extends React.Component {
               </div>
             </div>
             <div className="mt-3 text-center">
-              {isAdmin(currentUser) && (
+              {canWriteUserInfo(currentUser, match) && (
                 <Button
                   style={{ margin: "0 0.3em 0 0" }}
                   variant="success"

@@ -87,8 +87,6 @@ export const ACTION_STATUS = {
 };
 
 export const ROLE = {
-  ADMIN: "ROLE_ADMIN",
-
   // Record-related roles
   COMPLETE_RECORDS: "completeRecords",
   REJECT_RECORDS: "rejectRecords",

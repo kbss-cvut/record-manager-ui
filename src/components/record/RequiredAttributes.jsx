@@ -8,7 +8,7 @@ import { injectIntl } from "react-intl";
 import HorizontalInput from "../HorizontalInput";
 import PropTypes from "prop-types";
 import { API_URL } from "../../../config";
-import { isAdmin } from "../../utils/SecurityUtils";
+import { canReadRecord } from "../../utils/RoleUtils.js";
 
 class RequiredAttributes extends React.Component {
   static propTypes = {
@@ -72,11 +72,11 @@ class RequiredAttributes extends React.Component {
   }
 
   _showLocalNameEntry() {
-    return isAdmin(this.props.currentUser);
+    return canReadRecord(this.props.currentUser);
   }
 
   _showFormTemplateSelection() {
-    return isAdmin(this.props.currentUser) || !(this.props.record.formTemplate || this.props.formTemplate);
+    return canReadRecord(this.props.currentUser) || !(this.props.record.formTemplate || this.props.formTemplate);
   }
 }
 

@@ -6,9 +6,10 @@ import DashboardTile from "./DashboardTile";
 import PropTypes from "prop-types";
 import { processTypeaheadOptions } from "../record/TypeaheadAnswer";
 import ImportRecordsDialog from "../record/ImportRecordsDialog";
-import { isAdmin } from "../../utils/SecurityUtils";
+import { hasRole } from "../../utils/RoleUtils";
 import { trackPromise } from "react-promise-tracker";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
+import { ROLE } from "../../constants/DefaultConstants.js";
 
 class Dashboard extends React.Component {
   static propTypes = {
@@ -63,7 +64,7 @@ class Dashboard extends React.Component {
   }
 
   _renderCreateRecordTile() {
-    return this._isAdmin() ? (
+    return hasRole(this.props.currentUser, ROLE.WRITE_ALL_RECORDS) ? (
       <Col md={3} className="dashboard-sector">
         <DashboardTile onClick={this.props.handlers.createRecord}>{this.i18n("dashboard.create-tile")}</DashboardTile>
       </Col>
@@ -83,7 +84,7 @@ class Dashboard extends React.Component {
   }
 
   _renderShowRecordsTiles() {
-    if (this._isAdmin()) {
+    if (hasRole(this.props.currentUser, ROLE.READ_ALL_RECORDS)) {
       return this._renderShowRecordTile();
     } else {
       const formTemplates = this.props.formTemplatesLoaded.formTemplates;
@@ -117,7 +118,7 @@ class Dashboard extends React.Component {
   }
 
   _renderUsersTile() {
-    return this._isAdmin() ? (
+    return hasRole(this.props.currentUser, ROLE.READ_ALL_USERS) ? (
       <Col md={3} className="dashboard-sector">
         <DashboardTile onClick={this.props.handlers.showUsers}>{this.i18n("dashboard.users-tile")}</DashboardTile>
       </Col>
@@ -127,7 +128,7 @@ class Dashboard extends React.Component {
   }
 
   _renderInstitutionsTile() {
-    return this._isAdmin() ? (
+    return hasRole(this.props.currentUser, ROLE.READ_ALL_ORGANIZATIONS) ? (
       <Col md={3} className="dashboard-sector">
         <DashboardTile onClick={this.props.handlers.showInstitutions}>
           {this.i18n("dashboard.institutions-tile")}
@@ -139,17 +140,13 @@ class Dashboard extends React.Component {
   }
 
   _renderStatisticsTile() {
-    return this._isAdmin() ? (
+    return hasRole(this.props.currentUser, ROLE.READ_STATISTICS) ? (
       <Col md={3} className="dashboard-sector">
         <DashboardTile onClick={this.props.handlers.showStatistics}>
           {this.i18n("dashboard.statistics-tile")}
         </DashboardTile>
       </Col>
     ) : null;
-  }
-
-  _isAdmin() {
-    return isAdmin(this.props.currentUser);
   }
 
   render() {

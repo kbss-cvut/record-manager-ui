@@ -11,9 +11,9 @@ import HelpIcon from "../HelpIcon";
 import PropTypes from "prop-types";
 import { FaRandom } from "react-icons/fa";
 import { isUsingOidcAuth } from "../../utils/OidcUtils";
-import { getRoles, hasRole, isAdmin } from "../../utils/SecurityUtils";
 import IfInternalAuth from "../misc/oidc/IfInternalAuth.jsx";
 import RoleBadges from "../RoleBadges.jsx";
+import { canWriteUserInfo, getRoles, hasHigherPrivileges, hasRole } from "../../utils/RoleUtils.js";
 
 class User extends React.Component {
   static propTypes = {
@@ -106,7 +106,7 @@ class User extends React.Component {
 
   _passwordChangeButton() {
     const { user, currentUser, handlers } = this.props;
-    if (user.isNew || (currentUser.username !== user.username && !isAdmin(currentUser))) {
+    if (user.isNew || (currentUser.username !== user.username && !hasRole(currentUser, ROLE.WRITE_ALL_USERS))) {
       return null;
     } else {
       return (
@@ -132,7 +132,7 @@ class User extends React.Component {
 
   _sendInvitationButton() {
     const { user, handlers, currentUser, invitationSent, invitationDelete } = this.props;
-    if (user.isInvited === false && isAdmin(currentUser)) {
+    if (user.isInvited === false && canWriteUserInfo(currentUser)) {
       return (
         <h4 className="invite-to-study-text content-center" style={{ margin: "0 0 15px 0" }}>
           {this.i18n("user.invite-to-study-text")}
@@ -167,7 +167,8 @@ class User extends React.Component {
 
   _impersonateButton() {
     const { user, currentUser, handlers, impersonation } = this.props;
-    if (!user.isNew && isAdmin(currentUser) && !isAdmin(user)) {
+
+    if (!user.isNew && hasHigherPrivileges(currentUser, user)) {
       return (
         <Button
           style={{ margin: "0 0.3em 0 0" }}
@@ -187,7 +188,7 @@ class User extends React.Component {
 
   _saveAndSendEmailButton() {
     const { user, currentUser, userSaved } = this.props;
-    if (!user.isNew && isAdmin(currentUser) && currentUser.username !== user.username) {
+    if (!user.isNew && hasRole(currentUser, ROLE.WRITE_ALL_USERS) && currentUser.username !== user.username) {
       return (
         <Button
           style={{ margin: "0 0.3em 0 0" }}
@@ -245,7 +246,7 @@ class User extends React.Component {
                   type="text"
                   name="firstName"
                   label={`${this.i18n("user.first-name")}*`}
-                  disabled={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
+                  disabled={!canWriteUserInfo(currentUser, user)}
                   value={user.firstName}
                   labelWidth={3}
                   inputWidth={8}
@@ -257,7 +258,7 @@ class User extends React.Component {
                   type="text"
                   name="lastName"
                   label={`${this.i18n("user.last-name")}*`}
-                  disabled={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
+                  disabled={!canWriteUserInfo(currentUser, user)}
                   value={user.lastName}
                   labelWidth={3}
                   inputWidth={8}
@@ -284,7 +285,7 @@ class User extends React.Component {
                   type="email"
                   name="emailAddress"
                   label={`${this.i18n("users.email")}*`}
-                  disabled={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
+                  disabled={!canWriteUserInfo(currentUser, user)}
                   value={user.emailAddress}
                   labelWidth={3}
                   inputWidth={8}
@@ -299,7 +300,7 @@ class User extends React.Component {
                     type="select"
                     name="roleGroup"
                     label={`${this.i18n("user.role-group")}*`}
-                    disabled={(!isAdmin(currentUser) && currentUser.username !== user.username) || isUsingOidcAuth()}
+                    disabled={!canWriteUserInfo(currentUser, user)}
                     labelWidth={3}
                     inputWidth={8}
                     onChange={this._onRoleGroupSelected}
@@ -309,50 +310,46 @@ class User extends React.Component {
                   </HorizontalInput>
                 </div>
               </IfInternalAuth>
-              {isAdmin(currentUser) && (
-                <div className="col-12 col-sm-6">
-                  <HorizontalInput
-                    type="select"
-                    name="institution"
-                    label={`${this.i18n("institution.panel-title")}*`}
-                    onChange={this._onInstitutionSelected}
-                    disabled={!isAdmin(currentUser)}
-                    value={user.institution ? user.institution.uri : ""}
-                    labelWidth={3}
-                    inputWidth={8}
-                  >
-                    {this._generateInstitutionsOptions()}
-                  </HorizontalInput>
-                </div>
-              )}
-            </div>
-            {user.isNew && (
-              <div className="row">
-                <div className="col-12 col-sm-6">
-                  <HorizontalInput
-                    type="text"
-                    name="password"
-                    label={this.i18n("user.password")}
-                    readOnly={true}
-                    value={user.password}
-                    labelWidth={3}
-                    inputWidth={8}
-                  />
-                </div>
+              <div className="col-12 col-sm-6">
+                <HorizontalInput
+                  type="select"
+                  name="institution"
+                  label={`${this.i18n("institution.panel-title")}*`}
+                  onChange={this._onInstitutionSelected}
+                  disabled={!hasRole(currentUser, ROLE.WRITE_ALL_USERS)}
+                  value={user.institution ? user.institution.uri : ""}
+                  labelWidth={3}
+                  inputWidth={8}
+                >
+                  {this._generateInstitutionsOptions()}
+                </HorizontalInput>
               </div>
-            )}
+            </div>
             <IfInternalAuth>
               <div className="row">
                 <div className="col-12 col-sm-6">
                   <RoleBadges roles={getRoles(user)} label={`${this.i18n("user.roles")}*`} />
                 </div>
+                {user.isNew && (
+                  <div className="col-12 col-sm-6">
+                    <HorizontalInput
+                      type="text"
+                      name="password"
+                      label={this.i18n("user.password")}
+                      readOnly={true}
+                      value={user.password}
+                      labelWidth={3}
+                      inputWidth={8}
+                    />
+                  </div>
+                )}
               </div>
             </IfInternalAuth>
             <div className="buttons-line-height mt-3 text-center">
               {this._impersonateButton()}
               {isUsingOidcAuth() ? this._redirectToKeycloakButton() : this._passwordChangeButton()}
               {this._saveAndSendEmailButton()}
-              {(isAdmin(currentUser) || currentUser.username === user.username) && (
+              {(hasRole(currentUser, ROLE.WRITE_ALL_USERS) || currentUser.username === user.username) && (
                 <Button
                   variant="success"
                   size="sm"

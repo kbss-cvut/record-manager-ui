@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Badge } from "react-bootstrap";
 import { useI18n } from "../hooks/useI18n";
-import { isImpersonator } from "../utils/SecurityUtils";
+import { isImpersonator } from "../utils/RoleUtils";
 
 const ImpersonatorBadge = () => {
   const { i18n } = useI18n();

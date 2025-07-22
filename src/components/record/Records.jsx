@@ -2,17 +2,16 @@ import React from "react";
 import { Alert, Button, Card } from "react-bootstrap";
 import { injectIntl } from "react-intl";
 import withI18n from "../../i18n/withI18n";
-import { EXTENSION_CONSTANTS, ROLE } from "../../constants/DefaultConstants";
+import { ROLE } from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
 import { processTypeaheadOptions } from "./TypeaheadAnswer";
-import { EXTENSIONS } from "../../../config";
 import ExportRecordsDropdown from "./ExportRecordsDropdown";
-import { hasRole, isAdmin } from "../../utils/SecurityUtils";
 import ImportRecordsDialog from "./ImportRecordsDialog";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 import { trackPromise } from "react-promise-tracker";
 import RecordTable from "./RecordTable";
 import Pagination from "../misc/Pagination";
+import { hasRole } from "../../utils/RoleUtils.js";
 
 const STUDY_CLOSED_FOR_ADDITION = false;
 const STUDY_CREATE_AT_MOST_ONE_RECORD = false;
@@ -53,12 +52,12 @@ class Records extends React.Component {
   };
 
   render() {
-    const { formTemplate, recordsLoaded, pagination } = this.props;
+    const { formTemplate, recordsLoaded, pagination, currentUser } = this.props;
     const showCreateButton = STUDY_CREATE_AT_MOST_ONE_RECORD
       ? !recordsLoaded.records || recordsLoaded.records.length < 1
       : true;
-    const showPublishButton = isAdmin(this.props.currentUser) && EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR;
-    const createRecordDisabled = STUDY_CLOSED_FOR_ADDITION && !isAdmin(this.props.currentUser);
+    const showPublishButton = hasRole(currentUser, ROLE.PUBLISH_RECORDS);
+    const createRecordDisabled = STUDY_CLOSED_FOR_ADDITION && !hasRole(currentUser, ROLE.WRITE_ALL_RECORDS);
     const createRecordTooltip = this.i18n(
       createRecordDisabled ? "records.closed-study.create-tooltip" : "records.opened-study.create-tooltip",
     );
@@ -142,7 +141,7 @@ class Records extends React.Component {
   }
 
   _getPanelTitle() {
-    if (!isAdmin(this.props.currentUser) && this.props.formTemplate) {
+    if (!hasRole(this.props.currentUser, ROLE.READ_ALL_RECORDS) && this.props.formTemplate) {
       const formTemplateName = this._getFormTemplateName();
       if (formTemplateName) {
         return formTemplateName;

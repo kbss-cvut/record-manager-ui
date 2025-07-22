@@ -9,7 +9,7 @@ import { transitionTo, transitionToWithOpts } from "../../utils/Routing";
 import { loadInstitutions } from "../../actions/InstitutionsActions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { ACTION_FLAG, ACTION_STATUS } from "../../constants/DefaultConstants";
+import { ACTION_FLAG, ACTION_STATUS, ROLE } from "../../constants/DefaultConstants";
 import { setTransitionPayload } from "../../actions/RouterActions";
 import {
   createUser,
@@ -26,10 +26,10 @@ import {
 import * as UserFactory from "../../utils/EntityFactory";
 import omit from "lodash/omit";
 import { isUsingOidcAuth, userProfileLink } from "../../utils/OidcUtils";
-import { isAdmin } from "../../utils/SecurityUtils";
 import PropTypes from "prop-types";
 import { generateRandomUsername } from "../../utils/Utils.js";
 import { loadAvailableRoleGroups } from "../../actions/RoleGroupActions.js";
+import { hasRole } from "../../utils/RoleUtils.js";
 
 class UserController extends React.Component {
   constructor(props) {
@@ -42,7 +42,7 @@ class UserController extends React.Component {
   }
 
   componentDidMount() {
-    if (isAdmin(this.props.currentUser) && !this.props.institutionsLoaded.institutions) {
+    if (hasRole(this.props.currentUser, ROLE.READ_ALL_ORGANIZATIONS) && !this.props.institutionsLoaded.institutions) {
       this.props.loadInstitutions();
     }
 
@@ -105,7 +105,6 @@ class UserController extends React.Component {
   }
 
   _onSave = (sendEmail = true) => {
-    console.log(this.state.user);
     let user = this.state.user;
     this.setState({ saved: true, invited: false });
     if (user.isNew || (this._isNew() && this.props.userSaved.status === ACTION_STATUS.ERROR)) {
@@ -123,7 +122,7 @@ class UserController extends React.Component {
     } else if (this.institution) {
       this.props.transitionToWithOpts(Routes.editInstitution, { params: { key: this.institution.key } });
     } else {
-      transitionTo(isAdmin(this.props.currentUser) ? Routes.users : Routes.dashboard);
+      transitionTo(hasRole(this.props.currentUser, ROLE.READ_ALL_USERS) ? Routes.users : Routes.dashboard);
     }
   };
 
