@@ -300,7 +300,7 @@ class User extends React.Component {
                     type="select"
                     name="roleGroup"
                     label={`${this.i18n("user.role-group")}*`}
-                    disabled={!canWriteUserInfo(currentUser, user)}
+                    disabled={!canWriteUserInfo(currentUser, user) || hasHigherPrivileges(user, currentUser)}
                     labelWidth={3}
                     inputWidth={8}
                     onChange={this._onRoleGroupSelected}
