@@ -168,7 +168,7 @@ class User extends React.Component {
   _impersonateButton() {
     const { user, currentUser, handlers, impersonation } = this.props;
 
-    if (!user.isNew && hasHigherPrivileges(currentUser, user)) {
+    if (!user.isNew && hasHigherPrivileges(currentUser, user) && currentUser.username !== user.username) {
       return (
         <Button
           style={{ margin: "0 0.3em 0 0" }}
