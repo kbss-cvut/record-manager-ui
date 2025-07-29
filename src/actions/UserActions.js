@@ -23,6 +23,7 @@ export function createUser(user) {
       })
       .catch((error) => {
         dispatch(saveUserError(error.response.data, user, ACTION_FLAG.CREATE_ENTITY));
+        dispatch(showServerResponseErrorMessage(error, "user.save-error"));
       });
   };
 }
