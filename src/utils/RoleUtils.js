@@ -31,6 +31,13 @@ export function canReadInstitutionPatients(currentUser, institutionKey) {
   );
 }
 
+export function canReadInstitutionUsers(currentUser, institutionKey) {
+  return (
+    hasRole(currentUser, ROLE.READ_ALL_USERS) ||
+    (hasRole(currentUser, ROLE.READ_ORGANIZATION_USERS) && currentUser.institution?.key === institutionKey)
+  );
+}
+
 export function canWriteRecord(currentUser, record) {
   return (
     hasRole(currentUser, ROLE.WRITE_ALL_RECORDS) ||
@@ -42,8 +49,8 @@ export function canWriteRecord(currentUser, record) {
 export function canReadRecord(currentUser, record) {
   return (
     hasRole(currentUser, ROLE.READ_ALL_RECORDS) ||
-    (hasRole(currentUser, ROLE.READ_ORGANIZATION_RECORDS) && currentUser.institution?.key === record.institution) ||
-    currentUser.username === record.author?.username
+    (hasRole(currentUser, ROLE.READ_ORGANIZATION_RECORDS) && currentUser.institution?.key === record?.institution) ||
+    currentUser.username === record?.author?.username
   );
 }
 
@@ -61,13 +68,13 @@ export function canWriteInstitutionInfo(currentUser, institution) {
   return hasRole(
     currentUser,
     ROLE.WRITE_ORGANIZATION ||
-      (hasRole(currentUser, ROLE.WRITE_ALL_ORGANIZATIONS) && currentUser.institution?.name === institution.name),
+      (hasRole(currentUser, ROLE.WRITE_ALL_ORGANIZATIONS) && currentUser.institution?.name === institution?.name),
   );
 }
 
 export function canReadInstitutionInfo(currentUser, institution) {
   return (
     hasRole(currentUser, ROLE.READ_ALL_ORGANIZATIONS) ||
-    (hasRole(currentUser, ROLE.READ_ORGANIZATION) && currentUser.institution?.name === institution.name)
+    (hasRole(currentUser, ROLE.READ_ORGANIZATION) && currentUser.institution?.name === institution?.name)
   );
 }

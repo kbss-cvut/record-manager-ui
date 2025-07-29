@@ -27,7 +27,7 @@ import * as EntityFactory from "../../utils/EntityFactory";
 import { exportRecords, loadRecords } from "../../actions/RecordsActions";
 import omit from "lodash/omit";
 import { loadFormTemplates } from "../../actions/FormTemplatesActions";
-import { hasRole } from "../../utils/RoleUtils.js";
+import { canReadInstitutionUsers, hasRole } from "../../utils/RoleUtils.js";
 import { trackPromise } from "react-promise-tracker";
 import { INITIAL_PAGE } from "../misc/Pagination";
 import BrowserStorage from "../../utils/BrowserStorage";
@@ -57,10 +57,7 @@ class InstitutionController extends React.Component {
     }
 
     if (institutionKey) {
-      if (
-        hasRole(currentUser, ROLE.READ_ALL_USERS) ||
-        (hasRole(currentUser, ROLE.READ_ORGANIZATION_USERS) && currentUser.institution?.key === institutionKey)
-      ) {
+      if (canReadInstitutionUsers(currentUser, institutionKey)) {
         trackPromise(this.props.loadInstitutionMembers(institutionKey), "institution-members");
       }
 

@@ -7,13 +7,13 @@ import withI18n from "../../i18n/withI18n";
 import HorizontalInput from "../HorizontalInput";
 import PropTypes from "prop-types";
 
-import { ACTION_STATUS } from "../../constants/DefaultConstants";
+import { ACTION_STATUS, ROLE } from "../../constants/DefaultConstants";
 import { formatDate } from "../../utils/Utils";
 import { LoaderSmall } from "../Loader";
 import InstitutionValidator from "../../validation/InstitutionValidator";
 import HelpIcon from "../HelpIcon";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
-import { canWriteInstitutionInfo } from "../../utils/RoleUtils.js";
+import { canWriteInstitutionInfo, hasRole } from "../../utils/RoleUtils.js";
 
 /**
  * Institution detail. Editable only for admins.
@@ -86,8 +86,8 @@ class Institution extends React.Component {
                 {this._renderAddedDate()}
                 {this._renderButtons()}
               </form>
-              {!institution.isNew && this._renderMembers()}
-              {!institution.isNew && (
+              {!institution.isNew && hasRole(currentUser, ROLE.READ_ORGANIZATION_USERS) && this._renderMembers()}
+              {!institution.isNew && hasRole(currentUser, ROLE.READ_ORGANIZATION_RECORDS) && (
                 <InstitutionPatients
                   recordsLoaded={recordsLoaded}
                   formTemplatesLoaded={formTemplatesLoaded}
