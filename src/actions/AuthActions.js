@@ -56,7 +56,7 @@ export function userAuthError(error) {
 
 export function logout() {
   return function (dispatch, getState) {
-    if (hasRole(getState().auth.user, ROLE.IMPERSONATE)) {
+    if (getState().auth.user.impersonated) {
       return logoutImpersonator(dispatch);
     }
     return axiosBackend

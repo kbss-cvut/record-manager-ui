@@ -110,7 +110,6 @@ export const ROLE = {
 
   // Other roles
   IMPORT_CODELISTS: "importCodelists",
-  IMPERSONATE: "impersonate",
   COMMENT_RECORD_QUESTIONS: "commentRecordQuestions",
   READ_ACTION_HISTORY: "readActionHistory",
   READ_STATISTICS: "readStatistics",

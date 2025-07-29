@@ -5,11 +5,6 @@ export function hasRole(user, role) {
   return user?.roles?.includes(role) ?? false;
 }
 
-export function isImpersonator(user) {
-  // When using OIDC, the access token does not contain any info that the current user is being impersonated
-  return !isUsingOidcAuth() && user.roles.includes(ROLE.IMPERSONATE);
-}
-
 export function getRoles(user) {
   return user?.roleGroup?.roles;
 }
@@ -19,8 +14,8 @@ function roleExists(role) {
 }
 
 export function hasHigherPrivileges(u1, u2) {
-  const u1Roles = getRoles(u1)?.filter((role) => role !== ROLE.IMPERSONATE);
-  const u2Roles = getRoles(u2)?.filter((role) => role !== ROLE.IMPERSONATE);
+  const u1Roles = getRoles(u1);
+  const u2Roles = getRoles(u2);
 
   const allRolesIncluded = u2Roles?.every((role) => u1Roles?.includes(role));
 
