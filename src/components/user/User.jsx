@@ -14,6 +14,7 @@ import { isUsingOidcAuth } from "../../utils/OidcUtils";
 import IfInternalAuth from "../misc/oidc/IfInternalAuth.jsx";
 import RoleBadges from "../RoleBadges.jsx";
 import { canWriteUserInfo, getRoles, hasHigherPrivileges, hasRole } from "../../utils/RoleUtils.js";
+import RoleGroupsSelector from "../RoleGroupsSelector.jsx";
 
 class User extends React.Component {
   static propTypes = {
@@ -296,18 +297,14 @@ class User extends React.Component {
             <div className="row">
               <IfInternalAuth>
                 <div className="col-12 col-sm-6">
-                  <HorizontalInput
-                    type="select"
-                    name="roleGroup"
-                    label={`${this.i18n("user.role-group")}*`}
-                    disabled={!canWriteUserInfo(currentUser, user) || hasHigherPrivileges(user, currentUser)}
-                    labelWidth={3}
-                    inputWidth={8}
-                    onChange={this._onRoleGroupSelected}
-                    value={user.roleGroup ? user.roleGroup.uri : ""}
+                  <RoleGroupsSelector
+                    currentUser={this.props.currentUser}
+                    user={this.props.user}
+                    onRoleGroupSelected={this._onRoleGroupSelected}
+                    generateGroupOptions={this._generateGroupOptions}
                   >
                     {this._generateGroupOptions()}
-                  </HorizontalInput>
+                  </RoleGroupsSelector>
                 </div>
               </IfInternalAuth>
               <div className="col-12 col-sm-6">
