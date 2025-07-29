@@ -67,8 +67,8 @@ export function canWriteUserInfo(currentUser, user) {
 export function canWriteInstitutionInfo(currentUser, institution) {
   return hasRole(
     currentUser,
-    ROLE.WRITE_ORGANIZATION ||
-      (hasRole(currentUser, ROLE.WRITE_ALL_ORGANIZATIONS) && currentUser.institution?.name === institution?.name),
+    ROLE.WRITE_ALL_ORGANIZATIONS ||
+      (hasRole(currentUser, ROLE.WRITE_ORGANIZATION) && currentUser.institution?.name === institution?.name),
   );
 }
 
