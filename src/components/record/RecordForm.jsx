@@ -16,6 +16,8 @@ import * as I18nStore from "../../stores/I18nStore";
 import "react-datepicker/dist/react-datepicker.css";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 import { trackPromise } from "react-promise-tracker";
+import { ROLE } from "../../constants/DefaultConstants.js";
+import { hasRole } from "../../utils/RoleUtils.js";
 // import "intelligent-tree-select/lib/styles.css"
 
 // const componentMapping = SmartComponents.getComponentMapping();
@@ -77,12 +79,8 @@ class RecordForm extends React.Component {
     };
   }
 
-  _isDevGroupUser() {
-    return this.props.currentUser.emailAddress.includes("devgroup");
-  }
-
   _getIconsOptions() {
-    if (this._isDevGroupUser()) {
+    if (hasRole(this.props.currentUser, ROLE.COMMENT_RECORD_QUESTIONS)) {
       return {
         icons: [
           { id: Constants.ICONS.QUESTION_HELP, behavior: Constants.ICON_BEHAVIOR.ON_HOVER },
