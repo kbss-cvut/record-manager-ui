@@ -172,8 +172,9 @@ const Record = (
       <div className="mt-3 text-center">
         {EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER &&
           !record.isNew &&
-          (record.phase === RECORD_PHASE.OPEN ||
-            (hasRole(currentUser, ROLE.REJECT_RECORDS) && canWriteRecord(currentUser, record))) && (
+          record.phase === RECORD_PHASE.OPEN &&
+          hasRole(currentUser, ROLE.REJECT_RECORDS) &&
+          canWriteRecord(currentUser, record) && (
             <RejectButton
               className="mx-1 action-button"
               variant="danger"
@@ -193,8 +194,9 @@ const Record = (
           )}
 
         {!record.isNew &&
-          (record.phase === RECORD_PHASE.OPEN ||
-            (this.hasRole(currentUser, ROLE.COMPLETE_RECORDS) && canWriteRecord(currentUser, record))) && (
+          record.phase === RECORD_PHASE.OPEN &&
+          hasRole(currentUser, ROLE.COMPLETE_RECORDS) &&
+          canWriteRecord(currentUser, record) && (
             <Button
               className="mx-1 action-button"
               variant="success"
