@@ -4,8 +4,8 @@ import { IntlProvider } from "react-intl";
 import RecordTable from "../../../src/components/record/RecordTable";
 import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
 import enLang from "../../../src/i18n/en";
-import { ROLE } from "../../../src/constants/DefaultConstants";
 import { describe, expect, vi, beforeEach, test } from "vitest";
+import { admin } from "../../__mocks__/users.js";
 
 describe("RecordTable", function () {
   const intlData = enLang;
@@ -14,10 +14,6 @@ describe("RecordTable", function () {
     formTemplatesLoaded = {},
     recordDeleted = { status: ACTION_STATUS.SUCCESS },
     handlers = { onEdit: vi.fn() },
-    currentUser = {
-      username: "testUser",
-      role: ROLE.USER,
-    },
     disableDelete = true;
 
   records = [
@@ -45,7 +41,7 @@ describe("RecordTable", function () {
           disableDelete={disableDelete}
           recordDeleted={recordDeleted}
           formTemplatesLoaded={formTemplatesLoaded}
-          currentUser={currentUser}
+          currentUser={admin}
         />
       </IntlProvider>,
     );
@@ -66,7 +62,7 @@ describe("RecordTable", function () {
           disableDelete={disableDelete}
           recordDeleted={recordDeleted}
           formTemplatesLoaded={formTemplatesLoaded}
-          currentUser={currentUser}
+          currentUser={admin}
         />
       </IntlProvider>,
     );

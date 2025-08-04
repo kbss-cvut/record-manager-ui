@@ -4,7 +4,7 @@ import * as ActionConstants from "../../../src/constants/ActionConstants";
 import MockAdapter from "axios-mock-adapter";
 import { TEST_TIMEOUT } from "../../constants/DefaultTestConstants";
 import { axiosBackend } from "../../../src/actions";
-import { ACTION_FLAG, FORM_ACTION_FLAG, ROLE } from "../../../src/constants/DefaultConstants";
+import { ACTION_FLAG, FORM_ACTION_FLAG } from "../../../src/constants/DefaultConstants";
 import {
   createRecord,
   deleteRecord,
@@ -27,6 +27,7 @@ import en from "../../../src/i18n/en";
 import { mockDateNow, restoreDateNow } from "../../environment/Environment";
 import { errorMessage, successMessage } from "../../../src/model/Message";
 import { it, describe, expect, beforeEach, afterEach } from "vitest";
+import { admin } from "../../__mocks__/users.js";
 
 describe("Record synchronous actions", function () {
   const record = { key: 7979868757 },
@@ -140,15 +141,12 @@ describe("Record asynchronous actions", function () {
     },
     record = { key: 696875909 },
     records = [{ key: 7986787608 }, { key: 8968756596 }],
-    currentUser = {
-      role: ROLE.ADMIN,
-    },
     key = "696875909",
     location = `rest/records/${key}`;
 
   beforeEach(() => {
     mockApi = new MockAdapter(axiosBackend);
-    store = mockStore({ intl: en, auth: { user: currentUser } });
+    store = mockStore({ intl: en, auth: { user: admin } });
     mockDateNow();
   });
 

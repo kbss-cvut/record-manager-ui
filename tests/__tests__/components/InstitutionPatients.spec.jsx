@@ -3,17 +3,14 @@ import React from "react";
 import { IntlProvider } from "react-intl";
 import InstitutionPatients from "../../../src/components/institution/InstitutionPatients";
 import enLang from "../../../src/i18n/en";
-import { ROLE, SortDirection } from "../../../src/constants/DefaultConstants";
+import { SortDirection } from "../../../src/constants/DefaultConstants";
 import { describe, expect, it, vi } from "vitest";
+import { admin } from "../../__mocks__/users.js";
 
 describe("InstitutionPatients", function () {
   const intlData = enLang;
   let recordsLoaded,
     formTemplatesLoaded = {},
-    currentUser = {
-      username: "testUser",
-      role: ROLE.USER,
-    },
     filterAndSort = {
       sort: {
         date: SortDirection.DESC,
@@ -36,7 +33,7 @@ describe("InstitutionPatients", function () {
           filterAndSort={filterAndSort}
           onEdit={onEdit}
           onExport={onExport}
-          currentUser={currentUser}
+          currentUser={admin}
         />
       </IntlProvider>,
     );

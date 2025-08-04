@@ -3,15 +3,23 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import { ROLE } from "../../../src/constants/DefaultConstants";
 import PasswordChange from "../../../src/components/user/PasswordChange";
 import * as UserFactory from "../../../src/utils/EntityFactory";
 import enLang from "../../../src/i18n/en";
 import { describe, expect, it, vi, beforeEach } from "vitest";
+import { admin, entryClerk } from "../../__mocks__/users.js";
 
 describe("PasswordChange", function () {
   const intlData = enLang;
-  let valid, match, passwordChange, currentUser, currentUserAdmin, handlers, passwordEmpty, passwordFilled;
+  let valid,
+    adminMatch,
+    entryClerkMatch,
+    passwordChange,
+    currentUser,
+    currentUserAdmin,
+    handlers,
+    passwordEmpty,
+    passwordFilled;
 
   beforeEach(() => {
     handlers = {
@@ -22,18 +30,15 @@ describe("PasswordChange", function () {
     valid = true;
   });
 
-  currentUser = {
-    username: "testUser",
-    role: ROLE.USER,
-  };
-  currentUserAdmin = {
-    username: "testAdmin",
-    role: ROLE.ADMIN,
+  adminMatch = {
+    params: {
+      username: admin.username,
+    },
   };
 
-  match = {
+  entryClerkMatch = {
     params: {
-      username: currentUser.username,
+      username: entryClerk.username,
     },
   };
 
@@ -51,19 +56,19 @@ describe("PasswordChange", function () {
       <IntlProvider locale="en" {...intlData}>
         <PasswordChange
           handlers={handlers}
-          currentUser={currentUser}
+          currentUser={admin}
           valid={valid}
           passwordChange={passwordChange}
-          match={match}
+          match={adminMatch}
           password={passwordFilled}
         />
       </IntlProvider>,
     );
     let buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-    expect(buttons.length).toEqual(2);
+    expect(buttons.length).toEqual(3);
 
-    expect(buttons[0].disabled).toBeFalsy();
-    TestUtils.Simulate.click(buttons[0]); // save
+    expect(buttons[1].disabled).toBeFalsy();
+    TestUtils.Simulate.click(buttons[1]); // save
     expect(handlers.onSave).toHaveBeenCalled();
   });
 
@@ -72,16 +77,16 @@ describe("PasswordChange", function () {
       <IntlProvider locale="en" {...intlData}>
         <PasswordChange
           handlers={handlers}
-          currentUser={currentUser}
+          currentUser={admin}
           valid={valid}
           passwordChange={passwordChange}
-          match={match}
+          match={adminMatch}
           password={passwordEmpty}
         />
       </IntlProvider>,
     );
     let buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-    expect(buttons.length).toEqual(2);
+    expect(buttons.length).toEqual(3);
 
     expect(buttons[0].disabled).toBeTruthy();
   });
@@ -92,10 +97,10 @@ describe("PasswordChange", function () {
       <IntlProvider locale="en" {...intlData}>
         <PasswordChange
           handlers={handlers}
-          currentUser={currentUser}
+          currentUser={admin}
           valid={valid}
           passwordChange={passwordChange}
-          match={match}
+          match={adminMatch}
           password={passwordEmpty}
         />
       </IntlProvider>,
@@ -109,10 +114,10 @@ describe("PasswordChange", function () {
       <IntlProvider locale="en" {...intlData}>
         <PasswordChange
           handlers={handlers}
-          currentUser={currentUserAdmin}
+          currentUser={admin}
           valid={valid}
           passwordChange={passwordChange}
-          match={match}
+          match={entryClerkMatch}
           password={passwordEmpty}
         />
       </IntlProvider>,
@@ -126,10 +131,10 @@ describe("PasswordChange", function () {
       <IntlProvider locale="en" {...intlData}>
         <PasswordChange
           handlers={handlers}
-          currentUser={currentUser}
+          currentUser={admin}
           valid={valid}
           passwordChange={passwordChange}
-          match={match}
+          match={adminMatch}
           password={passwordEmpty}
         />
       </IntlProvider>,
@@ -143,18 +148,18 @@ describe("PasswordChange", function () {
       <IntlProvider locale="en" {...intlData}>
         <PasswordChange
           handlers={handlers}
-          currentUser={currentUser}
+          currentUser={admin}
           valid={valid}
           passwordChange={passwordChange}
-          match={match}
+          match={adminMatch}
           password={passwordEmpty}
         />
       </IntlProvider>,
     );
     const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-    expect(buttons.length).toEqual(2);
+    expect(buttons.length).toEqual(3);
 
-    TestUtils.Simulate.click(buttons[1]); // cancel
+    TestUtils.Simulate.click(buttons[2]); // cancel
     expect(handlers.onCancel).toHaveBeenCalled();
   });
 });

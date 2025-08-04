@@ -1,26 +1,16 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import { ROLE } from "../../../src/constants/DefaultConstants";
 import Dashboard from "../../../src/components/dashboard/Dashboard";
 import enLang from "../../../src/i18n/en";
 import { vi, describe, expect, test } from "vitest";
+import { admin, entryClerk } from "../../__mocks__/users.js";
 
 describe("Dashboard", function () {
   const intlData = enLang;
-  let currentUserAdmin = {
-      username: "test",
-      role: ROLE.ADMIN,
-      firstName: "testName",
-    },
-    doctorWithInstitution = {
-      username: "test",
-      role: ROLE.USER,
-      institution: { key: 12345678 },
-    },
-    doctorWithoutInstitution = {
-      username: "test",
-      role: ROLE.USER,
+  let entryClerkWithoutInstitution = {
+      ...entryClerk,
+      institution: undefined,
     },
     handlers = {
       showUsers: vi.fn(),
@@ -35,14 +25,14 @@ describe("Dashboard", function () {
   test.skip("renders dashboard with title and four buttons", function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
-        <Dashboard currentUser={currentUserAdmin} handlers={handlers} />
+        <Dashboard currentUser={admin} handlers={handlers} />
       </IntlProvider>,
     );
     const title = TestUtils.findRenderedDOMComponentWithClass(tree, "formatted-message-size");
     expect(title).not.toBeNull();
 
     const name = TestUtils.findRenderedDOMComponentWithClass(tree, "bold");
-    expect(name.textContent).toEqual(currentUserAdmin.firstName);
+    expect(name.textContent).toEqual(admin.firstName);
 
     const container = TestUtils.findRenderedDOMComponentWithClass(tree, "container");
     expect(container).not.toBeNull();
@@ -57,7 +47,7 @@ describe("Dashboard", function () {
   test.skip("renders four buttons to admin and click on them", function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
-        <Dashboard currentUser={currentUserAdmin} handlers={handlers} />
+        <Dashboard currentUser={admin} handlers={handlers} />
       </IntlProvider>,
     );
     const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "button");
@@ -82,7 +72,7 @@ describe("Dashboard", function () {
   test.skip("renders four buttons to doctor with institution and click on them", function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
-        <Dashboard currentUser={doctorWithInstitution} handlers={handlers} />
+        <Dashboard currentUser={entryClerk} handlers={handlers} />
       </IntlProvider>,
     );
     const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "button");
@@ -104,7 +94,7 @@ describe("Dashboard", function () {
   test.skip("renders three buttons to doctor without institution and click on them", function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
-        <Dashboard currentUser={doctorWithoutInstitution} handlers={handlers} />
+        <Dashboard currentUser={entryClerkWithoutInstitution} handlers={handlers} />
       </IntlProvider>,
     );
     const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "button");

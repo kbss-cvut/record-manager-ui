@@ -187,7 +187,7 @@ describe("User asynchronous actions", function () {
       currentPassword: "1234",
     },
     currentUserAdmin = {
-      roles: [ROLE.ADMIN],
+      roles: [ROLE.READ_ALL_USERS],
     },
     usernamePrefix = "doctor";
 
@@ -226,6 +226,7 @@ describe("User asynchronous actions", function () {
       const expectedActions = [
         { type: ActionConstants.SAVE_USER_PENDING, actionFlag: ACTION_FLAG.CREATE_ENTITY },
         { type: ActionConstants.SAVE_USER_ERROR, actionFlag: ACTION_FLAG.CREATE_ENTITY, error, user },
+        { type: ActionConstants.PUBLISH_MESSAGE, message: errorMessage("user.save-error", { error: error.message }) },
       ];
 
       mockApi.onPost(`${API_URL}/rest/users`).reply(400, error);

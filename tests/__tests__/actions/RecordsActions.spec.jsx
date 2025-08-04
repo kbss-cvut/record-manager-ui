@@ -4,7 +4,7 @@ import * as ActionConstants from "../../../src/constants/ActionConstants";
 import MockAdapter from "axios-mock-adapter";
 import { TEST_TIMEOUT } from "../../constants/DefaultTestConstants";
 import { axiosBackend } from "../../../src/actions";
-import { ROLE } from "../../../src/constants/DefaultConstants";
+
 import {
   loadRecords,
   loadRecordsByInstitution,
@@ -17,6 +17,7 @@ import { mockDateNow, restoreDateNow } from "../../environment/Environment";
 import { errorMessage } from "../../../src/model/Message";
 import en from "../../../src/i18n/en";
 import { it, describe, expect, beforeEach, afterEach } from "vitest";
+import { admin, entryClerk } from "../../__mocks__/users.js";
 
 const records = [{ key: 786785600 }, { key: 86875960 }];
 
@@ -55,15 +56,6 @@ describe("Records asynchronous actions", function () {
       message: "An error has occurred.",
       requestUri: "/rest/records/xxx",
     },
-    doctor = {
-      role: ROLE.USER,
-      institution: {
-        key: 12345678,
-      },
-    },
-    admin = {
-      role: ROLE.ADMIN,
-    },
     institutionKey = 12345678;
 
   beforeEach(() => {
@@ -93,13 +85,13 @@ describe("Records asynchronous actions", function () {
       }, TEST_TIMEOUT);
     }));
 
-  it("creates LOAD_RECORDS_SUCCESS action when loading doctor's institution records is done successfully", () =>
+  it("creates LOAD_RECORDS_SUCCESS action when loading entryClerk's institution records is done successfully", () =>
     new Promise((done) => {
       const expectedActions = [
         { type: ActionConstants.LOAD_RECORDS_PENDING },
         { type: ActionConstants.LOAD_RECORDS_SUCCESS, records },
       ];
-      store.getState().auth.user = doctor;
+      store.getState().auth.user = entryClerk;
 
       mockApi.onGet(`${API_URL}/rest/records`).reply(200, records, {});
 

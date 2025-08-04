@@ -35,11 +35,11 @@ describe("Institution", function () {
 
   user = {
     username: "doctor",
-    roles: [ROLE.USER],
+    roles: [],
   };
   admin = {
     username: "admin",
-    roles: [ROLE.ADMIN],
+    roles: [ROLE.WRITE_ALL_ORGANIZATIONS, ROLE.READ_ALL_ORGANIZATIONS],
   };
 
   institution = {
@@ -177,7 +177,7 @@ describe("Institution", function () {
       </IntlProvider>,
     );
     const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-    expect(buttons.length).toEqual(3);
+    expect(buttons.length).toEqual(2);
 
     TestUtils.Simulate.click(buttons[1]); // cancel
     expect(handlers.onCancel).toHaveBeenCalled();
