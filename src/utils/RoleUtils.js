@@ -1,8 +1,9 @@
 import { isUsingOidcAuth } from "./OidcUtils.js";
 import { ROLE } from "../constants/DefaultConstants.js";
 
-export function hasRole(user, role) {
-  return user?.roles?.includes(role) ?? false;
+export function hasRole(user, ...roles) {
+  if (!user?.roles) return false;
+  return roles.every((role) => user.roles.includes(role));
 }
 
 export function getRoles(user) {
@@ -77,4 +78,8 @@ export function canReadInstitutionInfo(currentUser, institution) {
     hasRole(currentUser, ROLE.READ_ALL_ORGANIZATIONS) ||
     (hasRole(currentUser, ROLE.READ_ORGANIZATION) && currentUser.institution?.name === institution?.name)
   );
+}
+
+export function canSelectInstitution(currentUser) {
+  return hasRole(currentUser, ROLE.WRITE_ALL_USERS, ROLE.WRITE_ALL_ORGANIZATIONS);
 }

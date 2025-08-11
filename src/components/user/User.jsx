@@ -15,6 +15,7 @@ import IfInternalAuth from "../misc/oidc/IfInternalAuth.jsx";
 import RoleBadges from "../RoleBadges.jsx";
 import { canWriteUserInfo, getRoles, hasHigherPrivileges, hasRole } from "../../utils/RoleUtils.js";
 import RoleGroupsSelector from "../RoleGroupsSelector.jsx";
+import InstitutionSelector from "../institution/InstitutionSelector.jsx";
 
 class User extends React.Component {
   static propTypes = {
@@ -308,18 +309,12 @@ class User extends React.Component {
                 </div>
               </IfInternalAuth>
               <div className="col-12 col-sm-6">
-                <HorizontalInput
-                  type="select"
-                  name="institution"
-                  label={`${this.i18n("institution.panel-title")}*`}
-                  onChange={this._onInstitutionSelected}
-                  disabled={!hasRole(currentUser, ROLE.WRITE_ALL_USERS)}
-                  value={user.institution ? user.institution.uri : ""}
-                  labelWidth={3}
-                  inputWidth={8}
-                >
-                  {this._generateInstitutionsOptions()}
-                </HorizontalInput>
+                <InstitutionSelector
+                  currentUser={this.props.currentUser}
+                  user={this.props.user}
+                  onInstitutionSelected={this._onInstitutionSelected}
+                  generateInstitutionsOptions={this._generateInstitutionsOptions}
+                />
               </div>
             </div>
             <IfInternalAuth>
@@ -346,7 +341,7 @@ class User extends React.Component {
               {this._impersonateButton()}
               {isUsingOidcAuth() ? this._redirectToKeycloakButton() : this._passwordChangeButton()}
               {this._saveAndSendEmailButton()}
-              {(hasRole(currentUser, ROLE.WRITE_ALL_USERS) || currentUser.username === user.username) && (
+              {canWriteUserInfo(currentUser, user) && (
                 <Button
                   variant="success"
                   size="sm"
