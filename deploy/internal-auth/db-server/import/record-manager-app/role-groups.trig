@@ -54,6 +54,7 @@
                     rm:read-organization-users-role,
                     rm:write-organization-users-role,
                     rm:read-organization-records-role,
+                    rm:write-organization-records-role,
                     rm:comment-record-questions-role;
         rdfs:label "organization-manager-role-group"@en .
 
