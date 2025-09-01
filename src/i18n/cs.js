@@ -149,6 +149,7 @@ export default {
     "institution.members.loading-error": "Nelze načíst členy instituce. {error}",
 
     "records.panel-title": "Záznamy",
+    "records.no-records": "Žádné záznamy.",
     "records.id": "Id",
     "records.form-template": "Šablona",
     "records.local-name": "Název",

@@ -147,6 +147,7 @@ export default {
     "institution.members.loading-error": "Unable to load institution's members. {error}",
 
     "records.panel-title": "Records",
+    "records.no-records": "No records.",
     "records.id": "Id",
     "records.form-template": "Template",
     "records.local-name": "Name",
