@@ -273,5 +273,8 @@ export default {
 
     "form.validation.error": "Některé odpovědi jsou chybné. Opravte je před uložením formuláře:",
     "form.validation.warning": "Některé odpovědi nejsou uvedeny. Vyplňte je pro kompletizaci formulářě:",
+
+    "formTemplates.no-form-templates":
+      "Na serveru nejsou nakonfigurovány žádné šablony záznamů. Kontaktujte prosím svého administrátora.",
   },
 };

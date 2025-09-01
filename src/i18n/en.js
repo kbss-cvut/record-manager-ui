@@ -277,5 +277,8 @@ export default {
 
     "form.validation.error": "Some answers are invalid. Correct them to save:",
     "form.validation.warning": "Some answers are not provided. Fill them to complete the form:",
+
+    "formTemplates.no-form-templates":
+      "No record templates are configured on the server. Please contact your administrator.",
   },
 };
