@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useImperativeHandle, forwardRef } from "react";
 import { Alert, Button } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -19,16 +19,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadFormTemplates } from "../../actions/FormTemplatesActions.js";
 import { useI18n } from "../../hooks/useI18n.jsx";
 
-const Record = ({
-  record,
-  handlers,
-  recordSaved,
-  formgen,
-  loadFormgen,
-  formTemplatesLoaded,
-  currentUser,
-  formTemplate,
-}) => {
+const Record = (
+  { record, handlers, recordSaved, formgen, loadFormgen, formTemplatesLoaded, currentUser, formTemplate },
+  ref,
+) => {
   const intl = useIntl();
   const recordForm = useRef(null);
 
@@ -36,17 +30,39 @@ const Record = ({
   const formTemplates = useSelector((state) => state.formTemplates.formTemplatesLoaded.formTemplates);
   const { i18n } = useI18n();
 
+  useImperativeHandle(ref, () => ({
+    getFormData: () => recordForm.current.getFormData(),
+  }));
+
   const [state, setState] = useState({
     isFormValid: false,
     form: null,
     showModal: false,
     invalidQuestions: [],
     incompleteQuestions: [],
+    action: "",
   });
 
   useEffect(() => {
     dispatch(loadFormTemplates());
   }, []);
+
+  useEffect(() => {
+    if (state.action === "save") {
+      if (state.invalidQuestions.length > 0) {
+        setState((prev) => ({ ...prev, showModal: true }));
+      } else {
+        handlers.onSave();
+      }
+    } else if (state.action === "complete") {
+      if (state.incompleteQuestions.length > 0 || state.invalidQuestions.length > 0) {
+        setState((prev) => ({ ...prev, showModal: true }));
+      } else {
+        handlers.onSave();
+        handlers.onComplete();
+      }
+    }
+  }, [state.action]);
 
   const onChange = (e) => {
     const change = {};
@@ -93,16 +109,7 @@ const Record = ({
     if (form) {
       validateForm();
       const invalidQuestions = filterQuestionsBySeverity("error");
-      setState(
-        (prev) => ({ ...prev, invalidQuestions }),
-        () => {
-          if (invalidQuestions.length > 0) {
-            setState((prev) => ({ ...prev, showModal: true }));
-          } else {
-            handlers.onSave();
-          }
-        },
-      );
+      setState((prev) => ({ ...prev, invalidQuestions, action: "save" }));
     }
   };
 
@@ -112,17 +119,12 @@ const Record = ({
       validateForm();
       const incompleteQuestions = filterQuestionsBySeverity("warning");
       const invalidQuestions = filterQuestionsBySeverity("error");
-      setState(
-        (prev) => ({ ...prev, incompleteQuestions, invalidQuestions }),
-        () => {
-          if (incompleteQuestions.length > 0 || invalidQuestions.length > 0) {
-            setState((prev) => ({ ...prev, showModal: true }));
-          } else {
-            handlers.onSave();
-            handlers.onComplete();
-          }
-        },
-      );
+      setState((prev) => ({
+        ...prev,
+        incompleteQuestions,
+        invalidQuestions,
+        action: "complete",
+      }));
     }
   };
 
@@ -350,4 +352,4 @@ Record.propTypes = {
   formTemplate: PropTypes.string,
 };
 
-export default Record;
+export default forwardRef(Record);
