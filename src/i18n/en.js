@@ -147,6 +147,7 @@ export default {
     "institution.members.loading-error": "Unable to load institution's members. {error}",
 
     "records.panel-title": "Records",
+    "records.no-records": "No records.",
     "records.id": "Id",
     "records.form-template": "Template",
     "records.local-name": "Name",
@@ -277,5 +278,8 @@ export default {
 
     "form.validation.error": "Some answers are invalid. Correct them to save:",
     "form.validation.warning": "Some answers are not provided. Fill them to complete the form:",
+
+    "formTemplates.no-form-templates":
+      "No record templates are configured on the server. Please contact your administrator.",
   },
 };

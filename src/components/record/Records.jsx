@@ -76,7 +76,7 @@ class Records extends React.Component {
               <Pagination {...pagination} />
             </>
           ) : (
-            <Alert variant="warning">No records</Alert>
+            <Alert variant="warning">{this.i18n("records.no-records")}</Alert>
           )}
 
           <ImportRecordsDialog

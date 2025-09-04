@@ -1,8 +1,7 @@
-import React from "react";
-import { Button } from "react-bootstrap";
+import React, { useState, useRef, useEffect, useImperativeHandle, forwardRef } from "react";
+import { Alert, Button } from "react-bootstrap";
 import PropTypes from "prop-types";
-import { FormattedMessage, injectIntl } from "react-intl";
-import withI18n from "../../i18n/withI18n";
+import { FormattedMessage, useIntl } from "react-intl";
 import HorizontalInput from "../HorizontalInput";
 import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
@@ -10,58 +9,88 @@ import RequiredAttributes from "./RequiredAttributes";
 import { ACTION_STATUS, EXTENSION_CONSTANTS, RECORD_PHASE } from "../../constants/DefaultConstants";
 import { LoaderCard, LoaderSmall } from "../Loader";
 import { processTypeaheadOptions } from "./TypeaheadAnswer";
-import { hasRole, isAdmin } from "../../utils/SecurityUtils";
+import { isAdmin } from "../../utils/SecurityUtils";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 import { Constants as SConstants, FormUtils } from "@kbss-cvut/s-forms";
 import FormValidationDialog from "../FormValidationDialog.jsx";
 import RejectButton from "../button/RejectButton.jsx";
 import { EXTENSIONS } from "../../../config/index.js";
+import { useDispatch, useSelector } from "react-redux";
+import { loadFormTemplates } from "../../actions/FormTemplatesActions.js";
+import { useI18n } from "../../hooks/useI18n.jsx";
 
-class Record extends React.Component {
-  static propTypes = {
-    i18n: PropTypes.object.isRequired,
-    intl: PropTypes.object.isRequired,
-  };
-  constructor(props) {
-    super(props);
-    this.i18n = this.props.i18n;
-    this.recordForm = React.createRef();
-    this.state = {
-      isFormValid: false,
-      form: null,
-      showModal: false,
-      invalidQuestions: [],
-      incompleteQuestions: [],
-    };
-  }
+const Record = (
+  { record, handlers, recordSaved, formgen, loadFormgen, formTemplatesLoaded, currentUser, formTemplate },
+  ref,
+) => {
+  const intl = useIntl();
+  const recordForm = useRef(null);
 
-  _onChange = (e) => {
+  const dispatch = useDispatch();
+  const formTemplates = useSelector((state) => state.formTemplates.formTemplatesLoaded.formTemplates);
+  const { i18n } = useI18n();
+
+  useImperativeHandle(ref, () => ({
+    getFormData: () => recordForm.current.getFormData(),
+  }));
+
+  const [state, setState] = useState({
+    isFormValid: false,
+    form: null,
+    showModal: false,
+    invalidQuestions: [],
+    incompleteQuestions: [],
+    action: "",
+  });
+
+  useEffect(() => {
+    dispatch(loadFormTemplates());
+  }, []);
+
+  useEffect(() => {
+    if (state.action === "save") {
+      if (state.invalidQuestions.length > 0) {
+        setState((prev) => ({ ...prev, showModal: true }));
+      } else {
+        handlers.onSave();
+      }
+    } else if (state.action === "complete") {
+      if (state.incompleteQuestions.length > 0 || state.invalidQuestions.length > 0) {
+        setState((prev) => ({ ...prev, showModal: true }));
+      } else {
+        handlers.onSave();
+        handlers.onComplete();
+      }
+    }
+  }, [state.action]);
+
+  const onChange = (e) => {
     const change = {};
     change[e.target.name] = e.target.value;
-    this.props.handlers.onChange(change);
+    handlers.onChange(change);
   };
 
-  getFormData = () => {
-    return this.recordForm.current.getFormData();
+  const getFormData = () => {
+    return recordForm.current.getFormData();
   };
 
-  isFormValid = (isFormValid) => {
-    this.setState({ isFormValid });
+  const isFormValid = (isFormValid) => {
+    setState((prev) => ({ ...prev, isFormValid }));
   };
 
-  validateForm = () => {
-    this.recordForm.current.validateForm();
+  const validateForm = () => {
+    recordForm.current.validateForm();
   };
 
-  getFormQuestionsData = () => {
-    return this.recordForm.current.getFormQuestionsData();
+  const getFormQuestionsData = () => {
+    return recordForm.current.getFormQuestionsData();
   };
 
-  updateForm = (form) => {
-    this.setState({ form });
+  const updateForm = (form) => {
+    setState((prev) => ({ ...prev, form }));
   };
 
-  _filterQuestionsBySeverity = (severity) => {
+  const filterQuestionsBySeverity = (severity) => {
     const matchedQuestion = [];
 
     const collectIfTriggered = (question) => {
@@ -70,88 +99,47 @@ class Record extends React.Component {
       }
     };
 
-    FormUtils.dfsTraverseQuestionTree(this.getFormQuestionsData(), collectIfTriggered);
+    FormUtils.dfsTraverseQuestionTree(getFormQuestionsData(), collectIfTriggered);
 
     return matchedQuestion;
   };
 
-  _handleOnSave = () => {
-    const { form } = this.state;
+  const handleOnSave = () => {
+    const { form } = state;
     if (form) {
-      this.validateForm();
-      const invalidQuestions = this._filterQuestionsBySeverity("error");
-      this.setState({ invalidQuestions }, () => {
-        if (invalidQuestions.length > 0) {
-          this.setState({ showModal: true });
-        } else {
-          this.props.handlers.onSave();
-        }
-      });
+      validateForm();
+      const invalidQuestions = filterQuestionsBySeverity("error");
+      setState((prev) => ({ ...prev, invalidQuestions, action: "save" }));
     }
   };
 
-  _handleOnComplete = () => {
-    const { form } = this.state;
+  const handleOnComplete = () => {
+    const { form } = state;
     if (form) {
-      this.validateForm();
-      const incompleteQuestions = this._filterQuestionsBySeverity("warning");
-      const invalidQuestions = this._filterQuestionsBySeverity("error");
-      this.setState({ incompleteQuestions, invalidQuestions }, () => {
-        if (incompleteQuestions.length > 0 || invalidQuestions.length > 0) {
-          this.setState({ showModal: true });
-        } else {
-          this.props.handlers.onSave();
-          this.props.handlers.onComplete();
-        }
-      });
+      validateForm();
+      const incompleteQuestions = filterQuestionsBySeverity("warning");
+      const invalidQuestions = filterQuestionsBySeverity("error");
+      setState((prev) => ({
+        ...prev,
+        incompleteQuestions,
+        invalidQuestions,
+        action: "complete",
+      }));
     }
   };
 
-  _handleOnCloseModal = () => {
-    this.setState({
+  const handleOnCloseModal = () => {
+    setState((prev) => ({
+      ...prev,
       showModal: false,
       invalidQuestions: [],
       incompleteQuestions: [],
-    });
+    }));
   };
 
-  render() {
-    const { record, formTemplate, currentUser } = this.props;
-
-    if (!record?.formTemplate) {
-      if (formTemplate) {
-        record.formTemplate = formTemplate;
-      }
-    }
-
-    if (!record) {
-      return <LoaderCard header={this._renderHeader()} variant="primary" />;
-    }
-
-    return (
-      <div className="record">
-        <PromiseTrackingMask area="record" coverViewport={true} />
-        <form>
-          <RequiredAttributes
-            record={record}
-            onChange={this._onChange}
-            formTemplate={formTemplate}
-            currentUser={currentUser}
-            completed={record.state.isComplete()}
-          />
-          {this._showInstitution() && this._renderInstitution()}
-          <RecordProvenance record={record} />
-        </form>
-        {this._renderForm()}
-        {this._renderButtons()}
-        {this._renderModal()}
-      </div>
-    );
-  }
-
-  _renderHeader() {
-    const identifier = this.props.record && this.props.record.localName ? this.props.record.localName : "";
-    const formTemplateName = this._getFormTemplateName();
+  const renderHeader = () => {
+    const identifier = record && record.localName ? record.localName : "";
+    const formTemplateName = getFormTemplateName();
     return (
       <span>
         {formTemplateName ? (
@@ -161,34 +149,30 @@ class Record extends React.Component {
         )}
       </span>
     );
-  }
+  };
 
-  _renderForm() {
-    const { record, loadFormgen, formgen } = this.props;
-    const { form } = this.state;
-
+  const renderForm = () => {
+    const { form } = state;
     return !record.state.isInitial() ? (
       <RecordForm
-        ref={this.recordForm}
+        ref={recordForm}
         record={record}
         loadFormgen={loadFormgen}
         formgen={formgen}
-        currentUser={this.props.currentUser}
-        isFormValid={this.isFormValid}
+        currentUser={currentUser}
+        isFormValid={isFormValid}
         form={form}
-        updateForm={this.updateForm}
+        updateForm={updateForm}
       />
     ) : null;
-  }
+  };
 
-  _renderButtons() {
-    const { record, recordSaved, formgen } = this.props;
-
+  const renderButtons = () => {
     return (
       <div className="mt-3 text-center">
         {EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER &&
           !record.isNew &&
-          (record.phase === RECORD_PHASE.OPEN || this._isAdmin()) && (
+          (record.phase === RECORD_PHASE.OPEN || isAdmin(currentUser)) && (
             <RejectButton
               className="mx-1 action-button"
               variant="danger"
@@ -196,20 +180,20 @@ class Record extends React.Component {
               disabled={
                 formgen.status === ACTION_STATUS.PENDING ||
                 recordSaved.status === ACTION_STATUS.PENDING ||
-                !this.state.isFormValid ||
+                !state.isFormValid ||
                 !record.state.isComplete() ||
                 record.phase === RECORD_PHASE.REJECTED
               }
-              onClick={this.props.handlers.onReject}
+              onClick={handlers.onReject}
             >
-              {this.i18n("reject")}
+              {intl.formatMessage({ id: "reject" })}
               {recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
             </RejectButton>
           )}
 
         {(EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER || EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR) &&
           !record.isNew &&
-          (record.phase === RECORD_PHASE.OPEN || this._isAdmin()) && (
+          (record.phase === RECORD_PHASE.OPEN || isAdmin(currentUser)) && (
             <Button
               className="mx-1 action-button"
               variant="success"
@@ -217,13 +201,13 @@ class Record extends React.Component {
               disabled={
                 formgen.status === ACTION_STATUS.PENDING ||
                 recordSaved.status === ACTION_STATUS.PENDING ||
-                !this.state.isFormValid ||
+                !state.isFormValid ||
                 !record.state.isComplete() ||
                 record.phase === RECORD_PHASE.COMPLETED
               }
-              onClick={this._handleOnComplete}
+              onClick={handleOnComplete}
             >
-              {this.i18n("complete")}
+              {intl.formatMessage({ id: "complete" })}
               {recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
             </Button>
           )}
@@ -235,27 +219,26 @@ class Record extends React.Component {
           disabled={
             formgen.status === ACTION_STATUS.PENDING ||
             recordSaved.status === ACTION_STATUS.PENDING ||
-            !this.state.isFormValid ||
+            !state.isFormValid ||
             !record.state.isComplete()
           }
           hidden={
-            !this._isAdmin() &&
+            !isAdmin(currentUser) &&
             [RECORD_PHASE.COMPLETED, RECORD_PHASE.REJECTED, RECORD_PHASE.PUBLISHED].includes(record.phase)
           }
-          onClick={this._handleOnSave}
+          onClick={handleOnSave}
         >
-          {this.i18n("save")}
+          {intl.formatMessage({ id: "save" })}
           {recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
         </Button>
-        <Button className="mx-1 action-button" variant="link" size="sm" onClick={this.props.handlers.onCancel}>
-          {this.i18n("cancel")}
+        <Button className="mx-1 action-button" variant="link" size="sm" onClick={handlers.onCancel}>
+          {intl.formatMessage({ id: "cancel" })}
         </Button>
       </div>
     );
-  }
+  };
 
-  _renderInstitution() {
-    const record = this.props.record;
+  const renderInstitution = () => {
     if (!record.institution) {
       return null;
     }
@@ -267,24 +250,24 @@ class Record extends React.Component {
             inputWidth={8}
             type="text"
             value={record.institution.name}
-            label={this.i18n("record.institution")}
+            label={intl.formatMessage({ id: "record.institution" })}
             readOnly
           />
         </div>
       </div>
     );
-  }
+  };
 
-  _renderModal() {
-    const { showModal, invalidQuestions, incompleteQuestions } = this.state;
+  const renderModal = () => {
+    const { showModal, invalidQuestions, incompleteQuestions } = state;
     const questionsToShow = invalidQuestions.length > 0 ? invalidQuestions : incompleteQuestions;
 
     let modalMessage = "";
     if (questionsToShow === invalidQuestions) {
-      modalMessage = this.i18n("form.validation.error");
+      modalMessage = intl.formatMessage({ id: "form.validation.error" });
     }
     if (questionsToShow === incompleteQuestions) {
-      modalMessage = this.i18n("form.validation.warning");
+      modalMessage = intl.formatMessage({ id: "form.validation.warning" });
     }
 
     return (
@@ -292,40 +275,69 @@ class Record extends React.Component {
         show={showModal}
         modalMessage={modalMessage}
         questionsToShow={questionsToShow}
-        handleOnCloseModal={this._handleOnCloseModal}
+        handleOnCloseModal={handleOnCloseModal}
       />
     );
-  }
+  };
 
-  _getFormTemplateName() {
-    const { formTemplatesLoaded, record, intl } = this.props;
-    const formTemplate = this.props.formTemplate || record?.formTemplate;
-    if (formTemplate) {
+  const getFormTemplateName = () => {
+    const formTemplateToUse = formTemplate || record?.formTemplate;
+    if (formTemplateToUse) {
       const formTemplateOptions = formTemplatesLoaded.formTemplates
         ? processTypeaheadOptions(formTemplatesLoaded.formTemplates, intl)
         : [];
-      return formTemplateOptions.find((r) => r.id === formTemplate)?.name;
+      return formTemplateOptions.find((r) => r.id === formTemplateToUse)?.name;
     }
-  }
+  };
 
-  _showInstitution() {
-    return this._isAdmin();
-  }
+  const showInstitution = () => {
+    return isAdmin(currentUser);
+  };
 
-  _getPanelTitle() {
-    if (!this._isAdmin() && this.props.formTemplate) {
-      const formTemplateName = this._getFormTemplateName();
+  const getPanelTitle = () => {
+    if (!isAdmin(currentUser) && formTemplate) {
+      const formTemplateName = getFormTemplateName();
       if (formTemplateName) {
         return formTemplateName;
       }
     }
-    return this.i18n("record.panel-title");
+    return intl.formatMessage({ id: "record.panel-title" });
+  };
+
+  if (!record?.formTemplate) {
+    if (formTemplate) {
+      record.formTemplate = formTemplate;
+    }
   }
 
-  _isAdmin() {
-    return isAdmin(this.props.currentUser);
+  if (!record) {
+    return <LoaderCard header={renderHeader()} variant="primary" />;
   }
-}
+
+  if (formTemplates?.length === 0) {
+    return <Alert variant="warning">{i18n("formTemplates.no-form-templates")}</Alert>;
+  }
+
+  return (
+    <div className="record">
+      <PromiseTrackingMask area="record" coverViewport={true} />
+      <form>
+        <RequiredAttributes
+          record={record}
+          onChange={onChange}
+          formTemplate={formTemplate}
+          currentUser={currentUser}
+          completed={record.state.isComplete()}
+        />
+        {showInstitution() && renderInstitution()}
+        <RecordProvenance record={record} />
+      </form>
+      {renderForm()}
+      {renderButtons()}
+      {renderModal()}
+    </div>
+  );
+};
 
 Record.propTypes = {
   record: PropTypes.object,
@@ -340,4 +352,4 @@ Record.propTypes = {
   formTemplate: PropTypes.string,
 };
 
-export default injectIntl(withI18n(Record, { forwardRef: true }), { forwardRef: true });
+export default forwardRef(Record);

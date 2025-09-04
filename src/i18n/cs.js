@@ -149,6 +149,7 @@ export default {
     "institution.members.loading-error": "Nelze načíst členy instituce. {error}",
 
     "records.panel-title": "Záznamy",
+    "records.no-records": "Žádné záznamy.",
     "records.id": "Id",
     "records.form-template": "Šablona",
     "records.local-name": "Název",
@@ -273,5 +274,8 @@ export default {
 
     "form.validation.error": "Některé odpovědi jsou chybné. Opravte je před uložením formuláře:",
     "form.validation.warning": "Některé odpovědi nejsou uvedeny. Vyplňte je pro kompletizaci formulářě:",
+
+    "formTemplates.no-form-templates":
+      "Na serveru nejsou nakonfigurovány žádné šablony záznamů. Kontaktujte prosím svého administrátora.",
   },
 };
