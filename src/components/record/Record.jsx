@@ -295,7 +295,7 @@ const Record = (
 
   const showInstitution = () => {
     return canReadInstitutionInfo(this.props.currentUser, this.record?.institution);
-  }
+  };
 
   const getPanelTitle = () => {
     if (!hasRole(this.props.currentUser, ROLE.READ_ALL_RECORDS) && this.props.formTemplate) {
@@ -312,7 +312,6 @@ const Record = (
       record.formTemplate = formTemplate;
     }
   }
-}
 
   if (!record) {
     return <LoaderCard header={renderHeader()} variant="primary" />;
