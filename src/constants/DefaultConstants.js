@@ -87,22 +87,32 @@ export const ACTION_STATUS = {
 };
 
 export const ROLE = {
-  // DEPRECATED
-  ADMIN: "ROLE_ADMIN",
-  // DEPRECATED
-  USER: "ROLE_USER",
-  COMPLETE_RECORDS: "rm-complete-records",
-  REJECT_RECORDS: "rm-reject-records",
-  PUBLISH_RECORDS: "rm-publish-records",
-  DELETE_ALL_RECORDS: "rm-delete-all-records",
-  EDIT_ALL_RECORDS: "rm-edit-all-records",
-  VIEW_ALL_RECORDS: "rm-view-all-records",
-  DELETE_ORGANIZATION_RECORDS: "rm-delete-organization-records",
-  EDIT_ORGANIZATION_RECORDS: "rm-edit-organization-records",
-  VIEW_ORGANIZATION_RECORDS: "rm-view-organization-records",
-  EDIT_USERS: "rm-edit-users",
-  IMPORT_CODELISTS: "rm-import-codelists",
-  IMPERSONATE: "rm-impersonate",
+  // Record-related roles
+  COMPLETE_RECORDS: "completeRecords",
+  REJECT_RECORDS: "rejectRecords",
+  PUBLISH_RECORDS: "publishRecords",
+  READ_ALL_RECORDS: "readAllRecords",
+  WRITE_ALL_RECORDS: "writeAllRecords",
+  READ_ORGANIZATION_RECORDS: "readOrganizationRecords",
+  WRITE_ORGANIZATION_RECORDS: "writeOrganizationRecords",
+
+  // User-related roles
+  READ_ALL_USERS: "readAllUsers",
+  WRITE_ALL_USERS: "writeAllUsers",
+  READ_ORGANIZATION_USERS: "readOrganizationUsers",
+  WRITE_ORGANIZATION_USERS: "writeOrganizationUsers",
+
+  // Organization-related roles
+  READ_ORGANIZATION: "readOrganization",
+  WRITE_ORGANIZATION: "writeOrganization",
+  READ_ALL_ORGANIZATIONS: "readAllOrganizations",
+  WRITE_ALL_ORGANIZATIONS: "writeAllOrganizations",
+
+  // Other roles
+  IMPORT_CODELISTS: "importCodelists",
+  COMMENT_RECORD_QUESTIONS: "commentRecordQuestions",
+  READ_ACTION_HISTORY: "readActionHistory",
+  READ_STATISTICS: "readStatistics",
 };
 
 // Default number of table elements per page.

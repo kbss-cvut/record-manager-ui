@@ -13,7 +13,7 @@ import { LoaderSmall } from "../Loader";
 import InstitutionValidator from "../../validation/InstitutionValidator";
 import HelpIcon from "../HelpIcon";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
-import { isAdmin } from "../../utils/SecurityUtils.js";
+import { canWriteInstitutionInfo, hasRole } from "../../utils/RoleUtils.js";
 
 /**
  * Institution detail. Editable only for admins.
@@ -64,7 +64,7 @@ class Institution extends React.Component {
                       name="name"
                       label={`${this.i18n("institution.name")}*`}
                       value={institution.name}
-                      readOnly={!isAdmin(currentUser)}
+                      disabled={!canWriteInstitutionInfo(currentUser, institution)}
                       onChange={this._onChange}
                       labelWidth={3}
                       inputWidth={8}
@@ -76,7 +76,7 @@ class Institution extends React.Component {
                       name="emailAddress"
                       label={this.i18n("institution.email")}
                       value={institution.emailAddress || ""}
-                      readOnly={!isAdmin(currentUser)}
+                      disabled={!canWriteInstitutionInfo(currentUser, institution)}
                       onChange={this._onChange}
                       labelWidth={3}
                       inputWidth={8}
@@ -86,8 +86,8 @@ class Institution extends React.Component {
                 {this._renderAddedDate()}
                 {this._renderButtons()}
               </form>
-              {!institution.isNew && this._renderMembers()}
-              {!institution.isNew && (
+              {!institution.isNew && hasRole(currentUser, ROLE.READ_ORGANIZATION_USERS) && this._renderMembers()}
+              {!institution.isNew && hasRole(currentUser, ROLE.READ_ORGANIZATION_RECORDS) && (
                 <InstitutionPatients
                   recordsLoaded={recordsLoaded}
                   formTemplatesLoaded={formTemplatesLoaded}
@@ -122,8 +122,9 @@ class Institution extends React.Component {
   }
 
   _renderButtons() {
-    const { currentUser, handlers, institutionSaved } = this.props;
-    if (!isAdmin(currentUser)) {
+    const { handlers, institutionSaved, currentUser, institution } = this.props;
+
+    if (!canWriteInstitutionInfo(currentUser, institution)) {
       return (
         <div className="row justify-content-center">
           <Button variant="primary" size="sm" className="action-button" onClick={handlers.onCancel}>

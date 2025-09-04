@@ -3,11 +3,12 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
-import { ACTION_STATUS, ROLE } from "../../../src/constants/DefaultConstants";
+import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
 import Record from "../../../src/components/record/Record";
 import * as RecordState from "../../../src/model/RecordState";
 import enLang from "../../../src/i18n/en";
 import { describe, expect, it, vi, beforeEach } from "vitest";
+import { admin } from "../../__mocks__/users.js";
 
 vi.mock("../../../src/components/record/TypeaheadAnswer", () => {
   return {
@@ -49,11 +50,6 @@ describe.skip("Record", function () {
       isNew: true,
       state: RecordState.createInitialState(),
     };
-    currentUser = {
-      firstName: "Test",
-      lastName: "User",
-      role: ROLE.USER,
-    };
   });
 
   record = {
@@ -80,7 +76,7 @@ describe.skip("Record", function () {
           recordSaved={recordSaved}
           showAlert={showAlert}
           formgen={formgen}
-          currentUser={currentUser}
+          currentUser={admin}
           formTemplatesLoaded={{}}
         />
       </IntlProvider>,
@@ -107,7 +103,7 @@ describe.skip("Record", function () {
           recordSaved={recordSaved}
           showAlert={showAlert}
           formgen={formgen}
-          currentUser={currentUser}
+          currentUser={admin}
           formTemplatesLoaded={{}}
         />
       </IntlProvider>,
@@ -127,7 +123,7 @@ describe.skip("Record", function () {
           recordSaved={recordSaved}
           showAlert={showAlert}
           formgen={formgen}
-          currentUser={currentUser}
+          currentUser={admin}
           formTemplatesLoaded={{}}
         />
       </IntlProvider>,
@@ -156,7 +152,7 @@ describe.skip("Record", function () {
           recordSaved={recordSaved}
           showAlert={showAlert}
           formgen={formgen}
-          currentUser={currentUser}
+          currentUser={admin}
           formTemplatesLoaded={{}}
         />
       </IntlProvider>,
@@ -181,7 +177,7 @@ describe.skip("Record", function () {
           recordSaved={recordSaved}
           showAlert={showAlert}
           formgen={formgen}
-          currentUser={currentUser}
+          currentUser={admin}
           formTemplatesLoaded={{}}
         />
       </IntlProvider>,
@@ -209,7 +205,7 @@ describe.skip("Record", function () {
           recordSaved={recordSaved}
           showAlert={showAlert}
           formgen={formgen}
-          currentUser={currentUser}
+          currentUser={admin}
           formTemplatesLoaded={{}}
         />
       </IntlProvider>,
@@ -234,7 +230,7 @@ describe.skip("Record", function () {
           recordSaved={recordSaved}
           showAlert={showAlert}
           formgen={formgen}
-          currentUser={currentUser}
+          currentUser={admin}
           formTemplatesLoaded={{}}
         />
       </IntlProvider>,

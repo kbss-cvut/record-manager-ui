@@ -1,12 +1,12 @@
 import * as ActionConstants from "../constants/ActionConstants";
-import { HttpHeaders } from "../constants/DefaultConstants";
+import { HttpHeaders, ROLE } from "../constants/DefaultConstants";
 import { axiosBackend } from "./index";
 import { API_URL } from "../../config";
 import { asyncError, asyncRequest, asyncSuccess, showServerResponseErrorMessage } from "./AsyncActionUtils";
 import { extractLastPageNumber, fileDownload, paramsSerializer } from "../utils/Utils";
 import { publishMessage } from "./MessageActions";
 import { infoMessage, successMessage } from "../model/Message";
-import { isAdmin } from "../utils/SecurityUtils";
+import { hasRole } from "../utils/RoleUtils.js";
 
 export function loadRecordsByInstitution(institutionKey) {
   return loadRecords({ institution: institutionKey });
@@ -15,7 +15,11 @@ export function loadRecordsByInstitution(institutionKey) {
 export function loadRecords(params = {}) {
   return function (dispatch, getState) {
     const currentUser = getState().auth.user;
-    if (currentUser && !isAdmin(currentUser) && currentUser.institution) {
+    if (
+      !hasRole(currentUser, ROLE.READ_ALL_RECORDS) &&
+      hasRole(currentUser, ROLE.READ_ORGANIZATION_RECORDS) &&
+      currentUser?.institution
+    ) {
       params.institution = currentUser.institution.key;
     }
     dispatch(loadRecordsPending());
@@ -54,7 +58,11 @@ export function exportRecords(exportType, params = {}) {
   return (dispatch, getState) => {
     dispatch(asyncRequest(ActionConstants.EXPORT_RECORDS_PENDING));
     const currentUser = getState().auth.user;
-    if (currentUser && !isAdmin(currentUser) && currentUser.institution) {
+    if (
+      !hasRole(currentUser, ROLE.READ_ALL_RECORDS) &&
+      hasRole(currentUser, ROLE.READ_ORGANIZATION_RECORDS) &&
+      currentUser?.institution
+    ) {
       params.institution = currentUser.institution.key;
     }
     return axiosBackend
@@ -83,7 +91,7 @@ export function publishRecords(params = {}) {
   return (dispatch, getState) => {
     dispatch(asyncRequest(ActionConstants.PUBLISH_RECORDS_PENDING));
     const currentUser = getState().auth.user;
-    if (currentUser && !isAdmin(currentUser) && currentUser.institution) {
+    if (hasRole(currentUser, ROLE.PUBLISH_RECORDS) && currentUser.institution) {
       params.institution = currentUser.institution.key;
     }
     return axiosBackend

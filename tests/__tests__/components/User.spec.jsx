@@ -4,82 +4,29 @@ import React from "react";
 import { IntlProvider } from "react-intl";
 import TestUtils from "react-dom/test-utils";
 import User from "../../../src/components/user/User";
-import { ACTION_STATUS, GROUP, ROLE } from "../../../src/constants/DefaultConstants";
+import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
 import * as EntityFactory from "../../../src/utils/EntityFactory";
 import enLang from "../../../src/i18n/en";
 import { describe, expect, it, vi, beforeEach } from "vitest";
+import { admin, entryClerk, reviewer, ROLE_GROUPS } from "../../__mocks__/users.js";
 
 describe("User", function () {
   const intlData = enLang;
-  let user,
-    admin,
-    newUser = EntityFactory.initNewUser(),
+  let newUser = EntityFactory.initNewUser(),
     institutions,
-    roleGroups,
     backToInstitution,
     userSaved,
     showAlert,
     userLoaded,
-    currentUser,
-    currentUserAdmin,
     handlers = {
       onSave: vi.fn(),
       onCancel: vi.fn(),
       onChange: vi.fn(),
     };
 
-  currentUser = {
-    username: "test",
-    roles: [ROLE.USER],
-  };
-  currentUserAdmin = {
-    username: "test",
-    roles: [ROLE.ADMIN],
-  };
   newUser = {
     ...newUser,
     password: "test",
-  };
-
-  admin = {
-    uri: "http://onto.fel.cvut.cz/ontologies/record-manager/Admin-Administratorowitch",
-    firstName: "Test1",
-    lastName: "Man",
-    username: "testman1",
-    password: "test",
-    institution: {
-      uri: "http://test.io",
-      key: "823372507340798303",
-      name: "Test Institution",
-      emailAddress: "test@institution.io",
-    },
-    types: [
-      "http://onto.fel.cvut.cz/ontologies/record-manager/administrator",
-      "http://onto.fel.cvut.cz/ontologies/record-manager/doctor",
-    ],
-    roleGroup: {
-      uri: "http://onto.fel.cvut.cz/ontologies/record-manager/role-group/1",
-      name: "Operator",
-      roles: [ROLE.ADMIN],
-    },
-  };
-
-  user = {
-    uri: "http://onto.fel.cvut.cz/ontologies/record-manager/erter-tert",
-    firstName: "Test2",
-    lastName: "Man",
-    username: "testman2",
-    password: "test",
-    emailAddress: "test@man.io",
-    institution: {
-      key: 18691,
-    },
-    types: ["http://onto.fel.cvut.cz/ontologies/record-manager/doctor"],
-    roleGroup: {
-      uri: "http://onto.fel.cvut.cz/ontologies/record-manager/role-",
-      name: "User",
-      roles: [ROLE.USER],
-    },
   };
 
   institutions = [
@@ -94,33 +41,6 @@ describe("User", function () {
       key: "823372507340798301",
       name: "Test2 Institution",
       emailAddress: "test2@institution.io",
-    },
-  ];
-
-  roleGroups = [
-    {
-      uri: "http://onto.fel.cvut.cz/ontologies/record-manager/admin-role-group",
-      name: "admin-role-group",
-      roles: [
-        "rm-reject-records",
-        "ROLE_USER",
-        "rm-delete-all-records",
-        "rm-delete-organization-records",
-        "rm-complete-records",
-        "rm-view-organization-records",
-        "rm-edit-all-records",
-        "rm-edit-users",
-        "rm-import-codelists",
-        "rm-publish-records",
-        "rm-edit-organization-records",
-        "ROLE_ADMIN",
-        "rm-view-all-records",
-      ],
-    },
-    {
-      uri: "http://onto.fel.cvut.cz/ontologies/record-manager/user-role-group",
-      name: "user-role-group",
-      roles: ["ROLE_USER"],
     },
   ];
 
@@ -149,9 +69,9 @@ describe("User", function () {
           userSaved={userSaved}
           showAlert={showAlert}
           userLoaded={userLoaded}
-          currentUser={currentUser}
+          currentUser={admin}
           institutions={institutions}
-          roleGroups={roleGroups}
+          roleGroups={ROLE_GROUPS}
         />
       </IntlProvider>,
     );
@@ -170,15 +90,16 @@ describe("User", function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
         <User
-          user={user}
+          user={entryClerk}
           handlers={handlers}
           backToInstitution={backToInstitution}
           userSaved={userSaved}
           showAlert={showAlert}
           userLoaded={userLoaded}
-          currentUser={currentUser}
+          currentUser={admin}
           institutions={institutions}
-          roleGroups={roleGroups}
+          roleGroups={ROLE_GROUPS}
+          impersonation={{}}
         />
       </IntlProvider>,
     );
@@ -186,7 +107,7 @@ describe("User", function () {
     expect(alert).not.toBeNull();
   });
 
-  it("renders user's form empty with random button", function () {
+  it("renders admin's form empty with random button", function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
         <User
@@ -196,15 +117,19 @@ describe("User", function () {
           userSaved={userSaved}
           showAlert={showAlert}
           userLoaded={userLoaded}
-          currentUser={currentUserAdmin}
+          currentUser={admin}
           institutions={institutions}
-          roleGroups={roleGroups}
+          roleGroups={ROLE_GROUPS}
         />
       </IntlProvider>,
     );
-    const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, "input");
-    expect(result.length).toEqual(6);
-    for (let input of result) {
+    const inputElements = TestUtils.scryRenderedDOMComponentsWithTag(tree, "input");
+    const selectElements = TestUtils.scryRenderedDOMComponentsWithTag(tree, "select");
+
+    expect(inputElements.length).toEqual(5);
+    expect(selectElements.length).toEqual(2);
+
+    for (let input of inputElements) {
       switch (input.name) {
         case "firstName":
           expect(input.value).toEqual("");
@@ -229,8 +154,20 @@ describe("User", function () {
           break;
       }
     }
-    const selects = TestUtils.scryRenderedDOMComponentsWithTag(tree, "select");
-    expect(selects.length).toEqual(2);
+
+    for (let select of selectElements) {
+      console.log(select);
+      switch (select.name) {
+        case "institution":
+          expect(select.type).toEqual("select-one");
+          break;
+
+        case "roleGroup":
+          expect(select.type).toEqual("select-one");
+          break;
+      }
+    }
+
     const randomButton = TestUtils.scryRenderedDOMComponentsWithClass(tree, "button-random");
     expect(randomButton.length).toEqual(1);
   });
@@ -253,9 +190,9 @@ describe("User", function () {
           userSaved={userSaved}
           showAlert={showAlert}
           userLoaded={userLoaded}
-          currentUser={currentUser}
+          currentUser={admin}
           institutions={institutions}
-          roleGroups={roleGroups}
+          roleGroups={ROLE_GROUPS}
         />
       </IntlProvider>,
     );
@@ -282,9 +219,9 @@ describe("User", function () {
           userSaved={userSaved}
           showAlert={showAlert}
           userLoaded={userLoaded}
-          currentUser={currentUser}
+          currentUser={admin}
           institutions={institutions}
-          roleGroups={roleGroups}
+          roleGroups={ROLE_GROUPS}
         />
       </IntlProvider>,
     );
@@ -310,9 +247,9 @@ describe("User", function () {
           userSaved={userSaved}
           showAlert={showAlert}
           userLoaded={userLoaded}
-          currentUser={currentUser}
+          currentUser={admin}
           institutions={institutions}
-          roleGroups={roleGroups}
+          roleGroups={ROLE_GROUPS}
         />
       </IntlProvider>,
     );
@@ -324,38 +261,38 @@ describe("User", function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
         <User
-          user={user}
+          user={entryClerk}
           handlers={handlers}
           backToInstitution={backToInstitution}
           userSaved={userSaved}
           showAlert={showAlert}
           userLoaded={userLoaded}
-          currentUser={currentUserAdmin}
+          currentUser={admin}
           institutions={institutions}
           impersonation={{}}
-          roleGroups={roleGroups}
+          roleGroups={ROLE_GROUPS}
         />
       </IntlProvider>,
     );
     const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, "input");
-    expect(result.length).toEqual(5);
+    expect(result.length).toEqual(4);
     for (let input of result) {
       switch (input.name) {
         case "firstName":
-          expect(input.value).toEqual("Test2");
+          expect(input.value).toEqual("EntryClerk");
           expect(input.type).toEqual("text");
           break;
         case "lastName":
-          expect(input.value).toEqual("Man");
+          expect(input.value).toEqual("EntryClerkorovitch");
           expect(input.type).toEqual("text");
           break;
         case "username":
-          expect(input.value).toEqual("testman2");
+          expect(input.value).toEqual("entryClerk");
           expect(input.type).toEqual("text");
           expect(input.disabled).toBeTruthy();
           break;
         case "emailAddress":
-          expect(input.value).toEqual("test@man.io");
+          expect(input.value).toEqual("entryClerk@gmail.com");
           expect(input.type).toEqual("email");
           break;
       }
@@ -376,32 +313,32 @@ describe("User", function () {
           userSaved={userSaved}
           showAlert={showAlert}
           userLoaded={userLoaded}
-          currentUser={currentUserAdmin}
+          currentUser={admin}
           institutions={institutions}
           impersonation={{}}
-          roleGroups={roleGroups}
+          roleGroups={ROLE_GROUPS}
         />
       </IntlProvider>,
     );
     const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, "input");
-    expect(result.length).toEqual(5);
+    expect(result.length).toEqual(4);
     for (let input of result) {
       switch (input.name) {
         case "firstName":
-          expect(input.value).toEqual("Test1");
+          expect(input.value).toEqual("Admin");
           expect(input.type).toEqual("text");
           break;
         case "lastName":
-          expect(input.value).toEqual("Man");
+          expect(input.value).toEqual("Administratorowitch");
           expect(input.type).toEqual("text");
           break;
         case "username":
-          expect(input.value).toEqual("testman1");
+          expect(input.value).toEqual("admin");
           expect(input.type).toEqual("text");
           expect(input.disabled).toBeTruthy();
           break;
         case "emailAddress":
-          expect(input.value).toEqual("");
+          expect(input.value).toEqual("admin@gmail.com");
           expect(input.type).toEqual("email");
           break;
       }
@@ -414,37 +351,38 @@ describe("User", function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
         <User
-          user={admin}
+          user={reviewer}
           handlers={handlers}
           backToInstitution={backToInstitution}
           userSaved={userSaved}
           showAlert={showAlert}
           userLoaded={userLoaded}
-          currentUser={currentUser}
+          currentUser={admin}
           institutions={institutions}
-          roleGroups={roleGroups}
+          roleGroups={ROLE_GROUPS}
+          impersonation={{}}
         />
       </IntlProvider>,
     );
     const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, "input");
-    expect(result.length).toEqual(5);
+    expect(result.length).toEqual(4);
     for (let input of result) {
       switch (input.name) {
         case "firstName":
-          expect(input.value).toEqual("Test1");
+          expect(input.value).toEqual("Reviewer");
           expect(input.type).toEqual("text");
           break;
         case "lastName":
-          expect(input.value).toEqual("Man");
+          expect(input.value).toEqual("Reviewerevitch");
           expect(input.type).toEqual("text");
           break;
         case "username":
-          expect(input.value).toEqual("testman1");
+          expect(input.value).toEqual("reviewer");
           expect(input.type).toEqual("text");
           expect(input.disabled).toBeTruthy();
           break;
         case "emailAddress":
-          expect(input.value).toEqual("");
+          expect(input.value).toEqual("reviewer@gmail.com");
           expect(input.type).toEqual("email");
           break;
       }
@@ -464,56 +402,49 @@ describe("User", function () {
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
         <User
-          user={user}
+          user={entryClerk}
           handlers={handlers}
           backToInstitution={backToInstitution}
           userSaved={userSaved}
           showAlert={showAlert}
           userLoaded={userLoaded}
-          currentUser={currentUser}
+          currentUser={admin}
           institutions={institutions}
-          roleGroups={roleGroups}
+          roleGroups={ROLE_GROUPS}
+          impersonation={{}}
         />
       </IntlProvider>,
     );
     const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-    expect(buttons.length).toEqual(3);
+    expect(buttons.length).toEqual(5);
 
-    TestUtils.Simulate.click(buttons[2]); // cancel
+    TestUtils.Simulate.click(buttons[4]); // cancel
     expect(handlers.onCancel).toHaveBeenCalled();
   });
 
   it('renders "Back to institution" button and click on it', function () {
-    const user = {
-      ...newUser,
-      username: "test",
-      firstName: "test1",
-      lastName: "test2",
-      emailAddress: "test@test.cz",
-      institution: {},
-    };
-
     backToInstitution = true;
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
         <User
-          user={user}
+          user={entryClerk}
           handlers={handlers}
           backToInstitution={backToInstitution}
           userSaved={userSaved}
           showAlert={showAlert}
           userLoaded={userLoaded}
-          currentUser={currentUser}
+          currentUser={admin}
           institutions={institutions}
-          roleGroups={roleGroups}
+          roleGroups={ROLE_GROUPS}
+          impersonation={{}}
         />
       </IntlProvider>,
     );
     const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
 
-    expect(buttons.length).toEqual(3);
+    expect(buttons.length).toEqual(5);
 
-    TestUtils.Simulate.click(buttons[2]); // back to institution
+    TestUtils.Simulate.click(buttons[4]); // back to institution
     expect(handlers.onCancel).toHaveBeenCalled();
   });
 
@@ -522,31 +453,24 @@ describe("User", function () {
       ...userSaved,
       status: ACTION_STATUS.PENDING,
     };
-    const user = {
-      ...newUser,
-      username: "test",
-      firstName: "test1",
-      lastName: "test2",
-      emailAddress: "test@test.cz",
-      institution: {},
-    };
 
     const tree = TestUtils.renderIntoDocument(
       <IntlProvider locale="en" {...intlData}>
         <User
-          user={user}
+          user={entryClerk}
           handlers={handlers}
           backToInstitution={backToInstitution}
           userSaved={userSaved}
           showAlert={showAlert}
           userLoaded={userLoaded}
-          currentUser={currentUser}
+          currentUser={admin}
           institutions={institutions}
-          roleGroups={roleGroups}
+          roleGroups={ROLE_GROUPS}
+          impersonation={{}}
         />
       </IntlProvider>,
     );
-    const loader = TestUtils.findRenderedDOMComponentWithClass(tree, "loader");
+    const loader = TestUtils.scryRenderedDOMComponentsWithClass(tree, "loader");
     expect(loader).not.toBeNull();
   });
 });

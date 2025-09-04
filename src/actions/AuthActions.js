@@ -2,10 +2,9 @@ import { axiosBackend } from "./index";
 import { transitionToHome } from "../utils/Routing";
 import * as ActionConstants from "../constants/ActionConstants";
 import { API_URL } from "../../config";
-import { IMPERSONATOR_TYPE } from "../constants/Vocabulary";
 import { IMPERSONATE_LOGOUT_SUCCESS, IMPERSONATE_PENDING } from "../constants/ActionConstants";
 import { MediaType, ROLE } from "../constants/DefaultConstants";
-import { hasRole } from "../utils/SecurityUtils.js";
+import { hasRole } from "../utils/RoleUtils.js";
 
 export function login(username, password) {
   return function (dispatch) {
@@ -57,7 +56,7 @@ export function userAuthError(error) {
 
 export function logout() {
   return function (dispatch, getState) {
-    if (hasRole(getState().auth.user, ROLE.IMPERSONATE)) {
+    if (getState().auth.user.impersonated) {
       return logoutImpersonator(dispatch);
     }
     return axiosBackend

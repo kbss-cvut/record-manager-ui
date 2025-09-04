@@ -2,7 +2,6 @@
 
 import * as Utils from "./Utils";
 import * as RecordState from "../model/RecordState";
-import * as Vocabulary from "../constants/Vocabulary";
 import { RECORD_PHASE } from "../constants/DefaultConstants";
 
 export function initNewUser() {
@@ -12,6 +11,8 @@ export function initNewUser() {
     username: "",
     emailAddress: "",
     password: Utils.generatePassword(),
+    roles: [],
+    roleGroup: {},
     isNew: true,
   };
 }

@@ -88,11 +88,11 @@ class RecordTable extends React.Component {
     return (
       <thead>
         <tr>
-          <IfGranted expected={ROLE.ADMIN} actual={this.props.currentUser.roles}>
+          <IfGranted expected={ROLE.READ_ALL_RECORDS} actual={this.props.currentUser.roles}>
             <th className="col-1 content-center">{this.i18n("records.id")}</th>
           </IfGranted>
           <th className="col-2 content-center">{this.i18n("records.local-name")}</th>
-          <IfGranted expected={ROLE.ADMIN} actual={this.props.currentUser.roles}>
+          <IfGranted expected={ROLE.READ_ALL_RECORDS} actual={this.props.currentUser.roles}>
             <FilterableInstitutionHeader filters={filters} onFilterChange={onChange} />
             <FilterableTemplateHeader filters={filters} onFilterChange={onChange} />
           </IfGranted>

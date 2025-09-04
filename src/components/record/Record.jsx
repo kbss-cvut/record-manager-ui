@@ -6,15 +6,15 @@ import HorizontalInput from "../HorizontalInput";
 import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
 import RequiredAttributes from "./RequiredAttributes";
-import { ACTION_STATUS, EXTENSION_CONSTANTS, RECORD_PHASE } from "../../constants/DefaultConstants";
+import { ACTION_STATUS, EXTENSION_CONSTANTS, RECORD_PHASE, ROLE } from "../../constants/DefaultConstants";
 import { LoaderCard, LoaderSmall } from "../Loader";
 import { processTypeaheadOptions } from "./TypeaheadAnswer";
-import { isAdmin } from "../../utils/SecurityUtils";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 import { Constants as SConstants, FormUtils } from "@kbss-cvut/s-forms";
 import FormValidationDialog from "../FormValidationDialog.jsx";
 import RejectButton from "../button/RejectButton.jsx";
 import { EXTENSIONS } from "../../../config/index.js";
+import { canReadInstitutionInfo, canWriteRecord, hasRole } from "../../utils/RoleUtils.js";
 import { useDispatch, useSelector } from "react-redux";
 import { loadFormTemplates } from "../../actions/FormTemplatesActions.js";
 import { useI18n } from "../../hooks/useI18n.jsx";
@@ -172,7 +172,9 @@ const Record = (
       <div className="mt-3 text-center">
         {EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER &&
           !record.isNew &&
-          (record.phase === RECORD_PHASE.OPEN || isAdmin(currentUser)) && (
+          record.phase === RECORD_PHASE.OPEN &&
+          hasRole(currentUser, ROLE.REJECT_RECORDS) &&
+          canWriteRecord(currentUser, record) && (
             <RejectButton
               className="mx-1 action-button"
               variant="danger"
@@ -191,9 +193,10 @@ const Record = (
             </RejectButton>
           )}
 
-        {(EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER || EXTENSIONS === EXTENSION_CONSTANTS.OPERATOR) &&
-          !record.isNew &&
-          (record.phase === RECORD_PHASE.OPEN || isAdmin(currentUser)) && (
+        {!record.isNew &&
+          record.phase === RECORD_PHASE.OPEN &&
+          hasRole(currentUser, ROLE.COMPLETE_RECORDS) &&
+          canWriteRecord(currentUser, record) && (
             <Button
               className="mx-1 action-button"
               variant="success"
@@ -223,7 +226,7 @@ const Record = (
             !record.state.isComplete()
           }
           hidden={
-            !isAdmin(currentUser) &&
+            !canWriteRecord(currentUser, record) &&
             [RECORD_PHASE.COMPLETED, RECORD_PHASE.REJECTED, RECORD_PHASE.PUBLISHED].includes(record.phase)
           }
           onClick={handleOnSave}
@@ -291,12 +294,12 @@ const Record = (
   };
 
   const showInstitution = () => {
-    return isAdmin(currentUser);
+    return canReadInstitutionInfo(this.props.currentUser, this.record?.institution);
   };
 
   const getPanelTitle = () => {
-    if (!isAdmin(currentUser) && formTemplate) {
-      const formTemplateName = getFormTemplateName();
+    if (!hasRole(this.props.currentUser, ROLE.READ_ALL_RECORDS) && this.props.formTemplate) {
+      const formTemplateName = this._getFormTemplateName();
       if (formTemplateName) {
         return formTemplateName;
       }

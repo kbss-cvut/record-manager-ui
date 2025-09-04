@@ -1,12 +1,8 @@
 "use strict";
 import Bowser from "bowser";
 import * as Constants from "../constants/DefaultConstants";
-import { Constants as SConstants } from "@kbss-cvut/s-forms";
 import { HttpHeaders, ROLE } from "../constants/DefaultConstants";
-import * as Vocabulary from "../constants/Vocabulary";
 import * as supportedDevices from "../constants/SupportedDevices";
-import { isAdmin } from "./SecurityUtils";
-import parseLinkHeader from "parse-link-header";
 
 /**
  * Common propositions that should not be capitalized
@@ -276,19 +272,6 @@ export function generateRandomUsername(length = 8) {
   }
 
   return username;
-}
-/**
- * Checks whether the currently logged in user can view patient records of the specified institutions.
- *
- * To be able to view the records, the user has to be an admin or a member of the institution.
- * @param institutionKey Key of the institution to test
- * @return {*|boolean}
- */
-export function canLoadInstitutionsPatients(institutionKey, currentUser) {
-  return (
-    currentUser != null &&
-    (isAdmin(currentUser) || (currentUser.institution != null && currentUser.institution.key === institutionKey))
-  );
 }
 
 export function deviceIsMobile() {

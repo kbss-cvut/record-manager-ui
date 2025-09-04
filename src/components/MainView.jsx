@@ -16,7 +16,6 @@ import { IfGranted } from "react-authorization";
 import { transitionTo, transitionToWithOpts } from "../utils/Routing";
 import { isUsingOidcAuth, userProfileLink } from "../utils/OidcUtils";
 import ImpersonatorBadge from "./ImpersonatorBadge";
-import { isAdmin } from "../utils/SecurityUtils";
 import Messages from "./message/Messages";
 import Footer from "../Footer";
 import PropTypes from "prop-types";
@@ -37,7 +36,7 @@ class MainView extends React.Component {
     const path = this.props.location.pathname;
 
     return (
-      <IfGranted expected={ROLE.ADMIN} actual={this.props.user.roles}>
+      <IfGranted expected={ROLE.READ_ALL_USERS} actual={this.props.user.roles}>
         <NavItem>
           <NavLink to={Routes.users.path} isActive={() => path.startsWith(Routes.users.path)} className="nav-link">
             {this.i18n("main.users-nav")}
@@ -107,7 +106,7 @@ class MainView extends React.Component {
               <Navbar.Collapse className="justify-content-between">
                 <Nav>
                   {this._renderUsers()}
-                  {isAdmin(user) ? (
+                  <IfGranted expected={ROLE.READ_ALL_ORGANIZATIONS} actual={user.roles}>
                     <NavItem>
                       <NavLink
                         to={Routes.institutions.path}
@@ -117,18 +116,21 @@ class MainView extends React.Component {
                         {this.i18n("main.institutions-nav")}
                       </NavLink>
                     </NavItem>
-                  ) : user.institution ? (
-                    <NavItem>
-                      <NavLink
-                        className="nav-link"
-                        to={Routes.institutions.path + "/" + user.institution.key}
-                        isActive={() => path.startsWith(Routes.institutions.path)}
-                      >
-                        {this.i18n("main.institution-nav")}
-                      </NavLink>
-                    </NavItem>
-                  ) : null}
-                  <IfGranted expected={ROLE.ADMIN} actual={user.roles}>
+                  </IfGranted>
+                  {user.institution && (
+                    <IfGranted expected={ROLE.READ_ORGANIZATION} actual={user.roles}>
+                      <NavItem>
+                        <NavLink
+                          className="nav-link"
+                          to={Routes.institutions.path + "/" + user.institution.key}
+                          isActive={() => path.startsWith(Routes.institutions.path)}
+                        >
+                          {this.i18n("main.institution-nav")}
+                        </NavLink>
+                      </NavItem>
+                    </IfGranted>
+                  )}
+                  <IfGranted expected={ROLE.READ_ALL_RECORDS} actual={user.roles}>
                     <NavItem>
                       <NavLink
                         className="nav-link"
@@ -139,10 +141,10 @@ class MainView extends React.Component {
                       </NavLink>
                     </NavItem>
                   </IfGranted>
-                  <IfGranted expected={ROLE.ADMIN} actual={user.roles}>
+                  <IfGranted expected={ROLE.READ_STATISTICS} actual={user.roles}>
                     <NavItem>{this._renderStatisticsNavLink(path)}</NavItem>
                   </IfGranted>
-                  <IfGranted expected={ROLE.ADMIN} actual={user.roles}>
+                  <IfGranted expected={ROLE.READ_ACTION_HISTORY} actual={user.roles}>
                     <NavItem>
                       <NavLink
                         className="nav-link"

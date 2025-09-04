@@ -13,7 +13,7 @@ import { bindActionCreators } from "redux";
 import { deleteInstitution } from "../../actions/InstitutionActions";
 import { trackPromise } from "react-promise-tracker";
 import PropTypes from "prop-types";
-import { isAdmin } from "../../utils/SecurityUtils.js";
+import { hasRole } from "../../utils/RoleUtils.js";
 
 class InstitutionsController extends React.Component {
   constructor(props) {
@@ -48,7 +48,7 @@ class InstitutionsController extends React.Component {
 
   render() {
     const { currentUser, institutionsLoaded, institutionDeleted } = this.props;
-    if (!currentUser || !isAdmin(currentUser)) {
+    if (!currentUser || !hasRole(currentUser, ROLE.READ_ALL_ORGANIZATIONS)) {
       return null;
     }
     const handlers = {

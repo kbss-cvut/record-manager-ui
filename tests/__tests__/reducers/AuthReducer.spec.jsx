@@ -1,18 +1,12 @@
-import React from "react";
 import * as ActionConstants from "../../../src/constants/ActionConstants";
 import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
 import AuthReducer from "../../../src/reducers/AuthReducer";
-import UserReducer from "../../../src/reducers/UserReducer";
 import { describe, expect, it } from "vitest";
-import { getRoles } from "../../../src/utils/SecurityUtils.js";
+import { getRoles } from "../../../src/utils/RoleUtils.js";
 
 describe("AuthReducer", function () {
   const user = {
       username: "test",
-      types: [
-        "http://onto.fel.cvut.cz/ontologies/record-manager/administrator",
-        "http://onto.fel.cvut.cz/ontologies/record-manager/doctor",
-      ],
     },
     error = {
       message: "An error has occurred.",

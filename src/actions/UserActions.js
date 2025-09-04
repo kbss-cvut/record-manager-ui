@@ -1,13 +1,14 @@
-import { ACTION_FLAG, MediaType } from "../constants/DefaultConstants";
+import { ACTION_FLAG, MediaType, ROLE } from "../constants/DefaultConstants";
 import { axiosBackend } from "./index";
 import * as ActionConstants from "../constants/ActionConstants";
 import { loadUsers } from "./UsersActions";
 import { API_URL, getEnv } from "../../config";
 import { transitionToHome } from "../utils/Routing";
-import { getOidcToken, isAdmin, saveOidcToken } from "../utils/SecurityUtils";
+import { getOidcToken, saveOidcToken } from "../utils/SecurityUtils";
 import { publishMessage } from "./MessageActions";
 import { errorMessage, successMessage } from "../model/Message";
 import { showServerResponseErrorMessage } from "./AsyncActionUtils";
+import { hasRole } from "../utils/RoleUtils.js";
 
 export function createUser(user) {
   return function (dispatch) {
@@ -22,6 +23,7 @@ export function createUser(user) {
       })
       .catch((error) => {
         dispatch(saveUserError(error.response.data, user, ACTION_FLAG.CREATE_ENTITY));
+        dispatch(showServerResponseErrorMessage(error, "user.save-error"));
       });
   };
 }
@@ -35,7 +37,7 @@ export function updateUser(user, currentUser, sendEmail = true) {
       })
       .then(() => {
         dispatch(saveUserSuccess(user, ACTION_FLAG.UPDATE_ENTITY));
-        if (isAdmin(currentUser)) {
+        if (hasRole(currentUser, ROLE.READ_ALL_USERS)) {
           dispatch(loadUsers());
         }
         dispatch(publishMessage(successMessage(sendEmail ? "user.save-success-with-email" : "user.save-success")));

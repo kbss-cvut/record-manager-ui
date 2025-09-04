@@ -3,11 +3,11 @@ import * as ActionConstants from "../constants/ActionConstants.js";
 import { axiosBackend } from "./index.js";
 import { API_URL } from "../../config/index.js";
 
-export function loadRoleGroups() {
+export function loadAvailableRoleGroups() {
   return function (dispatch, getState) {
     dispatch(loadRoleGroupsPending());
     return axiosBackend
-      .get(`${API_URL}/rest/roleGroups`, {})
+      .get(`${API_URL}/rest/roleGroups/available`, {})
       .then((response) => {
         dispatch(loadRoleGroupsSuccess(response.data));
       })

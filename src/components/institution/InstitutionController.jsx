@@ -9,6 +9,7 @@ import {
   ACTION_FLAG,
   ACTION_STATUS,
   DEFAULT_PAGE_SIZE,
+  ROLE,
   SortDirection,
   STORAGE_TABLE_PAGE_SIZE_KEY,
 } from "../../constants/DefaultConstants";
@@ -20,17 +21,18 @@ import {
   unloadSavedInstitution,
   updateInstitution,
 } from "../../actions/InstitutionActions";
-import { canLoadInstitutionsPatients, sortToParams } from "../../utils/Utils";
+import { sortToParams } from "../../utils/Utils";
 import { deleteUser, loadInstitutionMembers, unloadInstitutionMembers } from "../../actions/UserActions";
 import * as EntityFactory from "../../utils/EntityFactory";
 import { exportRecords, loadRecords } from "../../actions/RecordsActions";
 import omit from "lodash/omit";
 import { loadFormTemplates } from "../../actions/FormTemplatesActions";
-import { isAdmin } from "../../utils/SecurityUtils";
+import { canReadInstitutionUsers, hasRole } from "../../utils/RoleUtils.js";
 import { trackPromise } from "react-promise-tracker";
 import { INITIAL_PAGE } from "../misc/Pagination";
 import BrowserStorage from "../../utils/BrowserStorage";
 import PropTypes from "prop-types";
+import { canReadInstitutionPatients } from "../../utils/RoleUtils.js";
 
 class InstitutionController extends React.Component {
   constructor(props) {
@@ -48,15 +50,20 @@ class InstitutionController extends React.Component {
 
   componentDidMount() {
     const institutionKey = this.props.match.params.key;
+    const { currentUser } = this.props;
 
     if (!this.state.institution) {
       trackPromise(this.props.loadInstitution(institutionKey), "institution");
     }
+
     if (institutionKey) {
-      trackPromise(this.props.loadInstitutionMembers(institutionKey), "institution-members");
+      if (canReadInstitutionUsers(currentUser, institutionKey)) {
+        trackPromise(this.props.loadInstitutionMembers(institutionKey), "institution-members");
+      }
+
       if (
         this.props.status === ACTION_STATUS.SUCCESS &&
-        canLoadInstitutionsPatients(institutionKey, this.props.currentUser)
+        canReadInstitutionPatients(this.props.currentUser, institutionKey)
       ) {
         this._loadRecords();
       }
@@ -132,7 +139,7 @@ class InstitutionController extends React.Component {
     const handlers = this.props.viewHandlers[Routes.editInstitution.name];
     if (handlers) {
       transitionTo(handlers.onCancel);
-    } else if (isAdmin(this.props.currentUser)) {
+    } else if (hasRole(this.props.currentUser, ROLE.WRITE_ALL_ORGANIZATIONS)) {
       transitionTo(Routes.institutions);
     } else {
       transitionTo(Routes.dashboard);

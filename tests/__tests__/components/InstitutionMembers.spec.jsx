@@ -45,12 +45,12 @@ describe("InstitutionMembers", function () {
 
   user = {
     username: "user",
-    roles: [ROLE.USER],
+    roles: [],
   };
 
   admin = {
     username: "admin",
-    roles: [ROLE.ADMIN],
+    roles: [ROLE.WRITE_ALL_USERS, ROLE.READ_ALL_USERS, ROLE.WRITE_ALL_ORGANIZATIONS, ROLE.READ_ALL_ORGANIZATIONS],
   };
 
   userDeleted = {
