@@ -294,12 +294,12 @@ const Record = (
   };
 
   const showInstitution = () => {
-    return canReadInstitutionInfo(this.props.currentUser, this.record?.institution);
+    return canReadInstitutionInfo(currentUser, record?.institution);
   };
 
   const getPanelTitle = () => {
-    if (!hasRole(this.props.currentUser, ROLE.READ_ALL_RECORDS) && this.props.formTemplate) {
-      const formTemplateName = this._getFormTemplateName();
+    if (!hasRole(currentUser, ROLE.READ_ALL_RECORDS) && formTemplate) {
+      const formTemplateName = getFormTemplateName();
       if (formTemplateName) {
         return formTemplateName;
       }
