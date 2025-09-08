@@ -26,7 +26,7 @@ export default {
     "table-edit": "Editovat",
     author: "Autor",
     description: "Popis",
-    "select.default": "--- Vybrat ---",
+    "select.default": "Žadná",
     yes: "Ano",
     no: "Ne",
     unknown: "Neznámé",
