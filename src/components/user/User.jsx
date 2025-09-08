@@ -60,23 +60,18 @@ class User extends React.Component {
   };
 
   _generateInstitutionsOptions = () => {
-    let options = [];
     const institutions = processInstitutions(this.props.institutions);
-    const len = institutions.length;
-    for (let i = 0; i < len; i++) {
-      let option = institutions[i];
-      options.push(
-        <option key={"opt_" + option.value} value={option.value}>
-          {option.label}
-        </option>,
-      );
-    }
-    options.unshift(
-      <option key="opt_default" value="" disabled style={{ display: "none" }}>
+
+    return [
+      <option key="opt_default" value="">
         {this.i18n("select.default")}
       </option>,
-    );
-    return options;
+      ...institutions.map((option) => (
+        <option key={`opt_${option.value}`} value={option.value}>
+          {option.label}
+        </option>
+      )),
+    ];
   };
 
   _onRoleGroupSelected = (e) => {
