@@ -84,21 +84,16 @@ class User extends React.Component {
   };
 
   _generateGroupOptions = () => {
-    let options = [];
-    this.props.roleGroups.map((group) => {
-      options.push(
-        <option key={"opt_" + group.uri} value={group.uri}>
-          {group.name}
-        </option>,
-      );
-    });
-
-    options.unshift(
-      <option key="opt_default" value="" disabled style={{ display: "none" }}>
+    return [
+      <option key="opt_default" value="">
         {this.i18n("select.default")}
       </option>,
-    );
-    return options;
+      ...this.props.roleGroups.map((group) => (
+        <option key={"opt_" + group.uri} value={group.uri}>
+          {group.name}
+        </option>
+      )),
+    ];
   };
 
   _passwordChangeButton() {
