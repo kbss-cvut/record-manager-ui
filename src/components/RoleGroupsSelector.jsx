@@ -17,7 +17,7 @@ const RoleGroupsSelector = ({ currentUser, user, onRoleGroupSelected, generateGr
       labelWidth={3}
       inputWidth={8}
       onChange={onRoleGroupSelected}
-      value={user?.roleGroup ? user.roleGroup.uri : ""}
+      value={user?.roleGroup?.uri ?? ""}
     >
       {generateGroupOptions()}
     </HorizontalInput>

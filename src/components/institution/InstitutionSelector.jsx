@@ -14,7 +14,7 @@ const InstitutionSelector = ({ currentUser, user, onInstitutionSelected, generat
       name="institution"
       label={`${i18n("institution.panel-title")}*`}
       onChange={onInstitutionSelected}
-      value={user?.institution?.name ?? ""}
+      value={user?.institution?.uri ?? ""}
       labelWidth={3}
       inputWidth={8}
     >

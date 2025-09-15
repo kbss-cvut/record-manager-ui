@@ -15,14 +15,25 @@ function roleExists(role) {
 }
 
 export function hasHigherPrivileges(u1, u2) {
-  const u1Roles = getRoles(u1);
-  const u2Roles = getRoles(u2);
+  const u1Roles = getRoles(u1) ?? [];
+  const u2Roles = getRoles(u2) ?? [];
 
-  const allRolesIncluded = u2Roles?.every((role) => u1Roles?.includes(role));
+  if (u2Roles.length === 0) {
+    return u1Roles.length > 0;
+  }
 
-  const hasAdditionalRole = u1Roles?.some((role) => !u2Roles?.includes(role));
+  if (u1Roles.length === 0) {
+    return false;
+  }
 
-  return allRolesIncluded && hasAdditionalRole;
+  const u1RoleSet = new Set(u1Roles);
+  const u2RoleSet = new Set(u2Roles);
+
+  const hasAllU2Roles = [...u2RoleSet].every((role) => u1RoleSet.has(role));
+
+  const hasAdditionalRole = u1RoleSet.size > u2RoleSet.size || [...u1RoleSet].some((role) => !u2RoleSet.has(role));
+
+  return hasAllU2Roles && hasAdditionalRole;
 }
 
 export function canReadInstitutionPatients(currentUser, institutionKey) {
