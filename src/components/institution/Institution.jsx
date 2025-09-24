@@ -13,7 +13,12 @@ import { LoaderSmall } from "../Loader";
 import InstitutionValidator from "../../validation/InstitutionValidator";
 import HelpIcon from "../HelpIcon";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
-import { canWriteInstitutionInfo, hasRole } from "../../utils/RoleUtils.js";
+import {
+  canReadInstitutionPatients,
+  canReadInstitutionUsers,
+  canWriteInstitutionInfo,
+  hasRole,
+} from "../../utils/RoleUtils.js";
 
 /**
  * Institution detail. Editable only for admins.
@@ -86,8 +91,8 @@ class Institution extends React.Component {
                 {this._renderAddedDate()}
                 {this._renderButtons()}
               </form>
-              {!institution.isNew && hasRole(currentUser, ROLE.READ_ORGANIZATION_USERS) && this._renderMembers()}
-              {!institution.isNew && hasRole(currentUser, ROLE.READ_ORGANIZATION_RECORDS) && (
+              {!institution.isNew && canReadInstitutionUsers(currentUser, institution.key) && this._renderMembers()}
+              {!institution.isNew && canReadInstitutionPatients(currentUser, institution.key) && (
                 <InstitutionPatients
                   recordsLoaded={recordsLoaded}
                   formTemplatesLoaded={formTemplatesLoaded}
