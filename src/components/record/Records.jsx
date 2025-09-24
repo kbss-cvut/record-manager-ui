@@ -1,5 +1,5 @@
-import React from "react";
-import { Alert, Button, Card } from "react-bootstrap";
+import React, { useState } from "react";
+import { Alert, Button, Card, OverlayTrigger, Popover } from "react-bootstrap";
 import { injectIntl } from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import { ROLE } from "../../constants/DefaultConstants";
@@ -16,139 +16,144 @@ import { hasRole } from "../../utils/RoleUtils.js";
 const STUDY_CLOSED_FOR_ADDITION = false;
 const STUDY_CREATE_AT_MOST_ONE_RECORD = false;
 
-class Records extends React.Component {
-  static propTypes = {
-    i18n: PropTypes.func.isRequired,
-    intl: PropTypes.object.isRequired,
-    recordsLoaded: PropTypes.object,
-    recordDeleted: PropTypes.object,
-    handlers: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired,
-    formTemplatesLoaded: PropTypes.object.isRequired,
-    pagination: PropTypes.object.isRequired,
-    filterAndSort: PropTypes.object.isRequired,
-    formTemplate: PropTypes.string,
+const Records = ({
+  i18n,
+  intl,
+  recordsLoaded,
+  recordDeleted,
+  handlers,
+  currentUser,
+  formTemplatesLoaded,
+  pagination,
+  filterAndSort,
+  formTemplate,
+}) => {
+  const [showImportDialog, setShowImportDialog] = useState(false);
+
+  const openImportDialog = () => {
+    setShowImportDialog(true);
   };
 
-  constructor(props) {
-    super(props);
-    this.i18n = this.props.i18n;
-    this.state = {
-      showImportDialog: false,
-    };
-  }
-
-  openImportDialog = () => {
-    this.setState({ showImportDialog: true });
+  const closeImportDialog = () => {
+    setShowImportDialog(false);
   };
 
-  closeImportDialog = () => {
-    this.setState({ showImportDialog: false });
+  const onImport = (file) => {
+    closeImportDialog();
+    trackPromise(handlers.onImport(file));
   };
 
-  onImport = (file) => {
-    this.closeImportDialog();
-    trackPromise(this.props.handlers.onImport(file));
-  };
-
-  render() {
-    const { formTemplate, recordsLoaded, pagination, currentUser } = this.props;
-    const showCreateButton = STUDY_CREATE_AT_MOST_ONE_RECORD
-      ? !recordsLoaded.records || recordsLoaded.records.length < 1
-      : true;
-    const showPublishButton = hasRole(currentUser, ROLE.PUBLISH_RECORDS);
-    const createRecordDisabled = STUDY_CLOSED_FOR_ADDITION && !hasRole(currentUser, ROLE.WRITE_ALL_RECORDS);
-    const createRecordTooltip = this.i18n(
-      createRecordDisabled ? "records.closed-study.create-tooltip" : "records.opened-study.create-tooltip",
-    );
-    const onCreateWithFormTemplate = () => this.props.handlers.onCreate(formTemplate);
-    return (
-      <Card variant="primary">
-        <PromiseTrackingMask area="records" />
-        <Card.Header className="text-light bg-primary" as="h6">
-          {this._getPanelTitle()}
-        </Card.Header>
-        <Card.Body>
-          {recordsLoaded.records && recordsLoaded.records.length > 0 ? (
-            <>
-              <RecordTable {...this.props} />
-              <Pagination {...pagination} />
-            </>
-          ) : (
-            <Alert variant="warning">{this.i18n("records.no-records")}</Alert>
-          )}
-
-          <ImportRecordsDialog
-            show={this.state.showImportDialog}
-            onSubmit={this.onImport}
-            onCancel={this.closeImportDialog}
-          />
-          <div className="d-flex justify-content-between">
-            <div>
-              {showCreateButton ? (
-                <Button
-                  id="records-create"
-                  className="me-1 action-button"
-                  variant="primary"
-                  size="sm"
-                  disabled={createRecordDisabled}
-                  title={createRecordTooltip}
-                  onClick={onCreateWithFormTemplate}
-                >
-                  {this.i18n("records.create-tile")}
-                </Button>
-              ) : null}
-              <Button
-                id="records-import"
-                className="mx-1 action-button"
-                variant="primary"
-                size="sm"
-                onClick={this.openImportDialog}
-              >
-                {this.i18n("records.import")}
-              </Button>
-              {showPublishButton ? (
-                <Button
-                  id="records-publish"
-                  className="mx-1 action-button"
-                  variant="success"
-                  size="sm"
-                  onClick={this.props.handlers.onPublish}
-                >
-                  {this.i18n("publish")}
-                </Button>
-              ) : null}
-            </div>
-            <ExportRecordsDropdown
-              id="records-export"
-              onExport={this.props.handlers.onExport}
-              records={recordsLoaded.records}
-            />
-          </div>
-        </Card.Body>
-      </Card>
-    );
-  }
-
-  _getFormTemplateName() {
-    const { formTemplatesLoaded, formTemplate, intl } = this.props;
+  const getFormTemplateName = () => {
     if (formTemplate) {
       const formTemplateOptions = formTemplatesLoaded.formTemplates
         ? processTypeaheadOptions(formTemplatesLoaded.formTemplates, intl)
         : [];
       return formTemplateOptions.find((r) => r.id === formTemplate)?.name;
     }
-  }
+  };
 
-  _getPanelTitle() {
-    if (!hasRole(this.props.currentUser, ROLE.READ_ALL_RECORDS) && this.props.formTemplate) {
-      const formTemplateName = this._getFormTemplateName();
+  const getPanelTitle = () => {
+    if (!hasRole(currentUser, ROLE.READ_ALL_RECORDS) && formTemplate) {
+      const formTemplateName = getFormTemplateName();
       if (formTemplateName) {
         return formTemplateName;
       }
     }
-    return this.i18n("records.panel-title");
-  }
-}
+    return i18n("records.panel-title");
+  };
+
+  const showCreateButton = STUDY_CREATE_AT_MOST_ONE_RECORD
+    ? !recordsLoaded.records || recordsLoaded.records.length < 1
+    : true;
+  const showPublishButton = hasRole(currentUser, ROLE.PUBLISH_RECORDS);
+  const createRecordDisabled = STUDY_CLOSED_FOR_ADDITION && !hasRole(currentUser, ROLE.WRITE_ALL_RECORDS);
+  const createRecordTooltip = i18n(
+    createRecordDisabled ? "records.closed-study.create-tooltip" : "records.opened-study.create-tooltip",
+  );
+  const onCreateWithFormTemplate = () => handlers.onCreate(formTemplate);
+
+  return (
+    <Card variant="primary">
+      <PromiseTrackingMask area="records" />
+      <Card.Header className="text-light bg-primary" as="h6">
+        {getPanelTitle()}
+      </Card.Header>
+      <Card.Body>
+        {recordsLoaded.records && recordsLoaded.records.length > 0 ? (
+          <>
+            <RecordTable
+              {...{
+                recordsLoaded,
+                recordDeleted,
+                handlers,
+                currentUser,
+                formTemplatesLoaded,
+                pagination,
+                filterAndSort,
+                formTemplate,
+              }}
+            />
+            <Pagination {...pagination} />
+          </>
+        ) : (
+          <Alert variant="warning">{i18n("records.no-records")}</Alert>
+        )}
+
+        <ImportRecordsDialog show={showImportDialog} onSubmit={onImport} onCancel={closeImportDialog} />
+        <div className="d-flex justify-content-between">
+          <div>
+            {showCreateButton ? (
+              <Button
+                id="records-create"
+                className="me-1 action-button"
+                variant="primary"
+                size="sm"
+                disabled={createRecordDisabled}
+                title={createRecordTooltip}
+                onClick={onCreateWithFormTemplate}
+              >
+                {i18n("records.create-tile")}
+              </Button>
+            ) : null}
+            <Button
+              id="records-import"
+              className="mx-1 action-button"
+              variant="primary"
+              size="sm"
+              onClick={openImportDialog}
+            >
+              {i18n("records.import")}
+            </Button>
+            {showPublishButton ? (
+              <Button
+                id="records-publish"
+                className="mx-1 action-button"
+                variant="success"
+                size="sm"
+                onClick={handlers.onPublish}
+              >
+                {i18n("publish")}
+              </Button>
+            ) : null}
+          </div>
+          <ExportRecordsDropdown id="records-export" onExport={handlers.onExport} records={recordsLoaded.records} />
+        </div>
+      </Card.Body>
+    </Card>
+  );
+};
+
+Records.propTypes = {
+  i18n: PropTypes.func.isRequired,
+  intl: PropTypes.object.isRequired,
+  recordsLoaded: PropTypes.object,
+  recordDeleted: PropTypes.object,
+  handlers: PropTypes.object.isRequired,
+  currentUser: PropTypes.object.isRequired,
+  formTemplatesLoaded: PropTypes.object.isRequired,
+  pagination: PropTypes.object.isRequired,
+  filterAndSort: PropTypes.object.isRequired,
+  formTemplate: PropTypes.string,
+};
 
 export default injectIntl(withI18n(Records));
