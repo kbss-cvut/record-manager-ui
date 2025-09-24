@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { OverlayTrigger, Popover, Table } from "react-bootstrap";
 import DeleteItemDialog from "../DeleteItemDialog";
 import { injectIntl } from "react-intl";
@@ -7,7 +7,7 @@ import RecordRow from "./RecordRow";
 import PropTypes from "prop-types";
 import { processTypeaheadOptions } from "./TypeaheadAnswer";
 import { IfGranted } from "react-authorization";
-import { ROLE } from "../../constants/DefaultConstants";
+import { COLUMNS, ROLE } from "../../constants/DefaultConstants";
 import DateIntervalFilter from "./filter/DateIntervalFilter";
 import PhaseFilter from "./filter/PhaseFilter";
 import InstitutionFilter from "./filter/InstitutionFilter";
@@ -17,125 +17,135 @@ import { useI18n } from "../../hooks/useI18n";
 import FilterIndicator from "../misc/FilterIndicator";
 import { sanitizeArray } from "../../utils/Utils";
 
-class RecordTable extends React.Component {
-  static propTypes = {
-    intl: PropTypes.shape({
-      messages: PropTypes.object,
-      formatMessage: PropTypes.func,
-      locale: PropTypes.string,
-    }),
-    i18n: PropTypes.func,
-    recordsLoaded: PropTypes.object.isRequired,
-    formTemplate: PropTypes.string,
-    formTemplatesLoaded: PropTypes.object.isRequired,
-    handlers: PropTypes.object.isRequired,
-    recordDeleted: PropTypes.object,
-    disableDelete: PropTypes.bool,
-    currentUser: PropTypes.object.isRequired,
-    filterAndSort: PropTypes.object.isRequired,
+const RecordTable = ({
+  intl,
+  i18n,
+  recordsLoaded,
+  formTemplate,
+  formTemplatesLoaded,
+  handlers,
+  recordDeleted,
+  disableDelete = false,
+  currentUser,
+  filterAndSort,
+  visibleColumns,
+}) => {
+  const [selectedRecord, setSelectedRecord] = useState(null);
+
+  const onDelete = (record) => {
+    setSelectedRecord(record);
   };
 
-  static defaultProps = {
-    disableDelete: false,
+  const onCancelDelete = () => {
+    setSelectedRecord(null);
   };
 
-  constructor(props) {
-    super(props);
-    this.i18n = this.props.i18n;
-    this.state = {
-      showDialog: false,
-    };
-  }
-
-  _onDelete = (record) => {
-    this.setState({ selectedRecord: record });
+  const onSubmitDelete = () => {
+    handlers.onDelete(selectedRecord);
+    setSelectedRecord(null);
   };
 
-  _onCancelDelete = () => {
-    this.setState({ selectedRecord: null });
+  const getDeleteLabel = () => {
+    return selectedRecord ? selectedRecord.localName : "";
   };
 
-  _onSubmitDelete = () => {
-    this.props.handlers.onDelete(this.state.selectedRecord);
-    this.setState({ selectedRecord: null });
-  };
-
-  render() {
-    const filteredRecords = this._getFormTemplateRecords();
-    return (
-      <div>
-        <DeleteItemDialog
-          onClose={this._onCancelDelete}
-          onSubmit={this._onSubmitDelete}
-          show={this.state.selectedRecord !== null}
-          item={this.state.selectedRecord}
-          itemLabel={this._getDeleteLabel()}
-        />
-        <Table size="sm" responsive striped bordered hover>
-          {this._renderHeader()}
-          <tbody>{this._renderRows(filteredRecords)}</tbody>
-        </Table>
-      </div>
-    );
-  }
-
-  _getDeleteLabel() {
-    return this.state.selectedRecord ? this.state.selectedRecord.localName : "";
-  }
-
-  _renderHeader() {
-    const { filters, sort, onChange } = this.props.filterAndSort;
-    return (
-      <thead>
-        <tr>
-          <IfGranted expected={ROLE.READ_ALL_RECORDS} actual={this.props.currentUser.roles}>
-            <th className="col-1 content-center">{this.i18n("records.id")}</th>
-          </IfGranted>
-          <th className="col-2 content-center">{this.i18n("records.local-name")}</th>
-          <IfGranted expected={ROLE.READ_ALL_RECORDS} actual={this.props.currentUser.roles}>
-            <FilterableInstitutionHeader filters={filters} onFilterChange={onChange} />
-            <FilterableTemplateHeader filters={filters} onFilterChange={onChange} />
-          </IfGranted>
-          <FilterableLastModifiedHeader filters={filters} sort={sort} onFilterAndSortChange={onChange} />
-          <FilterablePhaseHeader filters={filters} onFilterChange={onChange} />
-          <th className="col-1 content-center">{this.i18n("actions")}</th>
-        </tr>
-      </thead>
-    );
-  }
-
-  _renderRows(filteredRecords) {
-    const { formTemplatesLoaded, handlers, intl } = this.props;
-    const formTemplateOptions = formTemplatesLoaded.formTemplates
-      ? processTypeaheadOptions(formTemplatesLoaded.formTemplates, intl)
-      : [];
-    let rows = [];
-    for (let i = 0, len = filteredRecords.length; i < len; i++) {
-      rows.push(
-        <RecordRow
-          key={filteredRecords[i].key}
-          record={filteredRecords[i]}
-          onEdit={handlers.onEdit}
-          onDelete={this._onDelete}
-          formTemplateOptions={formTemplateOptions}
-          currentUser={this.props.currentUser}
-          disableDelete={this.props.disableDelete}
-        />,
-      );
-    }
-    return rows;
-  }
-
-  _getFormTemplateRecords() {
-    const records = sanitizeArray(this.props.recordsLoaded.records),
-      formTemplate = this.props.formTemplate;
-
+  const getFormTemplateRecords = () => {
+    const records = sanitizeArray(recordsLoaded.records);
     if (!formTemplate) {
       return records;
     }
     return records.filter((r) => r.formTemplate === formTemplate);
-  }
-}
+  };
+
+  const renderHeader = () => {
+    const { filters, sort, onChange } = filterAndSort;
+    return (
+      <thead>
+        <tr>
+          {visibleColumns.includes(COLUMNS.ID) && <th className="col-1 content-center">{i18n("records.id")}</th>}
+          {visibleColumns.includes(COLUMNS.NAME) && (
+            <th className="col-2 content-center">{i18n("records.local-name")}</th>
+          )}
+          {visibleColumns.includes(COLUMNS.AUTHOR) && (
+            <th className="col-2 content-center">{i18n("records.author")}</th>
+          )}
+          {visibleColumns.includes(COLUMNS.INSTITUTION) && (
+            <FilterableInstitutionHeader filters={filters} onFilterChange={onChange} />
+          )}
+          {visibleColumns.includes(COLUMNS.TEMPLATE) && (
+            <FilterableTemplateHeader filters={filters} onFilterChange={onChange} />
+          )}
+          {visibleColumns.includes(COLUMNS.LAST_MODIFIED) && (
+            <FilterableLastModifiedHeader filters={filters} sort={sort} onFilterAndSortChange={onChange} />
+          )}
+          {visibleColumns.includes(COLUMNS.STATUS) && (
+            <FilterablePhaseHeader filters={filters} onFilterChange={onChange} />
+          )}
+          <th className="col-1 content-center">{i18n("actions")}</th>
+        </tr>
+      </thead>
+    );
+  };
+
+  const renderRows = (filteredRecords) => {
+    const formTemplateOptions = formTemplatesLoaded.formTemplates
+      ? processTypeaheadOptions(formTemplatesLoaded.formTemplates, intl)
+      : [];
+
+    return filteredRecords.map((record) => (
+      <RecordRow
+        key={record.key}
+        record={record}
+        onEdit={handlers.onEdit}
+        onDelete={onDelete}
+        formTemplateOptions={formTemplateOptions}
+        currentUser={currentUser}
+        disableDelete={disableDelete}
+        visibleColumns={visibleColumns}
+      />
+    ));
+  };
+
+  const filteredRecords = getFormTemplateRecords();
+
+  return (
+    <div>
+      <DeleteItemDialog
+        onClose={onCancelDelete}
+        onSubmit={onSubmitDelete}
+        show={selectedRecord !== null}
+        item={selectedRecord}
+        itemLabel={getDeleteLabel()}
+      />
+      <Table size="sm" responsive striped bordered hover>
+        {renderHeader()}
+        <tbody>{renderRows(filteredRecords)}</tbody>
+      </Table>
+    </div>
+  );
+};
+
+RecordTable.propTypes = {
+  intl: PropTypes.shape({
+    messages: PropTypes.object,
+    formatMessage: PropTypes.func,
+    locale: PropTypes.string,
+  }),
+  i18n: PropTypes.func,
+  recordsLoaded: PropTypes.object.isRequired,
+  formTemplate: PropTypes.string,
+  formTemplatesLoaded: PropTypes.object.isRequired,
+  handlers: PropTypes.object.isRequired,
+  recordDeleted: PropTypes.object,
+  disableDelete: PropTypes.bool,
+  currentUser: PropTypes.object.isRequired,
+  filterAndSort: PropTypes.object.isRequired,
+  visibleColumns: PropTypes.array,
+};
+
+RecordTable.defaultProps = {
+  disableDelete: false,
+};
 
 const FilterableInstitutionHeader = ({ filters, onFilterChange }) => {
   const { i18n } = useI18n();
