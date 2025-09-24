@@ -14,7 +14,7 @@ function roleExists(role) {
   return Object.values(ROLE).includes(role);
 }
 
-export function hasHigherPrivileges(u1, u2) {
+export function hasSupersetOfPrivileges(u1, u2) {
   const u1Roles = getRoles(u1) ?? [];
   const u2Roles = getRoles(u2) ?? [];
 
@@ -29,11 +29,7 @@ export function hasHigherPrivileges(u1, u2) {
   const u1RoleSet = new Set(u1Roles);
   const u2RoleSet = new Set(u2Roles);
 
-  const hasAllU2Roles = [...u2RoleSet].every((role) => u1RoleSet.has(role));
-
-  const hasAdditionalRole = u1RoleSet.size > u2RoleSet.size || [...u1RoleSet].some((role) => !u2RoleSet.has(role));
-
-  return hasAllU2Roles && hasAdditionalRole;
+  return [...u2RoleSet].every((role) => u1RoleSet.has(role));
 }
 
 export function canReadInstitutionPatients(currentUser, institutionKey) {

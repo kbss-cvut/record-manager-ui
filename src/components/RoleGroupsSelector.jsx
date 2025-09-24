@@ -1,5 +1,5 @@
 import HorizontalInput from "./HorizontalInput.jsx";
-import { hasHigherPrivileges } from "../utils/RoleUtils.js";
+import { hasSupersetOfPrivileges } from "../utils/RoleUtils.js";
 import React, { useMemo } from "react";
 import { useI18n } from "../hooks/useI18n.jsx";
 import PropTypes from "prop-types";
@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 const RoleGroupsSelector = ({ currentUser, user, onRoleGroupSelected, generateGroupOptions }) => {
   const { i18n } = useI18n();
 
-  const currentUserHasHigherPrivileges = useMemo(() => hasHigherPrivileges(currentUser, user), [user, currentUser]);
+  const currentUserHasHigherPrivileges = useMemo(() => hasSupersetOfPrivileges(currentUser, user), [user, currentUser]);
 
   return currentUserHasHigherPrivileges || currentUser.username === user.username || user.isNew ? (
     <HorizontalInput

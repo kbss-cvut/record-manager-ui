@@ -13,7 +13,7 @@ import { FaRandom } from "react-icons/fa";
 import { isUsingOidcAuth } from "../../utils/OidcUtils";
 import IfInternalAuth from "../misc/oidc/IfInternalAuth.jsx";
 import RoleBadges from "../RoleBadges.jsx";
-import { canWriteUserInfo, getRoles, hasHigherPrivileges, hasRole } from "../../utils/RoleUtils.js";
+import { canWriteUserInfo, getRoles, hasSupersetOfPrivileges, hasRole } from "../../utils/RoleUtils.js";
 import RoleGroupsSelector from "../RoleGroupsSelector.jsx";
 import InstitutionSelector from "../institution/InstitutionSelector.jsx";
 
@@ -160,7 +160,7 @@ class User extends React.Component {
   _impersonateButton() {
     const { user, currentUser, handlers, impersonation } = this.props;
 
-    if (!user.isNew && hasHigherPrivileges(currentUser, user) && currentUser.username !== user.username) {
+    if (!user.isNew && hasSupersetOfPrivileges(currentUser, user) && currentUser.username !== user.username) {
       return (
         <Button
           style={{ margin: "0 0.3em 0 0" }}
