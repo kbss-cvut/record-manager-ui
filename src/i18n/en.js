@@ -151,6 +151,7 @@ export default {
     "records.id": "Id",
     "records.form-template": "Template",
     "records.local-name": "Name",
+    "records.author": "Author",
     "records.completion-status": "Status",
     "records.completion-status.open": "Open",
     "records.completion-status.valid": "Valid",

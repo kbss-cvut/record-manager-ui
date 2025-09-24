@@ -7,7 +7,7 @@ import RecordRow from "./RecordRow";
 import PropTypes from "prop-types";
 import { processTypeaheadOptions } from "./TypeaheadAnswer";
 import { IfGranted } from "react-authorization";
-import { ROLE } from "../../constants/DefaultConstants";
+import { COLUMNS, ROLE } from "../../constants/DefaultConstants";
 import DateIntervalFilter from "./filter/DateIntervalFilter";
 import PhaseFilter from "./filter/PhaseFilter";
 import InstitutionFilter from "./filter/InstitutionFilter";
@@ -28,6 +28,7 @@ const RecordTable = ({
   disableDelete = false,
   currentUser,
   filterAndSort,
+  visibleColumns,
 }) => {
   const [selectedRecord, setSelectedRecord] = useState(null);
 
@@ -61,16 +62,25 @@ const RecordTable = ({
     return (
       <thead>
         <tr>
-          <IfGranted expected={ROLE.READ_ALL_RECORDS} actual={currentUser.roles}>
-            <th className="col-1 content-center">{i18n("records.id")}</th>
-          </IfGranted>
-          <th className="col-2 content-center">{i18n("records.local-name")}</th>
-          <IfGranted expected={ROLE.READ_ALL_RECORDS} actual={currentUser.roles}>
+          {visibleColumns.includes(COLUMNS.ID) && <th className="col-1 content-center">{i18n("records.id")}</th>}
+          {visibleColumns.includes(COLUMNS.NAME) && (
+            <th className="col-2 content-center">{i18n("records.local-name")}</th>
+          )}
+          {visibleColumns.includes(COLUMNS.AUTHOR) && (
+            <th className="col-2 content-center">{i18n("records.author")}</th>
+          )}
+          {visibleColumns.includes(COLUMNS.INSTITUTION) && (
             <FilterableInstitutionHeader filters={filters} onFilterChange={onChange} />
+          )}
+          {visibleColumns.includes(COLUMNS.TEMPLATE) && (
             <FilterableTemplateHeader filters={filters} onFilterChange={onChange} />
-          </IfGranted>
-          <FilterableLastModifiedHeader filters={filters} sort={sort} onFilterAndSortChange={onChange} />
-          <FilterablePhaseHeader filters={filters} onFilterChange={onChange} />
+          )}
+          {visibleColumns.includes(COLUMNS.LAST_MODIFIED) && (
+            <FilterableLastModifiedHeader filters={filters} sort={sort} onFilterAndSortChange={onChange} />
+          )}
+          {visibleColumns.includes(COLUMNS.STATUS) && (
+            <FilterablePhaseHeader filters={filters} onFilterChange={onChange} />
+          )}
           <th className="col-1 content-center">{i18n("actions")}</th>
         </tr>
       </thead>
@@ -91,6 +101,7 @@ const RecordTable = ({
         formTemplateOptions={formTemplateOptions}
         currentUser={currentUser}
         disableDelete={disableDelete}
+        visibleColumns={visibleColumns}
       />
     ));
   };
@@ -129,6 +140,7 @@ RecordTable.propTypes = {
   disableDelete: PropTypes.bool,
   currentUser: PropTypes.object.isRequired,
   filterAndSort: PropTypes.object.isRequired,
+  visibleColumns: PropTypes.array,
 };
 
 RecordTable.defaultProps = {

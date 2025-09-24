@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Alert, Button, Card, OverlayTrigger, Popover } from "react-bootstrap";
 import { injectIntl } from "react-intl";
 import withI18n from "../../i18n/withI18n";
-import { ROLE } from "../../constants/DefaultConstants";
+import { COLUMNS, ROLE } from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
 import { processTypeaheadOptions } from "./TypeaheadAnswer";
 import ExportRecordsDropdown from "./ExportRecordsDropdown";
@@ -12,6 +12,7 @@ import { trackPromise } from "react-promise-tracker";
 import RecordTable from "./RecordTable";
 import Pagination from "../misc/Pagination";
 import { hasRole } from "../../utils/RoleUtils.js";
+import { FaTableColumns } from "react-icons/fa6";
 
 const STUDY_CLOSED_FOR_ADDITION = false;
 const STUDY_CREATE_AT_MOST_ONE_RECORD = false;
@@ -29,6 +30,10 @@ const Records = ({
   formTemplate,
 }) => {
   const [showImportDialog, setShowImportDialog] = useState(false);
+  const [visibleColumns, setVisibleColumns] = useState(() => {
+    const saved = localStorage.getItem("visibleColumns");
+    return saved ? JSON.parse(saved) : Object.values(COLUMNS);
+  });
 
   const openImportDialog = () => {
     setShowImportDialog(true);
@@ -72,11 +77,54 @@ const Records = ({
   );
   const onCreateWithFormTemplate = () => handlers.onCreate(formTemplate);
 
+  const toggleColumn = (id) => {
+    setVisibleColumns((prev) => {
+      let updated;
+      if (prev.includes(id)) {
+        updated = prev.filter((colId) => colId !== id);
+      } else {
+        updated = [...prev, id];
+      }
+      localStorage.setItem("visibleColumns", JSON.stringify(updated));
+      return updated;
+    });
+  };
+
   return (
     <Card variant="primary">
       <PromiseTrackingMask area="records" />
-      <Card.Header className="text-light bg-primary" as="h6">
+      <Card.Header className="text-light bg-primary d-flex justify-content-between align-items-center" as="h6">
         {getPanelTitle()}
+        <OverlayTrigger
+          trigger="click"
+          placement="bottom-end"
+          rootClose
+          overlay={
+            <Popover id="columns-popover">
+              <Popover.Header as="h3">Choose columns</Popover.Header>
+              <Popover.Body>
+                {Object.entries(COLUMNS).map(([key, value]) => (
+                  <div key={key} className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id={key}
+                      checked={visibleColumns.includes(value)}
+                      onChange={() => toggleColumn(value)}
+                    />
+                    <label className="form-check-label" htmlFor={key}>
+                      {value}
+                    </label>
+                  </div>
+                ))}
+              </Popover.Body>
+            </Popover>
+          }
+        >
+          <Button variant="light" size="sm" title="Choose columns">
+            <FaTableColumns />
+          </Button>
+        </OverlayTrigger>
       </Card.Header>
       <Card.Body>
         {recordsLoaded.records && recordsLoaded.records.length > 0 ? (
@@ -91,6 +139,7 @@ const Records = ({
                 pagination,
                 filterAndSort,
                 formTemplate,
+                visibleColumns,
               }}
             />
             <Pagination {...pagination} />

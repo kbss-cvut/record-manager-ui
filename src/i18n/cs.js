@@ -153,6 +153,7 @@ export default {
     "records.id": "Id",
     "records.form-template": "Šablona",
     "records.local-name": "Název",
+    "records.author": "Autor",
     "records.completion-status": "Stav",
     "records.completion-status.open": "Rozpracovaný",
     "records.completion-status.valid": "Validní",
