@@ -174,7 +174,7 @@ const FilterableInstitutionHeader = ({ filters, onFilterChange }) => {
         title={i18n("table.column.filterable")}
       >
         {i18n("institution.panel-title")}
-        <FilterIndicator filterValue={filters.institution} />
+        {sanitizeArray(filters.institution).length > 0 && <FilterIndicator filterValue={filters.institution} />}
       </th>
     </OverlayTrigger>
   );
@@ -255,7 +255,7 @@ const FilterablePhaseHeader = ({ filters, onFilterChange }) => {
     >
       <th id="records-phase" className="col-1 content-center cursor-pointer" title={i18n("table.column.filterable")}>
         {i18n("records.completion-status")}
-        <FilterIndicator filterValue={filters.phase} />
+        {sanitizeArray(filters.phase).length > 0 && <FilterIndicator filterValue={filters.phase} />}
       </th>
     </OverlayTrigger>
   );
@@ -289,7 +289,7 @@ const FilterableTemplateHeader = ({ filters, onFilterChange }) => {
     >
       <th id="records-template" className="col-2 content-center cursor-pointer" title={i18n("table.column.filterable")}>
         {i18n("records.form-template")}
-        <FilterIndicator filterValue={filters.formTemplate} />
+        {sanitizeArray(filters.formTemplate).length > 0 && <FilterIndicator filterValue={filters.formTemplate} />}
       </th>
     </OverlayTrigger>
   );
