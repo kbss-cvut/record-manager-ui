@@ -5,8 +5,8 @@ import { Button } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { COLUMNS, RECORD_PHASE, ROLE } from "../../constants/DefaultConstants";
 import { useI18n } from "../../hooks/useI18n";
-import { IfGranted } from "react-authorization";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
+import { useHistory } from "react-router-dom";
 
 const StatusInfo = {};
 StatusInfo[RECORD_PHASE.OPEN] = {
@@ -28,6 +28,8 @@ StatusInfo[RECORD_PHASE.REJECTED] = {
 
 const RecordRow = (props) => {
   const { i18n } = useI18n();
+  const history = useHistory();
+
   const record = props.record,
     formTemplateOptions = props.formTemplateOptions,
     deleteButton = props.disableDelete ? null : (
@@ -63,7 +65,13 @@ const RecordRow = (props) => {
         </td>
       )}
 
-      {props.visibleColumns.includes(COLUMNS.AUTHOR) && <td className="report-row content-center">{record.author}</td>}
+      {props.visibleColumns.includes(COLUMNS.AUTHOR) && (
+        <td className="report-row content-center">
+          <Button variant="link" size="sm" onClick={() => history.push(`/users/${record.author.username}`)}>
+            {`${record.author.firstName} ${record.author.lastName}`}
+          </Button>
+        </td>
+      )}
 
       {props.visibleColumns.includes(COLUMNS.INSTITUTION) && (
         <td className="report-row content-center">{record.institution.name}</td>
