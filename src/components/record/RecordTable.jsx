@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { OverlayTrigger, Popover, Table } from "react-bootstrap";
+import { Alert, OverlayTrigger, Popover, Table } from "react-bootstrap";
 import DeleteItemDialog from "../DeleteItemDialog";
 import { injectIntl } from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import RecordRow from "./RecordRow";
 import PropTypes from "prop-types";
 import { processTypeaheadOptions } from "./TypeaheadAnswer";
-import { IfGranted } from "react-authorization";
-import { COLUMNS, ROLE } from "../../constants/DefaultConstants";
+import { COLUMNS } from "../../constants/DefaultConstants";
 import DateIntervalFilter from "./filter/DateIntervalFilter";
 import PhaseFilter from "./filter/PhaseFilter";
 import InstitutionFilter from "./filter/InstitutionFilter";
@@ -24,7 +23,6 @@ const RecordTable = ({
   formTemplate,
   formTemplatesLoaded,
   handlers,
-  recordDeleted,
   disableDelete = false,
   currentUser,
   filterAndSort,
@@ -117,10 +115,18 @@ const RecordTable = ({
         item={selectedRecord}
         itemLabel={getDeleteLabel()}
       />
-      <Table size="sm" responsive striped bordered hover>
+      <Table className="mb-0" size="sm" responsive striped bordered hover>
         {renderHeader()}
-        <tbody>{renderRows(filteredRecords)}</tbody>
+        {recordsLoaded.records && recordsLoaded.records.length > 0 ? (
+          <tbody>{renderRows(filteredRecords)}</tbody>
+        ) : null}
       </Table>
+
+      {(!recordsLoaded.records || recordsLoaded.records.length === 0) && (
+        <Alert variant="warning" className="w-100">
+          {i18n("records.no-records")}
+        </Alert>
+      )}
     </div>
   );
 };

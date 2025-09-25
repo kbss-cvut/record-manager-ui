@@ -127,27 +127,22 @@ const Records = ({
         </OverlayTrigger>
       </Card.Header>
       <Card.Body>
-        {recordsLoaded.records && recordsLoaded.records.length > 0 ? (
-          <>
-            <RecordTable
-              {...{
-                recordsLoaded,
-                recordDeleted,
-                handlers,
-                currentUser,
-                formTemplatesLoaded,
-                pagination,
-                filterAndSort,
-                formTemplate,
-                visibleColumns,
-              }}
-            />
-            <Pagination {...pagination} />
-          </>
-        ) : (
-          <Alert variant="warning">{i18n("records.no-records")}</Alert>
-        )}
-
+        <>
+          <RecordTable
+            {...{
+              recordsLoaded,
+              recordDeleted,
+              handlers,
+              currentUser,
+              formTemplatesLoaded,
+              pagination,
+              filterAndSort,
+              formTemplate,
+              visibleColumns,
+            }}
+          />
+          <Pagination {...pagination} />
+        </>
         <ImportRecordsDialog show={showImportDialog} onSubmit={onImport} onCancel={closeImportDialog} />
         <div className="d-flex justify-content-between">
           <div>
