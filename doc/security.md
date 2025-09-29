@@ -8,9 +8,9 @@
 - [Roles](#roles)
 - [Role Groups](#role-groups)
 - [Roles and Role Groups Configuration](#roles-and-role-groups-configuration)
-- [User Hierarchy](#user-hierarchy)
+- [Role-based Hierarchy of Users](#role-based-hierarchy-of-users)
 - [Impersonation](#impersonation)
-- [Differences Between Internal and Keycloak Authorization](#differences-between-internal-and-keycloak-authorization)
+- [Current limitations](#current-limitations)
 
 Record Manager supports two types of authentication and authorization mechanisms.
 Each mechanism has its own sample Docker Compose deployment configuration in the [deploy](../deploy) directory.
@@ -81,11 +81,14 @@ When impersonation occurs, the impersonated field for u2 is set to true, and thi
 
 ## Current limitations
 
-- With internal authorization, the user’s Role Group and associated roles are stored in GraphDB. In contrast, with Keycloak authorization,
-  roles are extracted directly from the JWT token for each request. As a result, Role Groups and roles are not visible in the Record Manager UI when using Keycloak,
-  as they are managed exclusively within the Keycloak system.
-- The current implementation does not support having multiple role groups assigned to a single user in internal authorization. Each user can only be associated with one role group at a time.
-  On the other hand, in keycloak authorization, users can be assigned multiple role groups. It is possible, because each time a user logs in, the roles are extracted from the JWT token, which are inherited from role groups,
-  and Record Manager creates a blank role group with the extracted roles for the duration of the session.
-- Only users with higher or equal privileges can change the privileges of another user, as explained in the [User Hierarchy](#user-hierarchy) section.
-  This means that a user cannot elevate another user's privileges beyond their own.
+- With internal authorization, the user’s Role Group and associated roles are stored in GraphDB.
+  In contrast, with Keycloak authorization, roles are extracted directly from the JWT token on each request.
+  As a result, Role Groups and roles are not visible in the Record Manager UI when using Keycloak, since they are managed exclusively within the Keycloak system.
+
+- The current implementation does not support assigning multiple role groups to a single user in internal authorization.
+  Each user can be associated with only one role group at a time. In contrast, with Keycloak authorization, users can be assigned multiple role groups.
+  This is possible because, each time a user logs in, roles are extracted from the JWT token (which are inherited from the role groups),
+  and the Record Manager creates a temporary role group with these extracted roles for the duration of the session.
+
+- Only users with equal or higher privileges can change the privileges of another user, as explained in the [Role-based Hierarchy of Users](#role-based-hierarchy-of-users)
+  section. This ensures that a user cannot elevate another user’s privileges beyond their own.
