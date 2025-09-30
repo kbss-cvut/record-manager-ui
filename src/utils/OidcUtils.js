@@ -74,6 +74,5 @@ export const getOidcIdentityStorageKey = () => {
 };
 
 export function isUsingOidcAuth() {
-  console.log(AUTHENTICATION);
   return AUTHENTICATION === "oidc";
 }
