@@ -238,7 +238,7 @@ class User extends React.Component {
                   type="text"
                   name="firstName"
                   label={`${this.i18n("user.first-name")}*`}
-                  disabled={!canWriteUserInfo(currentUser, user)}
+                  disabled={isUsingOidcAuth() || !canWriteUserInfo(currentUser, user)}
                   value={user.firstName}
                   labelWidth={3}
                   inputWidth={8}
@@ -250,7 +250,7 @@ class User extends React.Component {
                   type="text"
                   name="lastName"
                   label={`${this.i18n("user.last-name")}*`}
-                  disabled={!canWriteUserInfo(currentUser, user)}
+                  disabled={isUsingOidcAuth() || !canWriteUserInfo(currentUser, user)}
                   value={user.lastName}
                   labelWidth={3}
                   inputWidth={8}
@@ -277,7 +277,7 @@ class User extends React.Component {
                   type="email"
                   name="emailAddress"
                   label={`${this.i18n("users.email")}*`}
-                  disabled={!canWriteUserInfo(currentUser, user)}
+                  disabled={isUsingOidcAuth() || !canWriteUserInfo(currentUser, user)}
                   value={user.emailAddress}
                   labelWidth={3}
                   inputWidth={8}

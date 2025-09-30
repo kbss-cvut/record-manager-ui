@@ -1,6 +1,6 @@
 // Taken from https://github.com/datagov-cz/assembly-line-shared but using a different config processing mechanism
 
-import { getEnv } from "../../config";
+import { AUTHENTICATION, getEnv } from "../../config";
 import Routes from "../constants/RoutesConstants";
 import { UserManager } from "oidc-client";
 
@@ -74,5 +74,5 @@ export const getOidcIdentityStorageKey = () => {
 };
 
 export function isUsingOidcAuth() {
-  return getEnv("AUTHENTICATION", "") === "oidc";
+  return AUTHENTICATION === "oidc";
 }

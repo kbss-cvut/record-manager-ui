@@ -63,12 +63,13 @@ export function canReadRecord(currentUser, record) {
 }
 
 export function canWriteUserInfo(currentUser, user) {
+  const hasSameInstitution =
+    currentUser.institution !== null && currentUser.institution?.name === user?.institution?.name;
   return (
-    !isUsingOidcAuth() &&
-    (hasRole(currentUser, ROLE.WRITE_ALL_USERS) ||
-      (hasRole(currentUser, ROLE.WRITE_ORGANIZATION_USERS) &&
-        currentUser.institution?.name === user?.institution?.name) ||
-      currentUser.username === user?.username)
+    (currentUser.username === user?.username ||
+      hasRole(currentUser, ROLE.WRITE_ALL_USERS) ||
+      (hasSameInstitution && hasRole(currentUser, ROLE.WRITE_ORGANIZATION_USERS))) &&
+    hasSupersetOfPrivileges(currentUser, user)
   );
 }
 
@@ -87,6 +88,6 @@ export function canReadInstitutionInfo(currentUser, institution) {
   );
 }
 
-export function canSelectInstitution(currentUser) {
-  return hasRole(currentUser, ROLE.WRITE_ALL_USERS, ROLE.WRITE_ALL_ORGANIZATIONS);
+export function canSelectInstitution(currentUser, user) {
+  return hasRole(currentUser, ROLE.WRITE_ALL_ORGANIZATIONS) && canWriteUserInfo(currentUser, user);
 }
