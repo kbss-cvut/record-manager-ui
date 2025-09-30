@@ -8,3 +8,8 @@ junit.xml
 .DS_store
 
 .env
+
+# terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
