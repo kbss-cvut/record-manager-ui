@@ -63,12 +63,13 @@ export function canReadRecord(currentUser, record) {
 }
 
 export function canWriteUserInfo(currentUser, user) {
+  const hasSameInstitution =
+    currentUser.institution !== null && currentUser.institution?.name === user?.institution?.name;
   return (
-    hasSupersetOfPrivileges(currentUser, user) &&
-    (hasRole(currentUser, ROLE.WRITE_ALL_USERS) ||
-      (hasRole(currentUser, ROLE.WRITE_ORGANIZATION_USERS) &&
-        currentUser.institution?.name === user?.institution?.name) ||
-      currentUser.username === user?.username)
+    (currentUser.username === user?.username ||
+      hasRole(currentUser, ROLE.WRITE_ALL_USERS) ||
+      (hasSameInstitution && hasRole(currentUser, ROLE.WRITE_ORGANIZATION_USERS))) &&
+    hasSupersetOfPrivileges(currentUser, user)
   );
 }
 
