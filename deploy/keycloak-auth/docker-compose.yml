@@ -142,24 +142,6 @@ services:
     depends_on:
       - auth-server-db
 
-  keycloak-config:
-    image: hashicorp/terraform:light
-    working_dir: /workspace
-    volumes:
-      - ./keycloak-config:/workspace
-    depends_on:
-      - auth-server
-    entrypoint: ["/bin/sh", "-c"]
-    environment:
-      - TF_VAR_kc_admin_user=${KC_ADMIN_USER}
-      - TF_VAR_kc_admin_password=${KC_ADMIN_PASSWORD}
-      - TF_VAR_kc_realm=record-manager
-      - TF_VAR_kc_url=http://auth-server:8080/
-    command: >
-      "until nc -z auth-server 8080; do sleep 1; done &&
-       terraform init &&
-       terraform apply -auto-approve"
-
 volumes:
   db-server:
   auth-server:
