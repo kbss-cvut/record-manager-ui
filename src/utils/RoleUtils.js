@@ -64,7 +64,7 @@ export function canReadRecord(currentUser, record) {
 
 export function canWriteUserInfo(currentUser, user) {
   return (
-    !isUsingOidcAuth() &&
+    hasSupersetOfPrivileges(currentUser, user) &&
     (hasRole(currentUser, ROLE.WRITE_ALL_USERS) ||
       (hasRole(currentUser, ROLE.WRITE_ORGANIZATION_USERS) &&
         currentUser.institution?.name === user?.institution?.name) ||
@@ -87,6 +87,6 @@ export function canReadInstitutionInfo(currentUser, institution) {
   );
 }
 
-export function canSelectInstitution(currentUser) {
-  return hasRole(currentUser, ROLE.WRITE_ALL_USERS, ROLE.WRITE_ALL_ORGANIZATIONS);
+export function canSelectInstitution(currentUser, user) {
+  return hasRole(currentUser, ROLE.WRITE_ALL_ORGANIZATIONS) && canWriteUserInfo(currentUser, user);
 }

@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 const InstitutionSelector = ({ currentUser, user, onInstitutionSelected, generateInstitutionsOptions }) => {
   const { i18n } = useI18n();
 
-  return canSelectInstitution(currentUser) ? (
+  return canSelectInstitution(currentUser, user) ? (
     <HorizontalInput
       type="select"
       name="institution"
