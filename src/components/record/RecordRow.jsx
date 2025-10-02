@@ -67,9 +67,13 @@ const RecordRow = (props) => {
 
       {props.visibleColumns.includes(COLUMNS.AUTHOR) && (
         <td className="report-row content-center">
-          <Button variant="link" size="sm" onClick={() => history.push(`/users/${record.author.username}`)}>
-            {`${record.author.firstName} ${record.author.lastName}`}
-          </Button>
+          {record.author.firstName && record.author.lastName ? (
+            <Button variant="link" size="sm" onClick={() => history.push(`/users/${record.author.username}`)}>
+              {`${record.author.firstName} ${record.author.lastName}`}
+            </Button>
+          ) : (
+            <span className="text-warning">Not Found</span>
+          )}
         </td>
       )}
 
