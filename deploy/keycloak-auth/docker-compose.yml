@@ -18,7 +18,6 @@ services:
       ANALYTICS_PATH: "${ANALYTICS_PATH:-/statistics}"
       INTERNAL_RECORD_MANAGER_SERVER_SERVICE: "${INTERNAL_RECORD_MANAGER_SERVER_SERVICE:-http://record-manager-server:8080}"
       INTERNAL_SPIPES_ENGINE_SERVICE: "${INTERNAL_SPIPES_ENGINE_SERVICE:-http://s-pipes-engine:8080}"
-
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/templates/nginx.conf.template:ro
       - ../shared/nginx/error.html:/usr/share/nginx/html/error.html:ro
@@ -84,11 +83,11 @@ services:
       context: ../shared/db-server
     image: ${RECORD_SET_NAME:-rm}-db-server
     container_name: ${RECORD_SET_NAME:-rm}-db-server
-    environment:
-      GDB_JAVA_OPTS: "-Dgraphdb.external-url=${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${APP_ROOT_PATH:-}/services/db-server"
     expose:
       - "7200"
     restart: always
+    environment:
+      GDB_JAVA_OPTS: "-Dgraphdb.external-url=${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${APP_ROOT_PATH:-}/services/db-server"
     volumes:
       - ../shared/db-server/import:/root/graphdb-import:ro
       - db-server:/opt/graphdb/home
@@ -108,6 +107,10 @@ services:
     container_name: ${RECORD_SET_NAME:-rm}-auth-server
     command:
       - start --import-realm --features="token-exchange,admin-fine-grained-authz"
+    expose:
+      - "8080"
+    depends_on:
+      - auth-server-db
     environment:
       KC_IMPORT: realm-export.json
       KC_HOSTNAME_URL: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}${APP_ROOT_PATH:-}/services/auth/"
@@ -134,13 +137,23 @@ services:
       DB_SERVER_CONTEXT: "http://xmlns.com/foaf/0.1/Person/"
       ADD_ACCOUNTS: false
       REALM_ID: "record-manager"
-    expose:
-      - "8080"
     volumes:
       - auth-server:/opt/keycloak/data
       - ./auth-server:/opt/keycloak/data/import
+
+  keycloak-config:
+    image: hashicorp/terraform:light
+    working_dir: /workspace
+    entrypoint: ["/workspace/run.sh", "auth-server", "8080"]
     depends_on:
       - auth-server-db
+    environment:
+      - TF_VAR_kc_admin_user=${KC_ADMIN_USER}
+      - TF_VAR_kc_admin_password=${KC_ADMIN_PASSWORD}
+      - TF_VAR_kc_realm=record-manager
+      - TF_VAR_kc_url=http://auth-server:8080/
+    volumes:
+      - ./keycloak-config:/workspace
 
 volumes:
   db-server:
