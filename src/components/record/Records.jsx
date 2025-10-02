@@ -121,7 +121,7 @@ const Records = ({
             </Popover>
           }
         >
-          <Button variant="light" size="sm" title="Choose columns">
+          <Button variant="light" size="sm" title="Choose columns" className="btn-levitate">
             <FaTableColumns />
           </Button>
         </OverlayTrigger>
