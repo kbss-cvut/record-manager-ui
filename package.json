@@ -43,6 +43,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.23.10",
     "@babel/preset-react": "^7.23.3",
+    "@testing-library/jest-dom": "^6.9.1",
     "axios-mock-adapter": "^1.18.1",
     "core-js": "^3.6.5",
     "cross-env": "^7.0.2",
