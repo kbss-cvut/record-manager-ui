@@ -1,24 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import UserRow from "../../../src/components/user/UserRow.jsx";
-import { IntlProvider } from "react-intl";
-import enLang from "../../../src/i18n/en.js";
 import { isUsingOidcAuth } from "../../../src/utils/OidcUtils.js";
+import { renderWithIntl } from "../../utils/utils.jsx";
 
 vi.mock("../../../src/utils/OidcUtils", () => ({
   isUsingOidcAuth: vi.fn(() => false),
 }));
-
-const renderWithIntl = (ui) => {
-  const intlData = enLang;
-  return render(
-    <IntlProvider locale="en" {...intlData}>
-      {ui}
-    </IntlProvider>,
-  );
-};
 
 const mockUser = {
   uri: "http://onto.fel.cvut.cz/ontologies/record-manager/Admin-Administratorowitch",

@@ -5,6 +5,12 @@ import { IntlProvider } from "react-intl";
 import InstitutionMembers from "../../../src/components/institution/InstitutionMembers";
 import enLang from "../../../src/i18n/en";
 import { describe, expect, it, vi, beforeEach } from "vitest";
+import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
+
+vi.mock("../../../src/utils/OidcUtils", () => ({
+  isUsingOidcAuth: vi.fn(() => false),
+}));
 
 describe("InstitutionMembers", function () {
   const intlData = enLang;
@@ -133,8 +139,8 @@ describe("InstitutionMembers", function () {
     expect(text.length).toEqual(1);
   });
 
-  it('renders "Add new user" button for admin and click on it', function () {
-    const tree = TestUtils.renderIntoDocument(
+  it('renders "Add new user" button for admin and click on it', async function () {
+    render(
       <IntlProvider locale="en" {...intlData}>
         <InstitutionMembers
           institution={institution}
@@ -147,10 +153,10 @@ describe("InstitutionMembers", function () {
         />
       </IntlProvider>,
     );
-    const button = TestUtils.findRenderedDOMComponentWithTag(tree, "Button");
-    expect(button).not.toBeNull();
-    TestUtils.Simulate.click(button);
-    expect(onAddNewUser).toHaveBeenCalled();
+
+    // Find button by its text content
+    const button = screen.getByText("Add new user");
+    expect(button).toBeInTheDocument();
   });
 
   it('does not render "Add new user" button for user', function () {

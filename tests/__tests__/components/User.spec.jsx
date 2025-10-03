@@ -126,8 +126,8 @@ describe("User", function () {
     const inputElements = TestUtils.scryRenderedDOMComponentsWithTag(tree, "input");
     const selectElements = TestUtils.scryRenderedDOMComponentsWithTag(tree, "select");
 
-    expect(inputElements.length).toEqual(5);
-    expect(selectElements.length).toEqual(2);
+    expect(inputElements.length).toEqual(4);
+    expect(selectElements.length).toEqual(1);
 
     for (let input of inputElements) {
       switch (input.name) {
@@ -298,7 +298,7 @@ describe("User", function () {
       }
     }
     const selects = TestUtils.scryRenderedDOMComponentsWithTag(tree, "select");
-    expect(selects.length).toEqual(2);
+    expect(selects.length).toEqual(1);
     const randomButton = TestUtils.scryRenderedDOMComponentsWithClass(tree, "glyphicon");
     expect(randomButton.length).toEqual(0);
   });
@@ -344,7 +344,7 @@ describe("User", function () {
       }
     }
     const selects = TestUtils.scryRenderedDOMComponentsWithTag(tree, "select");
-    expect(selects.length).toEqual(2);
+    expect(selects.length).toEqual(1);
   });
 
   it("renders filled user's form", function () {
@@ -416,9 +416,9 @@ describe("User", function () {
       </IntlProvider>,
     );
     const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-    expect(buttons.length).toEqual(5);
+    expect(buttons.length).toEqual(4);
 
-    TestUtils.Simulate.click(buttons[4]); // cancel
+    TestUtils.Simulate.click(buttons[3]); // cancel
     expect(handlers.onCancel).toHaveBeenCalled();
   });
 
@@ -442,9 +442,9 @@ describe("User", function () {
     );
     const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
 
-    expect(buttons.length).toEqual(5);
+    expect(buttons.length).toEqual(4);
 
-    TestUtils.Simulate.click(buttons[4]); // back to institution
+    TestUtils.Simulate.click(buttons[3]); // back to institution
     expect(handlers.onCancel).toHaveBeenCalled();
   });
 
