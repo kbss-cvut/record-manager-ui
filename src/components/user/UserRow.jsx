@@ -23,16 +23,11 @@ let UserRow = (props) => {
       <td className="report-row">{user.username}</td>
       <td className="report-row">{user.institution ? user.institution.name : ""}</td>
       <td className="report-row">{user.emailAddress}</td>
-      <IfInternalAuth>
-        <td className="report-row actions">
-          <Button
-            variant="primary"
-            size="sm"
-            title={i18n("users.open-tooltip")}
-            onClick={() => props.onEdit(props.user)}
-          >
-            {i18n("open")}
-          </Button>
+      <td className="report-row actions">
+        <Button variant="primary" size="sm" title={i18n("users.open-tooltip")} onClick={() => props.onEdit(props.user)}>
+          {i18n("open")}
+        </Button>
+        <IfInternalAuth>
           <Button
             variant="warning"
             size="sm"
@@ -41,8 +36,8 @@ let UserRow = (props) => {
           >
             {i18n("delete")}
           </Button>
-        </td>
-      </IfInternalAuth>
+        </IfInternalAuth>
+      </td>
     </tr>
   );
 };
