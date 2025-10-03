@@ -26,7 +26,7 @@ export default {
     "table-edit": "Edit",
     author: "Author",
     description: "Description",
-    "select.default": "None",
+    "select.default": "---",
     yes: "Yes",
     no: "No",
     unknown: "Unknown",
