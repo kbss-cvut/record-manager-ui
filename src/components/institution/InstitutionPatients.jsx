@@ -4,6 +4,7 @@ import RecordTable from "../record/RecordTable";
 import PropTypes from "prop-types";
 import ExportRecordsDropdown from "../record/ExportRecordsDropdown";
 import { useI18n } from "../../hooks/useI18n";
+import { COLUMNS } from "../../constants/DefaultConstants.js";
 
 const InstitutionPatients = (props) => {
   const { recordsLoaded, formTemplatesLoaded, onEdit, onExport, currentUser, filterAndSort } = props;
@@ -16,6 +17,7 @@ const InstitutionPatients = (props) => {
       </Card.Header>
       <Card.Body>
         <RecordTable
+          visibleColumns={Object.values(COLUMNS)}
           recordsLoaded={recordsLoaded}
           formTemplatesLoaded={formTemplatesLoaded}
           handlers={{ onEdit: onEdit }}

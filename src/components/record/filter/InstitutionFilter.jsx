@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { loadInstitutions } from "../../../actions/InstitutionsActions";
@@ -11,12 +11,28 @@ const InstitutionFilter = ({ value, onChange }) => {
   const { i18n } = useI18n();
   const dispatch = useDispatch();
   const institutions = useSelector((state) => state.institutions.institutionsLoaded.institutions);
-  React.useEffect(() => {
+
+  useEffect(() => {
+    dispatch(loadInstitutions());
+  }, [dispatch]);
+
+  const options = React.useMemo(() => {
     if (!institutions) {
-      dispatch(loadInstitutions());
+      return [];
     }
-  }, [dispatch, institutions]);
-  const selected = sanitizeArray(institutions).find((o) => o.key === value);
+    return institutions.map((institution) => ({
+      label: institution.name,
+      value: institution.key,
+    }));
+  }, [institutions, i18n]);
+
+  const selected = sanitizeArray(institutions)
+    .filter((o) => value?.includes(o.key))
+    .map((institution) => ({
+      label: institution.name,
+      value: institution.key,
+    }));
+
   return (
     <Form className="mt-1">
       <Form.Group as={Row} className="mb-0">
@@ -25,13 +41,14 @@ const InstitutionFilter = ({ value, onChange }) => {
         </Form.Label>
         <Col xs={8}>
           <IntelligentTreeSelect
-            options={institutions}
-            multi={false}
+            options={options}
+            multi={true}
             renderAsTree={false}
-            labelKey="name"
-            valueKey="key"
-            onChange={(o) => onChange({ institution: o !== null ? o.key : undefined }, {})}
             value={selected}
+            onChange={(selectedOptions) => {
+              const keys = selectedOptions ? selectedOptions.map((o) => o.value) : [];
+              onChange({ institution: keys }, {});
+            }}
             placeholder={i18n("select.placeholder")}
             isClearable={false}
           />
@@ -63,7 +80,7 @@ const InstitutionFilter = ({ value, onChange }) => {
 };
 
 InstitutionFilter.propTypes = {
-  value: PropTypes.string,
+  value: PropTypes.arrayOf(PropTypes.string),
   onChange: PropTypes.func.isRequired,
 };
 

@@ -321,7 +321,7 @@ export function formatDateWithMilliseconds(timestamp) {
 }
 
 export function sanitizeArray(arr) {
-  return arr ? (Array.isArray(arr) ? arr : [arr]) : [];
+  return [].concat(arr ?? []);
 }
 
 /**

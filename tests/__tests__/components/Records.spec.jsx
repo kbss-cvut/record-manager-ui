@@ -92,7 +92,7 @@ describe("Records", function () {
     const table = TestUtils.scryRenderedDOMComponentsWithTag(tree, "table");
     expect(table).not.toBeNull();
     const th = TestUtils.scryRenderedDOMComponentsWithTag(tree, "th");
-    expect(th.length).toEqual(7);
+    expect(th.length).toEqual(8);
   });
 
   it('renders "Create record" button and click on it', function () {
