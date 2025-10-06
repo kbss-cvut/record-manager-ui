@@ -89,5 +89,9 @@ export function canReadInstitutionInfo(currentUser, institution) {
 }
 
 export function canSelectInstitution(currentUser, user) {
-  return hasRole(currentUser, ROLE.WRITE_ALL_ORGANIZATIONS) && canWriteUserInfo(currentUser, user);
+  return (
+    hasRole(currentUser, ROLE.READ_ALL_ORGANIZATIONS) &&
+    hasRole(currentUser, ROLE.WRITE_ALL_ORGANIZATIONS) &&
+    canWriteUserInfo(currentUser, user)
+  );
 }
