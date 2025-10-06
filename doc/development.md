@@ -10,7 +10,7 @@ By default, the application is accessible from http://localhost:5173.
 
 ### Development with Dockerized Services
 
-It is possible to develop the frontend over prepared docker services. 
+It is possible to develop the frontend over prepared docker services.
 
 #### Using Internal Authorization
 
@@ -35,7 +35,6 @@ _Valid redirect URIs_ (by default it should be `http://localhost:5173/*`) and _W
 
 The environment variable `INTERNAL_RECORD_MANAGER_SERVER_SERVICE` points to the Record Manager backend. `http://host.docker.internal` can be used to configure the backend running locally on the host computer. See more info in the appropriate .env file, e.g., [keycloak-auth/.env](../deploy/keycloak-auth/.env).
 
-
 ### Running with all Services in Development Mode
 
 This section describes the development scenario when the developer runs all dependent services in development mode.
@@ -51,3 +50,12 @@ that environment variables can be used to set the variables. The following needs
 1. Add the parameters to `.docker/config.js.template`
 2. Add the parameters to environment substitution in `.docker/docker-entrypoint.sh`
 3. Add the parameters to `.env.example`
+
+## Securing the Application
+
+The application supports two modes of authentication and authorization: internal and Keycloak-based.
+It can be configured to use either of these modes. See [setup.md](./setup.md) for more details.
+
+## Form generation
+
+Forms are generated in the backend by SPipes Engine. See [form-generation.md](./form-generation.md) for more details.
