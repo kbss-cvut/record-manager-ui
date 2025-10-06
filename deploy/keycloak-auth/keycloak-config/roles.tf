@@ -19,7 +19,7 @@ variable "roles" {
     read-all-organizations-role           = "",
     write-all-organizations-role          = "",
     read-action-history-role              = "",
-    read-statistics-role                  = ""
+    read-statistics-role                  = "",
   }
 }
 
@@ -29,4 +29,24 @@ resource "keycloak_role" "realm_roles" {
   realm_id    = var.kc_realm
   name        = each.key
   description = length(each.value) > 0 ? each.value : null
+}
+
+# --- Impersonation role composite ---
+data "keycloak_openid_client" "realm_management" {
+  realm_id = var.kc_realm
+  client_id = "realm-management"
+}
+
+data "keycloak_role" "realm_management_impersonation" {
+  realm_id  = var.kc_realm
+  client_id = data.keycloak_openid_client.realm_management.id
+  name      = "impersonation"
+}
+
+resource "keycloak_role" "impersonate_role_composite" {
+  realm_id = var.kc_realm
+  name     = "impersonate-role"
+  composite_roles = [
+    data.keycloak_role.realm_management_impersonation.id
+  ]
 }
