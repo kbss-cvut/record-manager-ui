@@ -102,6 +102,14 @@ export function canSelectInstitution(currentUser, user) {
   );
 }
 
+export function canImpersonate(currentUser, user) {
+  return (
+    hasRole(currentUser, ROLE.IMPERSONATE) &&
+    hasSupersetOfPrivileges(currentUser, user) &&
+    currentUser.username !== user.username
+  );
+}
+
 export function canCreateInstitution(currentUser) {
   return hasRole(currentUser, ROLE.WRITE_ALL_ORGANIZATIONS);
 }
