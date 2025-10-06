@@ -33,7 +33,8 @@ rm-gen:bind-form-endpoint-url
   sm:next form-mod:bind-sample-form-service-url ;
   sm:outputVariable "formEndpointUrl" ;
   sml:value [
-      sp:varName "formGenRepositoryUrl" ;
+      a sp:Expression ;
+      sp:text """?formGenRepositoryUrl""" ;
     ] ;
 .
 
@@ -43,26 +44,8 @@ form-mod:bind-sample-form-service-url
   sm:next form-mod:retrieve-sample-form ;
   sm:outputVariable "sampleFormServiceUrl" ;
   sml:value [
-      a sp:iri ;
-      sp:arg1 [
-          a sp:concat ;
-          sp:arg1 [
-              a sp:str ;
-              sp:arg1 [
-                  sp:varName "formEndpointUrl" ;
-                ] ;
-            ] ;
-          sp:arg2 "?default-graph-uri=" ;
-          sp:arg3 [
-              a sp:encode_for_uri ;
-              sp:arg1 [
-                  a sp:str ;
-                  sp:arg1 [
-                      sp:varName "formTemplate" ;
-                    ] ;
-                ] ;
-            ] ;
-        ] ;
+      a sp:Expression ;
+      sp:text """IRI(CONCAT(STR(?formEndpointUrl), "?default-graph-uri=", ENCODE_FOR_URI(STR(?formTemplate))))""" ;
     ] ;
 .
 
@@ -72,11 +55,8 @@ form-mod:bind-default-record-graphId
   sm:next form-mod:bind-record-service-url ;
   sm:outputVariable "boundRecordGraphId" ;
   sml:value [
-      a sp:coalesce ;
-      sp:arg1 [
-          sp:varName "recordGraphId" ;
-        ] ;
-      sp:arg2 "http://not-existing-record-graph" ;
+      a sp:Expression ;
+      sp:text """COALESCE(?recordGraphId,"http://not-existing-record-graph")""" ;
     ] ;
 .
 
@@ -85,26 +65,8 @@ form-mod:bind-record-service-url
   sm:next form-mod:retrieve-saved-record-data ;
   sm:outputVariable "recordServiceUrl" ;
   sml:value [
-      a sp:iri ;
-      sp:arg1 [
-          a sp:concat ;
-          sp:arg1 [
-              a sp:str ;
-              sp:arg1 [
-                  sp:varName "formGenRepositoryUrl" ;
-                ] ;
-            ] ;
-          sp:arg2 "?default-graph-uri=" ;
-          sp:arg3 [
-              a sp:encode_for_uri ;
-              sp:arg1 [
-                  a sp:str ;
-                  sp:arg1 [
-                      sp:varName "boundRecordGraphId" ;
-                    ] ;
-                ] ;
-            ] ;
-        ] ;
+      a sp:Expression ;
+      sp:text """IRI(CONCAT(STR(?formGenRepositoryUrl), "?default-graph-uri=", STR(?boundRecordGraphId)))""" ;
     ] ;
 .
 
@@ -153,7 +115,8 @@ form-mod:bind-form-key
   sm:next form-mod:attach-answer-origins ;
   sm:outputVariable "formKey" ;
   sml:value [
-      a sp:struuid ;
+      a sp:Expression ;
+      sp:text """STRUUID()""" ;
     ] ;
 .
 
