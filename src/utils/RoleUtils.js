@@ -95,3 +95,11 @@ export function canSelectInstitution(currentUser, user) {
     canWriteUserInfo(currentUser, user)
   );
 }
+
+export function canImpersonate(currentUser, user) {
+  return (
+    hasRole(currentUser, ROLE.IMPERSONATE) &&
+    hasSupersetOfPrivileges(currentUser, user) &&
+    currentUser.username !== user.username
+  );
+}

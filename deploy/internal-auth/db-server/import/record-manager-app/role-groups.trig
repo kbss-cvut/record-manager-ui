@@ -10,6 +10,7 @@
 @prefix ufo: <http://onto.fel.cvut.cz/ontologies/ufo/> .
 
 <http://onto.fel.cvut.cz/ontologies/record-manager/role-groups> {
+
     rm:admin-role-group rdf:type owl:NamedIndividual, rm:role-group;
         rm:has-role rm:read-all-records-role,
                     rm:write-all-records-role,
@@ -29,8 +30,25 @@
                     rm:read-all-organizations-role,
                     rm:write-all-organizations-role,
                     rm:read-action-history-role,
-                    rm:read-statistics-role;
+                    rm:read-statistics-role,
+                    rm:impersonate-role;
         rdfs:label "admin-role-group"@en .
+              
+    rm:data-collection-coordinator-impersonate-role-group rdf:type owl:NamedIndividual, rm:role-group;
+        rm:has-role rm:read-all-users-role,
+                     rm:write-all-users-role,
+                     rm:read-organization-users-role,
+                     rm:write-organization-users-role,
+                     rm:read-organization-role,
+                     rm:write-organization-role,
+                     rm:read-all-organizations-role,
+                     rm:write-all-organizations-role,
+                     rm:read-organization-records-role,
+                     rm:write-organization-records-role,
+                     rm:comment-record-questions-role,
+                     rm:complete-records-role,
+                     rm:impersonate-role;
+         rdfs:label "data-collection-coordinator-impersonate-role-group"@en .
 
     rm:data-collection-coordinator-role-group rdf:type owl:NamedIndividual, rm:role-group;
         rm:has-role rm:read-all-users-role,
@@ -45,8 +63,18 @@
                     rm:write-organization-records-role,
                     rm:comment-record-questions-role,
                     rm:complete-records-role;
-
         rdfs:label "data-collection-coordinator-role-group"@en .
+
+    rm:organization-manager-impersonate-role-group rdf:type owl:NamedIndividual, rm:role-group;
+        rm:has-role rm:read-organization-role,
+                    rm:write-organization-role,
+                    rm:read-organization-users-role,
+                    rm:write-organization-users-role,
+                    rm:read-organization-records-role,
+                    rm:write-organization-records-role,
+                    rm:comment-record-questions-role,
+                    rm:impersonate-role;
+        rdfs:label "organization-manager-impersonate-role-group"@en .
 
     rm:organization-manager-role-group rdf:type owl:NamedIndividual, rm:role-group;
         rm:has-role rm:read-organization-role,
@@ -58,11 +86,24 @@
                     rm:comment-record-questions-role;
         rdfs:label "organization-manager-role-group"@en .
 
+    rm:entry-clerk-impersonate-role-group rdf:type owl:NamedIndividual, rm:role-group;
+            rm:has-role rm:read-organization-role,
+                        rm:read-organization-records-role,
+                        rm:comment-record-questions-role,
+                        rm:impersonate-role;
+            rdfs:label "entry-clerk-impersonate-role-group"@en .
+
     rm:entry-clerk-role-group rdf:type owl:NamedIndividual, rm:role-group;
             rm:has-role rm:read-organization-role,
                         rm:read-organization-records-role,
                         rm:comment-record-questions-role;
             rdfs:label "entry-clerk-role-group"@en .
+
+    rm:reviewer-impersonate-role-group rdf:type owl:NamedIndividual, rm:role-group;
+            rm:has-role rm:complete-records-role,
+                        rm:comment-record-questions-role,
+                        rm:impersonate-role;
+            rdfs:label "reviewer-role-group"@en .
 
     rm:reviewer-role-group rdf:type owl:NamedIndividual, rm:role-group;
             rm:has-role rm:complete-records-role,
