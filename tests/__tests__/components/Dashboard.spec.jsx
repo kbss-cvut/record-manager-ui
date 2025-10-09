@@ -1,112 +1,128 @@
-import React from "react";
-import { IntlProvider } from "react-intl";
-import TestUtils from "react-dom/test-utils";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import Dashboard from "../../../src/components/dashboard/Dashboard";
-import enLang from "../../../src/i18n/en";
-import { vi, describe, expect, test } from "vitest";
-import { admin, entryClerk } from "../../__mocks__/users.js";
+import { vi, describe, expect } from "vitest";
+import { getMessageByKey, renderWithIntl } from "../../utils/utils.jsx";
+import { ROLE } from "../../../src/constants/DefaultConstants.js";
+
+const defaultProps = {
+  currentUser: {
+    firstName: "John",
+  },
+  handlers: {
+    showUsers: vi.fn(),
+    showInstitutions: vi.fn(),
+    showRecords: vi.fn(),
+    createRecord: vi.fn(),
+    showMyInstitution: vi.fn(),
+    showMyProfile: vi.fn(),
+    showStatistics: vi.fn(),
+  },
+  formTemplatesLoaded: {
+    formTemplates: null,
+  },
+};
+
+const renderComponent = (props = {}) => {
+  return renderWithIntl(<Dashboard {...defaultProps} {...props} />);
+};
 
 describe("Dashboard", function () {
-  const intlData = enLang;
-  let entryClerkWithoutInstitution = {
-      ...entryClerk,
-      institution: undefined,
-    },
-    handlers = {
-      showUsers: vi.fn(),
-      showInstitutions: vi.fn(),
-      showRecords: vi.fn(),
-      createRecord: vi.fn(),
-      showMyInstitution: vi.fn(),
-      showMyProfile: vi.fn(),
-      showStatistics: vi.fn(),
-    };
-
-  test.skip("renders dashboard with title and four buttons", function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <Dashboard currentUser={admin} handlers={handlers} />
-      </IntlProvider>,
-    );
-    const title = TestUtils.findRenderedDOMComponentWithClass(tree, "formatted-message-size");
-    expect(title).not.toBeNull();
-
-    const name = TestUtils.findRenderedDOMComponentWithClass(tree, "bold");
-    expect(name.textContent).toEqual(admin.firstName);
-
-    const container = TestUtils.findRenderedDOMComponentWithClass(tree, "container");
-    expect(container).not.toBeNull();
-
-    const jumbotron = TestUtils.findRenderedDOMComponentWithClass(tree, "jumbotron");
-    expect(jumbotron).not.toBeNull();
-
-    const cols = TestUtils.scryRenderedDOMComponentsWithClass(tree, "dashboard-sector");
-    expect(cols.length).toEqual(5);
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
-  test.skip("renders four buttons to admin and click on them", function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <Dashboard currentUser={admin} handlers={handlers} />
-      </IntlProvider>,
-    );
-    const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "button");
-    expect(buttons.length).toEqual(5);
-
-    TestUtils.Simulate.click(buttons[0]); // Create record
-    expect(handlers.createRecord).toHaveBeenCalled();
-
-    TestUtils.Simulate.click(buttons[1]); // View users
-    expect(handlers.showUsers).toHaveBeenCalled();
-
-    TestUtils.Simulate.click(buttons[2]); // View institutions
-    expect(handlers.showInstitutions).toHaveBeenCalled();
-
-    TestUtils.Simulate.click(buttons[3]); // View patients records
-    expect(handlers.showRecords).toHaveBeenCalled();
-
-    TestUtils.Simulate.click(buttons[4]); // View statistics
-    expect(handlers.showStatistics).toHaveBeenCalled();
+  it("renders create record tile when current user has WRITE_ALL_RECORDS role", () => {
+    renderComponent({ currentUser: { roles: [ROLE.WRITE_ALL_RECORDS] } });
+    expect(screen.getByText(getMessageByKey("dashboard.create-tile"))).toBeInTheDocument();
   });
 
-  test.skip("renders four buttons to doctor with institution and click on them", function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <Dashboard currentUser={entryClerk} handlers={handlers} />
-      </IntlProvider>,
-    );
-    const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "button");
-    expect(buttons.length).toEqual(4);
-
-    TestUtils.Simulate.click(buttons[0]); // Create record
-    expect(handlers.createRecord).toHaveBeenCalled();
-
-    TestUtils.Simulate.click(buttons[1]); // View my profile
-    expect(handlers.showMyProfile).toHaveBeenCalled();
-
-    TestUtils.Simulate.click(buttons[2]); // View my institution
-    expect(handlers.showMyInstitution).toHaveBeenCalled();
-
-    TestUtils.Simulate.click(buttons[3]); // View patients records
-    expect(handlers.showRecords).toHaveBeenCalled();
+  it("does not render create record tile when current user lacks WRITE_ALL_RECORDS role", () => {
+    renderComponent();
+    expect(screen.queryByText(getMessageByKey("dashboard.create-tile"))).not.toBeInTheDocument();
   });
 
-  test.skip("renders three buttons to doctor without institution and click on them", function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <Dashboard currentUser={entryClerkWithoutInstitution} handlers={handlers} />
-      </IntlProvider>,
-    );
-    const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "button");
-    expect(buttons.length).toEqual(3);
+  it("calls createRecord handler when create tile is clicked", () => {
+    renderComponent({ currentUser: { roles: [ROLE.WRITE_ALL_RECORDS] } });
+    fireEvent.click(screen.getByText(getMessageByKey("dashboard.create-tile")));
+    expect(defaultProps.handlers.createRecord).toHaveBeenCalled();
+  });
 
-    TestUtils.Simulate.click(buttons[0]); // Create record
-    expect(handlers.createRecord).toHaveBeenCalled();
+  it("always renders import records tile", () => {
+    renderComponent();
+    expect(screen.getByText(getMessageByKey("records.import.dialog.title"))).toBeInTheDocument();
+  });
 
-    TestUtils.Simulate.click(buttons[1]); // View my profile
-    expect(handlers.showMyProfile).toHaveBeenCalled();
+  it("opens import dialog when import tile is clicked", async () => {
+    renderComponent();
+    const importTile = screen.getByText(getMessageByKey("records.import.dialog.title"));
+    fireEvent.click(importTile);
+    await waitFor(() => {
+      expect(screen.getByRole("dialog", { hidden: true })).toBeInTheDocument();
+    });
+  });
 
-    TestUtils.Simulate.click(buttons[2]); // View patients records
-    expect(handlers.showRecords).toHaveBeenCalled();
+  it("renders users tile when current user has READ_ALL_USERS role", () => {
+    renderComponent({ currentUser: { roles: [ROLE.READ_ALL_USERS] } });
+    expect(screen.getByText(getMessageByKey("dashboard.users-tile"))).toBeInTheDocument();
+  });
+
+  it("does not render users tile when current user lacks READ_ALL_USERS role", () => {
+    renderComponent();
+    expect(screen.queryByText(getMessageByKey("dashboard.users-tile"))).not.toBeInTheDocument();
+  });
+
+  it("calls showUsers handler when users tile is clicked", () => {
+    renderComponent({ currentUser: { roles: [ROLE.READ_ALL_USERS] } });
+    fireEvent.click(screen.getByText(getMessageByKey("dashboard.users-tile")));
+    expect(defaultProps.handlers.showUsers).toHaveBeenCalled();
+  });
+
+  it("renders institutions tile when current user has READ_ALL_ORGANIZATIONS role", () => {
+    renderComponent({ currentUser: { roles: [ROLE.READ_ALL_ORGANIZATIONS] } });
+    expect(screen.getByText(getMessageByKey("dashboard.institutions-tile"))).toBeInTheDocument();
+  });
+
+  it("does not render institutions tile when user lacks READ_ALL_ORGANIZATIONS role", () => {
+    renderComponent();
+    expect(screen.queryByText(getMessageByKey("dashboard.institutions-tile"))).not.toBeInTheDocument();
+  });
+
+  it("calls showInstitutions handler when institutions tile is clicked", () => {
+    renderComponent({ currentUser: { roles: [ROLE.READ_ALL_ORGANIZATIONS] } });
+    fireEvent.click(screen.getByText(getMessageByKey("dashboard.institutions-tile")));
+    expect(defaultProps.handlers.showInstitutions).toHaveBeenCalled();
+  });
+
+  it("renders statistics tile when user has READ_STATISTICS role", () => {
+    renderComponent({ currentUser: { roles: [ROLE.READ_STATISTICS] } });
+    expect(screen.getByText(getMessageByKey("dashboard.statistics-tile"))).toBeInTheDocument();
+  });
+
+  it("does not render statistics tile when user lacks READ_STATISTICS role", () => {
+    renderComponent();
+    expect(screen.queryByText(getMessageByKey("dashboard.statistics-tile"))).not.toBeInTheDocument();
+  });
+
+  it("calls showStatistics handler when statistics tile is clicked", () => {
+    renderComponent({ currentUser: { roles: [ROLE.READ_STATISTICS] } });
+    fireEvent.click(screen.getByText(getMessageByKey("dashboard.statistics-tile")));
+    expect(defaultProps.handlers.showStatistics).toHaveBeenCalled();
+  });
+
+  it("renders generic records tile when user has READ_ALL_RECORDS role", () => {
+    renderComponent({ currentUser: { roles: [ROLE.READ_ALL_RECORDS] } });
+    expect(screen.getByText(getMessageByKey("dashboard.records-tile"))).toBeInTheDocument();
+  });
+
+  it("does not render generic records tile when user lacks READ_ALL_RECORDS role", () => {
+    renderComponent();
+    expect(screen.queryByText(getMessageByKey("dashboard.records-tile"))).not.toBeInTheDocument();
+  });
+
+  it("calls showRecords without template id when generic records tile is clicked", () => {
+    renderComponent({ currentUser: { roles: [ROLE.READ_ALL_RECORDS] } });
+    fireEvent.click(screen.getByText(getMessageByKey("dashboard.records-tile")));
+    expect(defaultProps.handlers.showRecords).toHaveBeenCalledWith();
   });
 });
