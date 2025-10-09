@@ -13,3 +13,8 @@ provider "keycloak" {
   password  = var.kc_admin_password
   url       = var.kc_url
 }
+
+resource "keycloak_realm" "realm" {
+  realm                 = var.kc_realm
+  access_token_lifespan = var.kc_access_token_lifespan
+}

@@ -19,3 +19,9 @@ variable "kc_realm" {
   description = "Keycloak realm name"
   type        = string
 }
+
+variable "kc_access_token_lifespan" {
+  description = "Access token lifespan"
+  type        = string
+  default     = "5m"
+}
