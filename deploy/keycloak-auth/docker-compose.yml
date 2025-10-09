@@ -144,14 +144,15 @@ services:
   keycloak-config:
     image: hashicorp/terraform:light
     working_dir: /workspace
-    entrypoint: ["/workspace/run.sh", "auth-server", "8080"]
+    entrypoint: ["/workspace/run.sh", "auth-server", "8080", "${KC_REALM}"]
     depends_on:
       - auth-server-db
     environment:
       - TF_VAR_kc_admin_user=${KC_ADMIN_USER}
       - TF_VAR_kc_admin_password=${KC_ADMIN_PASSWORD}
-      - TF_VAR_kc_realm=record-manager
+      - TF_VAR_kc_realm=${KC_REALM:-record-manager}
       - TF_VAR_kc_url=http://auth-server:8080/
+      - TF_VAR_kc_access_token_lifespan=${KC_ACCESS_TOKEN_LIFESPAN:-5m}
     volumes:
       - ./keycloak-config:/workspace
 
