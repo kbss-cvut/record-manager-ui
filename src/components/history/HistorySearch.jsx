@@ -13,7 +13,7 @@ const HistorySearch = (props) => (
         type="text"
         value={props.searchData.action || ""}
         onChange={props.handlers.handleChange}
-        onKeyPress={props.handlers.onKeyPress}
+        onKeyDown={props.handlers.onKeyPress}
       />
     </td>
     <td className="report-row">
@@ -23,7 +23,7 @@ const HistorySearch = (props) => (
         type="text"
         value={props.searchData.author || ""}
         onChange={props.handlers.handleChange}
-        onKeyPress={props.handlers.onKeyPress}
+        onKeyDown={props.handlers.onKeyPress}
       />
     </td>
     <td className="report-row">
