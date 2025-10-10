@@ -883,3 +883,17 @@ header {
 .filter-datetimepicker {
   max-width: 120px;
 }
+
+.btn-levitate {
+  transition: all 0.2s ease;
+}
+
+.btn-levitate:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 3px 3px 0 0 black !important;
+}
+
+.btn-levitate:active {
+  transform: translate(0, 0);
+  box-shadow: 1px 1px 0 0 black !important;
+}
