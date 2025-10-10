@@ -1,0 +1,4 @@
+services:
+  keycloak-config:
+    environment:
+      TF_VAR_kc_access_token_lifespan: "1s"
