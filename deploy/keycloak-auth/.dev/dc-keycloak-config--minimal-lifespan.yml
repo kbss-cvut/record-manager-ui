@@ -1,0 +1,8 @@
+# Sets the keycloak access token lifespan to a minimal value (1 second) to facilitate testing of
+# token expiration and refresh mechanisms.
+# It is useful when testing role assignment changes to a user, since otherwise you would have to wait
+# for the default token lifespan (5 minutes) to expire before seeing the changes take effect in the UI.
+services:
+  keycloak-config:
+    environment:
+      TF_VAR_kc_access_token_lifespan: "1s"
