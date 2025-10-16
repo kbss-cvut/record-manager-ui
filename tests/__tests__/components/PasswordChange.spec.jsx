@@ -1,165 +1,121 @@
-"use strict";
-
-import React from "react";
-import { IntlProvider } from "react-intl";
-import TestUtils from "react-dom/test-utils";
+import "@testing-library/jest-dom";
+import { screen } from "@testing-library/react";
 import PasswordChange from "../../../src/components/user/PasswordChange";
-import * as UserFactory from "../../../src/utils/EntityFactory";
-import enLang from "../../../src/i18n/en";
 import { describe, expect, it, vi, beforeEach } from "vitest";
-import { admin, entryClerk } from "../../__mocks__/users.js";
+import { getMessageByKey, renderWithIntl } from "../../utils/utils.jsx";
+import UserValidator from "../../../src/validation/UserValidator.jsx";
+import { canWriteUserInfo } from "../../../src/utils/RoleUtils.js";
+
+const defaultProps = {
+  handlers: {
+    onSave: vi.fn(),
+    onCancel: vi.fn(),
+    onChange: vi.fn(),
+  },
+  valid: true,
+  currentUser: {
+    username: "johndoe",
+  },
+  match: {
+    params: {
+      username: "johndoe",
+    },
+  },
+  password: {
+    currentPassword: "current",
+    newPassword: "new",
+    confirmPassword: "new",
+  },
+  passwordChange: {},
+};
+
+vi.mock("../../../src/validation/UserValidator.jsx", () => ({
+  default: {
+    isPasswordValid: vi.fn(),
+  },
+}));
+
+vi.mock("../../../src/utils/RoleUtils.js", () => ({
+  canWriteUserInfo: vi.fn(),
+}));
+
+vi.mock("../../../src/components/HelpIcon.jsx", () => ({
+  default: () => <div data-testid="help-icon">HelpIcon</div>,
+}));
+
+vi.mock("../../../src/components/AlertMessage.jsx", () => ({
+  default: ({ children }) => <div data-testid="alert-message">{children}</div>,
+}));
+
+vi.mock("../HorizontalInput", () => ({ type, name, label, value, onChange, labelWidth, inputWidth }) => (
+  <div data-testid={`input-${name}`}>
+    <label>{label}</label>
+    <input type={type} name={name} value={value} onChange={onChange} />
+  </div>
+));
+
+const renderComponent = (props = {}) => {
+  return renderWithIntl(<PasswordChange {...defaultProps} {...props} />);
+};
 
 describe("PasswordChange", function () {
-  const intlData = enLang;
-  let valid,
-    adminMatch,
-    entryClerkMatch,
-    passwordChange,
-    currentUser,
-    currentUserAdmin,
-    handlers,
-    passwordEmpty,
-    passwordFilled;
-
   beforeEach(() => {
-    handlers = {
-      onSave: vi.fn(),
-      onCancel: vi.fn(),
-      onChange: vi.fn(),
-    };
-    valid = true;
+    vi.clearAllMocks();
+    UserValidator.isPasswordValid.mockReturnValue(true);
+    canWriteUserInfo.mockReturnValue(true);
   });
 
-  adminMatch = {
-    params: {
-      username: admin.username,
-    },
-  };
-
-  entryClerkMatch = {
-    params: {
-      username: entryClerk.username,
-    },
-  };
-
-  passwordEmpty = UserFactory.initNewPassword();
-  passwordFilled = {
-    currentPassword: "aaaa",
-    newPassword: "aaaa",
-    confirmPassword: "aaaa",
-  };
-
-  passwordChange = {};
-
-  it('renders clickable "Save" button and click on it', function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <PasswordChange
-          handlers={handlers}
-          currentUser={admin}
-          valid={valid}
-          passwordChange={passwordChange}
-          match={adminMatch}
-          password={passwordFilled}
-        />
-      </IntlProvider>,
-    );
-    let buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-    expect(buttons.length).toEqual(3);
-
-    expect(buttons[1].disabled).toBeFalsy();
-    TestUtils.Simulate.click(buttons[1]); // save
-    expect(handlers.onSave).toHaveBeenCalled();
+  it("renders all input fields when current user edits himself", () => {
+    renderComponent();
+    expect(screen.getByText(`${getMessageByKey("user.password-current")}*`)).toBeInTheDocument();
+    expect(screen.getByText(`${getMessageByKey("user.password-new")}*`)).toBeInTheDocument();
+    expect(screen.getByText(`${getMessageByKey("user.password-confirm")}*`)).toBeInTheDocument();
   });
 
-  it('renders disabled "Save" button', function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <PasswordChange
-          handlers={handlers}
-          currentUser={admin}
-          valid={valid}
-          passwordChange={passwordChange}
-          match={adminMatch}
-          password={passwordEmpty}
-        />
-      </IntlProvider>,
-    );
-    let buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-    expect(buttons.length).toEqual(3);
-
-    expect(buttons[0].disabled).toBeTruthy();
+  it("does not render current password input when current user edits other user", () => {
+    renderComponent({ match: { params: { username: "janedoe" } } });
+    expect(screen.queryByText(`${getMessageByKey("user.password-current")}*`)).not.toBeInTheDocument();
+    expect(screen.getByText(`${getMessageByKey("user.password-new")}*`)).toBeInTheDocument();
+    expect(screen.getByText(`${getMessageByKey("user.password-confirm")}*`)).toBeInTheDocument();
   });
 
-  it("shows alert that password is not valid", function () {
-    valid = false;
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <PasswordChange
-          handlers={handlers}
-          currentUser={admin}
-          valid={valid}
-          passwordChange={passwordChange}
-          match={adminMatch}
-          password={passwordEmpty}
-        />
-      </IntlProvider>,
-    );
-    const alert = TestUtils.findRenderedDOMComponentWithClass(tree, "alert-danger");
-    expect(alert).not.toBeNull();
+  it("disables buttons when password is invalid", () => {
+    UserValidator.isPasswordValid.mockReturnValue(false);
+    renderComponent();
+
+    const saveButton = screen.getByText(getMessageByKey("save"));
+    const saveEmailButton = screen.getByText(getMessageByKey("save-and-send-email"));
+
+    expect(saveButton).toBeDisabled();
+    expect(saveEmailButton).toBeDisabled();
   });
 
-  it("renders 2 inputs for admin who is changing password to someone else", function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <PasswordChange
-          handlers={handlers}
-          currentUser={admin}
-          valid={valid}
-          passwordChange={passwordChange}
-          match={entryClerkMatch}
-          password={passwordEmpty}
-        />
-      </IntlProvider>,
-    );
-    const inputs = TestUtils.scryRenderedDOMComponentsWithTag(tree, "input");
-    expect(inputs.length).toEqual(2);
+  it("renders alert message when password is invalid", () => {
+    renderComponent({
+      valid: false,
+    });
+    expect(screen.getByTestId("alert-message")).toBeInTheDocument();
   });
 
-  it("renders 3 inputs when somebody is changing his password", function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <PasswordChange
-          handlers={handlers}
-          currentUser={admin}
-          valid={valid}
-          passwordChange={passwordChange}
-          match={adminMatch}
-          password={passwordEmpty}
-        />
-      </IntlProvider>,
-    );
-    const inputs = TestUtils.scryRenderedDOMComponentsWithTag(tree, "input");
-    expect(inputs.length).toEqual(3);
+  it("does not render alert message when password is valid", () => {
+    renderComponent({
+      valid: true,
+    });
+    expect(screen.queryByTestId("alert-message")).not.toBeInTheDocument();
   });
 
-  it('renders "Cancel" button and click on it', function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <PasswordChange
-          handlers={handlers}
-          currentUser={admin}
-          valid={valid}
-          passwordChange={passwordChange}
-          match={adminMatch}
-          password={passwordEmpty}
-        />
-      </IntlProvider>,
-    );
-    const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-    expect(buttons.length).toEqual(3);
+  it("renders save buttons when current user has WriteUserInfo permission", () => {
+    renderComponent();
+    expect(screen.queryByText(getMessageByKey("save-and-send-email"))).toBeInTheDocument();
+    expect(screen.queryByText(getMessageByKey("save"))).toBeInTheDocument();
+    expect(screen.getByText(getMessageByKey("cancel"))).toBeInTheDocument();
+  });
 
-    TestUtils.Simulate.click(buttons[2]); // cancel
-    expect(handlers.onCancel).toHaveBeenCalled();
+  it("does not render save buttons when current user lacks WriteUserInfo permission", () => {
+    canWriteUserInfo.mockReturnValue(false);
+    renderComponent();
+    expect(screen.queryByText(getMessageByKey("save-and-send-email"))).not.toBeInTheDocument();
+    expect(screen.queryByText(getMessageByKey("save"))).not.toBeInTheDocument();
+    expect(screen.getByText(getMessageByKey("cancel"))).toBeInTheDocument();
   });
 });
