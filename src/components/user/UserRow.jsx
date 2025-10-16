@@ -3,10 +3,15 @@ import { Button } from "react-bootstrap";
 import PropTypes from "prop-types";
 import IfInternalAuth from "../misc/oidc/IfInternalAuth";
 import { useI18n } from "../../hooks/useI18n";
+import { useSelector } from "react-redux";
+import { canWriteUserInfo } from "../../utils/RoleUtils.js";
 
 let UserRow = (props) => {
   const user = props.user;
   const { i18n } = useI18n();
+
+  const currentUser = useSelector((state) => state.auth.user);
+
   return (
     <tr>
       <td className="report-row">
@@ -21,21 +26,23 @@ let UserRow = (props) => {
         </Button>
       </td>
       <td className="report-row">{user.username}</td>
-      <td className="report-row">{user.institution ? user.institution.name : ""}</td>
+      <td className="report-row">{user.institution?.name}</td>
       <td className="report-row">{user.emailAddress}</td>
       <td className="report-row actions">
         <Button variant="primary" size="sm" title={i18n("users.open-tooltip")} onClick={() => props.onEdit(props.user)}>
           {i18n("open")}
         </Button>
         <IfInternalAuth>
-          <Button
-            variant="warning"
-            size="sm"
-            title={i18n("users.delete-tooltip")}
-            onClick={() => props.onDelete(props.user)}
-          >
-            {i18n("delete")}
-          </Button>
+          {canWriteUserInfo(currentUser, user) && (
+            <Button
+              variant="warning"
+              size="sm"
+              title={i18n("users.delete-tooltip")}
+              onClick={() => props.onDelete(props.user)}
+            >
+              {i18n("delete")}
+            </Button>
+          )}
         </IfInternalAuth>
       </td>
     </tr>
