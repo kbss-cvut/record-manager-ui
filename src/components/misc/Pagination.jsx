@@ -90,7 +90,7 @@ const Pagination = ({ pageNumber, handlePagination, itemCount, pageCount, allowS
           )}
           <BSPagination.Next
             className="test-pag-arrow"
-            disabled={pageNumber >= pageCount}
+            disabled={pageNumber >= pageCount - 1}
             onClick={() => handlePagination(pageNumber + 1)}
           />
         </BSPagination>
