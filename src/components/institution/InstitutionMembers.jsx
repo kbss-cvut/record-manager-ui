@@ -3,10 +3,10 @@ import { Button, Card, Table } from "react-bootstrap";
 import { injectIntl } from "react-intl";
 import withI18n from "../../i18n/withI18n";
 import DeleteItemDialog from "../DeleteItemDialog";
-import { ACTION_STATUS, ROLE } from "../../constants/DefaultConstants";
+import { ACTION_STATUS } from "../../constants/DefaultConstants";
 import Loader, { LoaderSmall } from "../Loader";
 import PropTypes from "prop-types";
-import { hasRole } from "../../utils/RoleUtils.js";
+import { canWriteUserInfo } from "../../utils/RoleUtils.js";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 import IfInternalAuth from "../misc/oidc/IfInternalAuth.jsx";
 
@@ -77,13 +77,11 @@ class InstitutionMembers extends React.Component {
             <p className="font-italic">{this.i18n("institution.members.not-found")}</p>
           )}
           <IfInternalAuth>
-            {hasRole(currentUser, ROLE.WRITE_ALL_USERS) && (
-              <div className="btn-toolbar">
-                <Button variant="primary" size="sm" onClick={() => onAddNewUser(institution)}>
-                  {this.i18n("users.add-new-user")}
-                </Button>
-              </div>
-            )}
+            <div className="btn-toolbar">
+              <Button variant="primary" size="sm" onClick={() => onAddNewUser(institution)}>
+                {this.i18n("users.add-new-user")}
+              </Button>
+            </div>
           </IfInternalAuth>
         </Card.Body>
       </Card>
@@ -114,7 +112,7 @@ class InstitutionMembers extends React.Component {
             >
               {this.i18n("open")}
             </Button>
-            {hasRole(currentUser, ROLE.WRITE_ALL_USERS) && (
+            {canWriteUserInfo(currentUser, member) && (
               <Button
                 variant="warning"
                 size="sm"
