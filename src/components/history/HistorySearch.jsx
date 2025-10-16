@@ -11,6 +11,7 @@ const HistorySearch = (props) => (
         className="form-control"
         name="action"
         type="text"
+        data-testid="action-input"
         value={props.searchData.action || ""}
         onChange={props.handlers.handleChange}
         onKeyDown={props.handlers.onKeyPress}
@@ -21,13 +22,14 @@ const HistorySearch = (props) => (
         className="form-control"
         name="author"
         type="text"
+        data-testid="author-input"
         value={props.searchData.author || ""}
         onChange={props.handlers.handleChange}
         onKeyDown={props.handlers.onKeyPress}
       />
     </td>
     <td className="report-row">
-      <input className="form-control" type="text" disabled={true} />
+      <input className="form-control" type="text" disabled={true} data-testid="time-input" />
     </td>
     <td className="report-row actions">
       <Button
