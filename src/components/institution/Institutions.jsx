@@ -6,9 +6,13 @@ import { LoaderSmall } from "../Loader";
 import PropTypes from "prop-types";
 import { useI18n } from "../../hooks/useI18n";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
+import { useSelector } from "react-redux";
+import { canCreateInstitution } from "../../utils/RoleUtils.js";
 
 const Institutions = ({ institutionsLoaded, handlers, institutionDeleted }) => {
   const { i18n } = useI18n();
+
+  const currentUser = useSelector((state) => state.auth.user);
 
   return (
     <Card variant="primary">
@@ -24,9 +28,11 @@ const Institutions = ({ institutionsLoaded, handlers, institutionDeleted }) => {
           institutionDeleted={institutionDeleted}
         />
         <div>
-          <Button variant="primary" size="sm" className="action-button" onClick={handlers.onCreate}>
-            {i18n("institutions.create-institution")}
-          </Button>
+          {canCreateInstitution(currentUser) && (
+            <Button variant="primary" size="sm" className="action-button" onClick={handlers.onCreate}>
+              {i18n("institutions.create-institution")}
+            </Button>
+          )}
         </div>
       </Card.Body>
     </Card>
