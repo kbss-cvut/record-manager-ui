@@ -1,47 +1,59 @@
-"use strict";
-
-import React from "react";
-import { IntlProvider } from "react-intl";
-import TestUtils from "react-dom/test-utils";
+import { fireEvent, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import HistoryRow from "../../../src/components/history/HistoryRow";
-import enLang from "../../../src/i18n/en";
 import { describe, expect, it, vi } from "vitest";
+import { getMessageByKey, renderWithIntl } from "../../utils/utils.jsx";
+import { formatDateWithMilliseconds } from "../../../src/utils/Utils.js";
+
+const defaultProps = {
+  action: {
+    key: "action123",
+    type: "CREATE",
+    author: { username: "John" },
+    timestamp: 1526074842,
+  },
+  onOpen: vi.fn(),
+};
+
+const renderComponent = (props = {}) => {
+  return renderWithIntl(<HistoryRow {...defaultProps} {...props} />);
+};
 
 describe("HistoryRow", function () {
-  const intlData = enLang;
-  let action = { key: "12345", type: "TEST", author: { username: "test" }, timestamp: 1526074842 },
-    onOpen = vi.fn();
-
-  it("renders one row of table with 4 columns and 1 button", function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <table>
-          <tbody>
-            <HistoryRow key={action.key} action={action} onOpen={onOpen} />
-          </tbody>
-        </table>
-      </IntlProvider>,
-    );
-    const td = TestUtils.scryRenderedDOMComponentsWithTag(tree, "td");
-    expect(td.length).toEqual(4);
-    const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-    expect(buttons.length).toEqual(1);
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
-  it('renders "Open" button and click on it', function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <table>
-          <tbody>
-            <HistoryRow key={action.key} action={action} onOpen={onOpen} />
-          </tbody>
-        </table>
-      </IntlProvider>,
-    );
-    const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-    expect(buttons.length).toEqual(1);
+  it("renders action type, username, and timestamp correctly", () => {
+    renderComponent();
+    expect(screen.getByText(defaultProps.action.type)).toBeInTheDocument();
+    expect(screen.getByText(defaultProps.action.author.username)).toBeInTheDocument();
+    expect(screen.getByText(formatDateWithMilliseconds(defaultProps.action.timestamp))).toBeInTheDocument();
+  });
 
-    TestUtils.Simulate.click(buttons[0]); // Open Action
-    expect(onOpen).toHaveBeenCalled();
+  it("renders non-logged user when author is undefined", () => {
+    renderComponent({
+      ...defaultProps,
+      action: {
+        ...defaultProps.action,
+        author: undefined,
+      },
+    });
+    expect(screen.getByText(getMessageByKey("history.non-logged"))).toBeInTheDocument();
+  });
+
+  it("renders Open button with correct tooltip and text", () => {
+    renderComponent();
+    const button = screen.getByRole("button", { name: getMessageByKey("open") });
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveAttribute("title", getMessageByKey("history.open-tooltip"));
+  });
+
+  it("calls onOpen with correct key when button is clicked", () => {
+    renderComponent();
+    const button = screen.getByRole("button", { name: getMessageByKey("open") });
+    fireEvent.click(button);
+    expect(defaultProps.onOpen).toHaveBeenCalledWith(defaultProps.action.key);
+    expect(defaultProps.onOpen).toHaveBeenCalledTimes(1);
   });
 });
