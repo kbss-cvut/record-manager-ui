@@ -1,33 +1,58 @@
-"use strict";
-
-import React from "react";
-import { IntlProvider } from "react-intl";
-import TestUtils from "react-dom/test-utils";
-import HistoryTable from "../../../src/components/history/HistoryTable";
-import enLang from "../../../src/i18n/en";
+import { screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import { describe, expect, it, vi } from "vitest";
+import HistoryTable from "../../../src/components/history/HistoryTable.jsx";
+import { getMessageByKey, renderWithIntl } from "../../utils/utils.jsx";
+
+const defaultProps = {
+  actions: [
+    {
+      key: "1",
+      type: "CREATE",
+    },
+    {
+      key: "2",
+      type: "UPDATE",
+    },
+  ],
+  searchData: {},
+  handlers: {
+    handleSearch: vi.fn(),
+    handleReset: vi.fn(),
+    handleChange: vi.fn(),
+    onKeyPress: vi.fn(),
+    onOpen: vi.fn(),
+  },
+};
+
+vi.mock("../../../src/components/history/HistoryRow.jsx", () => ({
+  default: () => <div data-testid="history-row"></div>,
+}));
+
+const renderComponent = (props = {}) => {
+  return renderWithIntl(<HistoryTable {...defaultProps} {...props} />);
+};
 
 describe("HistoryTable", function () {
-  const intlData = enLang;
-  let actions = [],
-    searchData = {},
-    handlers = {
-      handleSearch: vi.fn(),
-      handleReset: vi.fn(),
-      handleChange: vi.fn(),
-      onKeyPress: vi.fn(),
-      onOpen: vi.fn(),
-    };
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
-  it("renders table with 4 headers columns", function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <HistoryTable handlers={handlers} searchData={searchData} actions={actions} />
-      </IntlProvider>,
-    );
-    const table = TestUtils.scryRenderedDOMComponentsWithTag(tree, "table");
-    expect(table).not.toBeNull();
-    const th = TestUtils.scryRenderedDOMComponentsWithTag(tree, "th");
-    expect(th.length).toEqual(4);
+  it("renders table headers with text", () => {
+    renderComponent();
+    expect(screen.getByText(getMessageByKey("history.action-type"))).toBeInTheDocument();
+    expect(screen.getByText(getMessageByKey("history.author"))).toBeInTheDocument();
+    expect(screen.getByText(getMessageByKey("history.time"))).toBeInTheDocument();
+    expect(screen.getByText(getMessageByKey("actions"))).toBeInTheDocument();
+  });
+
+  it("renders not found message when actions array is empty", () => {
+    renderComponent({ actions: [] });
+    expect(screen.getByText(getMessageByKey("history.not-found"))).toBeInTheDocument();
+  });
+
+  it("renders History rows when actions array is not empty", () => {
+    renderComponent();
+    expect(screen.getAllByTestId("history-row")).toHaveLength(2);
   });
 });
