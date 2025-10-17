@@ -6,15 +6,14 @@ import HorizontalInput from "../HorizontalInput";
 import RecordForm from "./RecordForm";
 import RecordProvenance from "./RecordProvenance";
 import RequiredAttributes from "./RequiredAttributes";
-import { ACTION_STATUS, EXTENSION_CONSTANTS, RECORD_PHASE, ROLE } from "../../constants/DefaultConstants";
+import { ACTION_STATUS, RECORD_PHASE, ROLE } from "../../constants/DefaultConstants";
 import { LoaderCard, LoaderSmall } from "../Loader";
 import { processTypeaheadOptions } from "./TypeaheadAnswer";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 import { Constants as SConstants, FormUtils } from "@kbss-cvut/s-forms";
 import FormValidationDialog from "../FormValidationDialog.jsx";
 import RejectButton from "../button/RejectButton.jsx";
-import { EXTENSIONS } from "../../../config/index.js";
-import { canReadInstitutionInfo, canWriteRecord, hasRole } from "../../utils/RoleUtils.js";
+import { canReadInstitution, canWriteRecord, hasRole } from "../../utils/RoleUtils.js";
 import { useDispatch, useSelector } from "react-redux";
 import { loadFormTemplates } from "../../actions/FormTemplatesActions.js";
 import { useI18n } from "../../hooks/useI18n.jsx";
@@ -170,8 +169,7 @@ const Record = (
   const renderButtons = () => {
     return (
       <div className="mt-3 text-center">
-        {EXTENSIONS === EXTENSION_CONSTANTS.SUPPLIER &&
-          !record.isNew &&
+        {!record.isNew &&
           record.phase === RECORD_PHASE.OPEN &&
           hasRole(currentUser, ROLE.REJECT_RECORDS) &&
           canWriteRecord(currentUser, record) && (
@@ -215,25 +213,27 @@ const Record = (
             </Button>
           )}
 
-        <Button
-          className="mx-1 action-button"
-          variant="success"
-          size="sm"
-          disabled={
-            formgen.status === ACTION_STATUS.PENDING ||
-            recordSaved.status === ACTION_STATUS.PENDING ||
-            !state.isFormValid ||
-            !record.state.isComplete()
-          }
-          hidden={
-            !canWriteRecord(currentUser, record) &&
-            [RECORD_PHASE.COMPLETED, RECORD_PHASE.REJECTED, RECORD_PHASE.PUBLISHED].includes(record.phase)
-          }
-          onClick={handleOnSave}
-        >
-          {intl.formatMessage({ id: "save" })}
-          {recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
-        </Button>
+        {canWriteRecord(currentUser, record) && (
+          <Button
+            className="mx-1 action-button"
+            variant="success"
+            size="sm"
+            disabled={
+              formgen.status === ACTION_STATUS.PENDING ||
+              recordSaved.status === ACTION_STATUS.PENDING ||
+              !state.isFormValid ||
+              !record.state.isComplete()
+            }
+            hidden={
+              !canWriteRecord(currentUser, record) &&
+              [RECORD_PHASE.COMPLETED, RECORD_PHASE.REJECTED, RECORD_PHASE.PUBLISHED].includes(record.phase)
+            }
+            onClick={handleOnSave}
+          >
+            {intl.formatMessage({ id: "save" })}
+            {recordSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
+          </Button>
+        )}
         <Button className="mx-1 action-button" variant="link" size="sm" onClick={handlers.onCancel}>
           {intl.formatMessage({ id: "cancel" })}
         </Button>
@@ -294,7 +294,7 @@ const Record = (
   };
 
   const showInstitution = () => {
-    return canReadInstitutionInfo(currentUser, record?.institution);
+    return canReadInstitution(currentUser, record?.institution);
   };
 
   const getPanelTitle = () => {
