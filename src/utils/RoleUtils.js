@@ -73,7 +73,7 @@ export function canWriteUserInfo(currentUser, user) {
   );
 }
 
-export function canWriteInstitutionInfo(currentUser, institution) {
+export function canWriteInstitution(currentUser, institution) {
   return hasRole(
     currentUser,
     ROLE.WRITE_ALL_ORGANIZATIONS ||
@@ -81,7 +81,7 @@ export function canWriteInstitutionInfo(currentUser, institution) {
   );
 }
 
-export function canReadInstitutionInfo(currentUser, institution) {
+export function canReadInstitution(currentUser, institution) {
   return (
     hasRole(currentUser, ROLE.READ_ALL_ORGANIZATIONS) ||
     (hasRole(currentUser, ROLE.READ_ORGANIZATION) && currentUser.institution?.name === institution?.name)
@@ -94,4 +94,8 @@ export function canSelectInstitution(currentUser, user) {
     hasRole(currentUser, ROLE.WRITE_ALL_ORGANIZATIONS) &&
     canWriteUserInfo(currentUser, user)
   );
+}
+
+export function canCreateInstitution(currentUser) {
+  return hasRole(currentUser, ROLE.WRITE_ALL_ORGANIZATIONS);
 }
