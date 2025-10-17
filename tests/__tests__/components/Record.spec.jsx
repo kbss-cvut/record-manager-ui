@@ -1,241 +1,216 @@
-"use strict";
-
-import React from "react";
-import { IntlProvider } from "react-intl";
-import TestUtils from "react-dom/test-utils";
-import { ACTION_STATUS } from "../../../src/constants/DefaultConstants";
+import "@testing-library/jest-dom";
+import { screen } from "@testing-library/react";
+import { ACTION_STATUS, RECORD_PHASE } from "../../../src/constants/DefaultConstants";
 import Record from "../../../src/components/record/Record";
 import * as RecordState from "../../../src/model/RecordState";
-import enLang from "../../../src/i18n/en";
 import { describe, expect, it, vi, beforeEach } from "vitest";
-import { admin } from "../../__mocks__/users.js";
+import * as RoleUtils from "../../../src/utils/RoleUtils.js";
+import { getMessageByKey, renderWithIntl } from "../../utils/utils.jsx";
+import { useSelector } from "react-redux";
 
-vi.mock("../../../src/components/record/TypeaheadAnswer", () => {
-  return {
-    default: () => ({}),
-  };
-});
-
-describe.skip("Record", function () {
-  const intlData = enLang;
-  let record,
-    newRecord,
-    recordSaved,
-    showAlert,
-    recordLoaded,
-    formgen = {},
-    currentUser,
-    handlers = {
-      onSave: vi.fn(),
-      onCancel: vi.fn(),
-      onChange: vi.fn(),
-      onEditUser: vi.fn(),
-      onAddNewUser: vi.fn(),
-      onDelete: vi.fn(),
-    };
-
-  beforeEach(() => {
-    showAlert = false;
-    recordLoaded = {
-      status: ACTION_STATUS.SUCCESS,
-      error: "",
-    };
-    recordSaved = {
-      status: ACTION_STATUS.SUCCESS,
-      error: "",
-    };
-    newRecord = {
-      localName: "",
-      complete: false,
-      isNew: true,
-      state: RecordState.createInitialState(),
-    };
-  });
-
-  record = {
-    author: { firstName: "test", lastName: "test" },
-    institution: { localName: "testInstitution" },
+const defaultProps = {
+  record: {
+    author: { firstName: "John", lastName: "Doe" },
+    institution: { name: "testInstitution" },
     dateCreated: 1521225180115,
     key: "640579951330382351",
     localName: "test",
     lastModified: 1521277544192,
     state: RecordState.createRecordState(),
-  };
-
-  it("shows loader", function () {
-    recordLoaded = {
-      status: ACTION_STATUS.PENDING,
-    };
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <Record
-          ref={null}
-          handlers={handlers}
-          record={null}
-          recordLoaded={recordLoaded}
-          recordSaved={recordSaved}
-          showAlert={showAlert}
-          formgen={formgen}
-          currentUser={admin}
-          formTemplatesLoaded={{}}
-        />
-      </IntlProvider>,
-    );
-    const result = TestUtils.findRenderedDOMComponentWithClass(tree, "loader-spin");
-    expect(result).not.toBeNull();
-  });
-
-  it("shows error about record was not loaded", function () {
-    recordLoaded = {
-      ...recordLoaded,
-      status: ACTION_STATUS.ERROR,
-      error: {
-        message: "Error",
+    phase: RECORD_PHASE.OPEN,
+    isNew: false,
+  },
+  handlers: {
+    onSave: vi.fn(),
+    onCancel: vi.fn(),
+    onChange: vi.fn(),
+    onEditUser: vi.fn(),
+    onAddNewUser: vi.fn(),
+    onDelete: vi.fn(),
+  },
+  formgen: {
+    status: ACTION_STATUS.SUCCESS,
+  },
+  showAlert: false,
+  recordLoaded: {
+    status: ACTION_STATUS.SUCCESS,
+    error: "",
+  },
+  recordSaved: {
+    status: ACTION_STATUS.SUCCESS,
+    error: "",
+  },
+  newRecord: {
+    localName: "",
+    complete: false,
+    isNew: true,
+    state: RecordState.createInitialState(),
+  },
+  formTemplatesLoaded: {
+    formTemplates: [
+      {
+        name: "default",
+        description: "Default form template",
+        attributes: [],
       },
-    };
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <Record
-          ref={null}
-          handlers={handlers}
-          record={record}
-          recordLoaded={recordLoaded}
-          recordSaved={recordSaved}
-          showAlert={showAlert}
-          formgen={formgen}
-          currentUser={admin}
-          formTemplatesLoaded={{}}
-        />
-      </IntlProvider>,
+    ],
+  },
+};
+
+vi.mock("react-bootstrap", () => ({
+  Alert: ({ children, variant }) => (
+    <div data-testid="alert" data-variant={variant}>
+      {children}
+    </div>
+  ),
+  Button: ({ children, onClick, disabled, variant, size, className }) => (
+    <button
+      data-testid="button"
+      onClick={onClick}
+      disabled={disabled}
+      data-variant={variant}
+      data-size={size}
+      className={className}
+    >
+      {children}
+    </button>
+  ),
+}));
+
+vi.mock("../../../src/components/Loader", () => ({
+  LoaderCard: ({ header }) => <div data-testid="loader-card">{header}</div>,
+  LoaderSmall: () => <div data-testid="loader-small" />,
+}));
+
+vi.mock("../../../src/utils/RoleUtils.js", () => ({
+  canReadInstitution: vi.fn(),
+  canWriteRecord: vi.fn(),
+  hasRole: vi.fn(),
+}));
+
+vi.mock("../../../src/components/record/TypeaheadAnswer.jsx", () => ({
+  default: () => ({}),
+}));
+
+vi.mock("react-redux", () => ({
+  useDispatch: vi.fn(() => vi.fn()),
+  useSelector: vi.fn(),
+}));
+
+vi.mock("../../../src/actions/FormTemplatesActions.js", () => ({
+  loadFormTemplates: vi.fn(),
+}));
+
+vi.mock("../../../src/components//HorizontalInput.jsx", () => ({
+  default: ({ label, value }) => (
+    <div data-testid="horizontal-input">
+      <label>{label}</label>
+      <input value={value} readOnly />
+    </div>
+  ),
+}));
+
+vi.mock("../../../src/components/record/RecordProvenance.jsx", () => ({
+  default: ({ record }) => <div data-testid="record-provenance">{record?.localName}</div>,
+}));
+
+vi.mock("../../../src/components/record/RequiredAttributes.jsx", () => ({
+  default: ({ record }) => <div data-testid="required-attributes">{record?.localName}</div>,
+}));
+
+vi.mock("../../../src/components/FormValidationDialog.jsx", () => ({
+  default: ({ show, handleOnCloseModal }) =>
+    show && (
+      <div data-testid="validation-dialog">
+        <button onClick={handleOnCloseModal}>Close</button>
+      </div>
+    ),
+}));
+
+vi.mock("../../../src/components/button/RejectButton.jsx", () => ({
+  default: ({ onClick, children, disabled }) => (
+    <button data-testid="reject-button" onClick={onClick} disabled={disabled}>
+      {children}
+    </button>
+  ),
+}));
+
+vi.mock("../../../src/components/record/RecordForm.jsx", () => ({
+  default: (props) => {
+    return (
+      <div data-testid="record-form">
+        <button>Validate</button>
+        <button>Get Data</button>
+        {props.isFormValid && <span data-testid="form-valid">Valid</span>}
+      </div>
     );
-    const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
-    expect(alert).not.toBeNull();
+  },
+}));
+
+const renderComponent = (props) => {
+  return renderWithIntl(<Record {...defaultProps} {...props} />);
+};
+
+describe("Record", function () {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    RoleUtils.canWriteRecord.mockReturnValue(true);
+    RoleUtils.hasRole.mockReturnValue(true);
+    RoleUtils.canReadInstitution.mockReturnValue(true);
+    useSelector.mockReturnValue([{ name: "default", description: "Default form template", attributes: [] }]);
   });
 
-  it("renders record's form empty", function () {
-    const tree = mount(
-      <IntlProvider locale="en" {...intlData}>
-        <Record
-          ref={null}
-          handlers={handlers}
-          record={newRecord}
-          recordLoaded={recordLoaded}
-          recordSaved={recordSaved}
-          showAlert={showAlert}
-          formgen={formgen}
-          currentUser={admin}
-          formTemplatesLoaded={{}}
-        />
-      </IntlProvider>,
-    );
-    const result = tree.find("input");
-    expect(result.length).toEqual(1);
-    for (let input of result) {
-      switch (input.name) {
-        case "localName":
-          expect(input.value).toEqual("");
-          expect(input.type).toEqual("text");
-          break;
-      }
-    }
+  it("renders loader if no record", () => {
+    renderComponent({
+      record: null,
+    });
+    expect(screen.getByTestId("loader-card")).toBeInTheDocument();
   });
 
-  //TODO (after migrating to React 18): Create test cases for different extension (operator and supplier cases)
-  it('renders "Save" and "Cancel" buttons', function () {
-    const tree = mount(
-      <IntlProvider locale="en" {...intlData}>
-        <Record
-          ref={null}
-          handlers={handlers}
-          record={newRecord}
-          recordLoaded={recordLoaded}
-          recordSaved={recordSaved}
-          showAlert={showAlert}
-          formgen={formgen}
-          currentUser={admin}
-          formTemplatesLoaded={{}}
-        />
-      </IntlProvider>,
-    );
-    let buttons = tree.find("Button");
-    expect(buttons.length).toEqual(2);
+  it("renders warning alert when no form templates", () => {
+    useSelector.mockReturnValue([]);
+    renderComponent();
+    expect(screen.getByTestId("alert")).toBeInTheDocument();
+    expect(screen.getByText(getMessageByKey("formTemplates.no-form-templates"))).toBeInTheDocument();
   });
 
-  it("shows successful alert that record was successfully saved", function () {
-    showAlert = true;
-    recordSaved = {
-      ...recordSaved,
-      status: ACTION_STATUS.SUCCESS,
-    };
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <Record
-          ref={null}
-          handlers={handlers}
-          record={newRecord}
-          recordLoaded={recordLoaded}
-          recordSaved={recordSaved}
-          showAlert={showAlert}
-          formgen={formgen}
-          currentUser={admin}
-          formTemplatesLoaded={{}}
-        />
-      </IntlProvider>,
-    );
-    const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-success");
-    expect(alert).not.toBeNull();
+  it("does not render warning alert when form templates not empty", () => {
+    renderComponent();
+    expect(screen.queryByTestId("alert")).not.toBeInTheDocument();
+    expect(screen.queryByText(getMessageByKey("formTemplates.no-form-templates"))).not.toBeInTheDocument();
   });
 
-  it("shows unsuccessful alert that record was not saved", function () {
-    showAlert = true;
-    recordSaved = {
-      ...recordSaved,
-      status: ACTION_STATUS.ERROR,
-      error: {
-        message: "error",
-      },
-    };
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <Record
-          ref={null}
-          handlers={handlers}
-          record={newRecord}
-          recordLoaded={recordLoaded}
-          recordSaved={recordSaved}
-          showAlert={showAlert}
-          formgen={formgen}
-          currentUser={admin}
-          formTemplatesLoaded={{}}
-        />
-      </IntlProvider>,
-    );
-    const alert = TestUtils.scryRenderedDOMComponentsWithClass(tree, "alert-danger");
-    expect(alert).not.toBeNull();
+  it("renders institution if current user has ReadInstitution permission", () => {
+    renderComponent();
+    expect(screen.getByText(getMessageByKey("record.institution"))).toBeInTheDocument();
+    expect(screen.getByDisplayValue(defaultProps.record.institution.name)).toBeInTheDocument();
   });
 
-  //TODO (after migrating to React 18): Create test cases for different extension (operator and supplier cases, adding complete & reject buttons)
-  it('renders loading spinner in "Save" button on saving', function () {
-    recordSaved = {
-      ...recordSaved,
-      status: ACTION_STATUS.PENDING,
-    };
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <Record
-          ref={null}
-          handlers={handlers}
-          record={newRecord}
-          recordLoaded={recordLoaded}
-          recordSaved={recordSaved}
-          showAlert={showAlert}
-          formgen={formgen}
-          currentUser={admin}
-          formTemplatesLoaded={{}}
-        />
-      </IntlProvider>,
-    );
-    const loader = TestUtils.findRenderedDOMComponentWithClass(tree, "loader");
-    expect(loader).not.toBeNull();
+  it("does not render institution if current user lacks ReadInstitution permission", () => {
+    RoleUtils.canReadInstitution.mockReturnValue(false);
+    renderComponent();
+    expect(screen.queryByText(getMessageByKey("record.institution"))).not.toBeInTheDocument();
+    expect(screen.queryByDisplayValue(defaultProps.record.institution.name)).not.toBeInTheDocument();
+  });
+
+  it("renders reject button if user has writeRecords permission, record is not new, and has rejectRecords role", () => {
+    renderComponent();
+    expect(screen.queryByText(getMessageByKey("reject"))).toBeInTheDocument();
+  });
+
+  it("renders complete button if user has writeRecords permission, rejectRecords role, and record is not new", () => {
+    renderComponent();
+    expect(screen.queryByText(getMessageByKey("complete"))).toBeInTheDocument();
+  });
+
+  it("renders save button if user has writeRecords permission", () => {
+    renderComponent();
+    expect(screen.queryByText(getMessageByKey("save"))).toBeInTheDocument();
+  });
+
+  it("does not render save button if lacks writeRecords permission", () => {
+    RoleUtils.canWriteRecord.mockReturnValue(false);
+    renderComponent();
+    expect(screen.queryByText(getMessageByKey("save"))).not.toBeInTheDocument();
   });
 });
