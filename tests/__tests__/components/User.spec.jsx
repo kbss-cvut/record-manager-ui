@@ -4,7 +4,7 @@ import User from "../../../src/components/user/User";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { getMessageByKey, renderWithIntl } from "../../utils/utils.jsx";
 import { isUsingOidcAuth } from "../../../src/utils/OidcUtils.js";
-import { canWriteUserInfo, hasSupersetOfPrivileges } from "../../../src/utils/RoleUtils.js";
+import { canImpersonate, canWriteUserInfo, hasSupersetOfPrivileges } from "../../../src/utils/RoleUtils.js";
 import UserValidator from "../../../src/validation/UserValidator.jsx";
 import { ACTION_STATUS } from "../../../src/constants/DefaultConstants.js";
 
@@ -43,6 +43,7 @@ vi.mock("../../../src/utils/RoleUtils", () => ({
   getRoles: vi.fn(),
   hasRole: vi.fn(),
   hasSupersetOfPrivileges: vi.fn(),
+  canImpersonate: vi.fn(),
 }));
 
 vi.mock("../../../src/components/Loader", () => ({
@@ -76,6 +77,7 @@ describe("User", function () {
     canWriteUserInfo.mockReturnValue(true);
     hasSupersetOfPrivileges.mockReturnValue(true);
     UserValidator.isValid.mockReturnValue(true);
+    canImpersonate.mockReturnValue(true);
   });
 
   it("should render loading state when user is not provided", () => {
@@ -149,13 +151,13 @@ describe("User", function () {
     expect(screen.getByText(getMessageByKey("save-and-send-email"))).toBeDisabled();
   });
 
-  it("renders impersonate button when currentUser has superset of roles of another user", () => {
+  it("renders impersonate button when currentUser has canImpersonate permission", () => {
     renderComponent();
     expect(screen.getByText(getMessageByKey("user.impersonate"))).toBeInTheDocument();
   });
 
-  it("does not render impersonate button when currentUser lacks superset of roles of another user", () => {
-    hasSupersetOfPrivileges.mockReturnValue(false);
+  it("does not render impersonate button when currentUser lacks canImpersonate permission", () => {
+    canImpersonate.mockReturnValue(false);
     renderComponent();
     expect(screen.queryByText(getMessageByKey("user.impersonate"))).not.toBeInTheDocument();
   });

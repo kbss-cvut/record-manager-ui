@@ -113,6 +113,9 @@ export const ROLE = {
   COMMENT_RECORD_QUESTIONS: "commentRecordQuestions",
   READ_ACTION_HISTORY: "readActionHistory",
   READ_STATISTICS: "readStatistics",
+
+  // Impersonate
+  IMPERSONATE: "impersonate",
 };
 
 // Default number of table elements per page.
