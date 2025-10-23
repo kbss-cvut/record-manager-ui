@@ -5,9 +5,7 @@ import { describe, expect, it, vi, beforeEach } from "vitest";
 import { fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { getMessageByKey, renderWithIntl } from "../../utils/utils.jsx";
-import * as RoleUtils from "../../../src/utils/RoleUtils.js";
-import * as OidcUtils from "../../../src/utils/OidcUtils.js";
-import { canWriteInstitution, canWriteUserInfo } from "../../../src/utils/RoleUtils.js";
+import { canCreateUser, canWriteUserInfo } from "../../../src/utils/RoleUtils.js";
 import { isUsingOidcAuth } from "../../../src/utils/OidcUtils.js";
 
 const defaultProps = {
@@ -27,7 +25,7 @@ const defaultProps = {
 };
 
 vi.mock("../../../src/utils/RoleUtils.js", () => ({
-  canWriteInstitution: vi.fn(),
+  canCreateUser: vi.fn(),
   canWriteUserInfo: vi.fn(),
 }));
 
@@ -44,7 +42,7 @@ describe("InstitutionMembers", function () {
     vi.clearAllMocks();
     isUsingOidcAuth.mockReturnValue(true);
     canWriteUserInfo.mockReturnValue(true);
-    canWriteInstitution.mockReturnValue(true);
+    canCreateUser.mockReturnValue(true);
   });
 
   it("renders empty state when no members exist", () => {
@@ -70,10 +68,17 @@ describe("InstitutionMembers", function () {
     expect(screen.queryByText("Delete")).not.toBeInTheDocument();
   });
 
-  it("renders Add new user button in internal authorization and if current user has WriteInstitution permission", () => {
+  it("renders Add new user button in internal authorization and if current user has CreateUser permission", () => {
     isUsingOidcAuth.mockReturnValue(false);
     renderComponent();
     expect(screen.queryByText(getMessageByKey("users.add-new-user"))).toBeInTheDocument();
+  });
+
+  it("does not render Add new user button in internal authorization and if current user lacks CreateUser permission", () => {
+    isUsingOidcAuth.mockReturnValue(false);
+    canCreateUser.mockReturnValue(false);
+    renderComponent();
+    expect(screen.queryByText(getMessageByKey("users.add-new-user"))).not.toBeInTheDocument();
   });
 
   it("triggers onAddNewUser when Add new user button is clicked", () => {

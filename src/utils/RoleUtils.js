@@ -73,11 +73,17 @@ export function canWriteUserInfo(currentUser, user) {
   );
 }
 
+export function canCreateUser(currentUser, institution) {
+  return (
+    hasRole(currentUser, ROLE.WRITE_ALL_USERS) ||
+    (hasRole(currentUser, ROLE.WRITE_ORGANIZATION_USERS) && currentUser.institution?.name === institution?.name)
+  );
+}
+
 export function canWriteInstitution(currentUser, institution) {
-  return hasRole(
-    currentUser,
-    ROLE.WRITE_ALL_ORGANIZATIONS ||
-      (hasRole(currentUser, ROLE.WRITE_ORGANIZATION) && currentUser.institution?.name === institution?.name),
+  return (
+    hasRole(currentUser, ROLE.WRITE_ALL_ORGANIZATIONS) ||
+    (hasRole(currentUser, ROLE.WRITE_ORGANIZATION) && currentUser.institution?.name === institution?.name)
   );
 }
 

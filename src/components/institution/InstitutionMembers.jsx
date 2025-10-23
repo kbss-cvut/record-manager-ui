@@ -6,7 +6,7 @@ import DeleteItemDialog from "../DeleteItemDialog";
 import { ACTION_STATUS } from "../../constants/DefaultConstants";
 import Loader, { LoaderSmall } from "../Loader";
 import PropTypes from "prop-types";
-import { canWriteUserInfo } from "../../utils/RoleUtils.js";
+import { canCreateUser, canWriteUserInfo } from "../../utils/RoleUtils.js";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 import IfInternalAuth from "../misc/oidc/IfInternalAuth.jsx";
 
@@ -77,11 +77,13 @@ class InstitutionMembers extends React.Component {
             <p className="font-italic">{this.i18n("institution.members.not-found")}</p>
           )}
           <IfInternalAuth>
-            <div className="btn-toolbar">
-              <Button variant="primary" size="sm" onClick={() => onAddNewUser(institution)}>
-                {this.i18n("users.add-new-user")}
-              </Button>
-            </div>
+            {canCreateUser(currentUser, institution) && (
+              <div className="btn-toolbar">
+                <Button variant="primary" size="sm" onClick={() => onAddNewUser(institution)}>
+                  {this.i18n("users.add-new-user")}
+                </Button>
+              </div>
+            )}
           </IfInternalAuth>
         </Card.Body>
       </Card>
