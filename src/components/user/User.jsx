@@ -180,25 +180,21 @@ class User extends React.Component {
 
   _saveAndSendEmailButton() {
     const { user, currentUser, userSaved } = this.props;
-    if (!user.isNew && hasRole(currentUser, ROLE.WRITE_ALL_USERS) && currentUser.username !== user.username) {
-      return (
-        <Button
-          style={{ margin: "0 0.3em 0 0" }}
-          variant="success"
-          size="sm"
-          disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
-          onClick={() => this._onSaveAndSendEmail()}
-          className="d-inline-flex"
-          title={this.i18n("required")}
-        >
-          {this.i18n("save-and-send-email")}
-          {!UserValidator.isValid(user) && <HelpIcon text={this.i18n("required")} className="align-self-center" />}
-          {userSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
-        </Button>
-      );
-    } else {
-      return null;
-    }
+    return (
+      <Button
+        style={{ margin: "0 0.3em 0 0" }}
+        variant="success"
+        size="sm"
+        disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
+        onClick={() => this._onSaveAndSendEmail()}
+        className="d-inline-flex"
+        title={this.i18n("required")}
+      >
+        {this.i18n("save-and-send-email")}
+        {!UserValidator.isValid(user) && <HelpIcon text={this.i18n("required")} className="align-self-center" />}
+        {userSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
+      </Button>
+    );
   }
 
   _onSaveAndSendEmail() {
@@ -330,22 +326,24 @@ class User extends React.Component {
             <div className="buttons-line-height mt-3 text-center">
               {this._impersonateButton()}
               {isUsingOidcAuth() ? this._redirectToKeycloakButton() : this._passwordChangeButton()}
-              {this._saveAndSendEmailButton()}
               {canWriteUserInfo(currentUser, user) && (
-                <Button
-                  variant="success"
-                  size="sm"
-                  className="action-button"
-                  disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
-                  onClick={() => this._onSave()}
-                  title={this.i18n("required")}
-                >
-                  {this.i18n("save")}
-                  {!UserValidator.isValid(user) && (
-                    <HelpIcon className="align-self-center" text={this.i18n("required")} />
-                  )}
-                  {userSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
-                </Button>
+                <>
+                  {this._saveAndSendEmailButton()}
+                  <Button
+                    variant="success"
+                    size="sm"
+                    className="action-button"
+                    disabled={!UserValidator.isValid(user) || userSaved.status === ACTION_STATUS.PENDING}
+                    onClick={() => this._onSave()}
+                    title={this.i18n("required")}
+                  >
+                    {this.i18n("save")}
+                    {!UserValidator.isValid(user) && (
+                      <HelpIcon className="align-self-center" text={this.i18n("required")} />
+                    )}
+                    {userSaved.status === ACTION_STATUS.PENDING && <LoaderSmall />}
+                  </Button>
+                </>
               )}
               <Button variant="link" size="sm" className="action-button" onClick={handlers.onCancel}>
                 {this.i18n(this.props.backToInstitution ? "users.back-to-institution" : "cancel")}

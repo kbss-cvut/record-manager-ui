@@ -11,3 +11,4 @@ Record Manager is an application for generic form-based collection of data. This
 Build configuration and deployment is described in [Setup Guide](doc/setup.md).
 Development is described in [Development notes](doc/development.md).
 Security is described in [Security](doc/security.md).
+Component testing is described in [Component Testing](doc/component-testing.md).

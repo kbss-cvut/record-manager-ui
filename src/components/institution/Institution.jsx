@@ -7,18 +7,13 @@ import withI18n from "../../i18n/withI18n";
 import HorizontalInput from "../HorizontalInput";
 import PropTypes from "prop-types";
 
-import { ACTION_STATUS, ROLE } from "../../constants/DefaultConstants";
+import { ACTION_STATUS } from "../../constants/DefaultConstants";
 import { formatDate } from "../../utils/Utils";
 import { LoaderSmall } from "../Loader";
 import InstitutionValidator from "../../validation/InstitutionValidator";
 import HelpIcon from "../HelpIcon";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
-import {
-  canReadInstitutionPatients,
-  canReadInstitutionUsers,
-  canWriteInstitutionInfo,
-  hasRole,
-} from "../../utils/RoleUtils.js";
+import { canReadInstitutionPatients, canReadInstitutionUsers, canWriteInstitution } from "../../utils/RoleUtils.js";
 
 /**
  * Institution detail. Editable only for admins.
@@ -69,7 +64,7 @@ class Institution extends React.Component {
                       name="name"
                       label={`${this.i18n("institution.name")}*`}
                       value={institution.name}
-                      disabled={!canWriteInstitutionInfo(currentUser, institution)}
+                      disabled={!canWriteInstitution(currentUser, institution)}
                       onChange={this._onChange}
                       labelWidth={3}
                       inputWidth={8}
@@ -81,7 +76,7 @@ class Institution extends React.Component {
                       name="emailAddress"
                       label={this.i18n("institution.email")}
                       value={institution.emailAddress || ""}
-                      disabled={!canWriteInstitutionInfo(currentUser, institution)}
+                      disabled={!canWriteInstitution(currentUser, institution)}
                       onChange={this._onChange}
                       labelWidth={3}
                       inputWidth={8}
@@ -129,7 +124,7 @@ class Institution extends React.Component {
   _renderButtons() {
     const { handlers, institutionSaved, currentUser, institution } = this.props;
 
-    if (!canWriteInstitutionInfo(currentUser, institution)) {
+    if (!canWriteInstitution(currentUser, institution)) {
       return (
         <div className="row justify-content-center">
           <Button variant="primary" size="sm" className="action-button" onClick={handlers.onCancel}>

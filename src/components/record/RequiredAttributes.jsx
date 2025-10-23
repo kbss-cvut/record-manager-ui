@@ -76,7 +76,8 @@ class RequiredAttributes extends React.Component {
   }
 
   _showFormTemplateSelection() {
-    return canReadRecord(this.props.currentUser) || !(this.props.record.formTemplate || this.props.formTemplate);
+    const hasFormTemplateSelected = this.props.record.formTemplate || this.props.formTemplate;
+    return canReadRecord(this.props.currentUser) || !hasFormTemplateSelected;
   }
 }
 

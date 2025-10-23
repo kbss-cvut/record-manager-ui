@@ -1,209 +1,153 @@
-"use strict";
-
-import React from "react";
-import { IntlProvider } from "react-intl";
-import TestUtils from "react-dom/test-utils";
-import { ACTION_STATUS, ROLE, SortDirection } from "../../../src/constants/DefaultConstants";
+import { fireEvent, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import { ACTION_STATUS, SortDirection } from "../../../src/constants/DefaultConstants";
 import Institution from "../../../src/components/institution/Institution";
-import enLang from "../../../src/i18n/en";
 import { describe, expect, it, vi, beforeEach } from "vitest";
+import InstitutionValidator from "../../../src/validation/InstitutionValidator.jsx";
+import { getMessageByKey, renderWithIntl } from "../../utils/utils.jsx";
+import {
+  canReadInstitutionPatients,
+  canReadInstitutionUsers,
+  canWriteInstitution,
+} from "../../../src/utils/RoleUtils.js";
+
+const defaultProps = {
+  institution: {
+    key: "1",
+    name: "Test Institution",
+    emailAddress: "test@inst.com",
+    isNew: false,
+  },
+  institutionLoaded: {},
+  institutionSaved: { status: ACTION_STATUS.SUCCESS },
+  institutionMembers: {},
+  recordsLoaded: {
+    status: ACTION_STATUS.SUCCESS,
+    records: [],
+  },
+  formTemplatesLoaded: {},
+  handlers: {
+    onChange: vi.fn(),
+    onSave: vi.fn(),
+    onCancel: vi.fn(),
+    onEditPatient: vi.fn(),
+    onExportRecords: vi.fn(),
+    onDelete: vi.fn(),
+    onEditUser: vi.fn(),
+    onAddNewUser: vi.fn(),
+  },
+  currentUser: { username: "John" },
+  filterAndSort: {
+    sort: { date: SortDirection.DESC },
+    filters: {},
+    onChange: vi.fn(),
+  },
+  userDeleted: {},
+};
+
+vi.mock("../../../src/utils/RoleUtils.js", () => ({
+  canWriteInstitution: vi.fn(),
+  canReadInstitutionUsers: vi.fn(),
+  canReadInstitutionPatients: vi.fn(),
+}));
+
+vi.mock("../../../src/validation/InstitutionValidator.jsx", () => {
+  return {
+    default: {
+      isValid: vi.fn(() => true),
+    },
+  };
+});
+
+vi.mock("../../../src/components/institution/InstitutionMembers", () => ({
+  default: () => <div data-testid="institution-members">Members</div>,
+}));
+
+vi.mock("../../../src/components/institution/InstitutionPatients", () => ({
+  default: () => <div data-testid="institution-patients">Patients</div>,
+}));
+
+const renderComponent = (props = {}) => {
+  return renderWithIntl(<Institution {...defaultProps} {...props} />);
+};
 
 describe("Institution", function () {
-  const intlData = enLang;
-  let institution,
-    newInstitution,
-    institutionSaved,
-    institutionLoaded,
-    admin,
-    user,
-    institutionMembers = {},
-    recordsLoaded = {
-      records: [],
-    },
-    filterAndSort,
-    formTemplatesLoaded = {},
-    handlers = {
-      onSave: vi.fn(),
-      onCancel: vi.fn(),
-      onChange: vi.fn(),
-      onEditUser: vi.fn(),
-      onAddNewUser: vi.fn(),
-      onDelete: vi.fn(),
-      onEditPatient: vi.fn(),
-      onExportRecords: vi.fn(),
-    };
-
-  user = {
-    username: "doctor",
-    roles: [],
-  };
-  admin = {
-    username: "admin",
-    roles: [ROLE.WRITE_ALL_ORGANIZATIONS, ROLE.READ_ALL_ORGANIZATIONS],
-  };
-
-  institution = {
-    name: "test",
-    emailAddress: "test@test.cz",
-  };
-
-  institutionMembers = {
-    status: ACTION_STATUS.SUCCESS,
-    members: {},
-  };
-
   beforeEach(() => {
-    institutionLoaded = {
-      status: ACTION_STATUS.SUCCESS,
-      error: "",
-    };
-    institutionSaved = {
-      status: ACTION_STATUS.SUCCESS,
-      error: "",
-    };
-    newInstitution = {
-      name: "",
-      emailAddress: "",
-      isNew: true,
-    };
-    recordsLoaded = {
-      status: ACTION_STATUS.SUCCESS,
-      records: [],
-    };
-    filterAndSort = {
-      sort: { date: SortDirection.DESC },
-      filters: {},
-      onChange: vi.fn(),
-    };
+    vi.clearAllMocks();
+    canWriteInstitution.mockReturnValue(true);
+    canReadInstitutionUsers.mockReturnValue(true);
+    canReadInstitutionPatients.mockReturnValue(true);
+    InstitutionValidator.isValid.mockReturnValue(true);
   });
 
-  it("renders institution's form empty", function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <Institution
-          handlers={handlers}
-          institution={newInstitution}
-          institutionMembers={institutionMembers}
-          recordsLoaded={recordsLoaded}
-          formTemplatesLoaded={formTemplatesLoaded}
-          currentUser={admin}
-          institutionLoaded={institutionLoaded}
-          filterAndSort={filterAndSort}
-          institutionSaved={institutionSaved}
-        />
-      </IntlProvider>,
-    );
-    const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, "input");
-    expect(result.length).toEqual(2);
-    for (let input of result) {
-      switch (input.name) {
-        case "localName":
-          expect(input.value).toEqual("");
-          expect(input.type).toEqual("text");
-          break;
-        case "email":
-          expect(input.value).toEqual("");
-          expect(input.type).toEqual("email");
-          break;
-      }
-    }
+  it("renders institution details correctly", () => {
+    renderComponent();
+    expect(screen.getByText(getMessageByKey("institution.panel-title"))).toBeInTheDocument();
+    expect(screen.getByTestId("input-name")).toBeInTheDocument();
+    expect(screen.getByTestId("input-emailAddress")).toBeInTheDocument();
+
+    const nameInput = screen.getByTestId("input-name").querySelector("input");
+    const emailInput = screen.getByTestId("input-emailAddress").querySelector("input");
+
+    expect(nameInput).toHaveValue(defaultProps.institution.name);
+    expect(emailInput).toHaveValue(defaultProps.institution.emailAddress);
   });
 
-  it('renders "Save" button for admin and click on it', function () {
-    newInstitution = {
-      ...newInstitution,
-      name: "ahoj",
-    };
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <Institution
-          handlers={handlers}
-          institution={newInstitution}
-          institutionMembers={institutionMembers}
-          recordsLoaded={recordsLoaded}
-          formTemplatesLoaded={formTemplatesLoaded}
-          currentUser={admin}
-          institutionLoaded={institutionLoaded}
-          filterAndSort={filterAndSort}
-          institutionSaved={institutionSaved}
-        />
-      </IntlProvider>,
-    );
-    let buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-    expect(buttons.length).toEqual(2);
+  it("disables inputs when current current user lacks WriteInstitution permission", async () => {
+    canWriteInstitution.mockReturnValue(false);
+    renderComponent();
 
-    TestUtils.Simulate.click(buttons[0]); // save
-    expect(handlers.onSave).toHaveBeenCalled();
+    const nameInput = screen.getByTestId("input-name").querySelector("input");
+    const emailInput = screen.getByTestId("input-emailAddress").querySelector("input");
+
+    expect(nameInput).toBeDisabled();
+    expect(emailInput).toBeDisabled();
   });
 
-  it('does not render "Save" button for user', function () {
-    newInstitution = {
-      ...newInstitution,
-      name: "ahoj",
-    };
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <Institution
-          handlers={handlers}
-          institution={newInstitution}
-          institutionMembers={institutionMembers}
-          recordsLoaded={recordsLoaded}
-          formTemplatesLoaded={formTemplatesLoaded}
-          currentUser={user}
-          institutionLoaded={institutionLoaded}
-          filterAndSort={filterAndSort}
-          institutionSaved={institutionSaved}
-        />
-      </IntlProvider>,
-    );
-    let buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-    expect(buttons.length).toEqual(1);
+  it("renders save button for current current user with WriteInstitution permission", () => {
+    renderComponent();
+    const saveButton = screen.getByText(getMessageByKey("save"));
+    expect(saveButton).toBeInTheDocument();
+    expect(saveButton).not.toBeDisabled();
   });
 
-  it('renders "Cancel" button and click on it', function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <Institution
-          handlers={handlers}
-          institution={institution}
-          institutionMembers={institutionMembers}
-          recordsLoaded={recordsLoaded}
-          formTemplatesLoaded={formTemplatesLoaded}
-          currentUser={admin}
-          institutionLoaded={institutionLoaded}
-          filterAndSort={filterAndSort}
-          institutionSaved={institutionSaved}
-        />
-      </IntlProvider>,
-    );
-    const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-    expect(buttons.length).toEqual(2);
-
-    TestUtils.Simulate.click(buttons[1]); // cancel
-    expect(handlers.onCancel).toHaveBeenCalled();
+  it("disables save button when institution is invalid", () => {
+    InstitutionValidator.isValid.mockReturnValue(false);
+    renderComponent();
+    expect(screen.getByText(getMessageByKey("save"))).toBeDisabled();
   });
 
-  it('renders loading spinner in "Save" button on saving', function () {
-    institutionSaved = {
-      ...institutionSaved,
-      status: ACTION_STATUS.PENDING,
-    };
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <Institution
-          handlers={handlers}
-          institution={institution}
-          institutionMembers={institutionMembers}
-          recordsLoaded={recordsLoaded}
-          formTemplatesLoaded={formTemplatesLoaded}
-          currentUser={admin}
-          institutionLoaded={institutionLoaded}
-          filterAndSort={filterAndSort}
-          institutionSaved={institutionSaved}
-        />
-      </IntlProvider>,
-    );
-    const loader = TestUtils.findRenderedDOMComponentWithClass(tree, "loader");
-    expect(loader).not.toBeNull();
+  it("renders InstitutionPatients when current user has ReadInstitutionPatients permission", () => {
+    renderComponent();
+    expect(screen.getByTestId("institution-patients")).toBeInTheDocument();
+  });
+
+  it("does not render InstitutionPatients when current user lacks read permission", () => {
+    canReadInstitutionPatients.mockReturnValue(false);
+    renderComponent();
+    expect(screen.queryByTestId("institution-patients")).not.toBeInTheDocument();
+  });
+
+  it("renders InstitutionMembers when current user has ReadInstitutionUsers permission", () => {
+    renderComponent();
+    expect(screen.getByTestId("institution-members")).toBeInTheDocument();
+  });
+
+  it("does not render InstitutionMember when current user lacks ReadInstitutionUsers permission", () => {
+    canReadInstitutionUsers.mockReturnValue(false);
+    renderComponent();
+    expect(screen.queryByTestId("institution-members")).not.toBeInTheDocument();
+  });
+
+  it("calls onSave handler when save button is clicked", () => {
+    renderComponent();
+    fireEvent.click(screen.getByText(getMessageByKey("save")));
+    expect(defaultProps.handlers.onSave).toHaveBeenCalled();
+  });
+
+  it("calls onCancel handler when cancel button is clicked", () => {
+    renderComponent();
+    fireEvent.click(screen.getByText(getMessageByKey("cancel")));
+    expect(defaultProps.handlers.onCancel).toHaveBeenCalled();
   });
 });

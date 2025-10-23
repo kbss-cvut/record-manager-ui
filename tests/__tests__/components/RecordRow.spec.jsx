@@ -1,118 +1,69 @@
-"use strict";
-
-import React from "react";
-import { IntlProvider } from "react-intl";
-import TestUtils from "react-dom/test-utils";
-import RecordRow from "../../../src/components/record/RecordRow";
-import enLang from "../../../src/i18n/en";
+import { screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import { describe, expect, vi, test } from "vitest";
+import { getMessageByKey, renderWithIntl } from "../../utils/utils.jsx";
+import RecordRow from "../../../src/components/record/RecordRow.jsx";
+import { ROLE } from "../../../src/constants/DefaultConstants.js";
+import { admin } from "../../__mocks__/users.js";
 
-describe("RecordRow", function () {
-  const intlData = enLang;
-  let record,
-    disableDelete = false,
-    deletionLoading = false,
-    onEdit = vi.fn(),
-    onDelete = vi.fn();
-
-  record = {
+const defaultProps = {
+  disableDelete: false,
+  deletionLoading: false,
+  onEdit: vi.fn(),
+  onDelete: vi.fn(),
+  record: {
     uri: "http://onto.fel.cvut.cz/ontologies/record-manager/patient-record#instance456619208",
     key: "159968282553298775",
-    localName: "Test2",
+    localName: "Test",
     dateCreated: "1520956570035",
-    author: { username: "test" },
-    institution: { key: 12345678 },
+    author: { username: "joe" },
+    institution: { key: 12345678, name: "Test institution" },
+  },
+  currentUser: admin,
+};
+
+vi.mock("react-authorization", () => {
+  return {
+    IfGranted: ({ expected, actual, children }) =>
+      expected === ROLE.READ_ALL_RECORDS && actual.includes(ROLE.READ_ALL_RECORDS) ? children : null,
   };
+});
 
-  test.skip("renders one row of table with 5 columns and 2 buttons", function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <table>
-          <tbody>
-            <RecordRow
-              record={record}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              deletionLoading={deletionLoading}
-              disableDelete={disableDelete}
-            />
-          </tbody>
-        </table>
-      </IntlProvider>,
-    );
-    const td = TestUtils.scryRenderedDOMComponentsWithTag(tree, "td");
-    expect(td.length).toEqual(5);
-    const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-    expect(buttons.length).toEqual(4);
+const renderComponent = (props) => {
+  return renderWithIntl(<RecordRow {...defaultProps} {...props} />);
+};
+
+describe("RecordRow", function () {
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
-  test.skip('renders "Open" button and click on it', function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <table>
-          <tbody>
-            <RecordRow
-              record={record}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              deletionLoading={deletionLoading}
-              disableDelete={disableDelete}
-            />
-          </tbody>
-        </table>
-      </IntlProvider>,
-    );
-    const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-    expect(buttons.length).toEqual(4);
-
-    TestUtils.Simulate.click(buttons[0]); // Open Record
-    expect(onEdit).toHaveBeenCalled();
+  it("renders table row structure", () => {
+    renderComponent();
+    const row = screen.getByRole("row");
+    expect(row).toHaveClass("position-relative");
   });
 
-  test.skip("renders id and patients identifier buttons together with open and delete button and click on one but delete button", function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <table>
-          <tbody>
-            <RecordRow
-              record={record}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              deletionLoading={deletionLoading}
-              disableDelete={disableDelete}
-            />
-          </tbody>
-        </table>
-      </IntlProvider>,
-    );
-
-    const links = TestUtils.scryRenderedDOMComponentsWithTag(tree, "button");
-    expect(links.length).toEqual(4);
-
-    TestUtils.Simulate.click(links[0]);
-    expect(onEdit).toHaveBeenCalled();
+  it("renders localName in second column", () => {
+    renderComponent();
+    expect(screen.getByText(defaultProps.record.localName)).toBeInTheDocument();
   });
 
-  test.skip('renders "Delete" button and click on it', function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <table>
-          <tbody>
-            <RecordRow
-              record={record}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              deletionLoading={deletionLoading}
-              disableDelete={disableDelete}
-            />
-          </tbody>
-        </table>
-      </IntlProvider>,
-    );
-    const buttons = TestUtils.scryRenderedDOMComponentsWithTag(tree, "Button");
-    expect(buttons.length).toEqual(4);
+  it("renders key column and edit button when current user has READ_ALL_RECORDS role", () => {
+    renderComponent({ currentUser: { roles: [ROLE.READ_ALL_RECORDS] } });
+    expect(screen.getByText(defaultProps.record.key)).toBeInTheDocument();
+    expect(screen.getByText(defaultProps.record.institution.name)).toBeInTheDocument();
+  });
 
-    TestUtils.Simulate.click(buttons[3]); // Delete Record
-    expect(onDelete).toHaveBeenCalled();
+  it("does not render key column and institution when current user lacks READ_ALL_RECORDS role", () => {
+    renderComponent({ currentUser: { roles: [] } });
+    expect(screen.queryByText(defaultProps.record.key)).not.toBeInTheDocument();
+    expect(screen.queryByText(defaultProps.record.institution.name)).not.toBeInTheDocument();
+    expect(screen.getByText(defaultProps.record.localName)).toBeInTheDocument();
+  });
+
+  it("always renders Open button regardless of authorization", () => {
+    renderComponent({ currentUser: { roles: [] } });
+    expect(screen.getByText(getMessageByKey("open"))).toBeInTheDocument();
   });
 });

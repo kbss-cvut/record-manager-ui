@@ -94,34 +94,40 @@ class PasswordChange extends React.Component {
             </div>
             <div className="mt-3 text-center">
               {canWriteUserInfo(currentUser, match) && (
-                <Button
-                  style={{ margin: "0 0.3em 0 0" }}
-                  variant="success"
-                  size="sm"
-                  onClick={() => this._onSaveWithEmail()}
-                  className="d-inline-flex"
-                  disabled={!UserValidator.isPasswordValid(password) || passwordChange.status === ACTION_STATUS.PENDING}
-                >
-                  {this.i18n("save-and-send-email")}
-                  {!UserValidator.isPasswordValid(password) && (
-                    <HelpIcon className="align-self-center" text={this.i18n("required")} glyph="help" />
-                  )}
-                  {passwordChange.status === ACTION_STATUS.PENDING && <LoaderSmall />}
-                </Button>
+                <>
+                  <Button
+                    style={{ margin: "0 0.3em 0 0" }}
+                    variant="success"
+                    size="sm"
+                    onClick={() => this._onSaveWithEmail()}
+                    className="d-inline-flex"
+                    disabled={
+                      !UserValidator.isPasswordValid(password) || passwordChange.status === ACTION_STATUS.PENDING
+                    }
+                  >
+                    {this.i18n("save-and-send-email")}
+                    {!UserValidator.isPasswordValid(password) && (
+                      <HelpIcon className="align-self-center" text={this.i18n("required")} glyph="help" />
+                    )}
+                    {passwordChange.status === ACTION_STATUS.PENDING && <LoaderSmall />}
+                  </Button>
+                  <Button
+                    variant="success"
+                    size="sm"
+                    onClick={() => this._onSave()}
+                    className="d-inline-flex"
+                    disabled={
+                      !UserValidator.isPasswordValid(password) || passwordChange.status === ACTION_STATUS.PENDING
+                    }
+                  >
+                    {this.i18n("save")}
+                    {!UserValidator.isPasswordValid(password) && (
+                      <HelpIcon className="align-self-center" text={this.i18n("required")} glyph="help" />
+                    )}
+                    {passwordChange.status === ACTION_STATUS.PENDING && <LoaderSmall />}
+                  </Button>
+                </>
               )}
-              <Button
-                variant="success"
-                size="sm"
-                onClick={() => this._onSave()}
-                className="d-inline-flex"
-                disabled={!UserValidator.isPasswordValid(password) || passwordChange.status === ACTION_STATUS.PENDING}
-              >
-                {this.i18n("save")}
-                {!UserValidator.isPasswordValid(password) && (
-                  <HelpIcon className="align-self-center" text={this.i18n("required")} glyph="help" />
-                )}
-                {passwordChange.status === ACTION_STATUS.PENDING && <LoaderSmall />}
-              </Button>
               <Button variant="link" size="sm" onClick={handlers.onCancel}>
                 {this.i18n("cancel")}
               </Button>

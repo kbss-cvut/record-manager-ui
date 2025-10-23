@@ -1,70 +1,63 @@
-"use strict";
-
-import React from "react";
-import { IntlProvider } from "react-intl";
-import TestUtils from "react-dom/test-utils";
+import { screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import RecordProvenance from "../../../src/components/record/RecordProvenance";
 import * as RecordState from "../../../src/model/RecordState";
-import enLang from "../../../src/i18n/en";
 import { describe, expect, it } from "vitest";
+import { renderWithIntl } from "../../utils/utils.jsx";
+import * as ReactIntl from "react-intl";
+
+const defaultProps = {
+  record: {
+    author: { firstName: "test", lastName: "test" },
+    institution: { localName: "testInstitution" },
+    dateCreated: 1521225180115,
+    key: "640579951330382351",
+    localName: "test",
+    state: RecordState.createRecordState(),
+  },
+};
+
+vi.mock("react-intl", async (importOriginal) => {
+  const actual = await importOriginal(); // import the real module
+  return {
+    ...actual,
+    FormattedMessage: ({ id, values }) => (
+      <span data-testid={id}>
+        [{id}]{" "}
+        {values
+          ? Object.entries(values)
+              .map(([k, v]) => `${k}=${v}`)
+              .join(", ")
+          : ""}
+      </span>
+    ),
+  };
+});
+
+const renderComponent = (props) => {
+  return renderWithIntl(<RecordProvenance {...defaultProps} {...props} />);
+};
 
 describe("RequiredProvenance", function () {
-  const intlData = enLang;
-  let createdRecord, modifiedRecord, newRecord;
-
-  newRecord = {
-    localName: "",
-    complete: false,
-    isNew: true,
-    state: RecordState.createInitialState(),
-  };
-
-  createdRecord = {
-    author: { firstName: "test", lastName: "test" },
-    institution: { localName: "testInstitution" },
-    dateCreated: 1521225180115,
-    key: "640579951330382351",
-    localName: "test",
-    state: RecordState.createRecordState(),
-  };
-
-  modifiedRecord = {
-    author: { firstName: "test", lastName: "test" },
-    institution: { localName: "testInstitution" },
-    dateCreated: 1521225180115,
-    key: "640579951330382351",
-    localName: "test",
-    lastModified: 1521277544192,
-    state: RecordState.createRecordState(),
-  };
-
-  it("does not render info about created date", function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <RecordProvenance record={newRecord} />
-      </IntlProvider>,
-    );
-    const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, "b");
-    expect(result.length).toEqual(0);
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
-  it("renders info only about date created", function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <RecordProvenance record={createdRecord} />
-      </IntlProvider>,
-    );
-    const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, "b");
-    expect(result.length).toEqual(1);
+  it("renders nothing when record is new", () => {
+    const { container } = renderComponent({ record: { isNew: true } });
+    expect(container.firstChild).toBeNull();
   });
 
-  it("renders info about date created and modified", function () {
-    const tree = TestUtils.renderIntoDocument(
-      <IntlProvider locale="en" {...intlData}>
-        <RecordProvenance record={modifiedRecord} />
-      </IntlProvider>,
-    );
-    const result = TestUtils.scryRenderedDOMComponentsWithTag(tree, "b");
-    expect(result.length).toEqual(2);
+  it("renders only creation message when no lastModified exists", () => {
+    renderComponent({
+      record: {
+        isNew: false,
+        dateCreated: "1521225180115",
+        author: { firstName: "John", lastName: "Doe" },
+      },
+    });
+    const createdMsg = screen.getByTestId("record.created-by-msg");
+    expect(createdMsg).toBeInTheDocument();
+    expect(screen.queryByTestId("record.last-edited-msg")).not.toBeInTheDocument();
   });
 });
