@@ -38,6 +38,7 @@ export default {
     publish: "Publikovat",
     reason: "Důvod",
     "select.placeholder": "Vyberte...",
+    "select-all": "Vybrat vše",
 
     "login.title": Constants.APP_NAME + " - Přihlášení",
     "login.username": "Uživatelské jméno",

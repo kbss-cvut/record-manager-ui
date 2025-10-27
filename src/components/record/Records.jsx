@@ -90,6 +90,16 @@ const Records = ({
     });
   };
 
+  const handleSelectAllColumns = (e) => {
+    if (e.target.checked) {
+      setVisibleColumns(Object.values(COLUMNS));
+      localStorage.setItem("visibleColumns", JSON.stringify(Object.values(COLUMNS)));
+    } else {
+      setVisibleColumns([]);
+      localStorage.setItem("visibleColumns", JSON.stringify([]));
+    }
+  };
+
   return (
     <Card variant="primary">
       <PromiseTrackingMask area="records" />
@@ -103,6 +113,25 @@ const Records = ({
             <Popover id="columns-popover">
               <Popover.Header as="h3">Choose columns</Popover.Header>
               <Popover.Body>
+                <div className="form-check mb-2 pb-2 border-bottom">
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    id="select-all-columns"
+                    checked={visibleColumns.length === Object.keys(COLUMNS).length}
+                    ref={(el) => {
+                      if (el) {
+                        el.indeterminate =
+                          visibleColumns.length > 0 && visibleColumns.length < Object.keys(COLUMNS).length;
+                      }
+                    }}
+                    onChange={(e) => handleSelectAllColumns(e)}
+                  />
+                  <label className="form-check-label fw-bold" htmlFor="select-all-columns">
+                    {i18n("select-all")}
+                  </label>
+                </div>
+
                 {Object.entries(COLUMNS).map(([key, value]) => (
                   <div key={key} className="form-check">
                     <input

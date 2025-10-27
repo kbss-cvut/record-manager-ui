@@ -38,6 +38,7 @@ export default {
     publish: "Publish",
     reason: "Reason",
     "select.placeholder": "Select...",
+    "select-all": "Select all",
 
     "login.title": Constants.APP_NAME + " - Login",
     "login.username": "Username",
