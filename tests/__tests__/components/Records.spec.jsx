@@ -108,12 +108,6 @@ describe("Records", function () {
     expect(screen.getByTestId("pagination")).toBeInTheDocument();
   });
 
-  it("renders no records alert when records array is empty", () => {
-    renderComponent({ recordsLoaded: { records: [] } });
-    expect(screen.getByTestId("alert")).toBeInTheDocument();
-    expect(screen.getByText(getMessageByKey("records.no-records"))).toBeInTheDocument();
-  });
-
   it("renders create button", () => {
     renderComponent();
     const createButton = screen.getByText(getMessageByKey("records.create-tile"));

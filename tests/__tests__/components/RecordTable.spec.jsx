@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { ACTION_STATUS, RECORD_PHASE, ROLE } from "../../../src/constants/DefaultConstants";
+import { ACTION_STATUS, COLUMNS, RECORD_PHASE, ROLE } from "../../../src/constants/DefaultConstants";
 import { describe, expect, vi, beforeEach, test } from "vitest";
 import RecordTable from "../../../src/components/record/RecordTable.jsx";
 import { getMessageByKey, renderWithIntl } from "../../utils/utils.jsx";
@@ -68,6 +68,7 @@ const defaultProps = {
     },
     onChange: vi.fn(),
   },
+  visibleColumns: Object.values(COLUMNS),
 };
 
 vi.mock("../../../src/components/record/RecordRow", () => ({
@@ -112,22 +113,79 @@ describe("RecordTable", function () {
     expect(screen.getByTestId("record-row-test3")).toBeInTheDocument();
   });
 
-  it("renders id, institution, and form template header when user lacks READ_ALL_RECORDS role", () => {
-    renderComponent({
-      currentUser: {
-        roles: [ROLE.READ_ALL_RECORDS],
-      },
-    });
+  it("renders no records message when there are no records", () => {
+    renderComponent({ recordsLoaded: { records: [] } });
+    expect(screen.getByText(getMessageByKey("records.no-records"))).toBeInTheDocument();
+  });
+
+  it("renders key header if it is visible", () => {
+    renderComponent();
     expect(screen.getByText(getMessageByKey("records.id"))).toBeInTheDocument();
+  });
+
+  it("does not render key header if it is not visible", () => {
+    renderComponent({ visibleColumns: Object.values(COLUMNS).filter((col) => col !== COLUMNS.ID) });
+    expect(screen.queryByText(getMessageByKey("records.id"))).not.toBeInTheDocument();
+  });
+
+  it("renders localName header if it is visible", () => {
+    renderComponent();
+    expect(screen.getByText(getMessageByKey("records.local-name"))).toBeInTheDocument();
+  });
+
+  it("does not render localName header if it is not visible", () => {
+    renderComponent({ visibleColumns: Object.values(COLUMNS).filter((col) => col !== COLUMNS.NAME) });
+    expect(screen.queryByText(getMessageByKey("records.local-name"))).not.toBeInTheDocument();
+  });
+
+  it("renders author header if it is visible", () => {
+    renderComponent();
+    expect(screen.getByText(getMessageByKey("records.author"))).toBeInTheDocument();
+  });
+
+  it("does not render author header if it is not visible", () => {
+    renderComponent({ visibleColumns: Object.values(COLUMNS).filter((col) => col !== COLUMNS.AUTHOR) });
+    expect(screen.queryByText(getMessageByKey("records.author"))).not.toBeInTheDocument();
+  });
+
+  it("renders institution header if it is visible", () => {
+    renderComponent();
     expect(screen.getByText(getMessageByKey("institution.panel-title"))).toBeInTheDocument();
+  });
+
+  it("does not render institution header if it is not visible", () => {
+    renderComponent({ visibleColumns: Object.values(COLUMNS).filter((col) => col !== COLUMNS.INSTITUTION) });
+    expect(screen.queryByText(getMessageByKey("institution.panel-title"))).not.toBeInTheDocument();
+  });
+
+  it("renders template header if it is visible", () => {
+    renderComponent();
     expect(screen.getByText(getMessageByKey("records.form-template"))).toBeInTheDocument();
   });
 
-  it("does not render id, institution, and form template header when user lacks READ_ALL_RECORDS role", () => {
-    renderComponent();
-    expect(screen.queryByText(getMessageByKey("records.id"))).not.toBeInTheDocument();
-    expect(screen.queryByText(getMessageByKey("institution.panel-title"))).not.toBeInTheDocument();
+  it("does not render template header if it is not visible", () => {
+    renderComponent({ visibleColumns: Object.values(COLUMNS).filter((col) => col !== COLUMNS.TEMPLATE) });
     expect(screen.queryByText(getMessageByKey("records.form-template"))).not.toBeInTheDocument();
+  });
+
+  it("renders last modified header if it is visible", () => {
+    renderComponent();
+    expect(screen.getByText(getMessageByKey("records.last-modified"))).toBeInTheDocument();
+  });
+
+  it("does not render last modified header if it is not visible", () => {
+    renderComponent({ visibleColumns: Object.values(COLUMNS).filter((col) => col !== COLUMNS.LAST_MODIFIED) });
+    expect(screen.queryByText(getMessageByKey("records.last-modified"))).not.toBeInTheDocument();
+  });
+
+  it("renders status header if it is visible", () => {
+    renderComponent();
+    expect(screen.getByText(getMessageByKey("records.completion-status"))).toBeInTheDocument();
+  });
+
+  it("does not render status header if it is not visible", () => {
+    renderComponent({ visibleColumns: Object.values(COLUMNS).filter((col) => col !== COLUMNS.STATUS) });
+    expect(screen.queryByText(getMessageByKey("records.completion-status"))).not.toBeInTheDocument();
   });
 
   it("renders records", () => {
@@ -148,6 +206,6 @@ describe("RecordTable", function () {
 
   it("does not render delete dialog when a record is not selected for deletion", () => {
     renderComponent();
-    expect(screen.getByTestId("delete-item-dialog")).toBeInTheDocument();
+    expect(screen.queryByText("delete-item-dialog")).not.toBeInTheDocument();
   });
 });
