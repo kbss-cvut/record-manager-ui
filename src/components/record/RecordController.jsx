@@ -26,6 +26,7 @@ import { withRouter } from "react-router-dom";
 import { EXTENSIONS } from "../../../config";
 import { trackPromise } from "react-promise-tracker";
 import PropTypes from "prop-types";
+import { loadUsers } from "../../actions/UsersActions.js";
 
 class RecordController extends React.Component {
   constructor(props) {
@@ -51,6 +52,8 @@ class RecordController extends React.Component {
       this.setState({ showAlert: true });
       this.props.unloadSavedRecord();
     }
+
+    this.props.loadUsers();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -241,6 +244,8 @@ RecordController.propTypes = {
   loadFormgen: PropTypes.func.isRequired,
   formTemplatesLoaded: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
+  loadUsers: PropTypes.func.isRequired,
+  users: PropTypes.array.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withI18n(withRouter(RecordController))));
@@ -254,6 +259,7 @@ function mapStateToProps(state) {
     viewHandlers: state.router.viewHandlers,
     formTemplatesLoaded: state.formTemplates.formTemplatesLoaded,
     formgen: state.record.formgen,
+    users: state.users.usersLoaded.users,
   };
 }
 
@@ -266,5 +272,6 @@ function mapDispatchToProps(dispatch) {
     unloadSavedRecord: bindActionCreators(unloadSavedRecord, dispatch),
     loadFormgen: bindActionCreators(loadFormgen, dispatch),
     transitionToWithOpts: bindActionCreators(transitionToWithOpts, dispatch),
+    loadUsers: bindActionCreators(loadUsers, dispatch),
   };
 }
