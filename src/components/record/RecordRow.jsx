@@ -50,7 +50,7 @@ const RecordRow = (props) => {
   return (
     <tr className="position-relative">
       {props.visibleColumns.includes(COLUMNS.ID) && (
-        <td className="report-row">
+        <td className="report-row content-center">
           <Button variant="link" size="sm" onClick={() => props.onEdit(record)}>
             {record.key}
           </Button>
@@ -58,7 +58,7 @@ const RecordRow = (props) => {
       )}
 
       {props.visibleColumns.includes(COLUMNS.NAME) && (
-        <td className="report-row">
+        <td className="report-row content-center">
           <Button variant="link" size="sm" onClick={() => props.onEdit(record)}>
             {record.localName}
           </Button>
