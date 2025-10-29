@@ -46,15 +46,6 @@
   "roles": {
     "realm": [
       {
-        "id": "81369ed1-fee1-4e73-84f0-01256f1c30c0",
-        "name": "ROLE_USER",
-        "description": "Record Manager regular user role",
-        "composite": false,
-        "clientRole": false,
-        "containerId": "7647bef1-9609-47ff-9547-1071b1d6379b",
-        "attributes": {}
-      },
-      {
         "id": "cc5f90ec-d5eb-4316-9a16-bd8759e6f003",
         "name": "uma_authorization",
         "description": "${role_uma_authorization}",
@@ -67,15 +58,6 @@
         "id": "7f5829b8-891b-4c75-b0bf-1d18139ef764",
         "name": "offline_access",
         "description": "${role_offline-access}",
-        "composite": false,
-        "clientRole": false,
-        "containerId": "7647bef1-9609-47ff-9547-1071b1d6379b",
-        "attributes": {}
-      },
-      {
-        "id": "e0414c82-95f8-4ab8-90e6-79592bd5eb31",
-        "name": "ROLE_ADMIN",
-        "description": "Record Manager admin role",
         "composite": false,
         "clientRole": false,
         "containerId": "7647bef1-9609-47ff-9547-1071b1d6379b",
