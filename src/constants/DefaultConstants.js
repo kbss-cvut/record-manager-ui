@@ -159,3 +159,13 @@ export const RECORD_PHASE = {
 };
 
 export const STORAGE_TABLE_PAGE_SIZE_KEY = `${APP_TITLE}_TABLE_PAGE_SIZE`;
+
+export const COLUMNS = {
+  ID: "Id",
+  NAME: "Name",
+  AUTHOR: "Author",
+  INSTITUTION: "Institution",
+  TEMPLATE: "Template",
+  LAST_MODIFIED: "Last Modified",
+  STATUS: "Status",
+};

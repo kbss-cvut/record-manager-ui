@@ -38,6 +38,7 @@ export default {
     publish: "Publikovat",
     reason: "Důvod",
     "select.placeholder": "Vyberte...",
+    "select-all": "Vybrat vše",
 
     "login.title": Constants.APP_NAME + " - Přihlášení",
     "login.username": "Uživatelské jméno",
@@ -153,6 +154,7 @@ export default {
     "records.id": "Id",
     "records.form-template": "Šablona",
     "records.local-name": "Název",
+    "records.author": "Autor",
     "records.completion-status": "Stav",
     "records.completion-status.open": "Rozpracovaný",
     "records.completion-status.valid": "Validní",

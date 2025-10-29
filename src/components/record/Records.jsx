@@ -1,8 +1,8 @@
-import React from "react";
-import { Alert, Button, Card } from "react-bootstrap";
+import React, { useState } from "react";
+import { Alert, Button, Card, OverlayTrigger, Popover } from "react-bootstrap";
 import { injectIntl } from "react-intl";
 import withI18n from "../../i18n/withI18n";
-import { ROLE } from "../../constants/DefaultConstants";
+import { COLUMNS, ROLE } from "../../constants/DefaultConstants";
 import PropTypes from "prop-types";
 import { processTypeaheadOptions } from "./TypeaheadAnswer";
 import ExportRecordsDropdown from "./ExportRecordsDropdown";
@@ -12,143 +12,221 @@ import { trackPromise } from "react-promise-tracker";
 import RecordTable from "./RecordTable";
 import Pagination from "../misc/Pagination";
 import { hasRole } from "../../utils/RoleUtils.js";
+import { FaTableColumns } from "react-icons/fa6";
 
 const STUDY_CLOSED_FOR_ADDITION = false;
 const STUDY_CREATE_AT_MOST_ONE_RECORD = false;
 
-class Records extends React.Component {
-  static propTypes = {
-    i18n: PropTypes.func.isRequired,
-    intl: PropTypes.object.isRequired,
-    recordsLoaded: PropTypes.object,
-    recordDeleted: PropTypes.object,
-    handlers: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired,
-    formTemplatesLoaded: PropTypes.object.isRequired,
-    pagination: PropTypes.object.isRequired,
-    filterAndSort: PropTypes.object.isRequired,
-    formTemplate: PropTypes.string,
+const Records = ({
+  i18n,
+  intl,
+  recordsLoaded,
+  recordDeleted,
+  handlers,
+  currentUser,
+  formTemplatesLoaded,
+  pagination,
+  filterAndSort,
+  formTemplate,
+}) => {
+  const [showImportDialog, setShowImportDialog] = useState(false);
+  const [visibleColumns, setVisibleColumns] = useState(() => {
+    const saved = localStorage.getItem("visibleColumns");
+    return saved ? JSON.parse(saved) : Object.values(COLUMNS);
+  });
+
+  const openImportDialog = () => {
+    setShowImportDialog(true);
   };
 
-  constructor(props) {
-    super(props);
-    this.i18n = this.props.i18n;
-    this.state = {
-      showImportDialog: false,
-    };
-  }
-
-  openImportDialog = () => {
-    this.setState({ showImportDialog: true });
+  const closeImportDialog = () => {
+    setShowImportDialog(false);
   };
 
-  closeImportDialog = () => {
-    this.setState({ showImportDialog: false });
+  const onImport = (file) => {
+    closeImportDialog();
+    trackPromise(handlers.onImport(file));
   };
 
-  onImport = (file) => {
-    this.closeImportDialog();
-    trackPromise(this.props.handlers.onImport(file));
-  };
-
-  render() {
-    const { formTemplate, recordsLoaded, pagination, currentUser } = this.props;
-    const showCreateButton = STUDY_CREATE_AT_MOST_ONE_RECORD
-      ? !recordsLoaded.records || recordsLoaded.records.length < 1
-      : true;
-    const showPublishButton = hasRole(currentUser, ROLE.PUBLISH_RECORDS);
-    const createRecordDisabled = STUDY_CLOSED_FOR_ADDITION && !hasRole(currentUser, ROLE.WRITE_ALL_RECORDS);
-    const createRecordTooltip = this.i18n(
-      createRecordDisabled ? "records.closed-study.create-tooltip" : "records.opened-study.create-tooltip",
-    );
-    const onCreateWithFormTemplate = () => this.props.handlers.onCreate(formTemplate);
-    return (
-      <Card variant="primary">
-        <PromiseTrackingMask area="records" />
-        <Card.Header className="text-light bg-primary" as="h6">
-          {this._getPanelTitle()}
-        </Card.Header>
-        <Card.Body>
-          {recordsLoaded.records && recordsLoaded.records.length > 0 ? (
-            <>
-              <RecordTable {...this.props} />
-              <Pagination {...pagination} />
-            </>
-          ) : (
-            <Alert variant="warning">{this.i18n("records.no-records")}</Alert>
-          )}
-
-          <ImportRecordsDialog
-            show={this.state.showImportDialog}
-            onSubmit={this.onImport}
-            onCancel={this.closeImportDialog}
-          />
-          <div className="d-flex justify-content-between">
-            <div>
-              {showCreateButton ? (
-                <Button
-                  id="records-create"
-                  className="me-1 action-button"
-                  variant="primary"
-                  size="sm"
-                  disabled={createRecordDisabled}
-                  title={createRecordTooltip}
-                  onClick={onCreateWithFormTemplate}
-                >
-                  {this.i18n("records.create-tile")}
-                </Button>
-              ) : null}
-              <Button
-                id="records-import"
-                className="mx-1 action-button"
-                variant="primary"
-                size="sm"
-                onClick={this.openImportDialog}
-              >
-                {this.i18n("records.import")}
-              </Button>
-              {showPublishButton ? (
-                <Button
-                  id="records-publish"
-                  className="mx-1 action-button"
-                  variant="success"
-                  size="sm"
-                  onClick={this.props.handlers.onPublish}
-                >
-                  {this.i18n("publish")}
-                </Button>
-              ) : null}
-            </div>
-            <ExportRecordsDropdown
-              id="records-export"
-              onExport={this.props.handlers.onExport}
-              records={recordsLoaded.records}
-            />
-          </div>
-        </Card.Body>
-      </Card>
-    );
-  }
-
-  _getFormTemplateName() {
-    const { formTemplatesLoaded, formTemplate, intl } = this.props;
+  const getFormTemplateName = () => {
     if (formTemplate) {
       const formTemplateOptions = formTemplatesLoaded.formTemplates
         ? processTypeaheadOptions(formTemplatesLoaded.formTemplates, intl)
         : [];
       return formTemplateOptions.find((r) => r.id === formTemplate)?.name;
     }
-  }
+  };
 
-  _getPanelTitle() {
-    if (!hasRole(this.props.currentUser, ROLE.READ_ALL_RECORDS) && this.props.formTemplate) {
-      const formTemplateName = this._getFormTemplateName();
+  const getPanelTitle = () => {
+    if (!hasRole(currentUser, ROLE.READ_ALL_RECORDS) && formTemplate) {
+      const formTemplateName = getFormTemplateName();
       if (formTemplateName) {
         return formTemplateName;
       }
     }
-    return this.i18n("records.panel-title");
-  }
-}
+    return i18n("records.panel-title");
+  };
+
+  const showCreateButton = STUDY_CREATE_AT_MOST_ONE_RECORD
+    ? !recordsLoaded.records || recordsLoaded.records.length < 1
+    : true;
+  const showPublishButton = hasRole(currentUser, ROLE.PUBLISH_RECORDS);
+  const createRecordDisabled = STUDY_CLOSED_FOR_ADDITION && !hasRole(currentUser, ROLE.WRITE_ALL_RECORDS);
+  const createRecordTooltip = i18n(
+    createRecordDisabled ? "records.closed-study.create-tooltip" : "records.opened-study.create-tooltip",
+  );
+  const onCreateWithFormTemplate = () => handlers.onCreate(formTemplate);
+
+  const toggleColumn = (id) => {
+    setVisibleColumns((prev) => {
+      let updated;
+      if (prev.includes(id)) {
+        updated = prev.filter((colId) => colId !== id);
+      } else {
+        updated = [...prev, id];
+      }
+      localStorage.setItem("visibleColumns", JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const handleSelectAllColumns = (e) => {
+    if (e.target.checked) {
+      setVisibleColumns(Object.values(COLUMNS));
+      localStorage.setItem("visibleColumns", JSON.stringify(Object.values(COLUMNS)));
+    } else {
+      setVisibleColumns([]);
+      localStorage.setItem("visibleColumns", JSON.stringify([]));
+    }
+  };
+
+  return (
+    <Card variant="primary">
+      <PromiseTrackingMask area="records" />
+      <Card.Header className="text-light bg-primary d-flex justify-content-between align-items-center" as="h6">
+        {getPanelTitle()}
+        <OverlayTrigger
+          trigger="click"
+          placement="bottom-end"
+          rootClose
+          overlay={
+            <Popover id="columns-popover">
+              <Popover.Header as="h3">Choose columns</Popover.Header>
+              <Popover.Body>
+                <div className="form-check mb-2 pb-2 border-bottom">
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    id="select-all-columns"
+                    checked={visibleColumns.length === Object.keys(COLUMNS).length}
+                    ref={(el) => {
+                      if (el) {
+                        el.indeterminate =
+                          visibleColumns.length > 0 && visibleColumns.length < Object.keys(COLUMNS).length;
+                      }
+                    }}
+                    onChange={(e) => handleSelectAllColumns(e)}
+                  />
+                  <label className="form-check-label fw-bold" htmlFor="select-all-columns">
+                    {i18n("select-all")}
+                  </label>
+                </div>
+
+                {Object.entries(COLUMNS).map(([key, value]) => (
+                  <div key={key} className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id={key}
+                      checked={visibleColumns.includes(value)}
+                      onChange={() => toggleColumn(value)}
+                    />
+                    <label className="form-check-label" htmlFor={key}>
+                      {value}
+                    </label>
+                  </div>
+                ))}
+              </Popover.Body>
+            </Popover>
+          }
+        >
+          <Button variant="light" size="sm" title="Choose columns" className="btn-levitate">
+            <FaTableColumns />
+          </Button>
+        </OverlayTrigger>
+      </Card.Header>
+      <Card.Body>
+        <>
+          <RecordTable
+            {...{
+              recordsLoaded,
+              recordDeleted,
+              handlers,
+              currentUser,
+              formTemplatesLoaded,
+              pagination,
+              filterAndSort,
+              formTemplate,
+              visibleColumns,
+            }}
+          />
+          <Pagination {...pagination} />
+        </>
+        <ImportRecordsDialog show={showImportDialog} onSubmit={onImport} onCancel={closeImportDialog} />
+        <div className="d-flex justify-content-between">
+          <div>
+            {showCreateButton ? (
+              <Button
+                id="records-create"
+                className="me-1 action-button"
+                variant="primary"
+                size="sm"
+                disabled={createRecordDisabled}
+                title={createRecordTooltip}
+                onClick={onCreateWithFormTemplate}
+              >
+                {i18n("records.create-tile")}
+              </Button>
+            ) : null}
+            <Button
+              id="records-import"
+              className="mx-1 action-button"
+              variant="primary"
+              size="sm"
+              onClick={openImportDialog}
+            >
+              {i18n("records.import")}
+            </Button>
+            {showPublishButton ? (
+              <Button
+                id="records-publish"
+                className="mx-1 action-button"
+                variant="success"
+                size="sm"
+                onClick={handlers.onPublish}
+              >
+                {i18n("publish")}
+              </Button>
+            ) : null}
+          </div>
+          <ExportRecordsDropdown id="records-export" onExport={handlers.onExport} records={recordsLoaded.records} />
+        </div>
+      </Card.Body>
+    </Card>
+  );
+};
+
+Records.propTypes = {
+  i18n: PropTypes.func.isRequired,
+  intl: PropTypes.object.isRequired,
+  recordsLoaded: PropTypes.object,
+  recordDeleted: PropTypes.object,
+  handlers: PropTypes.object.isRequired,
+  currentUser: PropTypes.object.isRequired,
+  formTemplatesLoaded: PropTypes.object.isRequired,
+  pagination: PropTypes.object.isRequired,
+  filterAndSort: PropTypes.object.isRequired,
+  formTemplate: PropTypes.string,
+};
 
 export default injectIntl(withI18n(Records));

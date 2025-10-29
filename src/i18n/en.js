@@ -38,6 +38,7 @@ export default {
     publish: "Publish",
     reason: "Reason",
     "select.placeholder": "Select...",
+    "select-all": "Select all",
 
     "login.title": Constants.APP_NAME + " - Login",
     "login.username": "Username",
@@ -151,6 +152,7 @@ export default {
     "records.id": "Id",
     "records.form-template": "Template",
     "records.local-name": "Name",
+    "records.author": "Author",
     "records.completion-status": "Status",
     "records.completion-status.open": "Open",
     "records.completion-status.valid": "Valid",
