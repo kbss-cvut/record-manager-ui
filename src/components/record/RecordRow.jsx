@@ -72,13 +72,13 @@ const RecordRow = (props) => {
               {`${record.author.firstName} ${record.author.lastName}`}
             </Button>
           ) : (
-            <span className="text-warning">Not Found</span>
+            "—"
           )}
         </td>
       )}
 
       {props.visibleColumns.includes(COLUMNS.INSTITUTION) && (
-        <td className="report-row content-center">{record.institution.name}</td>
+        <td className="report-row content-center">{record.institution ? record.institution.name : "—"}</td>
       )}
 
       {props.visibleColumns.includes(COLUMNS.TEMPLATE) && (
