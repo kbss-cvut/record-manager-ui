@@ -1,4 +1,4 @@
-import InstitutionPatients from "../../../src/components/institution/InstitutionPatients";
+import InstitutionRecords from "../../../src/components/institution/InstitutionRecords.jsx";
 import { describe, expect, it, vi } from "vitest";
 import { getMessageByKey, renderWithIntl } from "../../utils/utils.jsx";
 import { screen } from "@testing-library/react";
@@ -30,17 +30,17 @@ vi.mock("../../../src/components/record/ExportRecordsDropdown", () => ({
 }));
 
 const renderComponent = (props = {}) => {
-  return renderWithIntl(<InstitutionPatients {...defaultProps} {...props} />);
+  return renderWithIntl(<InstitutionRecords {...defaultProps} {...props} />);
 };
 
-describe("InstitutionPatients", function () {
+describe("InstitutionRecords", function () {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it("renders the correct panel title", () => {
     renderComponent();
-    expect(screen.getByText(getMessageByKey("institution.patients.panel-title"))).toBeInTheDocument();
+    expect(screen.getByText(getMessageByKey("institution.records.panel-title"))).toBeInTheDocument();
   });
 
   it("renders the RecordTable component", () => {

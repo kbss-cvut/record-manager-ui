@@ -57,7 +57,7 @@ class DashboardController extends React.Component {
 
   _createRecord = () => {
     {
-      /*TODO bug on cancel it doesnt return to dashboard but to patient records */
+      /*TODO bug on cancel it doesnt return to dashboard but to records */
     }
     this.props.transitionToWithOpts(Routes.createRecord, {
       handlers: {

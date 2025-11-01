@@ -32,7 +32,7 @@ export function hasSupersetOfPrivileges(u1, u2) {
   return [...u2RoleSet].every((role) => u1RoleSet.has(role));
 }
 
-export function canReadInstitutionPatients(currentUser, institutionKey) {
+export function canReadInstitutionRecords(currentUser, institutionKey) {
   return (
     hasRole(currentUser, ROLE.READ_ALL_RECORDS) ||
     (hasRole(currentUser, ROLE.READ_ORGANIZATION_RECORDS) && currentUser.institution?.key === institutionKey)
