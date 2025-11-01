@@ -6,14 +6,14 @@ import ExportRecordsDropdown from "../record/ExportRecordsDropdown";
 import { useI18n } from "../../hooks/useI18n";
 import { COLUMNS } from "../../constants/DefaultConstants.js";
 
-const InstitutionPatients = (props) => {
+const InstitutionRecords = (props) => {
   const { recordsLoaded, formTemplatesLoaded, onEdit, onExport, currentUser, filterAndSort } = props;
   const { i18n } = useI18n();
 
   return (
     <Card variant="info" className="mt-3">
       <Card.Header className="text-light bg-primary" as="h6">
-        {i18n("institution.patients.panel-title")}
+        {i18n("institution.records.panel-title")}
       </Card.Header>
       <Card.Body>
         <RecordTable
@@ -33,7 +33,7 @@ const InstitutionPatients = (props) => {
   );
 };
 
-InstitutionPatients.propTypes = {
+InstitutionRecords.propTypes = {
   recordsLoaded: PropTypes.object.isRequired,
   formTemplatesLoaded: PropTypes.object.isRequired,
   onEdit: PropTypes.func.isRequired,
@@ -42,4 +42,4 @@ InstitutionPatients.propTypes = {
   filterAndSort: PropTypes.object.isRequired,
 };
 
-export default InstitutionPatients;
+export default InstitutionRecords;

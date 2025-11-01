@@ -25,7 +25,7 @@ export function initNewInstitution() {
   };
 }
 
-export function initNewPatientRecord() {
+export function initNewRecord() {
   return {
     localName: "",
     formTemplate: "",

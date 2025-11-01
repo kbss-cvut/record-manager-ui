@@ -3,7 +3,7 @@ import { ACTION_STATUS } from "../constants/DefaultConstants";
 import without from "lodash/without";
 
 const initialState = {
-  institutionPatients: {},
+  institutionRecords: {},
   recordDeleted: {},
   recordLoaded: {},
   recordSaved: {},

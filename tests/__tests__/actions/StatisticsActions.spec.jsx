@@ -15,7 +15,7 @@ const mockStore = configureMockStore(middlewares);
 
 describe("Statistics asynchronous actions", function () {
   let store, mockApi;
-  const payload = { numberOfPatients: 5, numberOfInstitutions: 10 },
+  const payload = { numberOfRecords: 5, numberOfInstitutions: 10 },
     error = {
       message: "An error has occurred.",
     };

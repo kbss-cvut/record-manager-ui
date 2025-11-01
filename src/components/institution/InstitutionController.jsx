@@ -32,7 +32,7 @@ import { trackPromise } from "react-promise-tracker";
 import { INITIAL_PAGE } from "../misc/Pagination";
 import BrowserStorage from "../../utils/BrowserStorage";
 import PropTypes from "prop-types";
-import { canReadInstitutionPatients } from "../../utils/RoleUtils.js";
+import { canReadInstitutionRecords } from "../../utils/RoleUtils.js";
 
 class InstitutionController extends React.Component {
   constructor(props) {
@@ -63,7 +63,7 @@ class InstitutionController extends React.Component {
 
       if (
         this.props.status === ACTION_STATUS.SUCCESS &&
-        canReadInstitutionPatients(this.props.currentUser, institutionKey)
+        canReadInstitutionRecords(this.props.currentUser, institutionKey)
       ) {
         this._loadRecords();
       }
@@ -162,8 +162,8 @@ class InstitutionController extends React.Component {
     });
   };
 
-  _onEditPatient = (patient) => {
-    this.props.transitionToWithOpts(Routes.editRecord, { params: { key: patient.key } });
+  _onEditRecord = (record) => {
+    this.props.transitionToWithOpts(Routes.editRecord, { params: { key: record.key } });
   };
 
   _onExportRecords = (exportType) => {
@@ -206,7 +206,7 @@ class InstitutionController extends React.Component {
       onChange: this._onChange,
       onEditUser: this._onEditUser,
       onAddNewUser: this._onAddNewUser,
-      onEditPatient: this._onEditPatient,
+      onEditRecord: this._onEditRecord,
       onExportRecords: this._onExportRecords,
       onDelete: this._onDeleteUser,
     };

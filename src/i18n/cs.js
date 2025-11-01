@@ -140,7 +140,7 @@ export default {
     "institution.email": "Kontaktní email",
     "institution.created": "Instituce zaregistrována {date}",
     "institution.members.panel-title": "Zaměstnanci instituce",
-    "institution.patients.panel-title": "Záznamy instituce",
+    "institution.records.panel-title": "Záznamy instituce",
     "institution.save-success": "Instituce úspěšně uložena.",
     "institution.save-error": "Instituci se nepodařilo uložit. {error}",
     "institution.delete-success": "Instituce úspěšně odstraněna",
@@ -258,7 +258,7 @@ export default {
     "Username cannot contain special characters.": "Přezdívka nesmí obsahovat speciální znaky",
     "Cannot encode an empty password.": "Nelze zašifrovat prázné heslo.",
     "Unable to fetch remote data.": "Nelze načíst vzdálená data.",
-    "User with patient records cannot be deleted.": "Uživatel s vyplněným záznamem nelze odstranit.",
+    "User with records cannot be deleted.": "Uživatel s vyplněným záznamem nelze odstranit.",
     "Cannot update user URI.": "Nelze aktualizovat uživatelské URI.",
     "The passed username already exists.": "Zadané uživatelské jméno již existuje.",
     "User with specified username already exists.": "Uživatel s touto přezdívkou již existuje.",
@@ -269,7 +269,7 @@ export default {
     or: " nebo",
     "error.record.localNameOfRecordIsNotUnique": "Formulářové pole 'Název/Česky' není unikátní napříč všemi záznamy.",
     "error.record.localNameOfRecordIsEmpty": "Formulářové pole 'Název/Česky' je prázdne.",
-    "error.institution.remove.institutionWithMembersOrPatientRecordsCannotBeDeleted":
+    "error.institution.remove.institutionWithMembersOrRecordsCannotBeDeleted":
       "Instituci se zaměstnanci nebo se záznamy nelze odstranit.",
     "error.password.validation.thePassedUsersCurrentPasswordIsDifferentFromTheSpecifiedOne":
       "Původní heslo uživatele neodpovídá heslu uloženému.",

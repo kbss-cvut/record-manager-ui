@@ -13,7 +13,7 @@ const defaultProps = {
   onEdit: vi.fn(),
   onDelete: vi.fn(),
   record: {
-    uri: "http://onto.fel.cvut.cz/ontologies/record-manager/patient-record#instance456619208",
+    uri: "http://onto.fel.cvut.cz/ontologies/record-manager/record#instance456619208",
     key: "159968282553298775",
     localName: "Test",
     dateCreated: 1520956570035,
