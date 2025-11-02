@@ -31,7 +31,7 @@ class RecordController extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      record: this._isNew() ? EntityFactory.initNewPatientRecord() : null,
+      record: this._isNew() ? EntityFactory.initNewRecord() : null,
       saved: false,
       showAlert: false,
     };

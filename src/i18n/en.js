@@ -138,7 +138,7 @@ export default {
     "institution.email": "Contact email",
     "institution.created": "Institution registered on {date}",
     "institution.members.panel-title": "Institution's members",
-    "institution.patients.panel-title": "Institution's records",
+    "institution.records.panel-title": "Institution's records",
     "institution.save-success": "Institution successfully saved.",
     "institution.save-error": "Unable to save institution. {error}",
     "institution.delete-success": "Institution deleted successfully",
@@ -172,7 +172,7 @@ export default {
     "records.create-tile": "Create",
     "records.opened-study.create-tooltip": "Create new record",
     "records.closed-study.create-tooltip":
-      "Study is closed for addition of patient records. Please, contact a study coordinator in case you need to add new patient record.",
+      "Study is closed for addition of records. Please, contact a study coordinator in case you need to add new record.",
     "records.export": "Export",
     "records.export.excel": "Export to MS Excel",
     "records.export.json": "Export to JSON",
@@ -262,7 +262,7 @@ export default {
     "Username cannot contain special characters.": "Username cannot contain special characters.",
     "Cannot encode an empty password.": "Cannot encode an empty password.",
     "Unable to fetch remote data.": "Unable to fetch remote data.",
-    "User with patient records cannot be deleted.": "User with records cannot be deleted.",
+    "User with records cannot be deleted.": "User with records cannot be deleted.",
     "Cannot update user URI.": "Cannot update user URI:",
     "The passed username already exists.": "The passed username already exists.",
     "User with specified username already exists.": "User with specified username already exists.",
@@ -273,8 +273,8 @@ export default {
     or: " or",
     "error.record.localNameOfRecordIsNotUnique": "Name is not unique.",
     "error.record.localNameOfRecordIsEmpty": "Name is empty.",
-    "error.institution.remove.institutionWithMembersOrPatientRecordsCannotBeDeleted":
-      "Institution with members or patient records cannot be deleted.",
+    "error.institution.remove.institutionWithMembersOrRecordsCannotBeDeleted":
+      "Institution with members or records cannot be deleted.",
     "error.password.validation.thePassedUsersCurrentPasswordIsDifferentFromTheSpecifiedOne":
       "The user's current password is different from the specified one.",
 

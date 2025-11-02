@@ -10,7 +10,7 @@ const defaultProps = {
     status: ACTION_STATUS.SUCCESS,
     records: [
       {
-        uri: "http://onto.fel.cvut.cz/ontologies/record-manager/patient-record#instance456619209",
+        uri: "http://onto.fel.cvut.cz/ontologies/record-manager/record#instance456619209",
         key: "159968282553298774",
         localName: "Test1",
         dateCreated: "1520956570034",
@@ -18,7 +18,7 @@ const defaultProps = {
         institution: { key: 12345678 },
       },
       {
-        uri: "http://onto.fel.cvut.cz/ontologies/record-manager/patient-record#instance456619208",
+        uri: "http://onto.fel.cvut.cz/ontologies/record-manager/record#instance456619208",
         key: "159968282553298775",
         localName: "Test2",
         dateCreated: "1520956570035",

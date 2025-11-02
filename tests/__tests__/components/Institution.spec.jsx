@@ -6,7 +6,7 @@ import { describe, expect, it, vi, beforeEach } from "vitest";
 import InstitutionValidator from "../../../src/validation/InstitutionValidator.jsx";
 import { getMessageByKey, renderWithIntl } from "../../utils/utils.jsx";
 import {
-  canReadInstitutionPatients,
+  canReadInstitutionRecords,
   canReadInstitutionUsers,
   canWriteInstitution,
 } from "../../../src/utils/RoleUtils.js";
@@ -30,7 +30,7 @@ const defaultProps = {
     onChange: vi.fn(),
     onSave: vi.fn(),
     onCancel: vi.fn(),
-    onEditPatient: vi.fn(),
+    onEditRecord: vi.fn(),
     onExportRecords: vi.fn(),
     onDelete: vi.fn(),
     onEditUser: vi.fn(),
@@ -48,7 +48,7 @@ const defaultProps = {
 vi.mock("../../../src/utils/RoleUtils.js", () => ({
   canWriteInstitution: vi.fn(),
   canReadInstitutionUsers: vi.fn(),
-  canReadInstitutionPatients: vi.fn(),
+  canReadInstitutionRecords: vi.fn(),
 }));
 
 vi.mock("../../../src/validation/InstitutionValidator.jsx", () => {
@@ -63,8 +63,8 @@ vi.mock("../../../src/components/institution/InstitutionMembers", () => ({
   default: () => <div data-testid="institution-members">Members</div>,
 }));
 
-vi.mock("../../../src/components/institution/InstitutionPatients", () => ({
-  default: () => <div data-testid="institution-patients">Patients</div>,
+vi.mock("../../../src/components/institution/InstitutionRecords", () => ({
+  default: () => <div data-testid="institution-records">Records</div>,
 }));
 
 const renderComponent = (props = {}) => {
@@ -76,7 +76,7 @@ describe("Institution", function () {
     vi.clearAllMocks();
     canWriteInstitution.mockReturnValue(true);
     canReadInstitutionUsers.mockReturnValue(true);
-    canReadInstitutionPatients.mockReturnValue(true);
+    canReadInstitutionRecords.mockReturnValue(true);
     InstitutionValidator.isValid.mockReturnValue(true);
   });
 
@@ -117,15 +117,15 @@ describe("Institution", function () {
     expect(screen.getByText(getMessageByKey("save"))).toBeDisabled();
   });
 
-  it("renders InstitutionPatients when current user has ReadInstitutionPatients permission", () => {
+  it("renders InstitutionRecords when current user has ReadInstitutionRecords permission", () => {
     renderComponent();
-    expect(screen.getByTestId("institution-patients")).toBeInTheDocument();
+    expect(screen.getByTestId("institution-records")).toBeInTheDocument();
   });
 
-  it("does not render InstitutionPatients when current user lacks read permission", () => {
-    canReadInstitutionPatients.mockReturnValue(false);
+  it("does not render InstitutionRecords when current user lacks read permission", () => {
+    canReadInstitutionRecords.mockReturnValue(false);
     renderComponent();
-    expect(screen.queryByTestId("institution-patients")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("institution-records")).not.toBeInTheDocument();
   });
 
   it("renders InstitutionMembers when current user has ReadInstitutionUsers permission", () => {

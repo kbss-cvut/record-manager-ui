@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Card } from "react-bootstrap";
 import { FormattedMessage, injectIntl } from "react-intl";
 import InstitutionMembers from "./InstitutionMembers";
-import InstitutionPatients from "./InstitutionPatients";
+import InstitutionRecords from "./InstitutionRecords.jsx";
 import withI18n from "../../i18n/withI18n";
 import HorizontalInput from "../HorizontalInput";
 import PropTypes from "prop-types";
@@ -13,7 +13,7 @@ import { LoaderSmall } from "../Loader";
 import InstitutionValidator from "../../validation/InstitutionValidator";
 import HelpIcon from "../HelpIcon";
 import PromiseTrackingMask from "../misc/PromiseTrackingMask";
-import { canReadInstitutionPatients, canReadInstitutionUsers, canWriteInstitution } from "../../utils/RoleUtils.js";
+import { canReadInstitutionRecords, canReadInstitutionUsers, canWriteInstitution } from "../../utils/RoleUtils.js";
 
 /**
  * Institution detail. Editable only for admins.
@@ -87,11 +87,11 @@ class Institution extends React.Component {
                 {this._renderButtons()}
               </form>
               {!institution.isNew && canReadInstitutionUsers(currentUser, institution.key) && this._renderMembers()}
-              {!institution.isNew && canReadInstitutionPatients(currentUser, institution.key) && (
-                <InstitutionPatients
+              {!institution.isNew && canReadInstitutionRecords(currentUser, institution.key) && (
+                <InstitutionRecords
                   recordsLoaded={recordsLoaded}
                   formTemplatesLoaded={formTemplatesLoaded}
-                  onEdit={this.props.handlers.onEditPatient}
+                  onEdit={this.props.handlers.onEditRecord}
                   onExport={this.props.handlers.onExportRecords}
                   currentUser={currentUser}
                   filterAndSort={this.props.filterAndSort}
