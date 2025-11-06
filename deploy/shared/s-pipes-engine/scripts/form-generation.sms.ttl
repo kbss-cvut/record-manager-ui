@@ -282,6 +282,7 @@ ASK WHERE {
 }""" ;
     ] ;
   sm:next form-mod:construct-answers ;
+  sm:next form-mod:construct-comments;
   sm:next form-mod:filter-origin-path-id ;
   sml:constructQuery [
       a sp:Construct ;
@@ -314,6 +315,26 @@ WHERE {
 }""" ;
     ] ;
   sml:replace true ;
+.
+
+form-mod:construct-comments
+  a sml:ApplyConstruct ;
+  sm:next form-mod:rename-form-entities ;
+  sml:constructQuery [
+      a sp:Construct ;
+      sp:text """CONSTRUCT {
+    ?sampleQ form:has-comment ?c .
+    ?c ?cp ?co .
+}
+WHERE {
+    ?dataQ form:is-cross-form-clone-of-question ?sampleQ .
+    ?dataQ form:has-comment ?c .
+    OPTIONAL {
+        ?c ?cp ?co .
+    } .
+}""" ;
+    ] ;
+  sml:replace false ;
 .
 
 
