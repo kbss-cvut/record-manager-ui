@@ -130,23 +130,10 @@ export function importRecords(file) {
   return (dispatch) => {
     dispatch(asyncRequest(ActionConstants.IMPORT_RECORDS_PENDING));
 
-    const fileExtension = file.name.split(".").pop().toLowerCase();
-
     const formData = new FormData();
     formData.append("file", file);
 
     let apiUrl = `${API_URL}/rest/records/import`;
-    if (fileExtension === "json") {
-      apiUrl = `${API_URL}/rest/records/import/json`;
-    } else if (["xls", "xlsx"].includes(fileExtension)) {
-      apiUrl = `${API_URL}/rest/records/import/excel`;
-    } else if (["tsv"].includes(fileExtension)) {
-      apiUrl = `${API_URL}/rest/records/import/tsv`;
-    } else {
-      const error = new Error("Unsupported file format");
-      dispatch(asyncError(ActionConstants.IMPORT_RECORDS_ERROR, error));
-      return Promise.reject(error);
-    }
 
     return axiosBackend
       .post(apiUrl, formData, {
