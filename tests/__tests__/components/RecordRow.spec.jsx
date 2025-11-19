@@ -85,14 +85,19 @@ describe("RecordRow", function () {
     expect(screen.queryByText("Thomas Shelby")).not.toBeInTheDocument();
   });
 
-  it("renders 'Not Found' for author if firstName or lastName are missing", () => {
+  it("renders '—' for author if firstName or lastName are missing", () => {
     renderComponent({ record: { ...defaultProps.record, author: { username: "Thomas" } } });
-    expect(screen.getByText("Not Found")).toBeInTheDocument();
+    expect(screen.getByText("—")).toBeInTheDocument();
   });
 
   it("renders institution if it is visible", () => {
     renderComponent();
     expect(screen.getByText(defaultProps.record.institution.name)).toBeInTheDocument();
+  });
+
+  it("renders '—' for institution if it is missing", () => {
+    renderComponent({ record: { ...defaultProps.record, institution: null } });
+    expect(screen.getByText("—")).toBeInTheDocument();
   });
 
   it("does not render institution if it is not visible", () => {
