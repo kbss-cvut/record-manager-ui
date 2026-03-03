@@ -1,5 +1,3 @@
-"use strict";
-
 import React from "react";
 import SForms, { Constants } from "@kbss-cvut/s-forms";
 import PropTypes from "prop-types";
@@ -18,6 +16,7 @@ import PromiseTrackingMask from "../misc/PromiseTrackingMask";
 import { trackPromise } from "react-promise-tracker";
 import { ROLE } from "../../constants/DefaultConstants.js";
 import { hasRole } from "../../utils/RoleUtils.js";
+import { connect } from "react-redux";
 // import "intelligent-tree-select/lib/styles.css"
 
 // const componentMapping = SmartComponents.getComponentMapping();
@@ -70,15 +69,21 @@ class RecordForm extends React.Component {
     const result = await axiosBackend.get(`${FORM_GEN_POSSIBLE_VALUES_URL}?query=${encodeURIComponent(query)}`);
     return result.data;
   };
-
-  _getUsersOptions() {
-    const currentUser = this.props.currentUser;
-    return {
-      users: [{ id: currentUser.uri, label: currentUser.firstName + " " + currentUser.lastName }],
-      currentUser: currentUser.uri,
-    };
+  _addLabelsToUsers(users) {
+    return users.map((user) => ({
+      ...user,
+      id: user.uri,
+      label: `${user.firstName} ${user.lastName} (${user.username})`,
+    }));
   }
 
+  _getUsersOptions() {
+    const users = this.props.users || [];
+    return {
+      users: this._addLabelsToUsers(users),
+      currentUser: this.props.currentUser.uri,
+    };
+  }
   _getIconsOptions() {
     if (hasRole(this.props.currentUser, ROLE.COMMENT_RECORD_QUESTIONS)) {
       return {
@@ -148,6 +153,13 @@ RecordForm.propTypes = {
   isFormValid: PropTypes.func,
   form: PropTypes.object,
   updateForm: PropTypes.func,
+  users: PropTypes.array.isRequired,
 };
 
-export default injectIntl(withI18n(RecordForm, { forwardRef: true }), { forwardRef: true });
+export default connect(mapStateToProps)(injectIntl(withI18n(RecordForm, { forwardRef: true }), { forwardRef: true }));
+
+function mapStateToProps(state) {
+  return {
+    users: state.users.usersLoaded.users,
+  };
+}
