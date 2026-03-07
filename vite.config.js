@@ -39,6 +39,7 @@ export default defineConfig({
     "process.env": process.env, // workaround for parse-link-header library that depends on 2 vars defined in `process.env`, see https://github.com/thlorenz/parse-link-header/issues/31
   },
   resolve: {
+    preserveSymlinks: true, // workaround to link s-forms locally in npm
     alias: {
       querystring: "querystring-es3", // workaround for parse-link-header library that replaces nodejs builtin module with the module adapted for browser
       url: "url-parse", // workaround for parse-link-header library that replaces nodejs builtin module with the module adapted for browser
