@@ -80,19 +80,19 @@ class RecordForm extends React.Component {
   }
 
   _getIconsOptions() {
+    const icons = [{ id: Constants.ICONS.QUESTION_HELP, behavior: Constants.ICON_BEHAVIOR.ON_HOVER }];
+
+    if (hasRole(this.props.currentUser, ROLE.READ_QUESTION_HINT)) {
+      icons.push({ id: Constants.ICONS.QUESTION_HINT, behavior: Constants.ICON_BEHAVIOR.ON_HOVER });
+    }
     if (hasRole(this.props.currentUser, ROLE.COMMENT_RECORD_QUESTIONS)) {
-      return {
-        icons: [
-          { id: Constants.ICONS.QUESTION_HELP, behavior: Constants.ICON_BEHAVIOR.ON_HOVER },
-          { id: Constants.ICONS.QUESTION_LINK, behavior: Constants.ICON_BEHAVIOR.ON_HOVER },
-          { id: Constants.ICONS.QUESTION_COMMENTS, behavior: Constants.ICON_BEHAVIOR.ON_HOVER },
-        ],
-      };
+      icons.push(
+        { id: Constants.ICONS.QUESTION_LINK, behavior: Constants.ICON_BEHAVIOR.ON_HOVER },
+        { id: Constants.ICONS.QUESTION_COMMENTS, behavior: Constants.ICON_BEHAVIOR.ON_HOVER },
+      );
     }
 
-    return {
-      icons: [{ id: Constants.ICONS.QUESTION_HELP, behavior: Constants.ICON_BEHAVIOR.ON_HOVER }],
-    };
+    return { icons };
   }
 
   _getStartingQuestionId() {
@@ -117,6 +117,7 @@ class RecordForm extends React.Component {
       ...this._getIconsOptions(),
       startingQuestionId: this._getStartingQuestionId(),
       startingQuestionOrigin: this._getStartingQuestionOrigin(),
+      enableOptionQuestionFeedback: hasRole(this.props.currentUser, ROLE.READ_ANSWER_FEEDBACK),
     };
 
     return (

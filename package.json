@@ -6,7 +6,6 @@
   "type": "module",
   "main": "src/index.jsx",
   "dependencies": {
-    "@kbss-cvut/s-forms": "0.8.1-beta-a8896e2.0",
     "@testing-library/react": "^16.3.0",
     "@vitejs/plugin-react": "^4.2.1",
     "axios": "^1.12.1",

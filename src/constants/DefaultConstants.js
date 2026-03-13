@@ -113,6 +113,8 @@ export const ROLE = {
   COMMENT_RECORD_QUESTIONS: "commentRecordQuestions",
   READ_ACTION_HISTORY: "readActionHistory",
   READ_STATISTICS: "readStatistics",
+  READ_ANSWER_FEEDBACK: "readAnswerFeedback",
+  READ_QUESTION_HINT: "readQuestionHint",
 
   // Impersonate
   IMPERSONATE: "impersonate",
