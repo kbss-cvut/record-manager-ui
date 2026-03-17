@@ -1,4 +1,5 @@
 # Routes nginx to a locally running record-manager-server (host.docker.internal:8080) instead of the containerized one.
+# Also embeds nginx inside s-pipes-engine to proxy localhost:1235 → db-server:7200.
 services:
   nginx:
     environment:
@@ -6,3 +7,11 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway" # support "http://host.docker.internal" for Linux (Windows/Mac works without it)
 
+  s-pipes-engine:
+    image: !reset null
+    build:
+      context: .dev/dc-record-manager-server--substitute
+      dockerfile: Dockerfile
+    volumes:
+      - .dev/dc-record-manager-server--substitute/nginx-internal.conf:/etc/nginx/nginx-internal.conf:ro
+      - .dev/dc-record-manager-server--substitute/start.sh:/start.sh:ro
