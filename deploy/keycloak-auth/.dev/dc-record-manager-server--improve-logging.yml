@@ -1,3 +1,4 @@
+# Sets root logging level to debug for record-manager-server.
 services:
   record-manager-server:
     environment:

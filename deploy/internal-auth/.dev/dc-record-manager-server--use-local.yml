@@ -1,3 +1,4 @@
+# Uses a locally built record-manager:latest image instead of the remote one.
 services:
   record-manager-server:
     image: record-manager:latest

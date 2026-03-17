@@ -1,3 +1,4 @@
+# Exposes db-server (GraphDB) on host port 7200 for direct access.
 services:
   db-server:
     ports:

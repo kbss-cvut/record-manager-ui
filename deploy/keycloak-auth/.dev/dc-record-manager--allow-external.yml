@@ -1,3 +1,4 @@
+# Allows CORS requests from localhost dev servers (ports 4173, 5173) to record-manager-server.
 services:
   record-manager-server:
     environment:

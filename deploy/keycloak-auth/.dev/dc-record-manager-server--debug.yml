@@ -1,3 +1,4 @@
+# Enables Java remote debugging on record-manager-server (port 5005).
 services:
   record-manager-server:
     ports:
