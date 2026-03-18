@@ -49,6 +49,7 @@ variable "role_groups" {
     entry-clerk-role-group = [
       "read-organization-role",
       "read-organization-records-role",
+      "write-organization-records-role",
       "comment-record-questions-role"
     ]
     reviewer-role-group = [
