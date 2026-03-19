@@ -10,6 +10,7 @@ services:
       - record-manager-server
       - s-pipes-engine
       - db-server
+      - auth-server
     environment:
       NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx
       APP_ORIGIN: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}"
