@@ -10,8 +10,13 @@ services:
     develop:
       watch:
         - action: sync
-          path: ../../../record-manager/target
-          target: /record-manager/target
-          initial_sync: true
+          path: ../../../record-manager/target/classes
+          target: /record-manager/target/classes
         - action: rebuild
           path: ../../../record-manager/pom.xml
+  nginx:
+    develop:
+      watch:
+        - action: sync+restart
+          path: ../../../record-manager/pom.xml
+          target: /record-manager/pom.xml
