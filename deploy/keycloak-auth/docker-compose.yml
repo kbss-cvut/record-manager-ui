@@ -82,7 +82,6 @@ services:
   db-server:
     build:
       context: ../shared/db-server
-    image: ${RECORD_SET_NAME:-rm}-db-server
     container_name: ${RECORD_SET_NAME:-rm}-db-server
     expose:
       - "7200"
