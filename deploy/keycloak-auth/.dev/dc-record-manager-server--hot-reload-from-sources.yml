@@ -1,0 +1,24 @@
+# Builds record-manager-server from local source with hot-reload via Spring DevTools and Docker Compose watch.
+services:
+  record-manager-server:
+    image: !reset null
+    build:
+      context: ../../../record-manager
+      dockerfile: Dockerfile.dev
+    develop:
+      watch:
+        - action: sync+restart
+          path: ../../../record-manager/src
+          target: /record-manager/src
+        - action: rebuild
+          path: ../../../record-manager/pom.xml
+
+  nginx:
+    develop:
+      watch:
+        - action: sync+restart
+          path: ../../../record-manager/src
+          target: /record-manager/src
+        - action: sync+restart
+          path: ../../../record-manager/pom.xml
+          target: /record-manager/pom.xml

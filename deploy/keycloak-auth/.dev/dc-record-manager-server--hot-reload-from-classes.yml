@@ -12,5 +12,6 @@ services:
         - action: sync
           path: ../../../record-manager/target
           target: /record-manager/target
+          initial_sync: true
         - action: rebuild
           path: ../../../record-manager/pom.xml
