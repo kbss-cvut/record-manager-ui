@@ -1,0 +1,37 @@
+# SHACL shapes for the Record Manager "form template" RDF pattern.
+#
+# A resource is recognized as a form template by Record Manager
+# (FormGenService.getFormTemplates / query/findFormTemplates.rq) only when ALL of:
+#
+#   1. it lives in a named graph whose IRI equals the template IRI;
+#   2. it is typed form:form-template
+#      (http://onto.fel.cvut.cz/ontologies/form/form-template);
+#   3. it has an rdfs:label;
+#   4. it has an rdfs:comment.
+#
+# This shape enforces requirements (2)-(4) — the triple-level pattern.
+# Requirement (1), the named-graph constraint, cannot be expressed in core SHACL
+# (validation runs over the merged data graph, not over graph names); it is enforced
+# by the consuming query findFormTemplates.rq. See doc/form-templates.md.
+
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix form: <http://onto.fel.cvut.cz/ontologies/form/> .
+
+form:FormTemplateShape
+    a sh:NodeShape ;
+    rdfs:label "Form template shape" ;
+    rdfs:comment "Validates the triple-level pattern required for a resource to be recognized as a form template." ;
+    # Targets every resource typed form:form-template; unrelated subjects are ignored,
+    # so the shape can be run against arbitrary TTL files.
+    sh:targetClass form:form-template ;
+    sh:property [
+        sh:path     rdfs:label ;
+        sh:minCount 1 ;
+        sh:message  "A form template must have at least one rdfs:label; otherwise it is silently dropped from the form template listing." ;
+    ] ;
+    sh:property [
+        sh:path     rdfs:comment ;
+        sh:minCount 1 ;
+        sh:message  "A form template must have at least one rdfs:comment; otherwise it is silently dropped from the form template listing." ;
+    ] .
