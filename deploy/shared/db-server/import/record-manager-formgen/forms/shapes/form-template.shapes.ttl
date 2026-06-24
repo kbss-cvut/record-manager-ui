@@ -7,7 +7,7 @@
 #   2. it is typed form:form-template
 #      (http://onto.fel.cvut.cz/ontologies/form/form-template);
 #   3. it has an rdfs:label;
-#   4. it has an rdfs:comment.
+#   4. it has a dcterms:description.
 #
 # This shape enforces requirements (2)-(4) — the triple-level pattern.
 # Requirement (1), the named-graph constraint, cannot be expressed in core SHACL
@@ -16,6 +16,7 @@
 
 @prefix sh:   <http://www.w3.org/ns/shacl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix form: <http://onto.fel.cvut.cz/ontologies/form/> .
 
 form:FormTemplateShape
@@ -31,7 +32,7 @@ form:FormTemplateShape
         sh:message  "A form template must have at least one rdfs:label; otherwise it is silently dropped from the form template listing." ;
     ] ;
     sh:property [
-        sh:path     rdfs:comment ;
+        sh:path     dcterms:description ;
         sh:minCount 1 ;
-        sh:message  "A form template must have at least one rdfs:comment; otherwise it is silently dropped from the form template listing." ;
+        sh:message  "A form template must have at least one dcterms:description; otherwise it is silently dropped from the form template listing." ;
     ] .
