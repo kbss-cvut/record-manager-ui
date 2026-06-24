@@ -10,8 +10,10 @@ def check_params():
     if len(sys.argv) != 3:
         log(f"""Illegal number of parameters.
 
-Script returns single subject of triple matching the pattern '?result a <type-uri>' 
+Script returns single subject of triple matching the pattern '?result a <type-uri>'
 from the file specified by <rdf-file-path>.
+
+The subject is printed as a bare IRI string (no angle brackets).
 
 Usage: {sys.argv[0]} <rdf-file-path> <type-uri>
 
@@ -69,7 +71,8 @@ def main():
 
     for row in results:
         subject = row[0]
-        print(subject.n3())
+        # Print the bare IRI (not n3 <...>), ready to use as a graph context.
+        print(subject)
 
 if __name__ == "__main__":
     main()

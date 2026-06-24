@@ -121,7 +121,7 @@ for DIR in ${DATA_DIR}/*/; do
     echo "INFO: Updating data in repository $REPO_NAME ..."
 
     find ${DATA_DIR}/${REPO_NAME} -name '*-form.ttl' | while read DATA_FILE; do
-	CONTEXT=`$SCRIPT_DIR/get-rdf-subject-by-type.py $DATA_FILE 'http://onto.fel.cvut.cz/ontologies/form/form-template' | sed 's/[<>]//g'`
+	CONTEXT=`$SCRIPT_DIR/get-rdf-subject-iri-by-type.py $DATA_FILE 'http://onto.fel.cvut.cz/ontologies/form/form-template'` || continue
 
 	echo "INFO: Replacing context ${CONTEXT} with form template from file ${DATA_FILE}."
 	$SCRIPT_DIR/rdf4j-deploy-context.sh -R -C 'text/turtle' -s http://localhost:7200 -r ${REPO_NAME} -c ${CONTEXT} ${DATA_FILE}
