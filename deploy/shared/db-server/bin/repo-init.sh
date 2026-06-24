@@ -121,6 +121,7 @@ for DIR in ${DATA_DIR}/*/; do
     echo "INFO: Updating data in repository $REPO_NAME ..."
 
     find ${DATA_DIR}/${REPO_NAME} -name '*-form.ttl' | while read DATA_FILE; do
+echo "INFO: Inferring context from ${DATA_FILE}."
 	CONTEXT=`$SCRIPT_DIR/get-rdf-subject-iri-by-type.py $DATA_FILE 'http://onto.fel.cvut.cz/ontologies/form/form-template'` || continue
 
 	echo "INFO: Replacing context ${CONTEXT} with form template from file ${DATA_FILE}."
