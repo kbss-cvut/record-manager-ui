@@ -21,12 +21,12 @@ Example: {sys.argv[0]} "./init-data/forms/example-1.ttl" "http://onto.fel.cvut.c
 """)
         sys.exit(1)
 
-def check_only_one_instance(results, rdf_type):
+def check_only_one_instance(results, rdf_type, file_path):
     if len(results) == 0:
-        log(f"No instance found for the specified {rdf_type}.")
+        log(f"No instance of rdf:type <{rdf_type}> found within file {file_path}.")
         sys.exit(2)
     elif len(results) > 1:
-        error_message = f"Multiple instances found for the type {rdf_type}. Triple that match pattern '?s a <{rdf_type}>' are:\n"
+        error_message = f"Multiple instances of rdf:type <{rdf_type}> found within file {file_path}. Triples that match pattern '?s a <{rdf_type}>' are:\n"
         for row in results:
             subject = row[0]
             error_message += f"  {subject.n3()} a <{rdf_type}> .\n"
@@ -67,7 +67,7 @@ def main():
 
     results = g.query(query)
 
-    check_only_one_instance(results, rdf_type)
+    check_only_one_instance(results, rdf_type, file_path)
 
     for row in results:
         subject = row[0]
