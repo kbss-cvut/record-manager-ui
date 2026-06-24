@@ -31,6 +31,48 @@ wait_for_graphdb() {
     return 0
 }
 
+#
+# Generic SHACL validation of import data.
+#
+# Convention: any data folder (let's call it PARENT) may contain a `shapes/` subfolder. When it does:
+#   - every file in that `shapes/` subfolder must be named *.shapes.ttl
+#   - VALIDATION_CANDIDATES are all *.ttl files recursively in PARENT ignoring any `shapes` subfolders
+#   - VALIDATION_CANDIDATES are validated against all shapes files from PARENT/`shapes` subfolder
+#
+# Validation is advisory only: failures are logged as warnings and deployment
+# proceeds regardless.
+#
+validate_shapes_folder() {
+    local SHAPES_DIR="$1"
+    local PARENT_DIR="`dirname "$SHAPES_DIR"`"
+
+    # Enforce the naming convention for files living in a shapes folder.
+    find "$SHAPES_DIR" -maxdepth 1 -type f ! -name '*.shapes.ttl' | while read NON_SHAPE; do
+        echo "WARNING: file in shapes folder is not named *.shapes.ttl and is ignored: $NON_SHAPE"
+    done
+
+    local SHAPE_FILES="`find "$SHAPES_DIR" -maxdepth 1 -type f -name '*.shapes.ttl' | sort`"
+    if [ -z "$SHAPE_FILES" ]; then
+        echo "INFO: shapes folder $SHAPES_DIR has no *.shapes.ttl files; nothing to validate."
+        return 0
+    fi
+
+    # Validation candidates: all *.ttl files recursively under the parent folder,
+    # ignoring any `shapes` subfolders (where the shape files themselves live).
+    local TARGET_FILES="`find "$PARENT_DIR" -type f -name '*.ttl' -not -path '*/shapes/*' | sort`"
+    if [ -z "$TARGET_FILES" ]; then
+        echo "INFO: no .ttl files to validate in $PARENT_DIR."
+        return 0
+    fi
+
+    echo "$SHAPE_FILES" | while read SHAPE_FILE; do
+        echo "INFO: Validating data files in $PARENT_DIR against shapes $SHAPE_FILE ..."
+        if ! $SCRIPT_DIR/validate-shacl.sh -s "$SHAPE_FILE" $TARGET_FILES; then
+            echo "WARNING: SHACL validation reported failures for shapes $SHAPE_FILE (see report above). Continuing with deployment."
+        fi
+    done
+}
+
 ############
 ### MAIN ###
 ############
@@ -67,6 +109,11 @@ done
 
 DATA_DIR=/root/graphdb-import
 cd /
+
+echo "INFO: *** Validating import data against SHACL shapes folders ***"
+find "$DATA_DIR" -type d -name shapes | sort | while read SHAPES_DIR; do
+    validate_shapes_folder "$SHAPES_DIR"
+done
 
 for DIR in ${DATA_DIR}/*/; do
     REPO_NAME="`basename ${DIR}`"
