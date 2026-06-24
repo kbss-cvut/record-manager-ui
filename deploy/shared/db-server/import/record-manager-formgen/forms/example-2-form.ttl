@@ -1,4 +1,4 @@
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix doc: <http://onto.fel.cvut.cz/ontologies/documentation/> .
 @prefix ex2: <https://example.org/sfc-example-2/> .
 @prefix form: <http://onto.fel.cvut.cz/ontologies/form/> .
@@ -18,7 +18,7 @@ ex2:as-show-advanced-888 a doc:question ;
 ex2:form-root a doc:question ;
     a form:form-template ;
     rdfs:label "Form example 2" ;
-    rdfs:comment "Second example of a form" ;
+    dcterms:description "Second example of a form" ;
     doc:has_related_question ex2:age-1063,
         ex2:answerable-section-with-advanced-switch,
         ex2:cena-6557,
@@ -53,7 +53,7 @@ ex2:answerable-section-with-advanced-switch a doc:question ;
     form:has-identifying-question "test-5279" ;
     form:has-preceding-question ex2:non-answerable-section-with-advanced-switch ;
     form:has-question-origin ex2:answerable-section-with-advanced-switch-qo ;
-    dc:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
+    dcterms:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
 
 ex2:first-name-9402 a doc:question ;
     rdfs:label "Jméno" ;
@@ -174,7 +174,7 @@ ex2:ps-cin-452 a doc:question ;
     form-lt:has-layout-class "text" ;
     form:has-question-origin ex2:ps-cin-452-qo ;
     form:is-relevant-if ex2:provozovatel-pravnicka-osoba-condition ;
-    dc:description "Company identification number" .
+    dcterms:description "Company identification number" .
 
 ex2:ps-iq-452 a doc:question ;
     rdfs:label "IQ" ;
@@ -229,13 +229,13 @@ ex2:test-field-3888 a doc:question ;
     rdfs:label "Field test" ;
     form-lt:has-layout-class "text" ;
     form:has-question-origin ex2:test-field-3888-qo ;
-    dc:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
+    dcterms:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
 
 ex2:test-field-3888-na a doc:question ;
     rdfs:label "Field test" ;
     form-lt:has-layout-class "text" ;
     form:has-question-origin ex2:test-field-3888-na-qo ;
-    dc:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
+    dcterms:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
 
 ex2:age-1063 a doc:question ;
     rdfs:label "Age" ;
@@ -252,7 +252,7 @@ ex2:cena-6557 a doc:question ;
     form:has-preceding-question ex2:age-1063 ;
     form:has-question-origin ex2:cena-6557-qo ;
     form:has-unit-of-measure-question "mena-8088" ;
-    dc:description "Tohle je cena s měnou" .
+    dcterms:description "Tohle je cena s měnou" .
 
 ex2:non-answerable-section-with-advanced-switch a doc:question ;
     rdfs:label "Simple section with advanced switch" ;
@@ -265,7 +265,7 @@ ex2:non-answerable-section-with-advanced-switch a doc:question ;
     form:has-identifying-question "test-5279-na" ;
     form:has-preceding-question ex2:test-section-666 ;
     form:has-question-origin ex2:non-answerable-section-with-advanced-switch-qo ;
-    dc:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
+    dcterms:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
 
 ex2:parent-section-1590 a doc:question ;
     rdfs:label "Vlastník" ;
@@ -312,7 +312,7 @@ ex2:show-advanced-question-test-advanced-switch a doc:question ;
             form:has-timestamp "1636061441831" ] ;
     form:has-question-origin ex2:form-show-advanced-question ;
     form:show-advanced-question true ;
-    dc:description "Advanced switch test" .
+    dcterms:description "Advanced switch test" .
 
 ex2:show-advanced-question-test-advanced-switch-na a doc:question ;
     rdfs:label "Advanced switch test" ;
@@ -327,7 +327,7 @@ ex2:show-advanced-question-test-advanced-switch-na a doc:question ;
             form:has-timestamp "1636065441831" ] ;
     form:has-question-origin ex2:form-show-advanced-question ;
     form:show-advanced-question true ;
-    dc:description "Advanced switch test" .
+    dcterms:description "Advanced switch test" .
 
 ex2:test-field-3887 a doc:question ;
     rdfs:label "Popis vlastníka" ;
@@ -343,7 +343,7 @@ ex2:test-section-666 a doc:question ;
     form:has-identifying-question "test-5278" ;
     form:has-preceding-question ex2:parent-section-1590 ;
     form:has-question-origin ex2:test-section-666-qo ;
-    dc:description "test" .
+    dcterms:description "test" .
 
 ex2:title-7183 a doc:question ;
     rdfs:label "Titul" ;

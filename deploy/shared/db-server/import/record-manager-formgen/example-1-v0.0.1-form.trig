@@ -1,4 +1,3 @@
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix doc: <http://onto.fel.cvut.cz/ontologies/documentation/> .
 @prefix ex1: <https://example.org/sfc-example-1/> .
@@ -52,7 +51,7 @@
       form:has-identifying-question "test-5279" ;
       form:has-preceding-question ex1:non-answerable-section-with-advanced-switch ;
       form:has-question-origin ex1:answerable-section-with-advanced-switch-qo ;
-      dc:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
+      dcterms:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
 
   ex1:first-name-9402 a doc:question ;
       rdfs:label "Jméno" ;
@@ -173,7 +172,7 @@
       form-lt:has-layout-class "text" ;
       form:has-question-origin ex1:ps-cin-452-qo ;
       form:is-relevant-if ex1:provozovatel-pravnicka-osoba-condition ;
-      dc:description "Company identification number" .
+      dcterms:description "Company identification number" .
 
   ex1:ps-iq-452 a doc:question ;
       rdfs:label "IQ" ;
@@ -227,13 +226,13 @@
       rdfs:label "Field test" ;
       form-lt:has-layout-class "text" ;
       form:has-question-origin ex1:test-field-3888-qo ;
-      dc:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
+      dcterms:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
 
   ex1:test-field-3888-na a doc:question ;
       rdfs:label "Field test" ;
       form-lt:has-layout-class "text" ;
       form:has-question-origin ex1:test-field-3888-na-qo ;
-      dc:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
+      dcterms:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
 
   ex1:age-1063 a doc:question ;
       rdfs:label "Age" ;
@@ -250,7 +249,7 @@
       form:has-preceding-question ex1:age-1063 ;
       form:has-question-origin ex1:cena-6557-qo ;
       form:has-unit-of-measure-question "mena-8088" ;
-      dc:description "Tohle je cena s měnou" .
+      dcterms:description "Tohle je cena s měnou" .
 
   ex1:non-answerable-section-with-advanced-switch a doc:question ;
       rdfs:label "Simple section with advanced switch" ;
@@ -263,7 +262,7 @@
       form:has-identifying-question "test-5279-na" ;
       form:has-preceding-question ex1:test-section-666 ;
       form:has-question-origin ex1:non-answerable-section-with-advanced-switch-qo ;
-      dc:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
+      dcterms:source <https://slovník.gov.cz/generický/množství/pojem/má-jednotku> .
 
   ex1:parent-section-1590 a doc:question ;
       rdfs:label "Vlastník" ;
@@ -309,7 +308,7 @@
               form:has-timestamp "1636061441831" ] ;
       form:has-question-origin ex1:form-show-advanced-question ;
       form:show-advanced-question true ;
-      dc:description "Advanced switch test" .
+      dcterms:description "Advanced switch test" .
 
   ex1:show-advanced-question-test-advanced-switch-na a doc:question ;
       rdfs:label "Advanced switch test" ;
@@ -324,7 +323,7 @@
               form:has-timestamp "1636065441831" ] ;
       form:has-question-origin ex1:form-show-advanced-question ;
       form:show-advanced-question true ;
-      dc:description "Advanced switch test" .
+      dcterms:description "Advanced switch test" .
 
   ex1:test-section-666 a doc:question ;
       rdfs:label "Sekce s identifikátorem" ;
@@ -335,7 +334,7 @@
       form:has-identifying-question "test-5278" ;
       form:has-preceding-question ex1:parent-section-1590 ;
       form:has-question-origin ex1:test-section-666-qo ;
-      dc:description "test" .
+      dcterms:description "test" .
 
   ex1:title-7183 a doc:question ;
       rdfs:label "Titul" ;
