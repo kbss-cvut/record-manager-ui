@@ -87,23 +87,23 @@ fi
 
 ls ${SOURCE_DIR}/*-config.ttl | while read REPO_CONFIG_FILE; do
 
-	REPO_NAME=`$SCRIPT_DIR/get-value-of-rdf-property.py $REPO_CONFIG_FILE 'http://www.openrdf.org/config/repository#repositoryID'`
+    REPO_NAME=`$SCRIPT_DIR/get-value-of-rdf-property.py $REPO_CONFIG_FILE 'http://www.openrdf.org/config/repository#repositoryID'`
 
-	if [ -z "$REPO_NAME" ]; then
-    		echo "ERROR: Could not parse repository name from file $REPO_CONFIG_FILE"
-    		exit 1
-	fi
+    if [ -z "$REPO_NAME" ]; then
+        echo "ERROR: Could not parse repository name from file $REPO_CONFIG_FILE"
+        exit 1
+    fi
 
-	if [ ! -d ${GRAPHDB_HOME}/data/repositories/${REPO_NAME} ] || [ -z "$(ls -A ${GRAPHDB_HOME})/data/repositories/${REPO_NAME}" ]; then
-		echo "INFO: Initializing repository $REPO_NAME..."
+    if [ ! -d ${GRAPHDB_HOME}/data/repositories/${REPO_NAME} ] || [ -z "$(ls -A ${GRAPHDB_HOME})/data/repositories/${REPO_NAME}" ]; then
+        echo "INFO: Initializing repository $REPO_NAME..."
 
-	    # Create repository based on configuration
-	    echo "INFO: Creating repository $REPO_NAME..."
-	    curl -X POST --header "Content-Type: multipart/form-data" -F "config=@${REPO_CONFIG_FILE}" "http://localhost:7200/rest/repositories"
-	    echo "INFO: Repository $REPO_NAME successfully initialized."
-	else
-	    echo "INFO: Repository $REPO_NAME already exists. Skipping initialization..."
-	fi
+        # Create repository based on configuration
+        echo "INFO: Creating repository $REPO_NAME..."
+        curl -X POST --header "Content-Type: multipart/form-data" -F "config=@${REPO_CONFIG_FILE}" "http://localhost:7200/rest/repositories"
+        echo "INFO: Repository $REPO_NAME successfully initialized."
+    else
+        echo "INFO: Repository $REPO_NAME already exists. Skipping initialization..."
+    fi
 done
 
 
@@ -121,22 +121,22 @@ for DIR in ${DATA_DIR}/*/; do
     echo "INFO: Updating data in repository $REPO_NAME ..."
 
     find ${DATA_DIR}/${REPO_NAME} -name '*-form.ttl' | while read DATA_FILE; do
-echo "INFO: Inferring context from ${DATA_FILE}."
-	CONTEXT=`$SCRIPT_DIR/get-rdf-subject-iri-by-type.py $DATA_FILE 'http://onto.fel.cvut.cz/ontologies/form/form-template'` || continue
+        echo "INFO: Inferring context from ${DATA_FILE}."
+        CONTEXT=`$SCRIPT_DIR/get-rdf-subject-iri-by-type.py $DATA_FILE 'http://onto.fel.cvut.cz/ontologies/form/form-template'` || continue
 
-	echo "INFO: Replacing context ${CONTEXT} with form template from file ${DATA_FILE}."
-	$SCRIPT_DIR/rdf4j-deploy-context.sh -R -C 'text/turtle' -s http://localhost:7200 -r ${REPO_NAME} -c ${CONTEXT} ${DATA_FILE}
+        echo "INFO: Replacing context ${CONTEXT} with form template from file ${DATA_FILE}."
+        $SCRIPT_DIR/rdf4j-deploy-context.sh -R -C 'text/turtle' -s http://localhost:7200 -r ${REPO_NAME} -c ${CONTEXT} ${DATA_FILE}
     done
 
     find ${DATA_DIR}/${REPO_NAME} -name '*.trig' | while read DATA_FILE; do
 
-	echo "INFO: Replacing contexts with data from file ${DATA_FILE}."
-	$SCRIPT_DIR/rdf4j-deploy-context.sh -R -C 'application/trig' -s http://localhost:7200 -r ${REPO_NAME} ${DATA_FILE}
+        echo "INFO: Replacing contexts with data from file ${DATA_FILE}."
+        $SCRIPT_DIR/rdf4j-deploy-context.sh -R -C 'application/trig' -s http://localhost:7200 -r ${REPO_NAME} ${DATA_FILE}
     done
 
     find ${DATA_DIR}/${REPO_NAME} -name '*.ru' | while read UPDATE_QUERY_FILE; do
 
-	echo "INFO: Running update query from file ${UPDATE_QUERY_FILE}."
+        echo "INFO: Running update query from file ${UPDATE_QUERY_FILE}."
         $SCRIPT_DIR/rdf4j-sparql-update.sh -s http://localhost:7200 -r ${REPO_NAME} -q ${UPDATE_QUERY_FILE}
     done
 done
