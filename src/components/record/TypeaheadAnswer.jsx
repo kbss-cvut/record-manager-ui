@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useIntl } from "react-intl";
 import { Constants, JsonLdObjectUtils } from "@kbss-cvut/s-forms";
 import * as JsonLdUtils from "jsonld-utils";
 import Select from "react-select";
@@ -25,8 +26,7 @@ export const processTypeaheadOptions = (options, intl) => {
 };
 
 const TypeaheadAnswer = (props) => {
-  // TODO
-  const intl = { locale: "cs" };
+  const intl = useIntl();
 
   const [isLoading, setLoading] = useState(true);
   const [options, setOptions] = useState(processTypeaheadOptions(props.options, intl));
